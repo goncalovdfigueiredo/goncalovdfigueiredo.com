@@ -3,41 +3,70 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* =========================================
+   LIGHT MODE (PREMIUM & LEGÍVEL)
+   ========================================= */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  
+  /* 1. FUNDO DA PÁGINA: "Off-White" Limpo (Quase Branco) */
+  --background: oklch(0.99 0 0); 
+  
+  /* 2. TEXTO PRINCIPAL: Preto Profundo (Jet Black) */
+  --foreground: oklch(0.10 0 0); 
+
+  /* 3. CARTÕES: Branco Puro */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.10 0 0);
+  
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.10 0 0);
+
+  /* 4. BRAND COLORS (Emerald - Ajustado para Light Mode) */
+  --primary: oklch(0.45 0.15 145); /* Verde Floresta Elegante */
+  --primary-foreground: oklch(0.99 0 0);
+  
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.20 0 0);
+
+  /* 5. FUNDOS SECUNDÁRIOS */
+  --muted: oklch(0.96 0 0); 
+  
+  /* 6. TEXTO SECUNDÁRIO (CRÍTICO PARA LEITURA)
+     Escurecido para Oklch 0.45 (Cinzento Chumbo) para leitura perfeita. */
+  --muted-foreground: oklch(0.45 0 0); 
+
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.10 0 0);
+  
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  
+  /* 7. BORDAS: Mais visíveis (Zinc-300) */
+  --border: oklch(0.87 0 0);
+  --input: oklch(0.87 0 0);
+  
+  --ring: oklch(0.45 0.15 145); /* Anel de foco verde */
+  
+  /* Cores dos gráficos (Mantidas) */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  
+  --sidebar: oklch(0.99 0 0);
+  --sidebar-foreground: oklch(0.10 0 0);
+  --sidebar-primary: oklch(0.20 0 0);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-accent-foreground: oklch(0.10 0 0);
+  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-ring: oklch(0.70 0 0);
 }
 
+/* =========================================
+   DARK MODE (MANTIDO IGUAL - NÃO MEXI)
+   ========================================= */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -116,5 +145,67 @@
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
+
+/* Helpers 3D e Animações */
+.perspective { perspective: 1000px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(900deg); }
+.transform-style-preserve-3d { transform-style: preserve-3d; }
+.rotateY-180 { transform: rotateY(180deg); }
+
+.spin-multiple {
+  transform: rotateY(0deg);
+  transition: transform 2s ease-in-out;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.spin-multiple:hover { transform: rotateY(1080deg); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Links */
+@layer base {
+  a {
+    @apply text-foreground no-underline decoration-emerald-500 decoration-2 underline-offset-2;
+  }
+  a:hover {
+    @apply underline text-emerald-500;
+  }
+  a:visited {
+    @apply text-foreground;
+  }
+  a:focus-visible {
+    @apply ring-2 ring-emerald-500/50 rounded;
+  }
+  .prose a,
+  .prose a:visited {
+    @apply text-emerald-500 underline decoration-emerald-500 decoration-2 underline-offset-2;
+  }
+  .prose a:hover {
+    @apply text-emerald-400;
+  }
+  .dark a:hover { @apply text-emerald-400; }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #a1a1aa;
+  border-radius: 5px;
+  border: 2px solid #ffffff;
+  background-clip: content-box;
+}
+.dark ::-webkit-scrollbar-track { background: #09090b; }
+.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border: 2px solid #09090b;
+}
+::-webkit-scrollbar-thumb:hover { background-color: #10b981 !important; }
+::selection { background-color: rgba(16, 185, 129, 0.3); color: inherit; }

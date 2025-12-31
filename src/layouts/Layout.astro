@@ -6,8 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title = "Rishikesh S - Portfolio", description = "My Portfolio" } =
-  Astro.props;
+const { title = "Gonçalo Figueiredo's Site", description = "" } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,7 +14,7 @@ const { title = "Rishikesh S - Portfolio", description = "My Portfolio" } =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon2.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
@@ -27,12 +26,25 @@ const { title = "Rishikesh S - Portfolio", description = "My Portfolio" } =
     />
   </head>
   <body
-    class="min-h-screen bg-background font-sans antialiased selection:bg-purple-500/20 selection:text-purple-500"
+    class="min-h-screen bg-background font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500"
   >
-    <div
-      class="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
-    >
+    {/* FUNDO DINÂMICO (GLOW) */}
+    <div class="fixed inset-0 -z-10 h-full w-full bg-background">
+      
+      {/* Light Mode Glow: Muito subtil e cinzento/azul, quase invisível para não poluir */}
+      <div
+        class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.05),rgba(255,255,255,0))]"
+      >
+      </div>
+
+      {/* Dark Mode Glow: Verde Esmeralda vibrante (só aparece no dark mode via CSS global ou classes condicionais se preferires, mas este aqui é seguro) */}
+      <div
+        class="absolute top-0 z-[-2] h-screen w-screen hidden dark:block bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(0,0,0,0))]"
+      >
+      </div>
+      
     </div>
+
     <slot />
   </body>
 </html>
@@ -61,7 +73,7 @@ const { title = "Rishikesh S - Portfolio", description = "My Portfolio" } =
   }
 </script>
 
-<style>
+<style is:global>
   html,
   body {
     margin: 0;
@@ -69,6 +81,7 @@ const { title = "Rishikesh S - Portfolio", description = "My Portfolio" } =
     width: 100%;
     height: 100%;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   :root {
@@ -79,5 +92,34 @@ const { title = "Rishikesh S - Portfolio", description = "My Portfolio" } =
     transition:
       background-color var(--transition-standard),
       color var(--transition-standard);
+  }
+
+  /* SCROLLBAR PREMIUM */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4d8; /* Zinc-300 para Light Mode (visível mas suave) */
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  html.dark ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border: 2px solid #09090b;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #10b981 !important;
   }
 </style>

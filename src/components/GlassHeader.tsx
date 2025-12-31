@@ -1,100 +1,84 @@
-import ThemeToggle from "./ui/theme-toggle";
-import { personalInfo } from "@/lib/data";
+// src/components/GlassHeader.tsx
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import ThemeToggle from "./ui/theme-toggle";
+import {
+  GraduationCap,
+  Briefcase,
+  Handshake,
+  Globe,
+  BookOpen,
+  Trophy,
+  CircuitBoard,
+  BrainCircuit,
+  MapPinned
+} from "lucide-react";
+
+const navItems = [
+  { id: "experience",   Icon: Briefcase,     label: "Experience" },
+  { id: "skills",       Icon: CircuitBoard,  label: "Skills" },
+  { id: "projects",     Icon: BrainCircuit,  label: "Projects" },
+  { id: "education",    Icon: GraduationCap, label: "Education" },
+  { id: "leadership",   Icon: Handshake,     label: "Leadership" },
+  { id: "scientific Outreach and Certifications", Icon: Globe, label: "Scientific Outreach" },
+  { id: "publications", Icon: BookOpen,      label: "Publications" },
+  { id: "map", Icon: MapPinned, label: "Global Impact & Footprint" },
+  { id: "awards",       Icon: Trophy,        label: "Awards" },
+];
 
 export default function GlassHeader() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   return (
-    <header className="sticky z-50 w-full backdrop-blur-md backdrop-filter bg-background/70 dark:bg-background/40 border-b border-border/40 supports-[backdrop-filter]:bg-background/60">
-      <div className="container max-w-4xl mx-auto p-4 flex justify-between items-center">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/70 dark:bg-background/40 border-b border-border/40">
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo + Nome */}
         <motion.a
-          className="flex items-center text-lg font-medium"
           href="/"
+          className="flex items-center text-2xl font-medium"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          ✨ {personalInfo.name}
+          {/* 👇 LOGÓTIPO ADICIONADO AQUI */}
+          <img 
+            src="/favicon2.svg"  // Confirma se o nome na pasta 'public' é 'favicon.svg' ou 'favicon2.svg'
+            alt="Logo" 
+            className="w-8 h-8 mr-3 object-contain" 
+          />
+          Gonçalo Figueiredo
         </motion.a>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-          {["experience", "skills", "projects", "awards", "education"].map(
-            (item, index) => (
-              <motion.a
-                key={item}
-                href={`#${item}`}
-                className="transition-colors hover:text-foreground/80 text-foreground/60"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2, delay: index * 0.1 }}
-                whileHover={{ y: -2 }}
+        {/* Navegação e Tema */}
+        <div className="flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-6">
+            {navItems.map(({ id, Icon, label }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="relative group p-1"
+                aria-label={label}
               >
-                {item === "experience" && "💼 "}
-                {item === "skills" && "🛠️ "}
-                {item === "projects" && "🚀 "}
-                {item === "awards" && "🏆 "}
-                {item === "education" && "🎓 "}
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </motion.a>
-            )
-          )}
-        </nav>
+                <Icon className="w-6 h-6 text-foreground/60 group-hover:text-emerald-500 transition-colors" />
+                {/* Tooltip */}
+                <span
+                  className="
+                    absolute -bottom-8 left-1/2 transform -translate-x-1/2
+                    whitespace-nowrap bg-gray-800 text-white text-xs rounded px-2 py-1
+                    opacity-0 group-hover:opacity-100 pointer-events-none
+                    transition-opacity
+                  "
+                >
+                  {label}
+                </span>
+              </a>
+            ))}
+          </nav>
 
-        <div className="flex items-center space-x-2">
+          {/* Theme switcher */}
           <ThemeToggle />
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="md:hidden p-2 text-foreground"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-            whileTap={{ scale: 0.95 }}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            className="md:hidden py-4 px-4 border-t border-border/10 backdrop-blur-md backdrop-filter bg-background/80 dark:bg-background/40"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <nav className="flex flex-col space-y-4 text-sm font-medium">
-              {["experience", "skills", "projects", "awards", "education"].map(
-                (item, index) => (
-                  <motion.a
-                    key={item}
-                    href={`#${item}`}
-                    className="transition-colors hover:text-foreground/80 text-foreground/60 py-2"
-                    onClick={toggleMenu}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.2, delay: index * 0.1 }}
-                  >
-                    {item === "experience" && "💼 "}
-                    {item === "skills" && "🛠️ "}
-                    {item === "projects" && "🚀 "}
-                    {item === "awards" && "🏆 "}
-                    {item === "education" && "🎓 "}
-                    {item.charAt(0).toUpperCase() + item.slice(1)}
-                  </motion.a>
-                )
-              )}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Linha de separação fina em gradiente */}
+      <div className="h-[1px] w-full bg-gradient-to-r from-emerald-500 to-lime-500" />
     </header>
   );
 }
