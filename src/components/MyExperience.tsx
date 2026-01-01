@@ -1,3 +1,4 @@
+// src/components/ExperienceSection.tsx
 "use client";
 
 import React from "react";
@@ -61,6 +62,10 @@ export default function ExperienceSection() {
                     <div className="h-px w-8 bg-emerald-500/20" />
                   </div>
 
+                  {/* MUDANÇA AQUI: 
+                      O container continua flex-col (mobile) -> flex-row (desktop).
+                      Mas removi o alinhamento forçado no texto, para ele ficar alinhado à esquerda.
+                  */}
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     {/* LOGOS */}
                     <div className="flex flex-wrap gap-2"> 
@@ -78,7 +83,8 @@ export default function ExperienceSection() {
                     </div>
                     
                     {/* TÍTULO DO CARGO */}
-                    <span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight self-center sm:self-auto">
+                    {/* Removi 'self-center sm:self-auto'. Agora alinha à esquerda por defeito em mobile. */}
+                    <span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
                       {job.position}
                     </span>
                   </div>
@@ -87,10 +93,10 @@ export default function ExperienceSection() {
               subtitle={
                 <div className="mt-2 pl-1">
                   
-                  {/* 1. NOME DA EMPRESA (Lógica de Múltiplos Links ou Único) */}
+                  {/* 1. NOME DA EMPRESA */}
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2">
                     
-                    {/* CASO 1: Vários Links (ex: IT & CICECO) */}
+                    {/* CASO 1: Vários Links */}
                     {(job as any).companyLinks ? (
                       (job as any).companyLinks.map((link: any, i: number) => (
                         <React.Fragment key={i}>
@@ -103,7 +109,6 @@ export default function ExperienceSection() {
                             {link.name}
                             <ExternalLink className="h-3.5 w-3.5 opacity-50 group-hover/link:opacity-100 transition-all" />
                           </a>
-                          {/* Adiciona o "&" separador se não for o último */}
                           {i < (job as any).companyLinks.length - 1 && (
                             <span className="text-zinc-400 dark:text-zinc-600 font-light text-sm">&</span>
                           )}
@@ -111,7 +116,7 @@ export default function ExperienceSection() {
                       ))
                     ) 
                     
-                    /* CASO 2: Um Link Único (ex: Lightenjin / IST) */
+                    /* CASO 2: Um Link Único */
                     : (job as any).url ? (
                       <a 
                         href={(job as any).url} 
@@ -140,7 +145,7 @@ export default function ExperienceSection() {
                     </div>
                   </div>
 
-                  {/* 3. CURSOS LECIONADOS (Badge System) */}
+                  {/* 3. CURSOS LECIONADOS */}
                   {(job as any).courses && (job as any).courses.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-3">
                       {(job as any).courses.map((course: any, idx: number) => (

@@ -1,16 +1,18 @@
 // src/components/GanttTimeline.tsx
 import * as React from "react";
+import { motion } from "framer-motion";
 import { education, workExperience, LeadershipExperience } from "@/lib/data";
+import { Briefcase, GraduationCap, Handshake, Calendar } from "lucide-react";
 
 /** =========================
- *  Tipos e utilitários
- *  ========================= */
+ * Tipos e utilitários
+ * ========================= */
 type RowType = "Education" | "Experience" | "Leadership";
 
 type Row = {
   id: string;
-  label: string;     // título curto (degree/position)
-  org?: string;      // instituição/empresa (opcional)
+  label: string;     
+  org?: string;      
   type: RowType;
   start: Date;
   end: Date;
@@ -18,17 +20,12 @@ type Row = {
 };
 
 type GanttProps = {
-  /** Altura de cada linha (label + barra) */
   rowHeight?: number;
-  /** Altura da barra dentro da linha */
   barHeight?: number;
-  /** Tamanho do texto (labels) */
   fontSize?: number;
-  /** Pixels por dia (controla a largura total do gráfico) */
   pxPerDay?: number;
 };
 
-/** Mostrar a organização em linha secundária sob o título? */
 const SHOW_ORG_INLINE = false;
 
 const MONTHS: Record<string, number> = {
@@ -76,16 +73,22 @@ function fmtMY(d: Date) {
   return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
-/** Paleta por tipo */
 const COLOR_BY_TYPE: Record<RowType, string> = {
   Education: "rgba(16,185,129,0.9)",  // emerald-500
   Experience: "rgba(59,130,246,0.9)", // blue-500
   Leadership: "rgba(168,85,247,0.9)", // purple-600
 };
 
+/** Ícones para a versão Mobile */
+const ICON_BY_TYPE: Record<RowType, any> = {
+  Education: GraduationCap,
+  Experience: Briefcase,
+  Leadership: Handshake,
+};
+
 /** =========================
- *  Construção das linhas a partir do teu data.ts
- *  ========================= */
+ * Construção das linhas (Lógica partilhada)
+ * ========================= */
 function buildRows(): Row[] {
   const rows: Row[] = [];
 
@@ -94,8 +97,8 @@ function buildRows(): Row[] {
     const { start, end } = parsePeriod(e.period);
     rows.push({
       id: `edu-${e.institution}-${e.degree}`,
-      label: e.degree,              // 👈 só o degree
-      org: e.institution,           // 👈 instituição separada
+      label: e.degree,
+      org: e.institution,
       type: "Education",
       start,
       end,
@@ -108,8 +111,8 @@ function buildRows(): Row[] {
     const { start, end } = parsePeriod(w.period);
     rows.push({
       id: `exp-${w.company}-${w.position}-${w.period}`,
-      label: w.position,            // 👈 só a posição
-      org: w.company,               // 👈 empresa separada
+      label: w.position,
+      org: w.company,
       type: "Experience",
       start,
       end,
@@ -122,8 +125,8 @@ function buildRows(): Row[] {
     const { start, end } = parsePeriod(l.period);
     rows.push({
       id: `lead-${l.company}-${l.position}-${l.period}`,
-      label: l.position,            // 👈 só a posição
-      org: l.company,               // 👈 organização separada
+      label: l.position,
+      org: l.company,
       type: "Leadership",
       start,
       end,
@@ -131,7 +134,6 @@ function buildRows(): Row[] {
     });
   }
 
-  // ===== ORDEM: start DESC; em empate → Leadership acima, depois Experience, depois Education; depois end DESC; depois label ASC
   const TYPE_RANK: Record<RowType, number> = {
     Leadership: 0,
     Experience: 1,
@@ -141,71 +143,132 @@ function buildRows(): Row[] {
   rows.sort((a, b) => {
     const byStart = b.start.getTime() - a.start.getTime();
     if (byStart !== 0) return byStart;
-
     const byType = TYPE_RANK[a.type] - TYPE_RANK[b.type];
     if (byType !== 0) return byType;
-
-    const byEnd = b.end.getTime() - a.end.getTime();
-    if (byEnd !== 0) return byEnd;
-
-    return a.label.localeCompare(b.label);
+    return b.end.getTime() - a.end.getTime();
   });
 
   return rows;
 }
 
 /** =========================
- *  Componente principal — labels FIXOS + timeline SCROLL
- *  ========================= */
-export default function GanttTimeline({
-  rowHeight = 56,
-  barHeight = 22,
-  fontSize = 12,
-  pxPerDay = 0.35,
-}: GanttProps) {
-  const rows = React.useMemo(buildRows, []);
-  if (rows.length === 0) return null;
+ * COMPONENTE 1: Mobile List View (Novo!)
+ * ========================= */
+function MobileTimeline({ rows }: { rows: Row[] }) {
+  return (
+    <div className="flex flex-col space-y-8 pl-2 pr-4">
+      {rows.map((row, i) => {
+        const Icon = ICON_BY_TYPE[row.type];
+        
+        // Corzinha para o icon baseada no tipo (convertendo rgba para tailwind aproximado ou usando style)
+        let iconColorClass = "text-emerald-500 bg-emerald-500/10";
+        if (row.type === "Experience") iconColorClass = "text-blue-500 bg-blue-500/10";
+        if (row.type === "Leadership") iconColorClass = "text-purple-500 bg-purple-500/10";
 
+        return (
+          <motion.div 
+            key={row.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.05 }}
+            className="relative pl-8 border-l-2 border-zinc-200 dark:border-white/10 last:border-0"
+          >
+            {/* Bolinha no eixo */}
+            <div 
+              className="absolute -left-[9px] top-0 h-4 w-4 rounded-full border-2 border-white dark:border-[#09090b]"
+              style={{ backgroundColor: row.color }}
+            />
+
+            <div className="flex flex-col gap-1 -mt-1.5">
+              {/* Datas */}
+              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-zinc-400">
+                <Calendar className="w-3 h-3" />
+                <span>{fmtMY(row.start)} — {fmtMY(row.end)}</span>
+              </div>
+
+              {/* Título e Icon */}
+              <div className="flex items-start justify-between gap-4 mt-1">
+                <div>
+                  <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-lg leading-tight">
+                    {row.label}
+                  </h3>
+                  {row.org && (
+                    <div className="text-zinc-500 dark:text-zinc-400 font-medium text-sm mt-0.5">
+                      {row.org}
+                    </div>
+                  )}
+                </div>
+                
+                {/* Icon de Categoria */}
+                <div className={`p-2 rounded-lg shrink-0 ${iconColorClass}`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+              </div>
+
+              {/* Tag de Tipo */}
+              <div className="mt-2">
+                <span 
+                  className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded-full bg-zinc-100 dark:bg-white/5 text-zinc-500"
+                >
+                  {row.type}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** =========================
+ * COMPONENTE 2: Desktop Gantt (Original)
+ * ========================= */
+function DesktopGantt({ 
+  rows, 
+  rowHeight, 
+  barHeight, 
+  fontSize, 
+  pxPerDay 
+}: GanttProps & { rows: Row[] }) {
   const minStart = rows.reduce((m, r) => (r.start < m ? r.start : m), rows[0].start);
   const maxEnd   = rows.reduce((m, r) => (r.end > m ? r.end : m), rows[0].end);
 
   // Layout/margens
-  const labelW = 300; // largura da coluna de labels (fixa)
-  const padLeft = 16; // padding interno em ambas as colunas
+  const labelW = 300; 
+  const padLeft = 16; 
   const padRight = 40;
   const padTop = 36;
   const padBottom = 28;
   const headerH = 28;
   const laneGap = 8;
 
-  // largura temporal (direita)
+  // largura temporal
   const totalDays = Math.max(1, daysBetween(minStart, maxEnd));
-  const timeW = Math.max(600, totalDays * pxPerDay);
+  const timeW = Math.max(600, totalDays * (pxPerDay || 0.35));
 
   // alturas
   const totalRows = rows.length;
-  const height = padTop + headerH + padBottom + totalRows * (rowHeight + laneGap);
+  const height = padTop + headerH + padBottom + totalRows * ((rowHeight || 56) + laneGap);
 
-  // EIXO INVERTIDO (presente à esquerda) — só para a PARTE DIREITA
-  const startXR = (d: Date) => padLeft + (daysBetween(d, maxEnd) * pxPerDay);
+  // Eixo invertido
+  const startXR = (d: Date) => padLeft + (daysBetween(d, maxEnd) * (pxPerDay || 0.35));
 
-  // Ticks de anos (desc)
+  // Ticks de anos
   const years: number[] = [];
   const y0 = minStart.getFullYear();
   const y1 = maxEnd.getFullYear();
   for (let y = y1; y >= y0; y--) years.push(y);
 
   const today = new Date();
-
-  // Helpers verticais
-  const laneTopAt = (i: number) => padTop + headerH + i * (rowHeight + laneGap);
-  const barYAt = (i: number) => laneTopAt(i) + (rowHeight - barHeight) / 2;
-
-  const orgFont = Math.max(10, (fontSize || 12) - 1);
+  const laneTopAt = (i: number) => padTop + headerH + i * ((rowHeight || 56) + laneGap);
+  const barYAt = (i: number) => laneTopAt(i) + ((rowHeight || 56) - (barHeight || 22)) / 2;
+  const orgFont = Math.max(10, ((fontSize || 12) - 1));
 
   return (
     <div className="w-full">
-      {/* Legenda simples (HTML) */}
+      {/* Legenda */}
       <div className="flex items-center gap-4 mb-2 pl-2">
         {[
           { t: "Education", c: COLOR_BY_TYPE.Education },
@@ -218,48 +281,41 @@ export default function GanttTimeline({
               style={{ background: k.c }}
               className="inline-block w-3 h-3 rounded-[3px] ring-1 ring-black/10"
             />
-            <span>{k.t}</span>
+            <span className="text-zinc-600 dark:text-zinc-400">{k.t}</span>
           </div>
         ))}
       </div>
 
       <div className="relative flex w-full">
-        {/* ====================== COLUNA ESQUERDA (FIXA) ====================== */}
+        {/* COLUNA ESQUERDA (FIXA) */}
         <div className="shrink-0" style={{ width: labelW + padLeft }}>
           <svg width={labelW + padLeft} height={height} role="img" aria-label="Gantt Labels">
-            {/* Fundo */}
             <rect x={0} y={0} width={labelW + padLeft} height={height} fill="transparent" />
-            {/* Cabeçalho: título da coluna */}
             <g transform={`translate(0, ${padTop})`}>
-              <text x={12} y={headerH - 10} fontSize={fontSize} fill="currentColor" opacity={0.7}>
+              <text x={12} y={headerH - 10} fontSize={fontSize} fill="currentColor" opacity={0.5}>
                 Item
               </text>
             </g>
 
-            {/* Linhas + Labels (com quadradinho de cor) */}
             {rows.map((r, i) => {
               const laneTop = laneTopAt(i);
               const sqSize = 10;
               const sqX = 12;
-              const sqY = laneTop + rowHeight / 2 - sqSize / 2;
+              const sqY = laneTop + (rowHeight || 56) / 2 - sqSize / 2;
               const labelX = sqX + sqSize + 6;
-
-              // Ajuste vertical se for 2 linhas
               const baseY = SHOW_ORG_INLINE
-                ? laneTop + rowHeight / 2 - (orgFont * 0.6) / 2
-                : laneTop + rowHeight / 2;
+                ? laneTop + (rowHeight || 56) / 2 - (orgFont * 0.6) / 2
+                : laneTop + (rowHeight || 56) / 2;
 
               return (
                 <g key={r.id}>
-                  {/* faixa alternada (só na coluna esquerda) */}
                   <rect
                     x={0}
                     y={laneTop}
                     width={labelW + padLeft}
                     height={rowHeight}
-                    fill={i % 2 ? "rgba(0,0,0,0.02)" : "transparent"}
+                    fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"} // Ajustado para dark mode friendly
                   />
-                  {/* quadrado + label (1 ou 2 linhas) */}
                   <rect
                     x={sqX}
                     y={sqY}
@@ -267,25 +323,18 @@ export default function GanttTimeline({
                     height={sqSize}
                     rx={2}
                     fill={r.color}
-                    stroke="rgba(0,0,0,0.15)"
-                    strokeWidth={0.5}
                   />
                   <text
                     x={labelX}
                     y={baseY}
                     fontSize={fontSize}
-                    fill="currentColor"
-                    opacity={0.92}
+                    fill="currentColor" // Usa a cor do texto do tema
+                    className="text-zinc-800 dark:text-zinc-200"
                     dominantBaseline="middle"
                   >
                     <tspan x={labelX}>{r.label}</tspan>
                     {SHOW_ORG_INLINE && r.org && (
-                      <tspan
-                        x={labelX}
-                        dy={orgFont * 1.2}
-                        fontSize={orgFont}
-                        opacity={0.65}
-                      >
+                      <tspan x={labelX} dy={orgFont * 1.2} fontSize={orgFont} opacity={0.65}>
                         {r.org}
                       </tspan>
                     )}
@@ -296,26 +345,23 @@ export default function GanttTimeline({
           </svg>
         </div>
 
-        {/* ====================== COLUNA DIREITA (SCROLL HORIZONTAL) ====================== */}
-        <div className="grow overflow-x-auto">
+        {/* COLUNA DIREITA (SCROLL) */}
+        <div className="grow overflow-x-auto no-scrollbar">
           <svg
             width={timeW + padRight}
             height={height}
             role="img"
             aria-label="Gantt Timeline"
-            className="block"
+            className="block text-zinc-800 dark:text-zinc-200"
           >
-            {/* Fundo */}
             <rect x={0} y={0} width={timeW + padRight} height={height} fill="transparent" />
 
-            {/* Cabeçalho: grelha de anos (desc) */}
             <g transform={`translate(0, ${padTop})`}>
               {years.map((y) => {
                 const x = startXR(new Date(y, 0, 1));
                 return (
                   <g key={`year-${y}`}>
-                    <line x1={x} x2={x} y1={0} y2={height} stroke="currentColor" opacity={0.08} />
-                    {/* ano à ESQUERDA do traço */}
+                    <line x1={x} x2={x} y1={0} y2={height} stroke="currentColor" opacity={0.1} />
                     <text
                       x={x - 4}
                       y={headerH - 10}
@@ -330,20 +376,19 @@ export default function GanttTimeline({
                 );
               })}
 
-              {/* Hoje */}
               {today >= minStart && today <= maxEnd && (
                 <line
                   x1={startXR(today)}
                   x2={startXR(today)}
                   y1={0}
                   y2={height}
-                  stroke="rgba(244,63,94,0.9)" // rose-500
+                  stroke="#ef4444" 
                   strokeDasharray="4 4"
+                  opacity={0.5}
                 />
               )}
             </g>
 
-            {/* Linhas/lanes: mesmas faixas alternadas para alinhar com a esquerda */}
             {rows.map((_, i) => {
               const laneTop = laneTopAt(i);
               return (
@@ -353,56 +398,71 @@ export default function GanttTimeline({
                   y={laneTop}
                   width={timeW + padRight}
                   height={rowHeight}
-                  fill={i % 2 ? "rgba(0,0,0,0.02)" : "transparent"}
+                  fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"}
                 />
               );
             })}
 
-            {/* Barras + datas */}
             {rows.map((r, i) => {
               const barY = barYAt(i);
-              const xa = startXR(r.start); // mais antigo → x maior (direita)
-              const xb = startXR(r.end);   // mais recente → x menor (esquerda)
+              const xa = startXR(r.start);
+              const xb = startXR(r.end);
               const leftX = Math.min(xa, xb);
               const rightX = Math.max(xa, xb);
               const w = Math.max(2, Math.abs(xb - xa));
 
               return (
-                <g key={`bar-${r.id}`} className="transition-transform">
+                <g key={`bar-${r.id}`} className="hover:opacity-80 transition-opacity">
                   <rect
                     x={leftX}
                     y={barY}
                     width={w}
                     height={barHeight}
-                    rx={6}
+                    rx={4}
                     fill={r.color}
-                    stroke="rgba(0,0,0,0.22)"
-                    strokeWidth={0.5}
+                    opacity={0.9}
                   >
-                    <title>
-                      {`${r.label}${r.org ? ` — ${r.org}` : ""}\n${fmtMY(r.end)} — ${fmtMY(r.start)}`}
-                    </title>
+                    <title>{`${r.label}${r.org ? ` — ${r.org}` : ""}\n${fmtMY(r.end)} — ${fmtMY(r.start)}`}</title>
                   </rect>
-
-                  {/* datas nas pontas (coerentes com o eixo invertido) */}
-                  <text x={leftX} y={barY + 14} fontSize={10} fill="currentColor" opacity={0.55}>
-                    {fmtMY(r.end)} {/* ESQ = recente */}
+                  <text x={leftX} y={barY + 14} fontSize={10} fill="currentColor" opacity={0.6}>
+                    {fmtMY(r.end)}
                   </text>
-                  <text
-                    x={rightX + 47}
-                    y={barY + 14}
-                    fontSize={10}
-                    fill="currentColor"
-                    opacity={0.55}
-                    textAnchor="end"
-                  >
-                    {fmtMY(r.start)} {/* DIR = antigo */}
+                  <text x={rightX + 47} y={barY + 14} fontSize={10} fill="currentColor" opacity={0.6} textAnchor="end">
+                    {fmtMY(r.start)}
                   </text>
                 </g>
               );
             })}
           </svg>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/** =========================
+ * MAIN EXPORT: Hybrid Timeline
+ * ========================= */
+export default function GanttTimeline(props: GanttProps) {
+  const rows = React.useMemo(buildRows, []);
+  
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="w-full">
+      {/* A MÁGICA ESTÁ AQUI:
+        'hidden md:block' -> Esconde em Mobile, mostra em Desktop
+        'block md:hidden' -> Mostra em Mobile, esconde em Desktop
+      */}
+      
+      {/* Versão Desktop (Gantt Chart SVG) */}
+      <div className="hidden md:block">
+        <DesktopGantt rows={rows} {...props} />
+      </div>
+
+      {/* Versão Mobile (Lista Vertical) */}
+      <div className="block md:hidden">
+        <MobileTimeline rows={rows} />
       </div>
     </div>
   );
