@@ -564,11 +564,13 @@ export const publications = [
       bibtex: "@incollection{figueiredo2024luminescent, title={Luminescent solar concentrators: Current and future applications in smart cities}, author={Figueiredo, Gon{\c{c}}alo and Correia, Sandra FH and Fu, Lianshe and de Zea Bermudez, Ver{\'o}nica and Neto, Albano N Carneiro and Andr{\'e}, Paulo S and Ferreira, Rute AS}, booktitle={Handbook on the Physics and Chemistry of Rare Earths}, volume={66}, pages={51--123}, year={2024}, publisher={Elsevier}}"
     },
     description: [],
+    image: "/GVDF_1.jpg",
   },
   {
     title: "Transparent nature-based luminescent solar concentrator with NIR emission and integrated thermal sensing",
     authors: ["Sandra Correia et al."],
     venue: "Journal of Materials Chemistry A",
+    image: "/GVDF_2.jpg",
     year: 2025,
     citations: 1,
     abstract: "The engineering of luminescent solar concentrators (LSCs) offers a way to turn windows into energy-generating units...",
@@ -582,6 +584,7 @@ export const publications = [
   {
     title: "Multi‐Surface Adhesion Luminescent Solar Concentrators for Supply‐Less IoT",
     authors: ["Gonçalo Figueiredo et al."],
+    image: "/GVDF_3.jpg",
     venue: "Advanced Science",
     year: 2024,
     citations: 11, 
@@ -596,6 +599,7 @@ export const publications = [
   {
     title: "Enhancing secret key distribution through advanced color modulation in visible light communication",
     authors: ["Gonçalo Figueiredo et al."],
+    image: "/GVDF_4.jpg",
     venue: "Journal of Optical Communications and Networking",
     year: 2024,
     citations: 5, 
@@ -610,6 +614,7 @@ export const publications = [
   {
     title: "Time-gated multi-dimensional luminescence thermometry via carbon dots for precise temperature mobile sensing",
     authors: ["Sílvia Silva et al."],
+    image: "/GVDF_5.jpg",
     venue: "Nanoscale",
     year: 2024,
     citations: 6, 
@@ -625,6 +630,7 @@ export const publications = [
   {
     title: "Walsh-coded orthogonal chaotic shift keying for key distribution in visible light communication systems",
     authors: ["Tiago Silvério et al."],
+    image: "/GVDF_6.jpg",
     venue: "Optics Communications",
     year: 2022,
     citations: 4, 
@@ -639,6 +645,7 @@ export const publications = [
   {
     title: "Screen-to-Camera Visible Light Communication on Smartphones Using CSK Modulation and Cell-Based Encoding",
     authors: ["Amanda Barreira et al."],
+    image: "/GVDF_95.jpg",
     venue: "2025 SBMO/IEEE MTT-S International Microwave and Optoelectronics Conference (IMOC)",
     year: 2025,
     abstract: "The saturation of radio frequency bands has driven the adoption of new communication mechanisms. In this context, Visible Light Communication (VLC) has emerged as a strong candidate, enabling simultaneous communication and illumination by exploring the visible spectrum, which is unlicensed. This work investigates communication between portable devices, particularly smartphones' screens and cameras, using the Color Shift Keying (CSK) modulation technique and an alternative approach based on spatial cell patterns, similar to QR codes. Preliminary results demonstrate that CSK enables reliable communication up to 1 meter at 1 symbol/s, while the cell-based method shows robustness under various lighting and distance conditions.",
@@ -653,6 +660,7 @@ export const publications = [
   {
     title: "Visible Light Communication for Autonomous Mobile Platform: Evaluation of 16-QAM Transmission System",
     authors: ["Amanda Barreira et al."],
+    image: "/GVDF_94.jpg",
     venue: "2025 IEEE International Conference on Consumer Technology-Europe (ICCT-Europe)",
     year: 2025,
     abstract: "Visible Light Communication (VLC) has gained popularity and aroused interest in recent years, due to its high-speed data transmission capacity, unlicensed spectrum, and the possibility of using existing infrastructures. This work explores an alternative to implement the mentioned technology using general purpose hardware, with the aim of building a complete and integrated system transmission for (Internet of Things) IoT applications. To guarantee the integrity of transmitted data, the entire system uses a logistic map encryption method. Preliminary results indicate that transmission with error rates below the Forward Error Correction (FEC) threshold can be achieved using 16-QAM (Quadrature Amplitude Modulation) technique in different scenarios, at a rate of 500 Baud and distances up to 2 meters. As a second analysis, experiments were also carried out on transmission with an intermediate central unit between the transmitter and receiver modules.",
@@ -673,6 +681,7 @@ export const publications = [
     abstract: "We proposed a large dimension visible light communications receiver...",
     github: "https://opg.optica.org/abstract.cfm?uri=CLEO_FS-2024-JTu2A.88",
     manuscript: "conference paper",
+    image: "/GVDF_93.jpg",
     geo: { lat: 35.2228, lon: -80.8465 }, 
     links: {
       bibtex: "@inproceedings{figueiredo2024large...}"
@@ -688,6 +697,7 @@ export const publications = [
     abstract: "Visible Light Communication (VLC) is an emerging technology...",
     github: "https://ieeexplore.ieee.org/abstract/document/10379763",
     manuscript: "conference paper",
+    image: "/GVDF_92.jpg",
     geo: { lat: 41.27955, lon: 1.980151 }, 
     links: {
       bibtex: "@inproceedings{figueiredo2023security...}"
@@ -700,6 +710,7 @@ export const publications = [
     venue: "17th Congress of the Portuguese Committee of URSI",
     year: 2023,
     manuscript: "conference paper",
+    image: "/GVDF_91.jpg",
     geo: { lat: 38.735617, lon: -9.159467 }, 
     links: {
       bibtex: ""
@@ -710,6 +721,7 @@ export const publications = [
     title: "Privacy Increase in VLC System Based on Hyperchaotic Map",
     authors: ["Tiago Silvério et al."],
     venue: "2021 Telecoms Conference (ConfTELE)",
+    image: "/GVDF_9.jpg",
     year: 2023,
     citations: 1, 
     abstract: "Visible light communications (VLC) have been the focus...",
@@ -726,6 +738,7 @@ export const publications = [
     authors: ["Gonçalo Figueiredo"],
     venue: "University of Aveiro (Dissertation)",
     year: "Sep 2022",
+    image: "/GVDF_8.jpg",
     abstract: "The progress of communication systems related to the mobility aspects...",
     manuscript: "monograph",
     links: {},
@@ -734,6 +747,7 @@ export const publications = [
   {
     title: "Optical Communications in the Visible Spectral Region",
     authors: ["Gonçalo Figueiredo"],
+    image: "/GVDF_7.jpg",
     venue: "University of Aveiro (Project)",
     year: "Jun 2020",
     abstract: "Visible Light Communication (VLC) has emerged as a potential solution...",
