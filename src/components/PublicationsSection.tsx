@@ -73,7 +73,7 @@ export default function PublicationsSection() {
     <section id="publications" className="py-20 relative overflow-hidden min-h-screen">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      {/* Container ajustado para max-w-[1600px] */}
+      {/* Container max-w-[1600px] */}
       <div className="container max-w-[1600px] mx-auto px-6 md:px-8 relative z-10">
         
         {/* HEADER */}
@@ -129,8 +129,9 @@ export default function PublicationsSection() {
         {/* LAYOUT HÍBRIDO */}
         <motion.div 
           layout 
+          /* MUDANÇA 1: gap-4 passou a gap-3 para aproximar os cartões no mobile */
           className="
-            flex overflow-x-auto gap-4 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-emerald-500/10
+            flex overflow-x-auto gap-3 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-emerald-500/10
             md:grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0
           "
         >
@@ -153,7 +154,10 @@ export default function PublicationsSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="min-w-[85vw] md:min-w-0 snap-center flex" 
+                  /* MUDANÇA 2: min-w-[85vw] passou a min-w-[78vw]. 
+                     Isto faz com que o cartão ocupe menos espaço, revelando o próximo à direita. 
+                  */
+                  className="min-w-[78vw] md:min-w-0 snap-center flex" 
                 >
                   <GlassCard
                     className={`
@@ -177,7 +181,7 @@ export default function PublicationsSection() {
                             <img
                               src={(pub as any).image}
                               alt={pub.title}
-                              /* MUDANÇA AQUI: md:blur-[0.8px] para um desfoque super suave */
+                              /* Mantém o desfoque suave em Desktop */
                               className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:blur-0 md:blur-[0.8px] ${objectPosition}`}
                             />
                             {/* Overlay */}
@@ -198,7 +202,6 @@ export default function PublicationsSection() {
                             <img
                               src={(pub as any).image}
                               alt={pub.title}
-                              /* Aplicamos o mesmo blur suave aqui */
                               className={`w-full h-full object-cover transition-all duration-700 group-hover:blur-0 md:blur-[0.8px] ${objectPosition}`}
                             />
                             <div className="absolute inset-0 border-[3px] border-black/5 dark:border-white/5 pointer-events-none z-10" />
