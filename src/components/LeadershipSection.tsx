@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react"; // IMPORTANTE: Importar useState
 import {
   Handshake,
   Calendar,
@@ -21,7 +22,6 @@ import GanttTimeline from "@/components/GanttTimeline";
 import PeerReviewChart from "./PeerReviewChart";
 import { LeadershipExperience } from "@/lib/data";
 
-// 1. Mapa de Ícones
 const IconMap: any = {
   Rocket,
   BrainCircuit,
@@ -32,7 +32,6 @@ const IconMap: any = {
   HeartHandshake,
 };
 
-// 2. Cores das Tags
 const TagColors: Record<string, string> = {
   Event: "text-amber-600 bg-amber-500/10 border-amber-500/20",       
   Resource: "text-blue-600 bg-blue-500/10 border-blue-500/20",       
@@ -41,9 +40,16 @@ const TagColors: Record<string, string> = {
 };
 
 export default function LeadershipSection() {
+  // ESTADO PARA CONTROLAR O CARTÃO ATIVO (CLIQUE)
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+
+  const handleCardClick = (idx: number) => {
+    // Se clicar no mesmo, fecha. Se clicar noutro, abre esse.
+    setActiveCard(activeCard === idx ? null : idx);
+  };
+
   return (
     <section id="leadership" className="py-20 relative overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
       <div className="container max-w-[1600px] mx-auto px-6 md:px-8 relative z-10">
@@ -57,7 +63,6 @@ export default function LeadershipSection() {
               Leadership
             </h2>
 
-            {/* Button Group */}
             <div className="flex gap-3">
               <a href="#map" className="group flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-900/5 dark:shadow-emerald-900/20">
                 <MapPin className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
@@ -74,9 +79,7 @@ export default function LeadershipSection() {
         {/* CARDS CAROUSEL */}
         <div className="
           overflow-x-auto overflow-y-visible py-12 
-          pl-4 
-          /* Padding direito extra para compensar o ultimo cartao com a nova margem negativa maior */
-          pr-20
+          pl-4 pr-20 
           scrollbar-thin scrollbar-track-transparent scrollbar-thumb-emerald-500/10 hover:scrollbar-thumb-emerald-500/20
         ">
           <div className="
@@ -86,12 +89,18 @@ export default function LeadershipSection() {
             md:gap-4
           ">
             {LeadershipExperience.map((job, idx) => {
-              const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
+              
+              // LÓGICA DE Z-INDEX:
+              // Se este cartão estiver ativo (clicado), recebe z-50 (frente).
+              // Se nenhum estiver ativo, mantém a ordem de cascata original.
+              const isSelected = activeCard === idx;
+              const zIndex = isSelected ? 50 : (50 - idx);
 
               return (
                 <motion.div
                   key={idx}
+                  onClick={() => handleCardClick(idx)} // CLIQUE AQUI
                   initial={{ opacity: 0, x: 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
@@ -99,13 +108,15 @@ export default function LeadershipSection() {
                   style={{ zIndex }} 
                   className={`
                     relative flex-shrink-0 
+                    cursor-pointer /* Indica que é clicável */
                     
-                    /* MOBILE: 3/4 Width (75vw) e Sobreposição Aumentada (-mr-12) */
+                    /* MOBILE: */
                     w-[75vw] 
-                    -mr-12            /* MUDANÇA: Aumentado de -mr-5 para -mr-12 */
+                    -mr-12           
                     snap-center      
+                    first:ml-0       
                     
-                    /* DESKTOP: Estilo original */
+                    /* DESKTOP: */
                     md:w-[400px] md:snap-align-none
                     md:-mr-0 
                     ${idx > 0 ? "md:-ml-32" : ""} 
@@ -114,13 +125,13 @@ export default function LeadershipSection() {
                     group
                     
                     /* Hover Effects */
+                    ${isSelected ? 'scale-105 -translate-y-2' : ''} /* Efeito visual quando selecionado */
                     hover:z-50 
                     md:hover:!ml-4 
                     md:hover:scale-105 
                     md:hover:-translate-y-2
                   `}
                 >
-                  {/* Data Flutuante */}
                   <div className="absolute -top-3 right-6 z-30 px-3 py-1.5 rounded-full flex items-center gap-1.5 bg-zinc-50 border border-zinc-200 shadow-sm dark:bg-zinc-900 dark:border-emerald-500/30 dark:shadow-[0_0_10px_rgba(16,185,129,0.2)] transition-transform duration-500 group-hover:-translate-y-1">
                     <Calendar className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                     <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">
@@ -128,18 +139,20 @@ export default function LeadershipSection() {
                     </span>
                   </div>
 
-                  {/* GlassCard Super Transparente */}
-                  <GlassCard className="
+                  {/* Borda Verde quando selecionado para dar feedback visual */}
+                  <GlassCard className={`
                     p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between 
                     
-                    /* LIGHT MODE SUPER TRANSPARENTE */
-                    bg-white/40 border border-white/40 shadow-xl backdrop-blur-md
+                    bg-white/40 border shadow-xl backdrop-blur-md
+                    dark:bg-black/20 dark:backdrop-blur-xl dark:shadow-2xl dark:shadow-black/50 
                     
-                    /* DARK MODE SUPER TRANSPARENTE */
-                    dark:bg-black/20 dark:backdrop-blur-xl dark:border-white/10 dark:shadow-2xl dark:shadow-black/50 
-                    
+                    /* Borda dinâmica baseada na seleção */
+                    ${isSelected 
+                      ? 'border-emerald-500/50 dark:border-emerald-500/50 ring-1 ring-emerald-500/20' 
+                      : 'border-white/40 dark:border-white/10'}
+
                     transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40
-                  ">
+                  `}>
                     
                     {/* Header do Card */}
                     <div className="mb-6 mt-2">
@@ -240,7 +253,7 @@ export default function LeadershipSection() {
           </div>
         </div>
 
-        {/* TIMELINE INFERIOR (Mantém-se igual) */}
+        {/* TIMELINE INFERIOR */}
         <MotionWrapper>
           <div id="timeline" className="mt-20 scroll-mt-24">
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">

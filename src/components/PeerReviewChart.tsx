@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  LabelList,
-  Cell,
-} from "recharts";
+import { motion } from "framer-motion";
 
 type JournalEntry = {
   journal: string;
@@ -20,8 +11,7 @@ type PeerReviewChartProps = {
   company: string; // "IEEE", "Elsevier", "Optica"
 };
 
-// =================== DADOS & CONFIGURAÇÃO ===================
-
+// =================== DADOS ===================
 const groups: Record<string, JournalEntry[]> = {
   IEEE: [
     { journal: "IEEE Internet of Things Journal", count: 21 },
@@ -40,115 +30,57 @@ const groups: Record<string, JournalEntry[]> = {
   ],
 };
 
-// Configuração de cores por editora
-const themeConfig: Record<string, { id: string; stops: [string, string] }> = {
-  IEEE: { id: "gradBlue", stops: ["#3b82f6", "#06b6d4"] }, // Blue -> Cyan
-  Elsevier: { id: "gradOrange", stops: ["#f59e0b", "#f97316"] }, // Amber -> Orange
-  Optica: { id: "gradEmerald", stops: ["#10b981", "#34d399"] }, // Emerald -> Teal
-  Default: { id: "gradGray", stops: ["#71717a", "#a1a1aa"] },
+// Cores (Gradientes CSS)
+const gradients: Record<string, string> = {
+  IEEE: "bg-gradient-to-r from-blue-500 to-cyan-400",
+  Elsevier: "bg-gradient-to-r from-amber-500 to-orange-500",
+  Optica: "bg-gradient-to-r from-emerald-500 to-teal-400",
+  Default: "bg-gradient-to-r from-zinc-500 to-zinc-400",
 };
-
-// =================== COMPONENTE TOOLTIP PERSONALIZADO ===================
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-[#09090b]/90 backdrop-blur-md border border-white/10 p-3 rounded-lg shadow-xl min-w-[200px]">
-        <p className="text-xs text-zinc-400 font-medium mb-1">{label}</p>
-        <div className="flex items-center gap-2">
-          <span
-            className="block w-2 h-2 rounded-full"
-            style={{ backgroundColor: payload[0].payload.fill }}
-          />
-          <p className="text-sm font-bold text-white">
-            {payload[0].value} Manuscripts
-          </p>
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
-
-// =================== COMPONENTE PRINCIPAL ===================
 
 export default function PeerReviewChart({ company }: PeerReviewChartProps) {
-  // Identificar a chave (ignora case sensitivity)
   const key = Object.keys(groups).find((k) =>
     company.toLowerCase().includes(k.toLowerCase())
   );
 
   if (!key) return null;
 
-  // Ordenar dados por contagem (Opcional, mas fica melhor visualmente)
   const data = [...groups[key]].sort((a, b) => b.count - a.count);
-  
-  // Selecionar tema
-  const theme = themeConfig[key] || themeConfig.Default;
-
-  // Altura dinâmica
-  const chartHeight = data.length * 60 + 20;
+  const maxCount = Math.max(...data.map((d) => d.count));
+  const gradientClass = gradients[key] || gradients.Default;
 
   return (
-    <div className="w-full mt-4">
-      {/* Container de Vidro Interno */}
-      <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-xl p-4 shadow-inner">
-        <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 text-center mb-4">
+    <div className="w-full mt-3">
+      <div className="bg-white/40 dark:bg-black/20 border border-zinc-200/50 dark:border-white/5 rounded-xl p-3 shadow-inner backdrop-blur-sm">
+        <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 text-center mb-3">
           {key} Journals Breakdown
         </h4>
 
-        <ResponsiveContainer width="100%" height={chartHeight}>
-          <BarChart
-            data={data}
-            layout="vertical"
-            margin={{ left: 0, right: 30, top: 0, bottom: 0 }}
-          >
-            {/* Definição do Gradiente */}
-            <defs>
-              <linearGradient id={theme.id} x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor={theme.stops[0]} stopOpacity={1} />
-                <stop offset="100%" stopColor={theme.stops[1]} stopOpacity={1} />
-              </linearGradient>
-            </defs>
-
-            <XAxis type="number" hide />
-            
-            <YAxis
-              dataKey="journal"
-              type="category"
-              axisLine={false}
-              tickLine={false}
-              width={160} // Ajusta conforme necessário para caber o nome
-              tick={{ 
-                fill: "#71717a", // Zinc-500 (Funciona bem em light/dark)
-                fontSize: 11, 
-                fontWeight: 500 
-              }}
-              // Quebra linhas longas automaticamente (apenas SVG) se necessário, ou usa ellipsis
-              style={{ textOverflow: 'ellipsis' }}
-            />
-
-            <Tooltip cursor={{ fill: "transparent" }} content={<CustomTooltip />} />
-
-            <Bar
-              dataKey="count"
-              barSize={16}
-              radius={[4, 4, 4, 4]}
-              fill={`url(#${theme.id})`}
-              // Background track ("calha" cinzenta atrás da barra)
-              background={{ fill: "rgba(128, 128, 128, 0.1)", radius: 4 }}
-            >
-              <LabelList 
-  dataKey="count" 
-  position="right" 
-  fill="#71717a" 
-  fontSize={11} 
-  fontWeight="bold" 
-  formatter={(val: number | string) => `${val}`} 
-/>
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="space-y-3">
+          {data.map((item, idx) => (
+            <div key={idx} className="w-full">
+              {/* Cabeçalho: Nome e Valor */}
+              <div className="flex justify-between items-end mb-1">
+                <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 max-w-[80%] leading-tight">
+                  {item.journal}
+                </span>
+                <span className="text-xs font-bold text-zinc-900 dark:text-white">
+                  {item.count}
+                </span>
+              </div>
+              
+              {/* Barra de Progresso */}
+              <div className="h-2 w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${(item.count / maxCount) * 100}%` }}
+                  transition={{ duration: 1, delay: 0.2 }}
+                  className={`h-full rounded-full ${gradientClass}`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
