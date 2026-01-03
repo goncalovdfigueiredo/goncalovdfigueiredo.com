@@ -152,78 +152,97 @@ function buildRows(): Row[] {
 }
 
 /** =========================
- * COMPONENTE 1: Mobile List View (Novo!)
+ * COMPONENTE 1: Mobile List View (Premium Glass Cards)
  * ========================= */
 function MobileTimeline({ rows }: { rows: Row[] }) {
   return (
-    <div className="flex flex-col space-y-8 pl-2 pr-4">
-      {rows.map((row, i) => {
-        const Icon = ICON_BY_TYPE[row.type];
-        
-        // Corzinha para o icon baseada no tipo (convertendo rgba para tailwind aproximado ou usando style)
-        let iconColorClass = "text-emerald-500 bg-emerald-500/10";
-        if (row.type === "Experience") iconColorClass = "text-blue-500 bg-blue-500/10";
-        if (row.type === "Leadership") iconColorClass = "text-purple-500 bg-purple-500/10";
+    <div className="relative pl-4 pr-2 py-4">
+      {/* Linha Vertical de Fundo (Conector Geral) */}
+      <div className="absolute left-[27px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-zinc-500/20 via-zinc-500/10 to-transparent rounded-full" />
 
-        return (
-          <motion.div 
-            key={row.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05 }}
-            className="relative pl-8 border-l-2 border-zinc-200 dark:border-white/10 last:border-0"
-          >
-            {/* Bolinha no eixo */}
-            <div 
-              className="absolute -left-[9px] top-0 h-4 w-4 rounded-full border-2 border-white dark:border-[#09090b]"
-              style={{ backgroundColor: row.color }}
-            />
+      <div className="flex flex-col space-y-6">
+        {rows.map((row, i) => {
+          const Icon = ICON_BY_TYPE[row.type];
+          
+          // Cores Premium baseadas no tipo
+          let iconColorClass = "text-emerald-500 bg-emerald-500/10 border-emerald-500/20";
+          let glowColor = "group-hover:shadow-emerald-500/10";
+          
+          if (row.type === "Experience") {
+            iconColorClass = "text-blue-500 bg-blue-500/10 border-blue-500/20";
+            glowColor = "group-hover:shadow-blue-500/10";
+          }
+          if (row.type === "Leadership") {
+            iconColorClass = "text-purple-500 bg-purple-500/10 border-purple-500/20";
+            glowColor = "group-hover:shadow-purple-500/10";
+          }
 
-            <div className="flex flex-col gap-1 -mt-1.5">
-              {/* Datas */}
-              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-zinc-400">
-                <Calendar className="w-3 h-3" />
-                <span>{fmtMY(row.start)} — {fmtMY(row.end)}</span>
-              </div>
+          return (
+            <motion.div 
+              key={row.id}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.05, duration: 0.4 }}
+              className="relative pl-10"
+            >
+              {/* Bolinha no eixo (Ponto de ancoragem) */}
+              <div 
+                className="absolute left-[21px] top-6 h-3.5 w-3.5 rounded-full border-[3px] border-[#09090b] z-10 shadow-sm"
+                style={{ backgroundColor: row.color }}
+              />
 
-              {/* Título e Icon */}
-              <div className="flex items-start justify-between gap-4 mt-1">
-                <div>
-                  <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-lg leading-tight">
-                    {row.label}
-                  </h3>
-                  {row.org && (
-                    <div className="text-zinc-500 dark:text-zinc-400 font-medium text-sm mt-0.5">
-                      {row.org}
-                    </div>
-                  )}
-                </div>
+              {/* O CARTÃO GLASS (Mini) */}
+              <div className={`
+                group relative p-4 rounded-xl border border-white/5 bg-white/5 backdrop-blur-md 
+                transition-all duration-300 hover:bg-white/10 hover:border-white/10 hover:-translate-y-0.5
+                shadow-lg ${glowColor}
+              `}>
                 
-                {/* Icon de Categoria */}
-                <div className={`p-2 rounded-lg shrink-0 ${iconColorClass}`}>
-                  <Icon className="w-4 h-4" />
-                </div>
-              </div>
+                {/* Cabeçalho do Cartão */}
+                <div className="flex justify-between items-start gap-3 mb-2">
+                  <div className="flex flex-col">
+                    {/* Datas com fonte Mono (Toque técnico) */}
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono font-medium text-zinc-500 uppercase tracking-wider mb-1">
+                      <Calendar className="w-3 h-3 opacity-70" />
+                      <span>{fmtMY(row.start)} — {fmtMY(row.end)}</span>
+                    </div>
+                    
+                    {/* Título */}
+                    <h3 className="font-bold text-zinc-100 text-base leading-snug">
+                      {row.label}
+                    </h3>
+                  </div>
 
-              {/* Tag de Tipo */}
-              <div className="mt-2">
-                <span 
-                  className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded-full bg-zinc-100 dark:bg-white/5 text-zinc-500"
-                >
-                  {row.type}
-                </span>
+                  {/* Icon Quadrado */}
+                  <div className={`p-2 rounded-lg border shrink-0 ${iconColorClass}`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                </div>
+
+                {/* Rodapé do Cartão */}
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
+                  <div className="text-zinc-400 font-medium text-xs truncate max-w-[70%]">
+                    {row.org}
+                  </div>
+                  
+                  {/* Badge de Tipo minimalista */}
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-500">
+                    {row.type}
+                  </span>
+                </div>
+
               </div>
-            </div>
-          </motion.div>
-        );
-      })}
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
 /** =========================
- * COMPONENTE 2: Desktop Gantt (Original)
+ * COMPONENTE 2: Desktop Gantt (Original SVG)
  * ========================= */
 function DesktopGantt({ 
   rows, 
@@ -460,7 +479,7 @@ export default function GanttTimeline(props: GanttProps) {
         <DesktopGantt rows={rows} {...props} />
       </div>
 
-      {/* Versão Mobile (Lista Vertical) */}
+      {/* Versão Mobile (Lista Vertical com Glass Cards) */}
       <div className="block md:hidden">
         <MobileTimeline rows={rows} />
       </div>
