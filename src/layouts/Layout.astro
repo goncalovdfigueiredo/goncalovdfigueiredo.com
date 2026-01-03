@@ -4,20 +4,52 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  image?: string; // Adicionei suporte para imagem de partilha personalizada por página
 }
 
-const { title = "Gonçalo Figueiredo's Site", description = "" } = Astro.props;
+const { 
+  title = "Gonçalo Figueiredo | PhD Candidate & Researcher", 
+  description = "Portfolio of Gonçalo Figueiredo, PhD Candidate in Electrical and Computer Engineering. Specialist in FPGA, Visible Light Communication (VLC), and Optical Sensors.",
+  image = "/og-image.jpg" // Imagem padrão que tens de criar
+} = Astro.props;
+
+// URL base do site (para o Open Graph funcionar bem)
+const siteUrl = "https://www.goncalovdfigueiredo.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const socialImageURL = new URL(image, siteUrl);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon2.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+
+    {/* --- 1. SEO PRINCIPAL --- */}
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="Gonçalo Figueiredo, PhD Candidate, FPGA, VLC, Optical Sensors, Engineering, IST, Aveiro" />
+    <meta name="author" content="Gonçalo Figueiredo" />
+    <link rel="canonical" href={canonicalURL} />
+
+    {/* --- 2. OPEN GRAPH (Facebook, LinkedIn, WhatsApp) --- */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content="Gonçalo Figueiredo Portfolio" />
+
+    {/* --- 3. TWITTER CARD (X) --- */}
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+
+    {/* FONTS */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,18 +58,18 @@ const { title = "Gonçalo Figueiredo's Site", description = "" } = Astro.props;
     />
   </head>
   <body
-    class="min-h-screen bg-background font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500"
+    class="min-h-screen bg-zinc-50 dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500"
   >
-    {/* FUNDO DINÂMICO (GLOW) */}
-    <div class="fixed inset-0 -z-10 h-full w-full bg-background">
+    {/* FUNDO DINÂMICO (GLOW) - Mantive o teu original, está ótimo! */}
+    <div class="fixed inset-0 -z-10 h-full w-full pointer-events-none">
       
-      {/* Light Mode Glow: Muito subtil e cinzento/azul, quase invisível para não poluir */}
+      {/* Light Mode Glow */}
       <div
         class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.05),rgba(255,255,255,0))]"
       >
       </div>
 
-      {/* Dark Mode Glow: Verde Esmeralda vibrante (só aparece no dark mode via CSS global ou classes condicionais se preferires, mas este aqui é seguro) */}
+      {/* Dark Mode Glow: Verde Esmeralda */}
       <div
         class="absolute top-0 z-[-2] h-screen w-screen hidden dark:block bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(0,0,0,0))]"
       >
@@ -74,13 +106,13 @@ const { title = "Gonçalo Figueiredo's Site", description = "" } = Astro.props;
 </script>
 
 <style is:global>
+  /* CONFIGURAÇÕES GLOBAIS */
   html,
   body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    scroll-behavior: smooth;
     overflow-x: hidden;
   }
 
@@ -94,7 +126,9 @@ const { title = "Gonçalo Figueiredo's Site", description = "" } = Astro.props;
       color var(--transition-standard);
   }
 
-  /* SCROLLBAR PREMIUM */
+  /* =========================
+     SCROLLBAR PREMIUM (Atualizado)
+     ========================= */
   ::-webkit-scrollbar {
     width: 10px;
   }
@@ -104,22 +138,24 @@ const { title = "Gonçalo Figueiredo's Site", description = "" } = Astro.props;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #d4d4d8; /* Zinc-300 para Light Mode (visível mas suave) */
+    background: #d4d4d8; /* Light Mode: Zinc-300 */
     border-radius: 5px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
 
+  /* Dark Mode Scrollbar */
   html.dark ::-webkit-scrollbar-track {
     background: #09090b;
   }
 
   html.dark ::-webkit-scrollbar-thumb {
-    background: #27272a;
+    background: #27272a; /* Dark Mode: Zinc-800 */
     border: 2px solid #09090b;
   }
 
+  /* Hover Effect */
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #10b981 !important;
+    background-color: #10b981 !important; /* Emerald-500 */
   }
 </style>
