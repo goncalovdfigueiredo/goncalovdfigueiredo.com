@@ -73,15 +73,21 @@ export default function LeadershipSection() {
 
         {/* CARDS CAROUSEL */}
         <div className="
-          overflow-x-auto overflow-y-visible py-12 pl-4 
+          overflow-x-auto overflow-y-visible py-12 
+          pl-4 
+          /* Aumentei o padding direito para compensar a margem negativa do último item */
+          pr-12 
           scrollbar-thin scrollbar-track-transparent scrollbar-thumb-emerald-500/10 hover:scrollbar-thumb-emerald-500/20
         ">
           <div className="
             flex items-start 
-            lg:min-w-max /* Desktop behavior */
-            gap-4 /* Mobile spacing (substitui o ml-3 manual) */
+            lg:min-w-max 
+            /* MUDANÇA 1: gap-0 no mobile para permitir a sobreposição manual */
+            gap-0 
+            md:gap-4
           ">
             {LeadershipExperience.map((job, idx) => {
+              // Garante que o 1º cartão está em cima do 2º, etc.
               const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
 
@@ -95,16 +101,26 @@ export default function LeadershipSection() {
                   style={{ zIndex }} 
                   className={`
                     relative flex-shrink-0 
-                    /* MOBILE: snap-start cola à esquerda, w-[85vw] reduz a largura */
-                    w-[85vw] snap-start
                     
-                    /* DESKTOP: Mantém o overlap original */
-                    md:w-[400px] md:snap-align-none
-                    ${idx > 0 ? "md:-ml-32" : ""}
+                    /* MOBILE: Largura 75vw e Sobreposição */
+                    w-[75vw] 
+                    -mr-5            /* MUDANÇA 2: Margem negativa para sobrepor (efeito leque) */
+                    snap-center      /* Mantém o snap ao centro */
+                    
+                    /* DESKTOP: Estilo original */
+                    md:w-[400px] 
+                    md:snap-align-none
+                    md:-mr-0 
+                    ${idx > 0 ? "md:-ml-32" : ""} 
                     
                     transition-all duration-500 ease-out
                     group
-                    hover:!ml-4 hover:z-50 hover:scale-105 hover:-translate-y-2
+                    
+                    /* Hover para Mobile e Desktop */
+                    hover:z-50 
+                    md:hover:!ml-4 
+                    md:hover:scale-105 
+                    md:hover:-translate-y-2
                   `}
                 >
                   {/* Data Flutuante */}
@@ -115,10 +131,16 @@ export default function LeadershipSection() {
                     </span>
                   </div>
 
+                  {/* MUDANÇA 3: Aumentar transparência e adicionar Blur */}
                   <GlassCard className="
                     p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between 
-                    bg-zinc-100/90 border border-zinc-200 shadow-xl 
-                    dark:bg-[#09090b]/60 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 
+                    
+                    /* Light Mode: Mais transparente (white/60) + Blur */
+                    bg-white/60 border border-zinc-200/80 shadow-xl backdrop-blur-md
+                    
+                    /* Dark Mode: Mais transparente (black/40) + Blur */
+                    dark:bg-black/40 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 
+                    
                     transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40
                   ">
                     
@@ -234,7 +256,6 @@ export default function LeadershipSection() {
         {/* TIMELINE INFERIOR (Mantém-se igual) */}
         <MotionWrapper>
           <div id="timeline" className="mt-20 scroll-mt-24">
-             {/* ... conteúdo da timeline ... */}
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                 <div className="flex items-center gap-4">
                     <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 shadow-sm dark:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
