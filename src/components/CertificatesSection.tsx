@@ -111,7 +111,7 @@ export default function CertificatesSection() {
     : scientificEvents.filter(ev => ev.featured);
 
   return (
-    <section id="certifications" className="py-20 relative overflow-hidden">
+    <section id="scientific Outreach and Certifications" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent pointer-events-none" />
 
       {/* CORREÇÃO AQUI: 
