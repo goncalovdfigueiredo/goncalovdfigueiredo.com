@@ -4,19 +4,51 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
-  image?: string; // Adicionei suporte para imagem de partilha personalizada por página
+  image?: string;
+  type?: "website" | "article"; // Útil se tiveres blog posts no futuro
 }
 
 const { 
   title = "Gonçalo Figueiredo | PhD Candidate & Researcher", 
   description = "Portfolio of Gonçalo Figueiredo, PhD Candidate in Electrical and Computer Engineering. Specialist in FPGA, Visible Light Communication (VLC), and Optical Sensors.",
-  image = "/og-image.jpg" // Imagem padrão que tens de criar
+  image = "/og-image.jpg",
+  type = "website"
 } = Astro.props;
 
-// URL base do site (para o Open Graph funcionar bem)
 const siteUrl = "https://www.goncalovdfigueiredo.com";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const socialImageURL = new URL(image, siteUrl);
+
+// --- SCHEMA.ORG (JSON-LD) ---
+// Isto diz ao Google quem tu és de forma estruturada
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Gonçalo Figueiredo",
+  "url": siteUrl,
+  "image": socialImageURL.href,
+  "jobTitle": "PhD Candidate & Researcher",
+  "worksFor": [
+    {
+      "@type": "Organization",
+      "name": "Instituto de Telecomunicações" // Exemplo: ajusta para a tua afiliação
+    },
+    {
+      "@type": "Organization",
+      "name": "Universidade de Aveiro"
+    }
+  ],
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Instituto Superior Técnico"
+  },
+  "description": description,
+  "sameAs": [
+    "https://www.linkedin.com/in/goncalovdfigueiredo/", // Teu LinkedIn
+    "https://github.com/SeuUsername", // Teu GitHub
+    "https://scholar.google.com/citations?user=SEU_ID" // Teu Google Scholar (Muito importante!)
+  ]
+};
 ---
 
 <!doctype html>
@@ -25,29 +57,36 @@ const socialImageURL = new URL(image, siteUrl);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon2.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" /> {/* Link para o Sitemap */}
     <meta name="generator" content={Astro.generator} />
 
     {/* --- 1. SEO PRINCIPAL --- */}
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="Gonçalo Figueiredo, PhD Candidate, FPGA, VLC, Optical Sensors, Engineering, IST, Aveiro" />
+    <meta name="keywords" content="Gonçalo Figueiredo, PhD Candidate, FPGA, VLC, Optical Sensors, Embedded Systems, Verilog, Intel FPGA, IST, Aveiro, Researcher" />
     <meta name="author" content="Gonçalo Figueiredo" />
     <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow" /> {/* Instrução explícita para indexar */}
 
-    {/* --- 2. OPEN GRAPH (Facebook, LinkedIn, WhatsApp) --- */}
-    <meta property="og:type" content="website" />
+    {/* --- 2. OPEN GRAPH --- */}
+    <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={socialImageURL} />
     <meta property="og:site_name" content="Gonçalo Figueiredo Portfolio" />
+    <meta property="og:locale" content="en_US" />
 
-    {/* --- 3. TWITTER CARD (X) --- */}
+    {/* --- 3. TWITTER CARD --- */}
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />
+
+    {/* --- 4. STRUCTURED DATA (JSON-LD) --- */}
+    {/* O Astro injeta isto como script JSON na head */}
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
     {/* FONTS */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -60,21 +99,16 @@ const socialImageURL = new URL(image, siteUrl);
   <body
     class="min-h-screen bg-zinc-50 dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500"
   >
-    {/* FUNDO DINÂMICO (GLOW) - Mantive o teu original, está ótimo! */}
+    {/* Mantive o teu Glow original */}
     <div class="fixed inset-0 -z-10 h-full w-full pointer-events-none">
-      
-      {/* Light Mode Glow */}
       <div
         class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.05),rgba(255,255,255,0))]"
       >
       </div>
-
-      {/* Dark Mode Glow: Verde Esmeralda */}
       <div
         class="absolute top-0 z-[-2] h-screen w-screen hidden dark:block bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(0,0,0,0))]"
       >
       </div>
-      
     </div>
 
     <slot />
@@ -82,6 +116,7 @@ const socialImageURL = new URL(image, siteUrl);
 </html>
 
 <script is:inline>
+  // O teu script de tema (mantido igual)
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -106,56 +141,14 @@ const socialImageURL = new URL(image, siteUrl);
 </script>
 
 <style is:global>
-  /* CONFIGURAÇÕES GLOBAIS */
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-  }
-
-  :root {
-    --transition-standard: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  body {
-    transition:
-      background-color var(--transition-standard),
-      color var(--transition-standard);
-  }
-
-  /* =========================
-     SCROLLBAR PREMIUM (Atualizado)
-     ========================= */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #d4d4d8; /* Light Mode: Zinc-300 */
-    border-radius: 5px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-  }
-
-  /* Dark Mode Scrollbar */
-  html.dark ::-webkit-scrollbar-track {
-    background: #09090b;
-  }
-
-  html.dark ::-webkit-scrollbar-thumb {
-    background: #27272a; /* Dark Mode: Zinc-800 */
-    border: 2px solid #09090b;
-  }
-
-  /* Hover Effect */
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #10b981 !important; /* Emerald-500 */
-  }
+  /* Os teus estilos globais (mantidos iguais) */
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; }
+  :root { --transition-standard: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  body { transition: background-color var(--transition-standard), color var(--transition-standard); }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 5px; border: 2px solid transparent; background-clip: content-box; }
+  html.dark ::-webkit-scrollbar-track { background: #09090b; }
+  html.dark ::-webkit-scrollbar-thumb { background: #27272a; border: 2px solid #09090b; }
+  ::-webkit-scrollbar-thumb:hover { background-color: #10b981 !important; }
 </style>
