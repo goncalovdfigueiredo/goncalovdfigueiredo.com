@@ -143,9 +143,9 @@ export default function CertificatesSection() {
                 <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Certifications</h3>
             </div>
 
-            {/* HÍBRIDO: Carrossel em Mobile / Grid em Desktop */}
+            {/* MUDANÇA 1: gap-4 -> gap-3 (Aproximar cartões) */}
             <div className="
-              flex overflow-x-auto gap-4 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-blue-500/10
+              flex overflow-x-auto gap-3 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-blue-500/10
               md:grid md:grid-cols-2 xl:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0
             ">
                 {certifications.map((cat, idx) => (
@@ -154,7 +154,8 @@ export default function CertificatesSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                        className="min-w-[85vw] md:min-w-0 snap-center flex"
+                        /* MUDANÇA 2: min-w-[85vw] -> min-w-[78vw] (Mostrar o próximo cartão) */
+                        className="min-w-[78vw] md:min-w-0 snap-center flex"
                     >
                         <GlassCard 
                             className="
@@ -209,9 +210,9 @@ export default function CertificatesSection() {
                 </button>
             </div>
 
-            {/* HÍBRIDO: Carrossel em Mobile / Grid em Desktop */}
+            {/* MUDANÇA 1: gap-4 -> gap-3 */}
             <div className="
-              flex overflow-x-auto gap-4 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-purple-500/10
+              flex overflow-x-auto gap-3 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-purple-500/10
               md:grid md:grid-cols-1 xl:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0
             ">
                 <AnimatePresence>
@@ -223,7 +224,8 @@ export default function CertificatesSection() {
                             exit={{ opacity: 0, scale: 0.95 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: idx * 0.05 }}
-                            className="min-w-[85vw] md:min-w-0 snap-center flex"
+                            /* MUDANÇA 2: min-w-[85vw] -> min-w-[78vw] */
+                            className="min-w-[78vw] md:min-w-0 snap-center flex"
                         >
                             <GlassCard className="
                                 group relative w-full p-5 rounded-xl border border-zinc-200 dark:border-white/5 
