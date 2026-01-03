@@ -35,7 +35,7 @@ const groups: Record<string, JournalEntry[]> = {
   Optica: [
     { journal: "Applied Optics", count: 5 },
     { journal: "Optics Continuum", count: 2 },
-    { journal: "Optics Express", count: 12 },
+    { journal: "Optics Express", count: 13 },
     { journal: "Optics Letters", count: 2 },
   ],
 };

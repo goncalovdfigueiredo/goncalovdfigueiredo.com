@@ -46,7 +46,7 @@ export default function LeadershipSection() {
       {/* Background decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="container max-w-[1600px] mx-auto px-6 md:px-8 relative z-10">
         <MotionWrapper>
           {/* Header + Buttons */}
           <div className="mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -72,8 +72,15 @@ export default function LeadershipSection() {
         </MotionWrapper>
 
         {/* CARDS CAROUSEL */}
-        <div className="overflow-x-auto overflow-y-visible py-12 pl-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-emerald-500/10 hover:scrollbar-thumb-emerald-500/20">
-          <div className="flex items-start min-w-max">
+        <div className="
+          overflow-x-auto overflow-y-visible py-12 pl-4 
+          scrollbar-thin scrollbar-track-transparent scrollbar-thumb-emerald-500/10 hover:scrollbar-thumb-emerald-500/20
+        ">
+          <div className="
+            flex items-start 
+            lg:min-w-max /* Desktop behavior */
+            gap-4 /* Mobile spacing (substitui o ml-3 manual) */
+          ">
             {LeadershipExperience.map((job, idx) => {
               const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
@@ -87,8 +94,14 @@ export default function LeadershipSection() {
                   viewport={{ once: true }}
                   style={{ zIndex }} 
                   className={`
-                    relative flex-shrink-0 w-[400px]
-                    ${idx > 0 ? "-ml-32" : ""}
+                    relative flex-shrink-0 
+                    /* MOBILE: snap-start cola à esquerda, w-[85vw] reduz a largura */
+                    w-[85vw] snap-start
+                    
+                    /* DESKTOP: Mantém o overlap original */
+                    md:w-[400px] md:snap-align-none
+                    ${idx > 0 ? "md:-ml-32" : ""}
+                    
                     transition-all duration-500 ease-out
                     group
                     hover:!ml-4 hover:z-50 hover:scale-105 hover:-translate-y-2
@@ -102,7 +115,12 @@ export default function LeadershipSection() {
                     </span>
                   </div>
 
-                  <GlassCard className="p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between bg-zinc-100/90 border border-zinc-200 shadow-xl dark:bg-[#09090b]/60 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40">
+                  <GlassCard className="
+                    p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between 
+                    bg-zinc-100/90 border border-zinc-200 shadow-xl 
+                    dark:bg-[#09090b]/60 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 
+                    transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40
+                  ">
                     
                     {/* Header do Card */}
                     <div className="mb-6 mt-2">

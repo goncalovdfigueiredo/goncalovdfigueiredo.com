@@ -409,31 +409,9 @@ export const projects = [
       "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.",
     ],
   },
-  {
-    title: "Lorem Ipsum Project",
-    github: "",
-    description: [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
-      "Excepteur sint occaecat cupidatat non proident.",
-    ],
-  },
-  {
-    title: "Dolor Sit Amet App",
-    github: "",
-    description: [
-      "Morbi in sem quis dui placerat ornare.",
-      "Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam.",
-      "Praesent dapibus, neque id cursus faucibus.",
-      "Fusce feugiat malesuada odio.",
-      "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.",
-    ],
-  },
 ];
 
-// 👇 AQUI ESTAVA O ERRO: Faltava o 'export'
+
 export const scientificEvents: SciEvent[] = [
   {
     title: "IT Lisbon Meeting 2025",
