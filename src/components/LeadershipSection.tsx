@@ -75,19 +75,17 @@ export default function LeadershipSection() {
         <div className="
           overflow-x-auto overflow-y-visible py-12 
           pl-4 
-          /* Aumentei o padding direito para compensar a margem negativa do último item */
-          pr-12 
+          /* Padding direito extra para compensar o ultimo cartao com a nova margem negativa maior */
+          pr-20
           scrollbar-thin scrollbar-track-transparent scrollbar-thumb-emerald-500/10 hover:scrollbar-thumb-emerald-500/20
         ">
           <div className="
             flex items-start 
             lg:min-w-max 
-            /* MUDANÇA 1: gap-0 no mobile para permitir a sobreposição manual */
             gap-0 
             md:gap-4
           ">
             {LeadershipExperience.map((job, idx) => {
-              // Garante que o 1º cartão está em cima do 2º, etc.
               const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
 
@@ -102,21 +100,20 @@ export default function LeadershipSection() {
                   className={`
                     relative flex-shrink-0 
                     
-                    /* MOBILE: Largura 75vw e Sobreposição */
+                    /* MOBILE: 3/4 Width (75vw) e Sobreposição Aumentada (-mr-12) */
                     w-[75vw] 
-                    -mr-5            /* MUDANÇA 2: Margem negativa para sobrepor (efeito leque) */
-                    snap-center      /* Mantém o snap ao centro */
+                    -mr-12            /* MUDANÇA: Aumentado de -mr-5 para -mr-12 */
+                    snap-center      
                     
                     /* DESKTOP: Estilo original */
-                    md:w-[400px] 
-                    md:snap-align-none
+                    md:w-[400px] md:snap-align-none
                     md:-mr-0 
                     ${idx > 0 ? "md:-ml-32" : ""} 
                     
                     transition-all duration-500 ease-out
                     group
                     
-                    /* Hover para Mobile e Desktop */
+                    /* Hover Effects */
                     hover:z-50 
                     md:hover:!ml-4 
                     md:hover:scale-105 
@@ -131,15 +128,15 @@ export default function LeadershipSection() {
                     </span>
                   </div>
 
-                  {/* MUDANÇA 3: Aumentar transparência e adicionar Blur */}
+                  {/* GlassCard Super Transparente */}
                   <GlassCard className="
                     p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between 
                     
-                    /* Light Mode: Mais transparente (white/60) + Blur */
-                    bg-white/60 border border-zinc-200/80 shadow-xl backdrop-blur-md
+                    /* LIGHT MODE SUPER TRANSPARENTE */
+                    bg-white/40 border border-white/40 shadow-xl backdrop-blur-md
                     
-                    /* Dark Mode: Mais transparente (black/40) + Blur */
-                    dark:bg-black/40 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 
+                    /* DARK MODE SUPER TRANSPARENTE */
+                    dark:bg-black/20 dark:backdrop-blur-xl dark:border-white/10 dark:shadow-2xl dark:shadow-black/50 
                     
                     transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40
                   ">
@@ -147,7 +144,7 @@ export default function LeadershipSection() {
                     {/* Header do Card */}
                     <div className="mb-6 mt-2">
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="p-2.5 bg-white dark:bg-white/5 rounded-xl border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0">
+                        <div className="p-2.5 bg-white/50 dark:bg-white/5 rounded-xl border border-zinc-200/50 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0 backdrop-blur-sm">
                           <img src={job.logo} alt={job.company} className="w-10 h-10 object-contain" />
                         </div>
                         <div>
@@ -156,7 +153,7 @@ export default function LeadershipSection() {
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        <div className="flex items-center gap-1.5 bg-white dark:bg-white/5 px-2.5 py-1.5 rounded-md border border-zinc-200 dark:border-white/5">
+                        <div className="flex items-center gap-1.5 bg-white/50 dark:bg-white/5 px-2.5 py-1.5 rounded-md border border-zinc-200/50 dark:border-white/5 backdrop-blur-sm">
                           <MapPin className="h-3.5 w-3.5" />
                           <span>{locationDisplay}</span>
                         </div>
@@ -165,7 +162,7 @@ export default function LeadershipSection() {
 
                     {/* Content / Achievements */}
                     {job.achievements.length > 0 && (
-                      <div className="relative p-4 bg-white/50 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5 group/achieve hover:border-emerald-500/20 transition-colors duration-300 flex-grow">
+                      <div className="relative p-4 bg-white/30 dark:bg-black/30 rounded-xl border border-white/20 dark:border-white/5 group/achieve hover:border-emerald-500/20 transition-colors duration-300 flex-grow backdrop-blur-sm">
                         <div className="flex items-center mb-3">
                           <div className="h-6 w-6 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/10 mr-2.5">
                             <Briefcase className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -177,7 +174,6 @@ export default function LeadershipSection() {
                           <div className="space-y-3 mt-2 pl-1">
                             {job.achievements.map((ach: any, i: number) => {
                               
-                              // CASO 1: GRID DE ATIVIDADES
                               if (typeof ach === 'object' && ach.type === 'activity_grid') {
                                 return (
                                   <motion.div 
@@ -191,19 +187,12 @@ export default function LeadershipSection() {
                                       const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
 
                                       return (
-                                        <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center hover:bg-emerald-50 dark:hover:bg-emerald-500/20 transition-all duration-300 group/item">
-                                          
-                                          {/* Ícone */}
+                                        <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/5 text-center hover:bg-emerald-50/50 dark:hover:bg-emerald-500/20 transition-all duration-300 group/item backdrop-blur-sm">
                                           <IconComp className="h-5 w-5 mb-2 text-zinc-400 dark:text-zinc-500 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 transition-colors" />
-                                          
-                                          {/* Título */}
                                           <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mb-1.5">{item.label}</span>
-                                          
-                                          {/* NOVA TAG COLORIDA */}
                                           <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded border ${tagColor}`}>
                                             {item.tag}
                                           </span>
-
                                         </div>
                                       )
                                     })}
@@ -211,7 +200,6 @@ export default function LeadershipSection() {
                                 );
                               }
 
-                              // CASO 2: CHART
                               if (ach === "__chart__") {
                                 return (
                                   <div key={i} className="w-full pt-2">
@@ -220,7 +208,6 @@ export default function LeadershipSection() {
                                 );
                               }
 
-                              // CASO 3: TEXTO NORMAL
                               return (
                                 <motion.div
                                   key={i}
