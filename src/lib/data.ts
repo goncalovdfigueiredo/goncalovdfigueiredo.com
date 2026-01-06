@@ -700,7 +700,7 @@ export const publications = [
     authors: ["Tiago Silvério et al."],
     venue: "2021 Telecoms Conference (ConfTELE)",
     image: "/GVDF_9.jpg",
-    year: 2023,
+    year: 2021,
     citations: 1, 
     abstract: "Visible light communications (VLC) have been the focus...",
     github: "https://ieeexplore.ieee.org/abstract/document/9435485",
