@@ -105,8 +105,18 @@ function FlipCard() {
    COMPONENT: PREMIUM STATIC SKILL CARD (COM SPOTLIGHT)
    ========================= */
 const PremiumSkillCard = ({ group }: { group: any }) => {
+  // Lógica para definir a cor do spotlight com base na cor do grupo
+  let spotlightColor = "rgba(255, 255, 255, 0.1)"; 
+  if (group.color.includes('blue')) {
+    spotlightColor = "rgba(59, 130, 246, 0.15)";
+  } else if (group.color.includes('purple')) {
+    spotlightColor = "rgba(168, 85, 247, 0.15)";
+  } else if (group.color.includes('red')) {
+    spotlightColor = "rgba(239, 68, 68, 0.15)"; // Adicionada a cor vermelha para o spotlight
+  }
+
   return (
-    <SpotlightCard className={`rounded-[1.5rem] ${group.minHeight}`} spotlightColor={group.color.includes('blue') ? "rgba(59, 130, 246, 0.15)" : "rgba(168, 85, 247, 0.15)"}>
+    <SpotlightCard className={`rounded-[1.5rem] ${group.minHeight}`} spotlightColor={spotlightColor}>
       <motion.div 
         className="relative h-full w-full overflow-hidden cursor-default group"
         whileHover={{ y: -2 }}
@@ -189,9 +199,9 @@ const skillGroups = [
   {
     id: "leadership",
     title: "Professional Skills",
-    subtitle: "leadership & Management",
+    subtitle: "Leadership & Management", // Corrigido capitalization
     icon: Users,
-    color: "text-red-600 dark:text-red-400",
+    color: "text-red-600 dark:text-red-400", // Alterado para vermelho
     minHeight: "min-h-[200px]",
     skills: [
       "R&D Project Leadership",
