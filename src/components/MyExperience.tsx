@@ -47,207 +47,225 @@ export default function ExperienceSection() {
         </MotionWrapper>
 
         <div className="space-y-12">
-          {workExperience.map((job, index) => (
-            <TimelineItem
-              key={`${job.position}-${job.company}-${job.period}`}
-              title={
-                <div className="flex flex-col gap-2">
-                  {/* DATA (Destacada e Verde) */}
-                  <div className="flex items-center gap-2 mb-1">
-                    <Calendar className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-                      {job.period}
-                    </span>
-                    {/* Linha decorativa subtil */}
-                    <div className="h-px w-8 bg-emerald-500/20" />
-                  </div>
+          {workExperience.map((job, index) => {
+            // Lógica para detetar se é o cargo atual
+            const isCurrent = job.period.includes('Present');
 
-                  {/* MUDANÇA AQUI: 
-                      O container continua flex-col (mobile) -> flex-row (desktop).
-                      Mas removi o alinhamento forçado no texto, para ele ficar alinhado à esquerda.
-                  */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                    {/* LOGOS */}
-                    <div className="flex flex-wrap gap-2"> 
-                      {Array.isArray(job.logos) ? (
-                          job.logos.map((logo, i) => (
-                              <div key={i} className="p-2 bg-zinc-100 dark:bg-white/5 rounded-lg border border-zinc-200 dark:border-white/10 w-fit backdrop-blur-sm">
-                                  <img src={logo} alt={job.company} className="w-8 h-8 object-contain" />
-                              </div>
-                          ))
-                      ) : job.logos ? (
-                          <div className="p-2 bg-zinc-100 dark:bg-white/5 rounded-lg border border-zinc-200 dark:border-white/10 w-fit backdrop-blur-sm">
-                              <img src={job.logos} alt={job.company} className="w-8 h-8 object-contain" />
-                          </div>
-                      ) : null}
+            return (
+              <TimelineItem
+                key={`${job.position}-${job.company}-${job.period}`}
+                title={
+                  <div className="flex flex-col gap-3">
+                    
+                    {/* --- NOVA SECÇÃO DE DATA (PREMIUM PILL) --- */}
+                    <div className="flex items-center">
+                      <div className={`
+                        flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border transition-colors duration-300
+                        ${isCurrent 
+                          ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-sm shadow-emerald-500/10' 
+                          : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400'}
+                      `}>
+                        <Calendar className={`h-3.5 w-3.5 ${isCurrent ? 'text-emerald-500' : 'text-zinc-400'}`} />
+                        <span>{job.period}</span>
+                        
+                        {/* Ponto a piscar se for Current */}
+                        {isCurrent && (
+                          <span className="relative flex h-2 w-2 ml-1">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    
-                    {/* TÍTULO DO CARGO */}
-                    {/* Removi 'self-center sm:self-auto'. Agora alinha à esquerda por defeito em mobile. */}
-                    <span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                      {job.position}
-                    </span>
+
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                      {/* LOGOS */}
+                      <div className="flex flex-wrap gap-2"> 
+                        {Array.isArray(job.logos) ? (
+                            job.logos.map((logo, i) => (
+                                <div key={i} className="p-2 bg-zinc-100 dark:bg-white/5 rounded-lg border border-zinc-200 dark:border-white/10 w-fit backdrop-blur-sm">
+                                    <img src={logo} alt={job.company} className="w-8 h-8 object-contain" />
+                                </div>
+                            ))
+                        ) : job.logos ? (
+                            <div className="p-2 bg-zinc-100 dark:bg-white/5 rounded-lg border border-zinc-200 dark:border-white/10 w-fit backdrop-blur-sm">
+                                <img src={job.logos} alt={job.company} className="w-8 h-8 object-contain" />
+                            </div>
+                        ) : null}
+                      </div>
+                      
+                      {/* TÍTULO DO CARGO */}
+                      <span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+                        {job.position}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              }
-              subtitle={
-                <div className="mt-2 pl-1">
-                  
-                  {/* 1. NOME DA EMPRESA */}
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2">
-                    
-                    {/* CASO 1: Vários Links */}
-                    {(job as any).companyLinks ? (
-                      (job as any).companyLinks.map((link: any, i: number) => (
-                        <React.Fragment key={i}>
+                }
+                subtitle={
+                  <div className="mt-2 pl-1 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between w-full gap-4 mb-2">
+                      
+                      {/* NOME DA EMPRESA E LINKS */}
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        {(job as any).companyLinks ? (
+                          (job as any).companyLinks.map((link: any, i: number) => (
+                            <React.Fragment key={i}>
+                              <a 
+                                href={link.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="group/link flex items-center gap-1.5 text-lg text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
+                              >
+                                {link.name}
+                                <ExternalLink className="h-3.5 w-3.5 opacity-50 group-hover/link:opacity-100 transition-all" />
+                              </a>
+                              {i < (job as any).companyLinks.length - 1 && (
+                                <span className="text-zinc-400 dark:text-zinc-600 font-light text-sm">&</span>
+                              )}
+                            </React.Fragment>
+                          ))
+                        ) 
+                        : (job as any).url ? (
                           <a 
-                            href={link.url} 
+                            href={(job as any).url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="group/link flex items-center gap-1.5 text-lg text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
+                            className="group/link flex items-center gap-2 text-lg text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
                           >
-                            {link.name}
-                            <ExternalLink className="h-3.5 w-3.5 opacity-50 group-hover/link:opacity-100 transition-all" />
+                            {job.company}
+                            <ExternalLink className="h-4 w-4 opacity-50 group-hover/link:opacity-100 group-hover/link:translate-x-0.5 transition-all" />
                           </a>
-                          {i < (job as any).companyLinks.length - 1 && (
-                            <span className="text-zinc-400 dark:text-zinc-600 font-light text-sm">&</span>
-                          )}
-                        </React.Fragment>
-                      ))
-                    ) 
-                    
-                    /* CASO 2: Um Link Único */
-                    : (job as any).url ? (
-                      <a 
-                        href={(job as any).url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="group/link flex items-center gap-2 text-lg text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
-                      >
-                        {job.company}
-                        <ExternalLink className="h-4 w-4 opacity-50 group-hover/link:opacity-100 group-hover/link:translate-x-0.5 transition-all" />
-                      </a>
-                    ) 
-                    
-                    /* CASO 3: Sem Link */
-                    : (
-                      <span className="text-lg text-emerald-600 dark:text-emerald-400 font-medium">
-                        {job.company}
-                      </span>
+                        ) 
+                        : (
+                          <span className="text-lg text-emerald-600 dark:text-emerald-400 font-medium">
+                            {job.company}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* LOCALIZAÇÃO (À Direita) */}
+                      <div className="shrink-0">
+                        <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-white/5 px-3 py-1.5 rounded-md border border-zinc-200 dark:border-white/10 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          <MapPin className="h-3.5 w-3.5 text-emerald-500" />
+                          <span>{typeof job.location === 'string' ? job.location : job.location.city}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* CURSOS LECIONADOS */}
+                    {(job as any).courses && (job as any).courses.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {(job as any).courses.map((course: any, idx: number) => (
+                          <a 
+                            key={idx}
+                            href={course.url}
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="
+                              group/course flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-wide
+                              bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/20
+                              hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:border-blue-300 dark:hover:border-blue-500/40 transition-all cursor-pointer shadow-sm
+                            "
+                          >
+                            <BookOpen className="h-3 w-3 opacity-70 group-hover/course:opacity-100" /> 
+                            {course.name}
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50 group-hover/course:opacity-100 group-hover/course:translate-x-0.5 transition-transform" />
+                          </a>
+                        ))}
+                      </div>
                     )}
                   </div>
-                  
-                  {/* 2. LOCALIZAÇÃO */}
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400 mb-2">
-                    <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-white/5 px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/5">
-                      <MapPin className="h-3.5 w-3.5" />
-                      <span>{typeof job.location === 'string' ? job.location : job.location.city}</span>
+                }
+                isLast={index === workExperience.length - 1}
+                index={index}
+              >
+                
+                {/* BLOCO PROJECTS */}
+                {Array.isArray((job as any).projecttitle) && (job as any).projecttitle.length > 0 && (
+                  <motion.div
+                    className="group relative mt-4 overflow-hidden rounded-lg border border-blue-500/10 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all duration-500"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="flex items-center justify-between px-4 py-3 cursor-default">
+                      <div className="flex items-center gap-3">
+                        <div className="p-1.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                          <FileText className="h-3.5 w-3.5" />
+                        </div>
+                        <h4 className="text-xs font-bold text-blue-900 dark:text-blue-100 tracking-wider uppercase">
+                          Projects
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2 opacity-60 group-hover:opacity-0 transition-opacity duration-300">
+                          <span className="text-[9px] uppercase tracking-widest text-blue-600/70 dark:text-blue-300/70 hidden sm:block">Reveal</span>
+                          <div className="w-1 h-1 rounded-full bg-blue-500 animate-pulse" />
+                      </div>
                     </div>
-                  </div>
-
-                  {/* 3. CURSOS LECIONADOS */}
-                  {(job as any).courses && (job as any).courses.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {(job as any).courses.map((course: any, idx: number) => (
-                        <a 
-                          key={idx}
-                          href={course.url}
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="
-                            group/course flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-wide
-                            bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/20
-                            hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:border-blue-300 dark:hover:border-blue-500/40 transition-all cursor-pointer shadow-sm
-                          "
-                        >
-                          <BookOpen className="h-3 w-3 opacity-70 group-hover/course:opacity-100" /> 
-                          {course.name}
-                          <ExternalLink className="h-2.5 w-2.5 opacity-50 group-hover/course:opacity-100 group-hover/course:translate-x-0.5 transition-transform" />
-                        </a>
-                      ))}
-                    </div>
-                  )}
-
-                </div>
-              }
-              isLast={index === workExperience.length - 1}
-              index={index}
-            >
-              {/* ===== Projects & Grants ===== */}
-              {Array.isArray((job as any).projecttitle) && (job as any).projecttitle.length > 0 && (
-                <motion.div
-                  tabIndex={0}
-                  className="group relative mt-6 overflow-hidden rounded-xl border border-blue-500/20 bg-blue-500/5 backdrop-blur-md transition-all duration-500 hover:border-blue-500/40 hover:bg-blue-500/10 hover:shadow-2xl hover:shadow-blue-900/10 focus:outline-none"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center gap-3 px-5 py-3 border-b border-blue-500/10 bg-blue-500/10">
-                    <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                    <h4 className="text-sm font-semibold text-blue-800 dark:text-blue-200 tracking-wide uppercase">Project</h4>
-                  </div>
-                  <div className="p-5">
-                    <div className="max-h-0 overflow-hidden opacity-0 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:max-h-[2000px] group-hover:opacity-100 group-focus-within:max-h-[2000px] group-focus-within:opacity-100">
-                        <ul className="space-y-3 pt-2">
-                        {(job as any).projecttitle.map((p: string, i: number) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300 font-light leading-relaxed">
-                                <span className="block mt-1.5 w-1 h-1 rounded-full bg-blue-500 dark:bg-blue-400 shrink-0" />
-                                {p}
-                            </li>
-                        ))}
+                    <div className="max-h-0 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:max-h-[800px]">
+                      <div className="px-4 pb-4 pt-0">
+                        <div className="h-px w-full bg-blue-500/10 mb-3" />
+                        <ul className="space-y-2">
+                          {(job as any).projecttitle.map((p: string, i: number) => (
+                              <li key={i} className="flex items-start gap-3 text-sm text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
+                                  <span className="block mt-1.5 w-1 h-1 rounded-full bg-blue-400 shrink-0" />
+                                  {p}
+                              </li>
+                          ))}
                         </ul>
+                      </div>
                     </div>
-                    <div className="absolute bottom-3 right-4 flex items-center gap-2 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0">
-                        <span className="text-[10px] uppercase tracking-widest font-medium text-blue-600/60 dark:text-blue-400/60">Hover to reveal</span>
-                        <div className="w-1 h-1 rounded-full bg-blue-500/40 animate-pulse" />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
 
-              {/* ===== Key Achievements ===== */}
-              {Array.isArray(job.achievements) && job.achievements.length > 0 && (
-                <motion.div
-                  tabIndex={0}
-                  className="group relative mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-md transition-all duration-500 hover:border-emerald-500/30 hover:bg-emerald-500/5 dark:hover:bg-white/10 hover:shadow-2xl hover:shadow-emerald-900/10 focus:outline-none"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center gap-3 px-5 py-3 border-b border-zinc-200 dark:border-white/5 bg-zinc-100 dark:bg-white/5">
-                    <Briefcase className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                    <h4 className="text-sm font-semibold text-zinc-700 dark:text-zinc-200 tracking-wide uppercase">Key Achievements</h4>
-                  </div>
-                  <div className="p-5">
-                    <div className="max-h-0 overflow-hidden opacity-0 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:max-h-[3000px] group-hover:opacity-100 group-focus-within:max-h-[3000px] group-focus-within:opacity-100">
-                        <ul className="space-y-4 pt-2">
-                        {job.achievements.map((ach: string, i: number) => (
-                            <motion.li key={i} className="relative overflow-visible" initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: 0.08 * i }} viewport={{ once: true }}>
-                            {ach === "__chart__" ? (
-                                <div className="mt-2 p-4 rounded-lg bg-zinc-100 dark:bg-black/20 border border-zinc-200 dark:border-white/5">
-                                    <PeerReviewChart company={job.company} />
-                                </div>
-                            ) : (
-                                <div className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300 font-light leading-relaxed">
-                                    <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500/50 shrink-0" />
-                                    <p>{ach}</p>
-                                </div>
-                            )}
-                            </motion.li>
-                        ))}
-                        </ul>
+                {/* BLOCO KEY IMPACT */}
+                {Array.isArray(job.achievements) && job.achievements.length > 0 && (
+                  <motion.div
+                    className="group relative mt-3 overflow-hidden rounded-lg border border-emerald-500/10 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all duration-500"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="flex items-center justify-between px-4 py-3 cursor-default">
+                      <div className="flex items-center gap-3">
+                        <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                          <BarChart3 className="h-3.5 w-3.5" />
+                        </div>
+                        <h4 className="text-xs font-bold text-emerald-900 dark:text-emerald-100 tracking-wider uppercase">
+                          Key Impact
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2 opacity-60 group-hover:opacity-0 transition-opacity duration-300">
+                          <span className="text-[9px] uppercase tracking-widest text-emerald-600/70 dark:text-emerald-300/70 hidden sm:block">Reveal</span>
+                          <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                      </div>
                     </div>
-                    <div className="absolute bottom-3 right-4 flex items-center gap-2 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0">
-                        <span className="text-[10px] uppercase tracking-widest font-medium text-emerald-600/60 dark:text-emerald-500/60">Hover to reveal</span>
-                        <div className="w-1 h-1 rounded-full bg-emerald-500/40 animate-pulse" />
+                    <div className="max-h-0 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:max-h-[2000px]">
+                      <div className="px-4 pb-4 pt-0">
+                          <div className="h-px w-full bg-emerald-500/10 mb-3" />
+                          <ul className="space-y-3">
+                          {job.achievements.map((ach: string, i: number) => (
+                              <li key={i} className="text-sm text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
+                              {ach === "__chart__" ? (
+                                  <div className="mt-2 p-3 rounded-lg bg-zinc-100 dark:bg-black/20 border border-zinc-200 dark:border-white/5">
+                                      <PeerReviewChart company={job.company} />
+                                  </div>
+                              ) : (
+                                  <div className="flex items-start gap-3">
+                                      <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-400 shrink-0" />
+                                      {ach}
+                                  </div>
+                              )}
+                              </li>
+                          ))}
+                          </ul>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
-            </TimelineItem>
-          ))}
+                  </motion.div>
+                )}
+              </TimelineItem>
+            );
+          })}
         </div>
       </div>
     </section>

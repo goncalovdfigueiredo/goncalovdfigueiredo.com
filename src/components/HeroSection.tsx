@@ -191,7 +191,7 @@ const skillGroups = [
     title: "Professional Skills",
     subtitle: "leadership & Management",
     icon: Users,
-    color: "text-emerald-600 dark:text-emerald-400",
+    color: "text-red-600 dark:text-red-400",
     minHeight: "min-h-[200px]",
     skills: [
       "R&D Project Leadership",
