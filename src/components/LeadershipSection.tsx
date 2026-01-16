@@ -1,3 +1,4 @@
+// src/components/LeadershipSection.tsx
 "use client";
 
 import { useState } from "react";
@@ -13,9 +14,11 @@ import {
   BookOpen,
   MessageCircleHeart,
   Globe,
-  HeartHandshake
+  HeartHandshake,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
 import GanttTimeline from "@/components/GanttTimeline";
@@ -23,13 +26,7 @@ import PeerReviewChart from "./PeerReviewChart";
 import { LeadershipExperience } from "@/lib/data";
 
 const IconMap: any = {
-  Rocket,
-  BrainCircuit,
-  Gamepad2,
-  BookOpen,
-  MessageCircleHeart,
-  Globe, 
-  HeartHandshake,
+  Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake,
 };
 
 const TagColors: Record<string, string> = {
@@ -40,7 +37,6 @@ const TagColors: Record<string, string> = {
 };
 
 export default function LeadershipSection() {
-  // Estado para controlar qual cartão está expandido no mobile
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   const handleCardClick = (idx: number) => {
@@ -48,173 +44,138 @@ export default function LeadershipSection() {
   };
 
   return (
-    <section id="leadership" className="py-20 relative overflow-hidden">
+    <section id="leadership" className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-[1600px] mx-auto px-6 md:px-8 relative z-10">
+      <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
-          <div className="mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
-            <h2 className="text-3xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-4 backdrop-blur-sm">
-                <Handshake className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+          <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
+              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+                <Handshake className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
               Leadership
             </h2>
 
-            <div className="flex gap-3">
-              <a href="#map" className="group flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-900/5 dark:shadow-emerald-900/20">
-                <MapPin className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                Global Footprint
+            {/* BOTÕES COMPACTOS (IGUAL À EDUCAÇÃO/EXPERIÊNCIA) */}
+            <div className="flex gap-2 w-full md:w-auto">
+              <a href="#map" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-[10px] md:text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-300">
+                <MapPin className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                <span className="whitespace-nowrap">Global Footprint</span>
               </a>
-              <a href="#timeline" className="group flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/40 text-sm font-medium text-blue-700 dark:text-blue-400 transition-all duration-300 shadow-lg shadow-blue-900/5 dark:shadow-blue-900/20">
-                <ChartGantt className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                Timeline
+              <a href="#timeline" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/40 text-[10px] md:text-sm font-medium text-blue-700 dark:text-blue-400 transition-all duration-300">
+                <ChartGantt className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                <span className="whitespace-nowrap">Timeline</span>
               </a>
             </div>
           </div>
         </MotionWrapper>
 
         {/* =======================
-            VERSÃO MOBILE (Corrigida: Com Expand & Sobreposição)
+            VERSÃO MOBILE (LISTA VERTICAL PREMIUM)
            ======================= */}
-        <div className="
-          lg:hidden 
-          overflow-x-auto overflow-y-visible py-12 
-          pl-4 pr-16 
-          scrollbar-thin scrollbar-track-transparent scrollbar-thumb-emerald-500/10 hover:scrollbar-thumb-emerald-500/20
-        ">
-          <div className="flex items-start gap-0">
+        <div className="lg:hidden flex flex-col gap-4">
             {LeadershipExperience.map((job, idx) => {
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
               const isSelected = activeCard === idx;
               
-              // Traz o cartão selecionado para a frente, senão mantém a ordem de cascata
-              const zIndex = isSelected ? 50 : (50 - idx);
-
               return (
                 <motion.div
                   key={idx}
-                  onClick={() => handleCardClick(idx)}
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  style={{ zIndex }} 
-                  className={`
-                    relative flex-shrink-0 cursor-pointer
-                    w-[75vw] 
-                    -mr-12           
-                    snap-center      
-                    first:ml-0
-                    ${isSelected ? 'scale-105 -translate-y-4 my-2' : ''} /* Aumenta um pouco mais quando abre */
-                    transition-all duration-500 ease-out
-                  `}
                 >
-                  <div className="absolute -top-3 right-6 z-30 px-3 py-1.5 rounded-full flex items-center gap-1.5 bg-zinc-50 border border-zinc-200 shadow-sm dark:bg-zinc-900 dark:border-emerald-500/30 dark:shadow-[0_0_10px_rgba(16,185,129,0.2)] transition-transform duration-500">
-                    <Calendar className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">
-                      {job.period}
-                    </span>
-                  </div>
-
-                  <GlassCard className={`
-                    p-6 relative overflow-visible rounded-2xl flex flex-col justify-between 
-                    bg-white/40 border shadow-xl backdrop-blur-md
-                    dark:bg-black/20 dark:backdrop-blur-xl dark:shadow-2xl dark:shadow-black/50 
-                    ${isSelected ? 'border-emerald-500/50 ring-1 ring-emerald-500/20' : 'border-white/40 dark:border-white/10'}
-                    transition-all duration-500
-                    /* Altura mínima ajusta-se se estiver aberto ou fechado */
-                    ${isSelected ? 'min-h-auto' : 'min-h-[300px]'}
-                  `}>
-                    
-                    {/* Header */}
-                    <div className="mb-2 mt-2">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="p-2.5 bg-white/50 dark:bg-white/5 rounded-xl border border-zinc-200/50 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0 backdrop-blur-sm">
-                          <img src={job.logo} alt={job.company} className="w-10 h-10 object-contain" />
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">{job.company}</p>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        <div className="flex items-center gap-1.5 bg-white/50 dark:bg-white/5 px-2.5 py-1.5 rounded-md border border-zinc-200/50 dark:border-white/5 backdrop-blur-sm">
-                          <MapPin className="h-3.5 w-3.5" />
-                          <span>{locationDisplay}</span>
-                        </div>
-                      </div>
+                  <div 
+                    onClick={() => handleCardClick(idx)}
+                    className={`
+                      relative rounded-xl border transition-all duration-300 overflow-hidden cursor-pointer
+                      ${isSelected 
+                        ? 'bg-white dark:bg-white/5 border-emerald-500/30 shadow-lg ring-1 ring-emerald-500/20' 
+                        : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30'}
+                    `}
+                  >
+                    {/* Header Compacto */}
+                    <div className="p-4 flex items-start gap-3">
+                       {/* Logo */}
+                       <div className="p-2 bg-white dark:bg-white/5 rounded-lg border border-zinc-200 dark:border-white/10 shrink-0">
+                          <img src={job.logo} alt={job.company} className="w-8 h-8 object-contain" />
+                       </div>
+                       
+                       {/* Texto */}
+                       <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start">
+                             <h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight truncate pr-2">{job.position}</h3>
+                             {/* Seta */}
+                             {isSelected ? <ChevronUp className="w-4 h-4 text-emerald-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
+                          </div>
+                          
+                          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate mb-1">{job.company}</p>
+                          
+                          <div className="flex items-center gap-3 text-[10px] text-zinc-500 dark:text-zinc-400">
+                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {job.period}</span>
+                             <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {locationDisplay}</span>
+                          </div>
+                       </div>
                     </div>
 
-                    {/* Content Section (Hidden by default, expands on click) */}
-                    {job.achievements.length > 0 && (
-                      <div className={`
-                        relative rounded-xl transition-all duration-500 ease-in-out overflow-hidden
-                        ${isSelected ? 'max-h-[1000px] opacity-100 mt-4 p-4 bg-white/30 dark:bg-black/30 border border-white/20 dark:border-white/5' : 'max-h-0 opacity-0 p-0 border-0'}
-                      `}>
-                        <div className="flex items-center mb-3">
-                          <div className="h-6 w-6 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/10 mr-2.5">
-                            <Briefcase className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    {/* Conteúdo Expansível */}
+                    <AnimatePresence>
+                      {isSelected && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-4 pb-4 pt-0">
+                            <div className="h-px w-full bg-zinc-200 dark:bg-white/10 mb-3" />
+                            
+                            <div className="space-y-3">
+                              {job.achievements.map((ach: any, i: number) => {
+                                if (typeof ach === 'object' && ach.type === 'activity_grid') {
+                                  return (
+                                    <div key={i} className="grid grid-cols-2 gap-2">
+                                      {ach.items.map((item: any, k: number) => {
+                                        const IconComp = IconMap[item.icon] || Rocket;
+                                        return (
+                                          <div key={k} className="flex flex-col items-center justify-center p-2 rounded-lg bg-zinc-100/50 dark:bg-white/5 border border-zinc-200/50 dark:border-white/5 text-center">
+                                            <IconComp className="h-4 w-4 mb-1.5 text-zinc-400" />
+                                            <span className="text-[10px] font-semibold text-zinc-700 dark:text-zinc-300 leading-tight">{item.label}</span>
+                                          </div>
+                                        )
+                                      })}
+                                    </div>
+                                  );
+                                }
+                                if (ach === "__chart__") {
+                                  return (
+                                    <div key={i} className="w-full pt-2">
+                                        <PeerReviewChart company={job.company} forceAnimation={true} />
+                                    </div>
+                                  );
+                                }
+                                return (
+                                  <div key={i} className="flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
+                                    <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                                    <p>{ach}</p>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Key Initiatives</h4>
-                        </div>
-
-                        <div className="space-y-3 pl-1">
-                          {job.achievements.map((ach: any, i: number) => {
-                            if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                              return (
-                                <div key={i} className="grid grid-cols-2 gap-2 pt-2">
-                                  {ach.items.map((item: any, k: number) => {
-                                    const IconComp = IconMap[item.icon] || Rocket;
-                                    const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
-                                    return (
-                                      <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/5 text-center backdrop-blur-sm">
-                                        <IconComp className="h-5 w-5 mb-2 text-zinc-400 dark:text-zinc-500" />
-                                        <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mb-1.5">{item.label}</span>
-                                        <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded border ${tagColor}`}>{item.tag}</span>
-                                      </div>
-                                    )
-                                  })}
-                                </div>
-                              );
-                            }
-                            if (ach === "__chart__") {
-                              return (
-                                <div key={i} className="w-full pt-2">
-                                    <PeerReviewChart company={job.company} forceAnimation={true} />
-                                </div>
-                              );
-                            }
-                            return (
-                              <div key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300 font-light">
-                                <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500 dark:bg-emerald-500/50 shrink-0" />
-                                <p className="leading-relaxed">{ach}</p>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Expand Indicator (Only visible when NOT selected) */}
-                    {!isSelected && (
-                      <div className="absolute bottom-4 right-6 flex items-center gap-2 animate-pulse">
-                          <span className="text-[10px] uppercase tracking-widest font-medium text-emerald-600/80 dark:text-emerald-500/80">
-                              Tap to expand
-                          </span>
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
-                      </div>
-                    )}
-
-                  </GlassCard>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </motion.div>
               );
             })}
-          </div>
         </div>
 
         {/* =======================
-            VERSÃO DESKTOP (Sem alterações)
+            VERSÃO DESKTOP (Mantida com os cartões grandes)
            ======================= */}
         <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4">
           <div className="flex items-start min-w-max gap-4">
@@ -294,7 +255,6 @@ export default function LeadershipSection() {
                               if (ach === "__chart__") {
                                 return (
                                   <div key={i} className="w-full pt-2">
-                                      {/* No Desktop: forceAnimation={false} (Default) */}
                                       <PeerReviewChart company={job.company} />
                                   </div>
                                 );
@@ -321,27 +281,23 @@ export default function LeadershipSection() {
           </div>
         </div>
 
-        {/* TIMELINE INFERIOR */}
+        {/* TIMELINE INFERIOR (COMPACTO MOBILE) */}
         <MotionWrapper>
-          <div id="timeline" className="mt-20 scroll-mt-24">
-             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-                <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 shadow-sm dark:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
-                        <ChartGantt className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          <div id="timeline" className="mt-16 md:mt-20 scroll-mt-24">
+             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
+                <div className="flex items-center gap-3 md:gap-4">
+                    <div className="p-2 md:p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 shadow-sm dark:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
+                        <ChartGantt className="h-5 w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Timeline Overview</h3>
-                      <p className="text-sm text-blue-600/80 dark:text-blue-400/60 font-medium">Chronological view of my career path</p>
+                      <h3 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Timeline Overview</h3>
+                      <p className="text-xs md:text-sm text-blue-600/80 dark:text-blue-400/60 font-medium">Chronological view of my career path</p>
                     </div>
                 </div>
-                <a href="#map" className="group flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-900/5 dark:shadow-emerald-900/20">
-                  <MapPin className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                  Global Footprint
-                </a>
             </div>
-             <div className="relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-white/5 backdrop-blur-md shadow-lg dark:shadow-2xl dark:shadow-black/40 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-blue-400/30 before:to-transparent">
+             <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-white/5 backdrop-blur-md shadow-lg dark:shadow-2xl dark:shadow-black/40">
                 <div className="absolute inset-0 dark:bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.05),transparent_70%)] pointer-events-none" />
-                <div className="p-6 md:p-8 overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-blue-500/20 hover:scrollbar-thumb-blue-500/40">
+                <div className="p-4 md:p-8 overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-blue-500/20 hover:scrollbar-thumb-blue-500/40">
                     <GanttTimeline rowHeight={28} barHeight={20} fontSize={13} />
                 </div>
             </div>

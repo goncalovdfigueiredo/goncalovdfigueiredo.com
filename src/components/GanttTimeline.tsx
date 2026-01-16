@@ -2,7 +2,8 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { education, workExperience, LeadershipExperience } from "@/lib/data";
-import { Briefcase, GraduationCap, Handshake, Calendar } from "lucide-react";
+// 👇 Adicionei Building2 aqui para o ícone da empresa
+import { Briefcase, GraduationCap, Handshake, Calendar, Building2 } from "lucide-react";
 
 /** =========================
  * Tipos e utilitários
@@ -152,19 +153,18 @@ function buildRows(): Row[] {
 }
 
 /** =========================
- * COMPONENTE 1: Mobile List View (Premium Glass Cards)
+ * COMPONENTE 1: Mobile List View (ULTRA COMPACTO)
  * ========================= */
 function MobileTimeline({ rows }: { rows: Row[] }) {
   return (
     <div className="relative pl-4 pr-2 py-4">
-      {/* Linha Vertical de Fundo (Conector Geral) */}
+      {/* Linha Vertical de Fundo */}
       <div className="absolute left-[27px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-zinc-500/20 via-zinc-500/10 to-transparent rounded-full" />
 
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-4"> {/* Reduzi space-y-6 para space-y-4 */}
         {rows.map((row, i) => {
           const Icon = ICON_BY_TYPE[row.type];
           
-          // Cores Premium baseadas no tipo
           let iconColorClass = "text-emerald-500 bg-emerald-500/10 border-emerald-500/20";
           let glowColor = "group-hover:shadow-emerald-500/10";
           
@@ -186,53 +186,52 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
               transition={{ delay: i * 0.05, duration: 0.4 }}
               className="relative pl-10"
             >
-              {/* Bolinha no eixo (Ponto de ancoragem) */}
+              {/* Bolinha no eixo */}
               <div 
-                className="absolute left-[21px] top-6 h-3.5 w-3.5 rounded-full border-[3px] border-[#09090b] z-10 shadow-sm"
+                className="absolute left-[21px] top-5 h-3.5 w-3.5 rounded-full border-[3px] border-[#09090b] z-10 shadow-sm"
                 style={{ backgroundColor: row.color }}
               />
 
-              {/* O CARTÃO GLASS (Mini) */}
+              {/* O CARTÃO GLASS (Compacto) */}
               <div className={`
-                group relative p-4 rounded-xl border border-zinc-200 dark:border-white/5 
+                group relative p-3 rounded-xl border border-zinc-200 dark:border-white/5 
                 bg-white/50 dark:bg-white/5 backdrop-blur-md 
                 transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/10 
                 hover:border-zinc-300 dark:hover:border-white/10 hover:-translate-y-0.5
-                shadow-lg ${glowColor}
+                shadow-sm ${glowColor}
               `}>
                 
-                {/* Cabeçalho do Cartão */}
-                <div className="flex justify-between items-start gap-3 mb-2">
-                  <div className="flex flex-col">
-                    {/* Datas com fonte Mono (Toque técnico) */}
-                    <div className="flex items-center gap-1.5 text-[10px] font-mono font-medium text-zinc-500 uppercase tracking-wider mb-1">
-                      <Calendar className="w-3 h-3 opacity-70" />
+                {/* Layout Horizontal: Texto à Esquerda, Ícone à Direita */}
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex flex-col min-w-0"> {/* min-w-0 para permitir truncate */}
+                    
+                    {/* Data */}
+                    <div className="flex items-center gap-1.5 text-[9px] font-mono font-medium text-zinc-500 uppercase tracking-wider mb-1">
+                      <Calendar className="w-2.5 h-2.5 opacity-70" />
                       <span>{fmtMY(row.start)} — {fmtMY(row.end)}</span>
                     </div>
                     
-                    {/* Título - CORRIGIDO PARA LEGIBILIDADE */}
-                    <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-base leading-snug">
+                    {/* Título (Cargo) */}
+                    <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight mb-1">
                       {row.label}
                     </h3>
+
+                    {/* Empresa (Com Ícone Building) - Agora logo abaixo do título! */}
+                    <div className="flex items-center gap-1.5">
+                       <Building2 className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0" />
+                       <span className="text-zinc-600 dark:text-zinc-400 font-medium text-xs truncate">
+                         {row.org}
+                       </span>
+                    </div>
                   </div>
 
-                  {/* Icon Quadrado */}
-                  <div className={`p-2 rounded-lg border shrink-0 ${iconColorClass}`}>
-                    <Icon className="w-4 h-4" />
+                  {/* Icon Quadrado da Categoria (Direita) */}
+                  <div className={`p-1.5 rounded-md border shrink-0 ${iconColorClass}`}>
+                    <Icon className="w-3.5 h-3.5" />
                   </div>
                 </div>
 
-                {/* Rodapé do Cartão */}
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-zinc-200 dark:border-white/5">
-                  <div className="text-zinc-600 dark:text-zinc-400 font-medium text-xs truncate max-w-[70%]">
-                    {row.org}
-                  </div>
-                  
-                  {/* Badge de Tipo minimalista */}
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
-                    {row.type}
-                  </span>
-                </div>
+                {/* SEM RODAPÉ - O cartão acaba aqui, poupando imenso espaço */}
 
               </div>
             </motion.div>
@@ -256,7 +255,6 @@ function DesktopGantt({
   const minStart = rows.reduce((m, r) => (r.start < m ? r.start : m), rows[0].start);
   const maxEnd   = rows.reduce((m, r) => (r.end > m ? r.end : m), rows[0].end);
 
-  // Layout/margens
   const labelW = 300; 
   const padLeft = 16; 
   const padRight = 40;
@@ -265,18 +263,14 @@ function DesktopGantt({
   const headerH = 28;
   const laneGap = 8;
 
-  // largura temporal
   const totalDays = Math.max(1, daysBetween(minStart, maxEnd));
   const timeW = Math.max(600, totalDays * (pxPerDay || 0.35));
 
-  // alturas
   const totalRows = rows.length;
   const height = padTop + headerH + padBottom + totalRows * ((rowHeight || 56) + laneGap);
 
-  // Eixo invertido
   const startXR = (d: Date) => padLeft + (daysBetween(d, maxEnd) * (pxPerDay || 0.35));
 
-  // Ticks de anos
   const years: number[] = [];
   const y0 = minStart.getFullYear();
   const y1 = maxEnd.getFullYear();
@@ -289,7 +283,6 @@ function DesktopGantt({
 
   return (
     <div className="w-full">
-      {/* Legenda */}
       <div className="flex items-center gap-4 mb-2 pl-2">
         {[
           { t: "Education", c: COLOR_BY_TYPE.Education },
@@ -308,7 +301,6 @@ function DesktopGantt({
       </div>
 
       <div className="relative flex w-full">
-        {/* COLUNA ESQUERDA (FIXA) */}
         <div className="shrink-0" style={{ width: labelW + padLeft }}>
           <svg width={labelW + padLeft} height={height} role="img" aria-label="Gantt Labels">
             <rect x={0} y={0} width={labelW + padLeft} height={height} fill="transparent" />
@@ -335,7 +327,7 @@ function DesktopGantt({
                     y={laneTop}
                     width={labelW + padLeft}
                     height={rowHeight}
-                    fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"} // Ajustado para dark mode friendly
+                    fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"}
                   />
                   <rect
                     x={sqX}
@@ -349,7 +341,7 @@ function DesktopGantt({
                     x={labelX}
                     y={baseY}
                     fontSize={fontSize}
-                    fill="currentColor" // Usa a cor do texto do tema
+                    fill="currentColor"
                     className="text-zinc-800 dark:text-zinc-200"
                     dominantBaseline="middle"
                   >
@@ -366,7 +358,6 @@ function DesktopGantt({
           </svg>
         </div>
 
-        {/* COLUNA DIREITA (SCROLL) */}
         <div className="grow overflow-x-auto no-scrollbar">
           <svg
             width={timeW + padRight}
@@ -461,9 +452,6 @@ function DesktopGantt({
   );
 }
 
-/** =========================
- * MAIN EXPORT: Hybrid Timeline
- * ========================= */
 export default function GanttTimeline(props: GanttProps) {
   const rows = React.useMemo(buildRows, []);
   
@@ -471,17 +459,10 @@ export default function GanttTimeline(props: GanttProps) {
 
   return (
     <div className="w-full">
-      {/* A MÁGICA ESTÁ AQUI:
-        'hidden md:block' -> Esconde em Mobile, mostra em Desktop
-        'block md:hidden' -> Mostra em Mobile, esconde em Desktop
-      */}
-      
-      {/* Versão Desktop (Gantt Chart SVG) */}
       <div className="hidden md:block">
         <DesktopGantt rows={rows} {...props} />
       </div>
 
-      {/* Versão Mobile (Lista Vertical com Glass Cards) */}
       <div className="block md:hidden">
         <MobileTimeline rows={rows} />
       </div>

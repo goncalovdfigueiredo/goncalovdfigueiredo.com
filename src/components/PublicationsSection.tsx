@@ -74,7 +74,7 @@ export default function PublicationsSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
       {/* Container max-w-[1600px] */}
-      <div className="container max-w-[1600px] mx-auto px-6 md:px-8 relative z-10">
+      <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10">
         
         {/* HEADER */}
         <MotionWrapper>
@@ -132,7 +132,7 @@ export default function PublicationsSection() {
           /* MUDANÇA 1: gap-4 passou a gap-3 para aproximar os cartões no mobile */
           className="
             flex overflow-x-auto gap-3 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-emerald-500/10
-            md:grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0
+            md:grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0
           "
         >
           <AnimatePresence mode="popLayout">

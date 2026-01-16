@@ -117,7 +117,7 @@ export default function GlobalMapSection() {
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
         
-      <div className="container max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10">
         
         <MotionWrapper>
           <div className="mb-12">

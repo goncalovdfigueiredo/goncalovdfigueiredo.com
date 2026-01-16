@@ -247,7 +247,7 @@ export const LeadershipExperience = [
       lat: 40.637747,
       lon: -8.658116,
     },
-    position: "PhD Student Committee (CAD) Member",
+    position: "PhD Student Council Member",
     period: "Jan 2025 - Present",
     logo: "/ciceco.png",
     relatedLocations: [
