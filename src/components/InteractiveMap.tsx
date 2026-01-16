@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents, ZoomControl } from "react-leaflet";
-import "leaflet/dist/leaflet.css"; // 👈 IMPORTANTE
+import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MapPin } from "lucide-react";
@@ -32,23 +32,56 @@ const FILTER_CATEGORIES = [
   "Conference Paper"
 ];
 
+// --- FUNÇÃO DO ÍCONE (ATUALIZADA: Sem borda, menores dimensões) ---
 const createCustomIcon = (type: string, isSelected: boolean, isDimmed: boolean) => {
   const color = COLOR_MAP[type] || "#10b981";
-  const opacity = isDimmed ? 0.2 : 1;
-  const scale = isSelected ? 1.5 : (isDimmed ? 0.7 : 1);
+  
+  const opacity = isDimmed ? 0.3 : 1;
+  
+  // NOVOS TAMANHOS (Mais pequenos)
+  // Antes: Selected 24, Dimmed 10, Normal 16
+  const size = isSelected ? 20 : (isDimmed ? 8 : 12); 
+  
+  const html = `
+    <div style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; opacity: ${opacity};">
+      <style>
+        @keyframes pulse-ring-${type.replace(/\s/g, '')} {
+          0% { transform: scale(0.5); opacity: 0.8; }
+          100% { transform: scale(3); opacity: 0; } /* Aumentei um pouco a escala do pulse para compensar o ponto menor */
+        }
+      </style>
+      
+      ${!isDimmed ? `
+        <div style="
+          position: absolute;
+          width: ${size}px; height: ${size}px;
+          border-radius: 50%;
+          background-color: ${color};
+          animation: pulse-ring-${type.replace(/\s/g, '')} 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        "></div>
+      ` : ''}
 
-  const svgHtml = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="2" class="w-full h-full drop-shadow-md">
-      <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-    </svg>
+      <div style="
+        position: relative;
+        width: ${size}px; height: ${size}px;
+        background-color: ${color};
+        /* border: 2px solid white;  <-- REMOVIDO */
+        border-radius: 50%;
+        /* Aumentei ligeiramente a sombra para definição */
+        box-shadow: 0 2px 6px rgba(0,0,0,0.5); 
+        transition: all 0.3s ease;
+        z-index: 10;
+      "></div>
+    </div>
   `;
 
   return L.divIcon({
-    className: isDimmed ? "marker-dimmed" : "marker-active",
-    html: `<div style="transform: scale(${scale}); opacity: ${opacity}; transition: all 0.3s ease;">${svgHtml}</div>`,
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-    popupAnchor: [0, -30],
+    className: "custom-pulse-marker",
+    html: html,
+    // Reduzi ligeiramente a área do ícone também
+    iconSize: [36, 36], 
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
   });
 };
 
@@ -82,6 +115,7 @@ export default function InteractiveMap({ customMarkers }: { customMarkers: MapMa
 
   return (
     <div className="flex flex-col items-center w-full">
+      {/* Filters */}
       <div className="flex flex-wrap justify-center gap-3 mb-6 relative z-10">
         {FILTER_CATEGORIES.map((cat) => {
           const isActive = activeFilter === cat;
@@ -118,6 +152,7 @@ export default function InteractiveMap({ customMarkers }: { customMarkers: MapMa
         })}
       </div>
 
+      {/* Map Container */}
       <div className="relative h-[550px] w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl z-0 bg-zinc-900">
         <MapContainer
           center={[25, 10]} 
@@ -160,12 +195,13 @@ export default function InteractiveMap({ customMarkers }: { customMarkers: MapMa
                     if (!isDimmed) setSelectedMarker(marker);
                   },
                 }}
-                zIndexOffset={isDimmed ? -1000 : 100}
+                zIndexOffset={isDimmed ? -1000 : (isSelected ? 1000 : 100)}
               />
             );
           })}
         </MapContainer>
 
+        {/* Popup Card */}
         <AnimatePresence mode="wait">
           {activePopup && (
             <motion.div
