@@ -129,7 +129,7 @@ export default function CertificatesSection() {
               </div>
               Scientific Outreach & Certifications
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 ml-1 md:ml-[4.5rem] max-w-2xl text-lg leading-relaxed">
+            <p className="text-zinc-600 dark:text-zinc-400 ml-1 md:ml-[4.5rem] max-w-4xl text-lg leading-relaxed">
               A curated list of professional certifications, scientific events, and public engagement activities.
             </p>
           </div>
