@@ -23,15 +23,19 @@ export default function ProjectsSection() {
       <div className="container max-w-5xl mx-auto px-6 md:px-4 relative z-10">
         
         {/* CABEÇALHO */}
+
         <MotionWrapper>
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 flex items-center justify-center md:justify-start gap-4 text-zinc-900 dark:text-white tracking-tight">
-            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm relative">
-              <BrainCircuit className="h-8 w-8 text-emerald-600 dark:text-emerald-400 relative z-10" />
-              <div className="absolute inset-0 bg-emerald-500/20 blur-xl z-0 rounded-full" />
-            </div>
-            Projects
-          </h2>
+        <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
+              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+                <BrainCircuit className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              Projects 
+            </h2>
+          </div>
         </MotionWrapper>
+
+
 
         {/* 👇 CONTAINER COM O EFEITO DE BLOQUEIO */}
         <div className="relative">

@@ -119,21 +119,29 @@ export default function GlobalMapSection() {
         
       <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10">
         
+        
+
+
+
         <MotionWrapper>
-          <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-4 backdrop-blur-sm">
-                <MapPinned className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              Global Impact & Footprint
-            </h2>
-            
-            <p className="mt-6 text-zinc-600 dark:text-zinc-400 max-w-6xl text-lg leading-relaxed ml-1">
-              An overview of my academic journey, professional experience, 
-              scientific outreach, and conference presentations around the world.
-            </p>
-          </div>
-        </MotionWrapper>
+  <div className="mb-8 md:mb-12 flex flex-col gap-4">
+    <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
+      <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+        <MapPinned className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+      </div>
+      Global Impact & Footprint
+    </h2>
+    <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
+      An overview of my academic journey, professional experience, 
+      scientific outreach, and conference presentations around the world.
+    </p>
+  </div>
+</MotionWrapper>
+
+
+
+
+
 
         <MotionWrapper delay={0.2}>
           {/* Só renderiza o mapa se houver marcadores */}

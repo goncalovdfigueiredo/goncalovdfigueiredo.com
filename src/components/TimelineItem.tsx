@@ -54,7 +54,7 @@ export default function TimelineItem({
         
         {/* Data acima do título */}
         <div className={`flex items-center gap-2 mb-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest ${isCurrent ? "text-emerald-500" : "text-zinc-500"}`}>
-          <span>{period}</span>
+          
         </div>
 
         <div className="space-y-1">

@@ -49,7 +49,7 @@ export default function LeadershipSection() {
 
       <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
-          <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
               <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
                 <Handshake className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />

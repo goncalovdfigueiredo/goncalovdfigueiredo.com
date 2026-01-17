@@ -105,19 +105,21 @@ export default function CertificatesSection() {
       <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10 space-y-12">
         
         {/* CABEÇALHO */}
+        
+
         <MotionWrapper>
-          <div className="mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-4 mb-4">
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
-                  <Globe className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              Scientific Outreach & Certifications
-            </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 ml-1 md:ml-[4.5rem] max-w-4xl text-lg leading-relaxed">
-              A curated list of professional certifications, scientific events, and public engagement activities.
-            </p>
-          </div>
-        </MotionWrapper>
+  <div className="mb-8 md:mb-12 flex flex-col gap-4">
+    <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
+      <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+        <Globe className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+      </div>
+      Scientific Outreach
+    </h2>
+    <p className="text-zinc-600 dark:text-zinc-400 max-w-3xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
+    A curated list of professional certifications, scientific events, and public engagement activities.
+    </p>
+  </div>
+</MotionWrapper>
 
         {/* LAYOUT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">

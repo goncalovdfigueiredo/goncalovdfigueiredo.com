@@ -18,19 +18,23 @@ export default function AwardsSection() {
       <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
         
         {/* CABEÇALHO */}
+
+
         <MotionWrapper>
-          <div className="mb-8 md:mb-10">
-            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
-              <div className="p-2 md:p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 backdrop-blur-sm">
-                <Trophy className="h-6 w-6 md:h-8 md:w-8 text-amber-600 dark:text-amber-400" />
-              </div>
-              Honors & Awards
-            </h2>
-            <p className="mt-3 md:mt-4 text-zinc-600 dark:text-zinc-400 max-w-3xl text-sm md:text-lg leading-relaxed ml-1">
-              Recognition of my academic achievements, research contributions, and innovative projects.
-            </p>
-          </div>
-        </MotionWrapper>
+  <div className="mb-8 md:mb-12 flex flex-col gap-4">
+    <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
+      <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+        <Trophy className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+      </div>
+      Honors & Awards
+    </h2>
+    <p className="text-zinc-600 dark:text-zinc-400 max-w-3xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
+      Recognition of my academic achievements, research contributions, and innovative projects.
+    </p>
+  </div>
+</MotionWrapper>
+
+
 
         {/* GRELHA DE CARTÕES */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-stretch">
