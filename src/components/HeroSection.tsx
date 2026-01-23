@@ -1,3 +1,4 @@
+// src/components/HeroSection.tsx
 "use client";
 
 import { useState, useRef } from "react";
@@ -7,11 +8,11 @@ import {
   User, Microscope, Download, Sparkles, MapPin, FileText,
   Cpu, Users, Terminal, Fingerprint, FileBadge
 } from "lucide-react";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useAnimation, type Variants } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 
 /* =========================
-   1. NOVO COMPONENTE: SPOTLIGHT CARD (O Efeito Lanterna - RAIO REDUZIDO)
+   1. COMPONENTE: SPOTLIGHT CARD (Mantido)
    ========================= */
 function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.1)" }: any) {
   const mouseX = useMotionValue(0);
@@ -33,11 +34,11 @@ function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 2
         style={{
           background: useMotionTemplate`
             radial-gradient(
-              300px circle at ${mouseX}px ${mouseY}px,  
+              250px circle at ${mouseX}px ${mouseY}px,  
               ${spotlightColor},
               transparent 80%
             )
-          `, // ALTERADO DE 300px PARA 150px
+          `,
         }}
       />
       <div className="relative h-full">{children}</div>
@@ -46,73 +47,144 @@ function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 2
 }
 
 /* =========================
-   COMPONENT: FLIP CARD (Mantido)
+   2. NOVO COMPONENTE: PARTICLE IMAGE (Hover Effect)
    ========================= */
-function FlipCard() {
-  const [isFlipped, setIsFlipped] = useState(false);
+function ParticleImage() {
+  const particleControls = useAnimation();
+  const imageControls = useAnimation();
+  const contentControls = useAnimation(); // Controla o cartão de trás (Download)
+
+  // Grelha de Partículas (8x8 = 64 pedaços)
+  const gridSize = 8;
+  const totalParticles = gridSize * gridSize;
+
+  const particleVariants: Variants = {
+    assembled: {
+      x: 0, y: 0, scale: 1, opacity: 0,
+      transition: { duration: 0.5, ease: "easeInOut" }
+    },
+    exploded: (i) => {
+      const randomX = (Math.random() - 0.5) * 250; 
+      const randomY = (Math.random() - 0.5) * 250; 
+      const randomRotation = (Math.random() - 0.5) * 360;
+      
+      return {
+        x: randomX, y: randomY, scale: 0, rotate: randomRotation, opacity: 1,
+        transition: { duration: 0.6, ease: "easeOut", delay: (i % gridSize) * 0.01 + Math.random() * 0.05 }
+      };
+    }
+  };
+
+  // 👇 Lógica de Hover (Passar o rato)
+  const handleMouseEnter = async () => {
+    // 1. Esconde a foto rapidamente
+    imageControls.start({ opacity: 0, scale: 0.8, transition: { duration: 0.2 } });
+    
+    // 2. Explode as partículas
+    particleControls.start("exploded");
+    
+    // 3. Mostra o conteúdo de trás (Download)
+    await contentControls.start({ opacity: 1, scale: 1, transition: { duration: 0.3, delay: 0.1 } });
+  };
+
+  const handleMouseLeave = async () => {
+    // 1. Esconde o conteúdo de trás
+    await contentControls.start({ opacity: 0, scale: 0.8, transition: { duration: 0.2 } });
+    
+    // 2. Junta as partículas (Regenerar)
+    particleControls.start("assembled");
+    
+    // 3. Mostra a foto novamente
+    await imageControls.start({ opacity: 1, scale: 1, transition: { delay: 0.2, duration: 0.4 } });
+  };
 
   return (
     <div 
-      className="relative w-32 h-32 md:w-48 md:h-48 perspective group cursor-pointer z-20" 
-      onClick={() => setIsFlipped(!isFlipped)}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      className="relative w-32 h-32 md:w-48 md:h-48 z-20 group cursor-pointer" 
+      onMouseEnter={handleMouseEnter} // Ativa ao entrar
+      onMouseLeave={handleMouseLeave} // Desativa ao sair
     >
-      <motion.div
-        className="relative w-full h-full [transform-style:preserve-3d]"
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+      
+      {/* --- BACK CARD (ÁREA DE DOWNLOAD) --- */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={contentControls}
+        className="absolute inset-0 rounded-full bg-[#09090b] flex flex-col items-center justify-center p-4 border-2 border-emerald-500/30 shadow-xl overflow-hidden z-10 pointer-events-auto"
       >
-        {/* FRENTE */}
-        <div className="absolute w-full h-full backface-hidden rounded-full p-1 bg-gradient-to-br from-emerald-400 via-teal-400 to-blue-500 shadow-2xl shadow-emerald-500/20">
-          <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-white dark:border-[#09090b] bg-white dark:bg-[#09090b]">
-              <img
-              src={personalInfo.profilePicture}
-              alt="Profile"
-              className="w-full h-full object-cover scale-105"
-            />
-          </div>
-          <div className="absolute bottom-2 right-2 w-7 h-7 bg-emerald-500 border-2 border-white dark:border-[#09090b] rounded-full flex items-center justify-center shadow-lg z-10 animate-pulse">
-            <Sparkles className="w-3.5 h-3.5 text-white fill-white" />
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-emerald-900/20 pointer-events-none" />
         
-        {/* VERSO */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-[#09090b] flex flex-col items-center justify-center p-4 rounded-full border-2 border-emerald-500/30 shadow-xl overflow-hidden">
-            <div className="absolute inset-0 bg-emerald-900/20 pointer-events-none" />
-            <div className="relative z-10 flex flex-col items-center gap-1.5">
-              <div className="p-1.5 rounded-full bg-emerald-500/10 mb-0.5">
-                <FileText className="w-4 h-4 text-emerald-400" />
-              </div>
-              <p className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">Full CV</p>
-              <a 
-                href="/CV_Goncalo_Figueiredo.pdf"
-                download
-                className="flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white text-[9px] font-bold transition-transform active:scale-95 shadow-lg"
-                onClick={(e) => e.stopPropagation()} 
-              >
-                Download
-                <Download className="w-2.5 h-2.5" />
-              </a>
-            </div>
+        {/* Conteúdo do Verso */}
+        <div className="relative z-10 flex flex-col items-center gap-2">
+          <div className="p-2 rounded-full bg-emerald-500/10">
+            <FileText className="w-5 h-5 text-emerald-400" />
+          </div>
+          <p className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest">Full CV</p>
+          
+          <a 
+            href="/CV_Goncalo_Figueiredo.pdf"
+            download
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white text-[10px] md:text-xs font-bold transition-transform active:scale-95 shadow-lg"
+          >
+            Download
+            <Download className="w-3 h-3" />
+          </a>
         </div>
       </motion.div>
+
+
+      {/* --- CAMADA DE PARTÍCULAS --- */}
+      <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 z-30 pointer-events-none rounded-full overflow-hidden">
+        {[...Array(totalParticles)].map((_, i) => (
+          <motion.div
+            key={i}
+            custom={i}
+            variants={particleVariants}
+            initial="assembled"
+            animate={particleControls}
+            className="w-full h-full bg-zinc-500/80 dark:bg-zinc-400/80"
+          />
+        ))}
+      </div>
+
+
+      {/* --- FRONT CARD (FOTO DE PERFIL) --- */}
+      <motion.div 
+        animate={imageControls}
+        className="relative w-full h-full rounded-full p-1 bg-gradient-to-br from-emerald-400 via-teal-400 to-blue-500 shadow-2xl shadow-emerald-500/20 z-20"
+      >
+        <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-white dark:border-[#09090b] bg-white dark:bg-[#09090b]">
+           <img
+            src={personalInfo.profilePicture}
+            alt="Profile"
+            className="w-full h-full object-cover scale-105"
+          />
+        </div>
+        
+        {/* Ícone de Sparkle */}
+        <div className="absolute bottom-2 right-2 w-7 h-7 bg-emerald-500 border-2 border-white dark:border-[#09090b] rounded-full flex items-center justify-center shadow-lg z-30 animate-pulse pointer-events-none">
+          <Sparkles className="w-3.5 h-3.5 text-white fill-white" />
+        </div>
+      </motion.div>
+
+      {/* Tooltip Mobile Helper (Adaptei o texto) */}
+      <p className="md:hidden text-center text-[10px] text-zinc-400 uppercase tracking-widest opacity-60 mt-4 animate-pulse">
+        Tap to reveal CV
+      </p>
     </div>
   );
 }
 
 /* =========================
-   COMPONENT: PREMIUM STATIC SKILL CARD (COM SPOTLIGHT)
+   3. COMPONENTE: PREMIUM SKILL CARD (Mantido)
    ========================= */
 const PremiumSkillCard = ({ group }: { group: any }) => {
-  // Lógica para definir a cor do spotlight com base na cor do grupo
   let spotlightColor = "rgba(255, 255, 255, 0.1)"; 
   if (group.color.includes('blue')) {
     spotlightColor = "rgba(59, 130, 246, 0.15)";
   } else if (group.color.includes('purple')) {
     spotlightColor = "rgba(168, 85, 247, 0.15)";
   } else if (group.color.includes('red')) {
-    spotlightColor = "rgba(239, 68, 68, 0.15)"; // Adicionada a cor vermelha para o spotlight
+    spotlightColor = "rgba(239, 68, 68, 0.15)";
   }
 
   return (
@@ -121,12 +193,9 @@ const PremiumSkillCard = ({ group }: { group: any }) => {
         className="relative h-full w-full overflow-hidden cursor-default group"
         whileHover={{ y: -2 }}
       >
-        {/* Fundo Decorativo */}
         <group.icon className={`absolute -bottom-4 -right-4 w-24 h-24 ${group.color} opacity-[0.15] -rotate-12 transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110`} />
 
         <div className="relative z-10 p-6 flex flex-col h-full justify-between">
-          
-          {/* Cabeçalho */}
           <div className="flex items-center gap-4 mb-4">
             <div className={`
               p-2.5 rounded-xl bg-zinc-100 dark:bg-white/5 ${group.color} 
@@ -144,7 +213,6 @@ const PremiumSkillCard = ({ group }: { group: any }) => {
             </div>
           </div>
 
-          {/* Lista de Skills */}
           <div className="flex flex-wrap gap-2"> 
             {group.skills.map((skill: string) => (
               <span 
@@ -155,7 +223,6 @@ const PremiumSkillCard = ({ group }: { group: any }) => {
               </span>
             ))}
           </div>
-
         </div>
       </motion.div>
     </SpotlightCard>
@@ -173,13 +240,7 @@ const skillGroups = [
     icon: Cpu,
     color: "text-blue-600 dark:text-blue-400",
     minHeight: "min-h-[180px]", 
-    skills: [
-      "FPGA & Verilog", 
-      "PCB Design", 
-      "Embedded Systems & Firmware", 
-      "Hardware Prototyping", 
-      "Python & MATLAB"
-    ]
+    skills: ["FPGA & Verilog", "PCB Design", "Embedded Systems & Firmware", "Hardware Prototyping", "Python & MATLAB"]
   },
   {
     id: "research",
@@ -188,28 +249,16 @@ const skillGroups = [
     icon: Microscope,
     color: "text-purple-600 dark:text-purple-400",
     minHeight: "min-h-[200px]", 
-    skills: [
-      "Optical Communications", 
-      "Data Encryption & Security", 
-      "Photonic Devices",
-      "Smart Cities & IoT Solutions", 
-      "Energy Harvesting", 
-    ]
+    skills: ["Optical Communications", "Data Encryption & Security", "Photonic Devices", "Smart Cities & IoT Solutions", "Energy Harvesting"]
   },
   {
     id: "leadership",
     title: "Professional Skills",
-    subtitle: "Leadership & Management", // Corrigido capitalization
+    subtitle: "Leadership & Management",
     icon: Users,
-    color: "text-red-600 dark:text-red-400", // Alterado para vermelho
+    color: "text-red-600 dark:text-red-400",
     minHeight: "min-h-[200px]",
-    skills: [
-      "R&D Project Leadership",
-      "Technical Communication",
-      "Community & Event Management",
-      "Science Outreach",
-      "Mentoring"
-    ]
+    skills: ["R&D Project Leadership", "Technical Communication", "Community & Event Management", "Science Outreach", "Mentoring"]
   }
 ];
 
@@ -255,17 +304,15 @@ export default function HeroSection() {
         {/* 2. HERO HEADER */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-16 mb-20 md:mb-24">
           
-          {/* Foto */}
+          {/* Foto (ParticleImage) */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", duration: 0.8 }}
             className="shrink-0 relative"
           >
-            <FlipCard />
-            <p className="md:hidden text-[10px] text-zinc-400 uppercase tracking-widest opacity-60 mt-4 animate-pulse">
-               Tap photo for CV
-            </p>
+            {/* COMPONENTE DE FOTO QUE REAGE AO HOVER */}
+            <ParticleImage />
           </motion.div>
 
           {/* Texto Principal */}
@@ -329,10 +376,8 @@ export default function HeroSection() {
         </div>
 
         <MotionWrapper delay={0.4}>
-            
-            {/* MOBILE AREA (Bio + Skills Carousel) */}
+            {/* Mobile Area */}
             <div className="md:hidden">
-                {/* 3.1.A - BIO CARD MOBILE (COM SPOTLIGHT) */}
                 <SpotlightCard className="mb-6 rounded-[1.5rem]" spotlightColor="rgba(16, 185, 129, 0.15)">
                     <div className="p-6 relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-6 opacity-5">
@@ -364,7 +409,6 @@ export default function HeroSection() {
                     </div>
                 </SpotlightCard>
 
-                {/* 3.1.B - CAROUSEL MOBILE (Agora usa o PremiumSkillCard também) */}
                 <div className="relative">
                     <div 
                         ref={scrollRef}
@@ -373,32 +417,22 @@ export default function HeroSection() {
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
                     {skillGroups.map((group, idx) => (
-                        <div 
-                            key={idx}
-                            className="min-w-[85vw] snap-center"
-                        >
-                            {/* Reutilizando o componente PremiumSkillCard para consistência */}
+                        <div key={idx} className="min-w-[85vw] snap-center">
                             <PremiumSkillCard group={group} />
                         </div>
                     ))}
                     </div>
                     
-                    {/* Indicadores de Pontos */}
                     <div className="flex justify-center gap-1.5 mt-2">
                         {skillGroups.map((_, idx) => (
-                        <div 
-                            key={idx} 
-                            className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-4 bg-emerald-500' : 'w-1.5 bg-zinc-300 dark:bg-zinc-700'}`} 
-                        />
+                        <div key={idx} className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-4 bg-emerald-500' : 'w-1.5 bg-zinc-300 dark:bg-zinc-700'}`} />
                         ))}
                     </div>
                 </div>
             </div>
 
-            {/* DESKTOP GRID */}
+            {/* Desktop Grid */}
             <div className="hidden md:grid grid-cols-20 gap-5 items-stretch">
-                
-                {/* COLUNA ESQUERDA (Span 2) - BIO CARD COM SPOTLIGHT */}
                 <div className="col-span-13 flex flex-col h-full">
                     <SpotlightCard className="flex-1 rounded-[2rem]" spotlightColor="rgba(16, 185, 129, 0.15)">
                         <div className="p-6 md:p-8 h-full flex flex-col justify-between relative overflow-hidden group">
@@ -431,14 +465,11 @@ export default function HeroSection() {
                         </div>
                     </SpotlightCard>
                 </div>
-
-                {/* COLUNA DIREITA (Span 1) */}
                 <div className="col-span-7 flex flex-col gap-4">
                     {skillGroups.map((group, idx) => (
                       <PremiumSkillCard key={idx} group={group} />
                     ))}
                 </div>
-
             </div>
 
         </MotionWrapper>

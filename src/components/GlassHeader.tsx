@@ -18,7 +18,7 @@ const navItems = [
   { id: "scientific Outreach and Certifications", Icon: Globe, label: "Scientific Outreach" }, 
   { id: "publications", Icon: BookOpen,      label: "Publications" },
   { id: "map",          Icon: MapPinned,     label: "Global Impact" },
-  { id: "awards",       Icon: Trophy,        label: "Awards" },
+  { id: "awards",       Icon: Trophy,        label: "Awards & Recognition" },
 ];
 
 // === SCROLL SPY HOOK ===

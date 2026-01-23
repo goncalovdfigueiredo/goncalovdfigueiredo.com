@@ -444,9 +444,10 @@ export const scientificEvents: SciEvent[] = [
     org: "LabTel - UFES (Brazil)",
     role: "Invited Speaker",
     type: "Seminar",
-    description: "Invited presentation on 'Enhancing Visible Light Communications using a Large-Scale Luminescent Solar Concentrator Receiver'. Part of a joint international seminar series bridging research between Brazil (UFES) and Portugal (IT & CICECO).",
+    description: "Invited presentation on 'Enhancing Visible Light Communications using a Large-Scale Luminescent Solar Concentrator Receiver'. Part of a joint international seminar series bridging research between Brazil (UFES) and Portugal (Instituto de Telecomunicações & CICECO).",
     tags: ["VLC", "LSC", "International Colab"],
     links: [{ label: "LinkedIn post", href: "https://www.linkedin.com/posts/goncalovfigueiredo_this-friday-8th-at-1-pm-portugal-time-activity-7257850956480962561-sPk_", kind: "post" }],
+    featured: true,
   },
   {
     title: "Smart City Expo World Congress",
@@ -487,22 +488,22 @@ export const scientificEvents: SciEvent[] = [
     tags: ["Python", "Algorithms", "AI"],
     links: [{ label: "Guinness Record", href: "https://www.guinnessworldrecords.com/world-records/117645-largest-computer-programming-lesson", kind: "site" }],
   },
-  {
-    title: "Media Coverage of Ph.D. Research (PLANETa)",
-    date: "Jun 2024",
-    location: "Portugal (National Media)",
-    geo: { lat: 40.6405, lon: -8.6538 },
-    org: "IST • UA • Lightenjin",
-    role: "Featured Research",
-    type: "Press",
-    description: "Research featured across national television (SIC Notícias, RTP), radio, and press, highlighting the societal impact of the PLANETa project.",
-    tags: ["Media Relations", "Photonics", "Innovation"],
-    links: [
-      { label: "Público", href: "https://www.publico.pt/2024/05/29/azul/noticia/investigadores-universidade-aveiro-cria-vidro-gera-energia-partir-luz-solar-2092199", kind: "press" },
-      { label: "SIC Notícias", href: "https://sicnoticias.pt/pais/2024-06-21-video-universidade-de-aveiro-cria-janela-capaz-de-produzir-energia-49c3f721", kind: "press" },
-    ],
-    featured: true,
-  },
+  //{
+  //  title: "Media Coverage of Ph.D. Research (PLANETa)",
+  //  date: "Jun 2024",
+  //  location: "Portugal (National Media)",
+  //  geo: { lat: 40.6405, lon: -8.6538 },
+  //  org: "IST • UA • Lightenjin",
+  //  role: "Featured Research",
+   // type: "Press",
+  //  description: "Research featured across national television (SIC Notícias, RTP), radio, and press, highlighting the societal impact of the PLANETa project.",
+  //  tags: ["Media Relations", "Photonics", "Innovation"],
+  //  links: [
+  //    { label: "Público", href: "https://www.publico.pt/2024/05/29/azul/noticia/investigadores-universidade-aveiro-cria-vidro-gera-energia-partir-luz-solar-2092199", kind: "press" },
+  //    { label: "SIC Notícias", href: "https://sicnoticias.pt/pais/2024-06-21-video-universidade-de-aveiro-cria-janela-capaz-de-produzir-energia-49c3f721", kind: "press" },
+  //  ],
+  //  featured: true,
+  //},
   {
     title: "Radiociência Podcast (Ep. 3)",
     date: "Mar 2024",
@@ -755,5 +756,51 @@ export const awards = [
       "Instituto de Telecomunicações",
       "CICECO - Aveiro Institute of Materials"
     ]
+  },
+];
+
+// src/lib/data.ts
+
+export const featuredIn = [
+  {
+    source: "SIC Notícias",
+    description: "TV interview showcasing the PLANETa project and smart window technology.",
+    date: "Jun 2024",
+    type: "TV News", // Mantém
+    link: "https://sicnoticias.pt/pais/2024-06-21-video-universidade-de-aveiro-cria-janela-capaz-de-produzir-energia-49c3f721"
+  },
+  {
+    source: "Público",
+    description: "Featured article on glass that generates energy from sunlight.",
+    date: "May 2024",
+    type: "Online News", // MUDADO: De "Newspaper" para "Online News"
+    link: "https://www.publico.pt/2024/05/29/azul/noticia/investigadores-universidade-aveiro-cria-vidro-gera-energia-partir-luz-solar-2092199"
+  },
+  {
+    source: "RTP",
+    description: "Report on coated glass capturing invisible sunlight for photovoltaics.",
+    date: "May 2024",
+    type: "Online News", // MUDADO
+    link: "https://www.rtp.pt/noticias/economia/vidro-revestido-capta-luz-solar-invisivel-para-alimentar-celulas-fotovoltaicas_n1586094"
+  },
+  {
+    source: "Diário de Aveiro",
+    description: "Printed article: 'Glass capable of generating electricity from sunlight'.",
+    date: "May 2024",
+    type: "Print Newspaper", 
+  },
+  {
+    source: "Podcast da Radiociência (Ep. 3)",
+    description: "Guest speaker discussing the award-winning research at the Congress of the Portuguese Committee of URSI.",
+    date: "Mar 2024",
+    type: "Podcast",
+    link: "https://open.spotify.com/episode/6sB2t3xHQMnBWxnTFtxr0q"
+  },
+  {
+    source: "Instituto de Telecomunicações",
+    description: "Official coverage of the ANACOM-URSI 1st Place Award distinction.",
+    date: "Nov 2023",
+    type: "Institutional",
+    link: "https://www.it.pt/News/NewsPost/4961"
   },
 ];
