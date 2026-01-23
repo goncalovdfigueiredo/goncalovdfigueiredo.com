@@ -166,10 +166,6 @@ function ParticleImage() {
         </div>
       </motion.div>
 
-      {/* Tooltip Mobile Helper (Adaptei o texto) */}
-      <p className="md:hidden text-center text-[10px] text-zinc-400 uppercase tracking-widest opacity-60 mt-4 animate-pulse">
-        Tap to reveal CV
-      </p>
     </div>
   );
 }
