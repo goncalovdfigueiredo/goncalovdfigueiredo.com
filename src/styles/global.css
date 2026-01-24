@@ -4,56 +4,47 @@
 @custom-variant dark (&:is(.dark *));
 
 /* =========================================
-   LIGHT MODE (PREMIUM & LEGÍVEL)
+   1. VARIÁVEIS DE TEMA (OKLCH)
    ========================================= */
 :root {
   --radius: 0.625rem;
-  
-  /* 1. FUNDO DA PÁGINA: "Off-White" Limpo (Quase Branco) */
-  --background: oklch(0.99 0 0); 
-  
-  /* 2. TEXTO PRINCIPAL: Preto Profundo (Jet Black) */
-  --foreground: oklch(0.10 0 0); 
 
-  /* 3. CARTÕES: Branco Puro */
+  /* LIGHT MODE */
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.10 0 0);
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.10 0 0);
-  
+
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.10 0 0);
 
-  /* 4. BRAND COLORS (Emerald - Ajustado para Light Mode) */
-  --primary: oklch(0.45 0.15 145); /* Verde Floresta Elegante */
+  --primary: oklch(0.45 0.15 145); /* Verde Floresta */
   --primary-foreground: oklch(0.99 0 0);
-  
+
   --secondary: oklch(0.96 0 0);
   --secondary-foreground: oklch(0.20 0 0);
 
-  /* 5. FUNDOS SECUNDÁRIOS */
-  --muted: oklch(0.96 0 0); 
-  
-  /* 6. TEXTO SECUNDÁRIO (CRÍTICO PARA LEITURA)
-     Escurecido para Oklch 0.45 (Cinzento Chumbo) para leitura perfeita. */
-  --muted-foreground: oklch(0.45 0 0); 
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.45 0 0);
 
   --accent: oklch(0.96 0 0);
   --accent-foreground: oklch(0.10 0 0);
-  
+
   --destructive: oklch(0.577 0.245 27.325);
-  
-  /* 7. BORDAS: Mais visíveis (Zinc-300) */
+
   --border: oklch(0.87 0 0);
   --input: oklch(0.87 0 0);
-  
-  --ring: oklch(0.45 0.15 145); /* Anel de foco verde */
-  
-  /* Cores dos gráficos (Mantidas) */
+  --ring: oklch(0.45 0.15 145);
+
+  /* Gráficos */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  
+
+  /* Sidebar */
   --sidebar: oklch(0.99 0 0);
   --sidebar-foreground: oklch(0.10 0 0);
   --sidebar-primary: oklch(0.20 0 0);
@@ -64,33 +55,41 @@
   --sidebar-ring: oklch(0.70 0 0);
 }
 
-/* =========================================
-   DARK MODE (MANTIDO IGUAL - NÃO MEXI)
-   ========================================= */
+/* DARK MODE */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
+
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
+
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
+
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
+
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
+
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
+
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
+
   --destructive: oklch(0.704 0.191 22.216);
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
+
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -101,11 +100,15 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* =========================================
+   2. CONFIGURAÇÃO TAILWIND (@theme)
+   ========================================= */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -137,8 +140,26 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Animações Personalizadas */
+  --animate-spin-slow: spin 8s linear infinite;
+  
+  /* 👇 ESTA É A CORREÇÃO CRÍTICA PARA O EFEITO DO ELETÃO 👇 */
+  --animate-border-spin: border-spin 4s linear infinite;
+
+  @keyframes border-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
+/* =========================================
+   3. ESTILOS BASE
+   ========================================= */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -148,15 +169,27 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Estilização inteligente de links */
+  .prose a {
+    @apply text-emerald-500 underline decoration-emerald-500 decoration-2 underline-offset-2 transition-colors;
+  }
+  .prose a:hover {
+    @apply text-emerald-400;
+  }
 }
 
-/* Helpers 3D e Animações */
+/* =========================================
+   4. UTILITÁRIOS (3D & Scrollbar)
+   ========================================= */
+
+/* Helpers 3D */
 .perspective { perspective: 1000px; }
 .preserve-3d { transform-style: preserve-3d; }
 .backface-hidden { backface-visibility: hidden; }
-.rotate-y-180 { transform: rotateY(900deg); }
-.transform-style-preserve-3d { transform-style: preserve-3d; }
-.rotateY-180 { transform: rotateY(180deg); }
+
+/* Rotações */
+.rotate-y-180 { transform: rotateY(180deg); }
 
 .spin-multiple {
   transform: rotateY(0deg);
@@ -166,51 +199,29 @@
 }
 .spin-multiple:hover { transform: rotateY(1080deg); }
 
+/* Scrollbars */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Links */
-@layer base {
-  a {
-    @apply text-foreground no-underline decoration-emerald-500 decoration-2 underline-offset-2;
-  }
-  a:hover {
-    @apply underline text-emerald-500;
-  }
-  a:visited {
-    @apply text-foreground;
-  }
-  a:focus-visible {
-    @apply ring-2 ring-emerald-500/50 rounded;
-  }
-  .prose a,
-  .prose a:visited {
-    @apply text-emerald-500 underline decoration-emerald-500 decoration-2 underline-offset-2;
-  }
-  .prose a:hover {
-    @apply text-emerald-400;
-  }
-  .dark a:hover { @apply text-emerald-400; }
-}
-
-/* Scrollbars */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
   background: #a1a1aa;
   border-radius: 5px;
-  border: 2px solid #ffffff;
+  border: 2px solid transparent;
   background-clip: content-box;
 }
-.dark ::-webkit-scrollbar-track { background: #09090b; }
+.dark ::-webkit-scrollbar-track { background: transparent; }
 .dark ::-webkit-scrollbar-thumb {
   background: #27272a;
-  border: 2px solid #09090b;
+  border: 2px solid transparent;
 }
 ::-webkit-scrollbar-thumb:hover { background-color: #10b981 !important; }
+
+/* Seleção de Texto */
 ::selection { background-color: rgba(16, 185, 129, 0.3); color: inherit; }
 
-/* No global.css */
+/* Fundo com Ruído (Noise) */
 .bg-noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 }

@@ -3,20 +3,8 @@
 
 import { useState } from "react";
 import {
-  Handshake,
-  Calendar,
-  MapPin,
-  Briefcase,
-  ChartGantt,
-  Rocket,
-  BrainCircuit,
-  Gamepad2,
-  BookOpen,
-  MessageCircleHeart,
-  Globe,
-  HeartHandshake,
-  ChevronDown,
-  ChevronUp
+  Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit,
+  Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, ChevronUp
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
@@ -34,6 +22,35 @@ const TagColors: Record<string, string> = {
   Resource: "text-blue-600 bg-blue-500/10 border-blue-500/20",       
   Community: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20", 
   Networking: "text-purple-600 bg-purple-500/10 border-purple-500/20",   
+};
+
+// 👇 HELPER NOVO: Renderiza 1 logo ou 3 logos em pilha
+const CompanyLogo = ({ job }: { job: any }) => {
+  // Se tiver a propriedade 'logos' (array), renderiza o grupo
+  if (job.logos && job.logos.length > 0) {
+    return (
+      <div className="flex items-center -space-x-2 overflow-hidden py-1 pl-1">
+        {job.logos.map((logo: string, idx: number) => (
+          <div 
+            key={idx} 
+            className="relative z-10 inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900 bg-white dark:bg-white/10 p-0.5"
+            style={{ zIndex: 10 - idx }} // Garante que o primeiro fica por cima
+          >
+            <img 
+              src={logo} 
+              alt="Publisher Logo" 
+              className="h-full w-full object-contain rounded-full" 
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Comportamento padrão (1 só logo)
+  return (
+    <img src={job.logo} alt={job.company} className="w-full h-full object-contain" />
+  );
 };
 
 export default function LeadershipSection() {
@@ -57,7 +74,6 @@ export default function LeadershipSection() {
               Leadership
             </h2>
 
-            {/* BOTÕES COMPACTOS (IGUAL À EDUCAÇÃO/EXPERIÊNCIA) */}
             <div className="flex gap-2 w-full md:w-auto">
               <a href="#map" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-[10px] md:text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-300">
                 <MapPin className="h-3.5 w-3.5 md:h-4 md:w-4" />
@@ -72,10 +88,10 @@ export default function LeadershipSection() {
         </MotionWrapper>
 
         {/* =======================
-            VERSÃO MOBILE (LISTA VERTICAL PREMIUM)
+            VERSÃO MOBILE
            ======================= */}
         <div className="lg:hidden flex flex-col gap-4">
-            {LeadershipExperience.map((job, idx) => {
+            {LeadershipExperience.map((job: any, idx: number) => {
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
               const isSelected = activeCard === idx;
               
@@ -96,23 +112,21 @@ export default function LeadershipSection() {
                         : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30'}
                     `}
                   >
-                    {/* Header Compacto */}
                     <div className="p-4 flex items-start gap-3">
-                       {/* Logo */}
-                       <div className="p-2 bg-white dark:bg-white/5 rounded-lg border border-zinc-200 dark:border-white/10 shrink-0">
-                          <img src={job.logo} alt={job.company} className="w-8 h-8 object-contain" />
+                       {/* LOGO AREA (Alterado para suportar múltiplos) */}
+                       <div className={`
+                         rounded-lg border border-zinc-200 dark:border-white/10 shrink-0 flex items-center justify-center bg-white dark:bg-white/5
+                         ${job.logos ? 'px-1 py-1 w-auto' : 'p-2 w-12 h-12'} 
+                       `}>
+                          <CompanyLogo job={job} />
                        </div>
                        
-                       {/* Texto */}
                        <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start">
                              <h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight truncate pr-2">{job.position}</h3>
-                             {/* Seta */}
                              {isSelected ? <ChevronUp className="w-4 h-4 text-emerald-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
                           </div>
-                          
-                          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate mb-1">{job.company}</p>
-                          
+                          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium  mb-1">{job.company}</p>
                           <div className="flex items-center gap-3 text-[10px] text-zinc-500 dark:text-zinc-400">
                              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {job.period}</span>
                              <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {locationDisplay}</span>
@@ -120,7 +134,6 @@ export default function LeadershipSection() {
                        </div>
                     </div>
 
-                    {/* Conteúdo Expansível */}
                     <AnimatePresence>
                       {isSelected && (
                         <motion.div
@@ -131,7 +144,6 @@ export default function LeadershipSection() {
                         >
                           <div className="px-4 pb-4 pt-0">
                             <div className="h-px w-full bg-zinc-200 dark:bg-white/10 mb-3" />
-                            
                             <div className="space-y-3">
                               {job.achievements.map((ach: any, i: number) => {
                                 if (typeof ach === 'object' && ach.type === 'activity_grid') {
@@ -175,11 +187,11 @@ export default function LeadershipSection() {
         </div>
 
         {/* =======================
-            VERSÃO DESKTOP (Mantida com os cartões grandes)
+            VERSÃO DESKTOP
            ======================= */}
         <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4">
           <div className="flex items-start min-w-max gap-4">
-            {LeadershipExperience.map((job, idx) => {
+            {LeadershipExperience.map((job: any, idx: number) => {
               const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
 
@@ -206,13 +218,18 @@ export default function LeadershipSection() {
 
                   <GlassCard className="p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between bg-zinc-100/90 border border-zinc-200 shadow-xl dark:bg-[#09090b]/60 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40">
                     <div className="mb-6 mt-2">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="p-2.5 bg-white dark:bg-white/5 rounded-xl border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0">
-                          <img src={job.logo} alt={job.company} className="w-10 h-10 object-contain" />
+                      <div className="flex items-center gap-4 mb-4">
+                        {/* LOGO AREA DESKTOP (Alterado para suportar múltiplos) */}
+                        <div className={`
+                           rounded-xl border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0 bg-white dark:bg-white/5
+                           ${job.logos ? 'px-2 py-1.5 w-auto' : 'p-2.5 w-12 h-12 flex items-center justify-center'}
+                        `}>
+                           <CompanyLogo job={job} />
                         </div>
+
                         <div>
                             <h3 className="text-lg font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">{job.company}</p>
+                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[200px]">{job.company}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400">
@@ -222,7 +239,7 @@ export default function LeadershipSection() {
                       </div>
                     </div>
 
-                    {/* Desktop Content (Hover logic) */}
+                    {/* Desktop Content */}
                     {job.achievements.length > 0 && (
                       <div className="relative p-4 bg-white/50 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5 group/achieve hover:border-emerald-500/20 transition-colors duration-300 flex-grow">
                         <div className="flex items-center mb-3">
@@ -281,7 +298,7 @@ export default function LeadershipSection() {
           </div>
         </div>
 
-        {/* TIMELINE INFERIOR (COMPACTO MOBILE) */}
+        {/* TIMELINE */}
         <MotionWrapper>
           <div id="timeline" className="mt-16 md:mt-20 scroll-mt-24">
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">

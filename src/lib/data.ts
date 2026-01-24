@@ -240,6 +240,9 @@ export const workExperience = [
 ];
 
 export const LeadershipExperience = [
+  
+
+  // 1. CARGO ATUAL (2026 - Presente)
   {
     company: "CICECO - Aveiro Institute of Materials",
     location: {
@@ -247,8 +250,31 @@ export const LeadershipExperience = [
       lat: 40.637747,
       lon: -8.658116,
     },
-    position: "PhD Student Council Member",
-    period: "Jan 2025 - Present",
+    // Destaque para o cargo de liderança financeira
+    position: "PhD Student Council - Treasurer",
+    period: "Jan 2026 - Present",
+    logo: "/ciceco.png",
+    achievements: [
+      "Elected as Treasurer to manage the council's budget and strategic planning, ensuring financial support for student-led initiatives.",
+      {
+        type: "activity_grid",
+        items: [
+          { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
+        ]
+      }
+    ],
+  },
+
+ 
+  {
+    company: "CICECO - Aveiro Institute of Materials",
+    location: {
+      city: "Aveiro, Portugal",
+      lat: 40.637747,
+      lon: -8.658116,
+    },
+    position: "PhD Student Council - Member",
+    period: "Jan 2025 - Jan 2026",
     logo: "/ciceco.png",
     relatedLocations: [
       {
@@ -273,49 +299,27 @@ export const LeadershipExperience = [
           { label: "CICECO Welcome Event", icon: "HeartHandshake", tag: "Event" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
           { label: "Game Night", icon: "Gamepad2", tag: "Event" },
-          { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
           { label: "WhatsApp", icon: "MessageCircleHeart", tag: "Community" },
           { label: "Sweden Exchange (KTH/Linköping)", icon: "Globe", tag: "Networking" },
         ]
       }
     ],
   },
-  
+
   {
-    company: "IEEE",
+    company: "IEEE, Elsevier & Optica", 
     location: "Remote",
-    position: "Scientific Reviewer (IEEE)",
-    period: "Dec 2024 - Present",
-    logo: "/IEEE.png",
+    position: "Scientific Peer Reviewer", 
+    period: "Oct 2024 - Present", 
+    logo: "/IEEE.png", 
+    logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
     achievements: [
-    "I work as a scientific reviewer for multiple high-impact IEEE journals and have reviewed more than 20 manuscripts to date, including:",
-    "__chart__",
+      "Ensuring scientific integrity by serving as a subject matter expert reviewer for high-impact journals across multiple publishers.",
+      "Active contribution to the scientific community through critical evaluation of over 50+ manuscripts in Optics and Photonics.",
+      "__chart__", 
     ],
-    },
-    
-    {
-    company: "Elsevier",
-    location: "Remote",
-    position: "Scientific Reviewer (Elsevier)",
-    period: "Nov 2024 - Present",
-    logo: "/Elsevier.png",
-    achievements: [
-    "I work as a scientific reviewer for several Elsevier journals, including:",
-    "__chart__",
-    ],
-    },
-    
-    {
-    company: "Optica",
-    location: "Remote",
-    position: "Scientific Reviewer (Optica)",
-    period: "Oct 2024 - Present",
-    logo: "/Optica.png",
-    achievements: [
-    "I work as a scientific reviewer for multiple high-impact IEEE journals and have reviewed more than 20 manuscripts to date, including:",
-    "__chart__",
-    ],
-    },
+  },
+  
   {
     company: "Instituto Superior Técnico",
     location: {
