@@ -126,7 +126,7 @@ export default function LeadershipSection() {
                              <h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight truncate pr-2">{job.position}</h3>
                              {isSelected ? <ChevronUp className="w-4 h-4 text-emerald-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
                           </div>
-                          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium  mb-1">{job.company}</p>
+                          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate mb-1">{job.company}</p>
                           <div className="flex items-center gap-3 text-[10px] text-zinc-500 dark:text-zinc-400">
                              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {job.period}</span>
                              <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {locationDisplay}</span>

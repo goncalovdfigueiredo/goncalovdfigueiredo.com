@@ -345,7 +345,11 @@ export const LeadershipExperience = [
     position: "Scout",
     period: "Oct 2008 - Oct 2021",
     logo: "/scout.png",
-    achievements: [],
+    achievements: [
+"Developed adaptability and practical problem-solving, learning to find effective solutions even with limited tools or under pressure.",
+"Honed leadership and project management skills by organizing complex logistics for field activities, fostering teamwork and resilience in dynamic environments.",
+
+    ],
   },
 ];
 
