@@ -241,30 +241,6 @@ export const workExperience = [
 
 export const LeadershipExperience = [
   
-
-  // 1. CARGO ATUAL (2026 - Presente)
-  {
-    company: "CICECO - Aveiro Institute of Materials",
-    location: {
-      city: "Aveiro, Portugal",
-      lat: 40.637747,
-      lon: -8.658116,
-    },
-    // Destaque para o cargo de liderança financeira
-    position: "PhD Student Council - Treasurer",
-    period: "Jan 2026 - Present",
-    logo: "/ciceco.png",
-    achievements: [
-      "Elected as Treasurer to manage the council's budget and strategic planning, ensuring financial support for student-led initiatives.",
-      {
-        type: "activity_grid",
-        items: [
-          { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
-        ]
-      }
-    ],
-  },
-
  
   {
     company: "CICECO - Aveiro Institute of Materials",
@@ -273,8 +249,8 @@ export const LeadershipExperience = [
       lat: 40.637747,
       lon: -8.658116,
     },
-    position: "PhD Student Council - Member",
-    period: "Jan 2025 - Jan 2026",
+    position: "PhD Student Council Secretary",
+    period: "Jan 2025 - Present",
     logo: "/ciceco.png",
     relatedLocations: [
       {
@@ -292,15 +268,27 @@ export const LeadershipExperience = [
     ],
     achievements: [
       "As a CAD member, I actively advocate for 250 doctoral candidates by organizing high-impact initiatives that bridge academia and industry:",
+      
+      // Bloco de 2025
       {
         type: "activity_grid",
+        year: "2026", // 👈 Identificador do Ano
+        items: [
+          { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
+        ]
+      },
+
+      // Bloco de 2026
+      {
+        type: "activity_grid",
+        year: "2025", // 👈 Identificador do Ano
         items: [
           { label: "AIM Further 2025", icon: "Rocket", tag: "Event" },
           { label: "CICECO Welcome Event", icon: "HeartHandshake", tag: "Event" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
           { label: "Game Night", icon: "Gamepad2", tag: "Event" },
-          { label: "WhatsApp", icon: "MessageCircleHeart", tag: "Community" },
-          { label: "Sweden Exchange (KTH/Linköping)", icon: "Globe", tag: "Networking" },
+          { label: "WhatsApp Community", icon: "MessageCircleHeart", tag: "Community" },
+          { label: "Sweden Exchange", icon: "Globe", tag: "Networking" },
         ]
       }
     ],

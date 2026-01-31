@@ -22,7 +22,7 @@ const ALL_JOURNALS = [
 
   // --- Optica (Verde/Esmeralda) ---
   { name: "Optics Express", count: 13, color: "bg-emerald-500", publisher: "Optica" },
-  { name: "Applied Optics", count: 5, color: "bg-emerald-500", publisher: "Optica" },
+  { name: "Applied Optics", count: 6, color: "bg-emerald-500", publisher: "Optica" },
   { name: "Optics Continuum", count: 2, color: "bg-emerald-500", publisher: "Optica" },
   { name: "Optics Letters", count: 2, color: "bg-emerald-500", publisher: "Optica" },
 ];

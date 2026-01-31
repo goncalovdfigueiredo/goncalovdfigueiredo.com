@@ -24,9 +24,7 @@ const TagColors: Record<string, string> = {
   Networking: "text-purple-600 bg-purple-500/10 border-purple-500/20",   
 };
 
-// 👇 HELPER NOVO: Renderiza 1 logo ou 3 logos em pilha
 const CompanyLogo = ({ job }: { job: any }) => {
-  // Se tiver a propriedade 'logos' (array), renderiza o grupo
   if (job.logos && job.logos.length > 0) {
     return (
       <div className="flex items-center -space-x-2 overflow-hidden py-1 pl-1">
@@ -34,23 +32,15 @@ const CompanyLogo = ({ job }: { job: any }) => {
           <div 
             key={idx} 
             className="relative z-10 inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900 bg-white dark:bg-white/10 p-0.5"
-            style={{ zIndex: 10 - idx }} // Garante que o primeiro fica por cima
+            style={{ zIndex: 10 - idx }}
           >
-            <img 
-              src={logo} 
-              alt="Publisher Logo" 
-              className="h-full w-full object-contain rounded-full" 
-            />
+            <img src={logo} alt="Publisher Logo" className="h-full w-full object-contain rounded-full" />
           </div>
         ))}
       </div>
     );
   }
-
-  // Comportamento padrão (1 só logo)
-  return (
-    <img src={job.logo} alt={job.company} className="w-full h-full object-contain" />
-  );
+  return <img src={job.logo} alt={job.company} className="w-full h-full object-contain" />;
 };
 
 export default function LeadershipSection() {
@@ -59,6 +49,37 @@ export default function LeadershipSection() {
   const handleCardClick = (idx: number) => {
     setActiveCard(activeCard === idx ? null : idx);
   };
+
+  // 👇 FUNÇÃO HELPER PARA RENDERIZAR A GRID (Reutilizada no Mobile e Desktop)
+  const renderActivityGrid = (ach: any, i: number) => (
+    <div key={i} className="pt-2 first:pt-0">
+      {/* SEPARADOR DE ANO (Se existir 'year' nos dados) */}
+      {ach.year && (
+        <div className="flex items-center gap-2 mb-3 mt-1">
+          <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+            {ach.year}
+          </span>
+          <div className="h-px flex-1 bg-zinc-200 dark:bg-white/10"></div>
+        </div>
+      )}
+      
+      {/* GRID DE ÍCONES */}
+      <div className="grid grid-cols-2 gap-2">
+        {ach.items.map((item: any, k: number) => {
+          const IconComp = IconMap[item.icon] || Rocket;
+          const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
+          
+          return (
+            <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center hover:bg-emerald-50 dark:hover:bg-emerald-500/20 transition-all duration-300 group/item">
+              <IconComp className="h-5 w-5 mb-2 text-zinc-400 dark:text-zinc-500 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 transition-colors" />
+              <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mb-1.5">{item.label}</span>
+              <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded border ${tagColor}`}>{item.tag}</span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <section id="leadership" className="py-16 md:py-20 relative overflow-hidden">
@@ -113,7 +134,6 @@ export default function LeadershipSection() {
                     `}
                   >
                     <div className="p-4 flex items-start gap-3">
-                       {/* LOGO AREA (Alterado para suportar múltiplos) */}
                        <div className={`
                          rounded-lg border border-zinc-200 dark:border-white/10 shrink-0 flex items-center justify-center bg-white dark:bg-white/5
                          ${job.logos ? 'px-1 py-1 w-auto' : 'p-2 w-12 h-12'} 
@@ -147,19 +167,7 @@ export default function LeadershipSection() {
                             <div className="space-y-3">
                               {job.achievements.map((ach: any, i: number) => {
                                 if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                  return (
-                                    <div key={i} className="grid grid-cols-2 gap-2">
-                                      {ach.items.map((item: any, k: number) => {
-                                        const IconComp = IconMap[item.icon] || Rocket;
-                                        return (
-                                          <div key={k} className="flex flex-col items-center justify-center p-2 rounded-lg bg-zinc-100/50 dark:bg-white/5 border border-zinc-200/50 dark:border-white/5 text-center">
-                                            <IconComp className="h-4 w-4 mb-1.5 text-zinc-400" />
-                                            <span className="text-[10px] font-semibold text-zinc-700 dark:text-zinc-300 leading-tight">{item.label}</span>
-                                          </div>
-                                        )
-                                      })}
-                                    </div>
-                                  );
+                                  return renderActivityGrid(ach, i); // 👇 USANDO A NOVA FUNÇÃO HELPER
                                 }
                                 if (ach === "__chart__") {
                                   return (
@@ -219,7 +227,6 @@ export default function LeadershipSection() {
                   <GlassCard className="p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between bg-zinc-100/90 border border-zinc-200 shadow-xl dark:bg-[#09090b]/60 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40">
                     <div className="mb-6 mt-2">
                       <div className="flex items-center gap-4 mb-4">
-                        {/* LOGO AREA DESKTOP (Alterado para suportar múltiplos) */}
                         <div className={`
                            rounded-xl border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0 bg-white dark:bg-white/5
                            ${job.logos ? 'px-2 py-1.5 w-auto' : 'p-2.5 w-12 h-12 flex items-center justify-center'}
@@ -229,7 +236,7 @@ export default function LeadershipSection() {
 
                         <div>
                             <h3 className="text-lg font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[200px]">{job.company}</p>
+                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[300px]">{job.company}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400">
@@ -253,21 +260,7 @@ export default function LeadershipSection() {
                           <div className="space-y-3 mt-2 pl-1">
                             {job.achievements.map((ach: any, i: number) => {
                               if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                return (
-                                  <div key={i} className="grid grid-cols-2 gap-2 pt-2">
-                                    {ach.items.map((item: any, k: number) => {
-                                      const IconComp = IconMap[item.icon] || Rocket;
-                                      const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
-                                      return (
-                                        <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center hover:bg-emerald-50 dark:hover:bg-emerald-500/20 transition-all duration-300 group/item">
-                                          <IconComp className="h-5 w-5 mb-2 text-zinc-400 dark:text-zinc-500 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 transition-colors" />
-                                          <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mb-1.5">{item.label}</span>
-                                          <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded border ${tagColor}`}>{item.tag}</span>
-                                        </div>
-                                      )
-                                    })}
-                                  </div>
-                                );
+                                return renderActivityGrid(ach, i); // 👇 USANDO A NOVA FUNÇÃO HELPER
                               }
                               if (ach === "__chart__") {
                                 return (
@@ -298,7 +291,7 @@ export default function LeadershipSection() {
           </div>
         </div>
 
-        {/* TIMELINE */}
+        {/* TIMELINE - Mantida igual... */}
         <MotionWrapper>
           <div id="timeline" className="mt-16 md:mt-20 scroll-mt-24">
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
