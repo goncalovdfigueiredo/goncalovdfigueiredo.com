@@ -375,6 +375,7 @@ export const skills = {
     "Physical Layer Security & Cryptography", // O diferencial do teu Mestrado (Chaos/CSK)
     "Optoelectronic Prototyping", // Mais preciso que "Hardware Prototyping" (licenciatura)
     "PCB Design", // Especificar ferramentas aqui ajuda no SEO do CV
+    "FPGA",
     "IoT & Smart City Infrastructure", // Contexto de aplicação (CAT)
   ],
   programmingLanguages: [
