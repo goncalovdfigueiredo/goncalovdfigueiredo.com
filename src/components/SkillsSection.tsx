@@ -32,7 +32,7 @@ import {
 const subCategories: Record<string, { label: string; color: string; bg: string; border: string }> = {
   "Circuit Design": { label: "Circuit Design", color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
   "Embedded Systems": { label: "Embedded Systems", color: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20" },
-  "Data & Visulatization": { label: "Data & Viz", color: "text-amber-500", bg: "bg-amber-500/10", border: "border-amber-500/20" },
+  "Data & Viz": { label: "Data & Visualization", color: "text-amber-500", bg: "bg-amber-500/10", border: "border-amber-500/20" },
   "General": { label: "General Tool", color: "text-zinc-500", bg: "bg-zinc-500/10", border: "border-zinc-500/20" },
 };
 
