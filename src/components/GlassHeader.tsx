@@ -50,17 +50,26 @@ export default function GlassHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const activeSection = useScrollSpy(navItems.map((n) => n.id));
 
-  // === FUNÇÃO DE SCROLL TO TOP ROBUSTA ===
-  const handleScrollToTop = (e: React.MouseEvent) => {
-    e.preventDefault(); // Impede o comportamento padrão do link
+  // === FUNÇÃO "NUCLEAR" DE SCROLL TO TOP ===
+  const handleScrollToTop = () => {
+    // Opção 1: Janela Global
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     
-    // Tenta fazer o scroll suave
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    // Opção 2: Contentores principais comuns
+    if (typeof document !== "undefined") {
+      document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
+      document.body.scrollTo({ top: 0, behavior: "smooth" });
+      
+      // Opção 3: Procura e scrolla qualquer wrapper principal que tenha scroll ativo
+      // Útil se o scroll estiver numa <main> ou <div> com 'h-screen overflow-y-scroll'
+      const mainWrapper = document.querySelector('main') || document.getElementById('root') || document.getElementById('__next');
+      if (mainWrapper) {
+        mainWrapper.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
 
-    // Fecha o menu mobile se estiver aberto
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
@@ -70,22 +79,25 @@ export default function GlassHeader() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} 
-        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl"
+        // z-[100] garante que está no topo da pilha de camadas
+        // pointer-events-none permite clicar "através" das partes vazias do header
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[95%] max-w-6xl pointer-events-none"
       >
         <div className="
-          relative flex items-center justify-between px-4 py-2 
-          rounded-full 
+          relative flex items-center justify-between px-4 py-3 
+          rounded-2xl 
           bg-white/80 dark:bg-[#09090b]/70 
           backdrop-blur-xl 
           border border-white/40 dark:border-white/10
           shadow-lg shadow-black/5 dark:shadow-black/40
+          pointer-events-auto
         ">
           
-          {/* === ESQUERDA: Logo + Nome (CORRIGIDO) === */}
-          <div 
+          {/* === ESQUERDA: Logo + Nome (Botão Seguro) === */}
+          <button 
+            type="button"
             onClick={handleScrollToTop}
-            className="flex items-center gap-3 group shrink-0 pr-4 cursor-pointer select-none" 
-            role="button"
+            className="flex items-center gap-3 group shrink-0 pr-4 cursor-pointer select-none bg-transparent border-none appearance-none outline-none z-50 pointer-events-auto" 
             aria-label="Back to Top"
           >
             <div className="
@@ -104,7 +116,7 @@ export default function GlassHeader() {
             <span className="hidden sm:block font-semibold text-sm tracking-tight text-zinc-800 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
               Gonçalo Figueiredo
             </span>
-          </div>
+          </button>
 
           {/* === CENTRO: Navegação Desktop === */}
           <nav className="hidden md:flex items-center gap-1">
@@ -167,7 +179,7 @@ export default function GlassHeader() {
 
             {/* Mobile Toggle */}
             <button
-              className="md:hidden p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-zinc-600 dark:text-zinc-300"
+              className="md:hidden p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-zinc-600 dark:text-zinc-300 pointer-events-auto"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -183,7 +195,7 @@ export default function GlassHeader() {
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/40 z-40 backdrop-blur-[2px]"
+              className="fixed inset-0 bg-black/40 z-[90] backdrop-blur-[2px]"
             />
             
             <motion.div
@@ -191,7 +203,7 @@ export default function GlassHeader() {
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: -50, opacity: 0, scale: 0.9 }}
               transition={{ type: "spring", duration: 0.4, bounce: 0.3 }}
-              className="fixed top-24 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50 p-3 rounded-3xl bg-white/90 dark:bg-[#09090b]/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl"
+              className="fixed top-24 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[100] p-3 rounded-3xl bg-white/90 dark:bg-[#09090b]/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl"
             >
               <div className="grid grid-cols-3 gap-2">
                 {navItems.map(({ id, Icon, label }) => (

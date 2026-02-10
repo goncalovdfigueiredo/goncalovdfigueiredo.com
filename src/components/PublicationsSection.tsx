@@ -73,23 +73,22 @@ export default function PublicationsSection() {
     <section id="publications" className="py-20 relative overflow-hidden min-h-screen">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      {/* Container max-w-[1600px] */}
       <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10">
         
         {/* HEADER */}
         <MotionWrapper>
-  <div className="mb-8 md:mb-12 flex flex-col gap-4">
-    <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
-      <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
-        <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
-      </div>
-      Publications
-    </h2>
-    <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
-      Explore my academic journey through {publications.length} research outputs. Use the filters below to navigate by category.
-    </p>
-  </div>
-</MotionWrapper>
+          <div className="mb-8 md:mb-12 flex flex-col gap-4">
+            <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
+              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+                <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              Publications
+            </h2>
+            <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
+              Explore my academic journey through {publications.length} research outputs. Use the filters below to navigate by category.
+            </p>
+          </div>
+        </MotionWrapper>
 
         {/* BARRA DE FILTROS */}
         <MotionWrapper>
@@ -126,12 +125,14 @@ export default function PublicationsSection() {
           </div>
         </MotionWrapper>
 
-        {/* LAYOUT HÍBRIDO */}
+        {/* LAYOUT HÍBRIDO (Slider Mobile / Grid Desktop) */}
         <motion.div 
           layout 
-          /* MUDANÇA 1: gap-4 passou a gap-3 para aproximar os cartões no mobile */
           className="
-            flex overflow-x-auto gap-3 snap-x snap-mandatory pb-8 -mx-4 px-4 scrollbar-thin scrollbar-thumb-emerald-500/10
+            /* MOBILE: Slider Horizontal 'Edge-to-Edge' */
+            flex overflow-x-auto gap-4 snap-x snap-mandatory pb-8 -mx-6 px-6 no-scrollbar
+            
+            /* DESKTOP: Grid Normal */
             md:grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0
           "
         >
@@ -154,10 +155,8 @@ export default function PublicationsSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  /* MUDANÇA 2: min-w-[85vw] passou a min-w-[78vw]. 
-                     Isto faz com que o cartão ocupe menos espaço, revelando o próximo à direita. 
-                  */
-                  className="min-w-[78vw] md:min-w-0 snap-center flex" 
+                  /* MOBILE: Largura fixa 80vw para ver o próximo cartão */
+                  className="min-w-[80vw] md:min-w-0 snap-center flex" 
                 >
                   <GlassCard
                     className={`
@@ -167,11 +166,10 @@ export default function PublicationsSection() {
                       dark:hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.3)]
                     `}
                   >
-                    {/* ====== 1. IMAGEM INTERATIVA (Link Wrapper) ====== */}
+                    {/* ====== 1. IMAGEM INTERATIVA ====== */}
                     <div className="relative w-full h-40 md:w-[180px] lg:w-[200px] md:h-auto shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-zinc-200 dark:border-white/5 bg-white dark:bg-zinc-800 shadow-inner group/image">
                       {(pub as any).image ? (
                         pub.github ? (
-                          /* Se tiver link, a imagem é um link <a> */
                           <a 
                             href={pub.github} 
                             target="_blank" 
@@ -181,15 +179,10 @@ export default function PublicationsSection() {
                             <img
                               src={(pub as any).image}
                               alt={pub.title}
-                              /* Mantém o desfoque suave em Desktop */
                               className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:blur-0 md:blur-[0.8px] ${objectPosition}`}
                             />
-                            {/* Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 md:opacity-30 group-hover:opacity-10 transition-opacity" />
-                            {/* Borda Interna */}
                             <div className="absolute inset-0 border-[3px] border-black/5 dark:border-white/5 pointer-events-none z-10" />
-                            
-                            {/* Eye Icon no Hover */}
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px] z-20">
                                 <div className="p-2 bg-white/90 rounded-full shadow-lg transform group-hover/image:scale-110 transition-transform">
                                     <Eye className="w-5 h-5 text-zinc-900" />
@@ -197,7 +190,6 @@ export default function PublicationsSection() {
                             </div>
                           </a>
                         ) : (
-                          /* Se não tiver link, é só imagem */
                           <div className="w-full h-full relative">
                             <img
                               src={(pub as any).image}
@@ -208,17 +200,16 @@ export default function PublicationsSection() {
                           </div>
                         )
                       ) : (
-                        // Placeholder
                         <div className="w-full h-full flex items-center justify-center bg-zinc-100 dark:bg-white/5">
                           <BookOpen className="w-10 h-10 text-zinc-300 dark:text-white/10" />
                         </div>
                       )}
                     </div>
 
-                    {/* ====== 2. CONTEÚDO (DIREITA/BAIXO) ====== */}
+                    {/* ====== 2. CONTEÚDO ====== */}
                     <div className="flex flex-col flex-grow p-5 md:p-6">
                       
-                      {/* Top Row: Badges */}
+                      {/* Top Row */}
                       <div className="flex justify-between items-start mb-3 gap-2">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-white/50 dark:border-white/5 ${style.badgeBg} ${style.badgeText}`}>
                           {pub.manuscript}
@@ -236,21 +227,17 @@ export default function PublicationsSection() {
                         {pub.title}
                       </h3>
 
-                      {/* VENUE (Cinzento sóbrio) */}
+                      {/* VENUE */}
                       <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-4 font-mono">
                         {pub.venue}, {pub.year}
                       </div>
 
-                      {/* RODAPÉ */}
+                      {/* RODAPÉ & ABSTRACT */}
                       <div className="mt-auto pt-4 border-t border-zinc-200/50 dark:border-white/5">
                         <div className="flex items-center justify-between gap-4">
-                            
-                            {/* Autores (Fundo) */}
                             <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate pr-2 flex-1" title={pub.authors.join(", ")}>
                                 {pub.authors.join(", ")}
                             </div>
-                            
-                            {/* Ações */}
                             <div className="flex gap-3 shrink-0">
                                 {pub.abstract && (
                                     <button onClick={() => toggleAbstract(originalIndex)} className="text-zinc-400 hover:text-emerald-500 transition-colors">
@@ -260,7 +247,6 @@ export default function PublicationsSection() {
                             </div>
                         </div>
 
-                        {/* Abstract Expansível */}
                         <AnimatePresence>
                           {isOpen && pub.abstract && (
                             <motion.div

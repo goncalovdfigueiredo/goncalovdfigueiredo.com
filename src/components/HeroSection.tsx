@@ -12,7 +12,7 @@ import { motion, useMotionTemplate, useMotionValue, useAnimation, type Variants 
 import MotionWrapper from "./MotionWrapper";
 
 /* =========================
-   NOVO: GLOWING CIRCUIT BORDER (CORRIGIDO & COM DIMENSÃO ESTÁTICA)
+   GLOWING CIRCUIT BORDER (Versão Corrigida com Padding)
    ========================= */
 function GlowingCircuitBorder({ 
   children, 
@@ -24,13 +24,12 @@ function GlowingCircuitBorder({
   borderColor?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden rounded-[2rem] group ${className}`}>
+    <div className={`relative group rounded-[2rem] overflow-hidden p-[1.5px] ${className}`}>
       
-      {/* 👇 NOVO LAYER: CAMADA DE FUNDO ESTÁTICA (A Borda Cinzenta de Dimensão) 👇 */}
-      {/* Fica atrás de tudo. Dá a noção de profundidade quando o 'spin' está invisível */}
+      {/* 1. FUNDO DA BORDA */}
       <div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800/60 transition-colors duration-500" />
 
-      {/* O "ELETRÃO" QUE RODA (Fica por cima do fundo estático) */}
+      {/* 2. O GLOW QUE RODA */}
       <div 
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[500%] w-[500%] animate-border-spin opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{ 
@@ -38,21 +37,16 @@ function GlowingCircuitBorder({
         }}
        />
       
-      {/* CAMADA INTERIOR (CONTEÚDO) - Tapa o centro, deixando a borda visível */}
-      <div className="absolute inset-[1.5px] bg-white dark:bg-[#09090b] rounded-[calc(2rem-1.5px)] z-10 overflow-hidden shadow-sm">
+      {/* 3. CONTEÚDO REAL (Relative para manter altura) */}
+      <div className="relative h-full w-full bg-white dark:bg-[#09090b] rounded-[calc(2rem-1.5px)] z-10 overflow-hidden shadow-sm">
         {children}
-      </div>
-      
-      {/* Spacer invisível para layout */}
-      <div className="invisible p-[1.5px] h-full w-full">
-         {children}
       </div>
     </div>
   );
 }
 
 /* =========================
-   1. COMPONENTE: SPOTLIGHT CARD (Mantido)
+   1. COMPONENTE: SPOTLIGHT CARD
    ========================= */
 function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.1)" }: any) {
   const mouseX = useMotionValue(0);
@@ -87,7 +81,7 @@ function SpotlightCard({ children, className = "", spotlightColor = "rgba(255, 2
 }
 
 /* =========================
-   2. COMPONENTE: PARTICLE IMAGE (Mantido)
+   2. COMPONENTE: PARTICLE IMAGE
    ========================= */
 function ParticleImage() {
   const particleControls = useAnimation();
@@ -169,7 +163,7 @@ function ParticleImage() {
 }
 
 /* =========================
-   3. COMPONENTE: PREMIUM SKILL CARD (Mantido)
+   3. COMPONENTE: PREMIUM SKILL CARD
    ========================= */
 const PremiumSkillCard = ({ group }: { group: any }) => {
   let spotlightColor = "rgba(255, 255, 255, 0.1)"; 
@@ -189,12 +183,12 @@ const PremiumSkillCard = ({ group }: { group: any }) => {
   }
 
   return (
-    <GlowingCircuitBorder className={`h-full rounded-[1.5rem] ${group.minHeight}`} borderColor={borderColor}>
+    <GlowingCircuitBorder className="h-full rounded-[1.5rem]" borderColor={borderColor}>
       <SpotlightCard className="h-full bg-zinc-50 dark:bg-zinc-900/50" spotlightColor={spotlightColor}>
         <motion.div className="relative h-full w-full overflow-hidden cursor-default group" whileHover={{ y: -2 }}>
-          <group.icon className={`absolute -bottom-4 -right-4 w-24 h-24 ${group.color} opacity-[0.15] -rotate-12 transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110`} />
-          <div className="relative z-10 p-6 flex flex-col h-full justify-between">
-            <div className="flex items-center gap-4 mb-4">
+          <group.icon className={`absolute -bottom-4 -right-4 w-24 h-24 ${group.color} opacity-[0.10] -rotate-12 transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110`} />
+          <div className="relative z-10 p-5 flex flex-col h-full justify-between">
+            <div className="flex items-center gap-4 mb-3">
               <div className={`p-2.5 rounded-xl bg-zinc-100 dark:bg-white/5 ${group.color} shadow-sm border border-zinc-200 dark:border-white/10`}>
                 <group.icon className="w-5 h-5" />
               </div>
@@ -227,7 +221,6 @@ const skillGroups = [
     subtitle: "Hardware",
     icon: Cpu,
     color: "text-blue-600 dark:text-blue-400",
-    minHeight: "min-h-[180px]", 
     skills: ["FPGA & Verilog", "PCB Design", "Embedded Systems & Firmware", "Hardware Prototyping", "Python & MATLAB"]
   },
   {
@@ -236,7 +229,6 @@ const skillGroups = [
     subtitle: "Scientific Focus",
     icon: Microscope,
     color: "text-purple-600 dark:text-purple-400",
-    minHeight: "min-h-[200px]", 
     skills: ["Optical Communications", "Data Encryption & Security", "Photonic Devices", "Smart Cities & IoT Solutions", "Energy Harvesting"]
   },
   {
@@ -245,7 +237,6 @@ const skillGroups = [
     subtitle: "Leadership & Management",
     icon: Users,
     color: "text-red-600 dark:text-red-400",
-    minHeight: "min-h-[200px]",
     skills: ["R&D Project Leadership", "Technical Communication", "Community & Event Management", "Science Outreach", "Mentoring"]
   }
 ];
@@ -316,7 +307,6 @@ export default function HeroSection() {
             
             {/* MOBILE AREA */}
             <div className="md:hidden">
-                {/* 1. PROFESSIONAL PROFILE */}
                 <GlowingCircuitBorder className="mb-6 h-full rounded-[1.5rem]" borderColor="#10b981">
                   <SpotlightCard className="h-full bg-zinc-50 dark:bg-zinc-900/50" spotlightColor="rgba(16, 185, 129, 0.15)">
                       <div className="p-6 relative overflow-hidden">
@@ -342,11 +332,10 @@ export default function HeroSection() {
                   </SpotlightCard>
                 </GlowingCircuitBorder>
 
-                {/* 2. SKILL CARDS */}
                 <div className="relative">
                     <div ref={scrollRef} onScroll={handleScroll} className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {skillGroups.map((group, idx) => (
-                        <div key={idx} className="min-w-[85vw] snap-center">
+                        <div key={idx} className="min-w-[85vw] snap-center h-[220px]">
                             <PremiumSkillCard group={group} />
                         </div>
                     ))}
@@ -360,19 +349,25 @@ export default function HeroSection() {
             </div>
 
             {/* DESKTOP GRID */}
-            <div className="hidden md:grid grid-cols-20 gap-5 items-stretch">
-                <div className="col-span-13 flex flex-col h-full">
-                    {/* 1. PROFESSIONAL PROFILE */}
+            <div className="hidden md:grid grid-cols-12 gap-6 items-stretch h-full">
+                
+                {/* 1. PROFESSIONAL PROFILE (Coluna Esquerda - Mais larga) */}
+                <div className="col-span-7 flex flex-col h-full">
                     <GlowingCircuitBorder className="flex-1 rounded-[2rem]" borderColor="#10b981">
                       <SpotlightCard className="h-full bg-zinc-50 dark:bg-zinc-900/50" spotlightColor="rgba(16, 185, 129, 0.15)">
-                          <div className="p-6 md:p-8 h-full flex flex-col justify-between relative overflow-hidden group">
-                              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity"><User className="w-32 h-32 text-zinc-500" /></div>
-                              <div>
-                                  <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-3 mb-4">
-                                      <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"><User className="w-5 h-5" /></div>
-                                      Professional Profile
-                                  </h3>
-                                  <div className="space-y-3 text-sm md:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed relative z-10">
+                          <div className="p-8 h-full flex flex-col relative overflow-hidden group">
+                              
+                              {/* Conteúdo Principal */}
+                              <div className="flex-1">
+                                  <div className="flex items-center gap-3 mb-6">
+                                      <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm">
+                                          <User className="w-5 h-5" />
+                                      </div>
+                                      <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Professional Profile</h3>
+                                  </div>
+                                  
+                                  {/* 👇 TEXTO RESTAURADO AQUI NA VERSÃO DESKTOP TAMBÉM 👇 */}
+                                  <div className="space-y-4 text-base text-zinc-600 dark:text-zinc-300 leading-relaxed relative z-10">
                                       <p>
                                         Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong>Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro.
                                       </p>
@@ -384,18 +379,39 @@ export default function HeroSection() {
                                       </p>
                                   </div>
                               </div>
-                              <div className="mt-6 pt-5 border-t border-zinc-200 dark:border-white/5 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-                                  <Terminal className="w-4 h-4 text-emerald-500" />
-                                  <span>Open to collaborations in Hardware & Photonics.</span>
+
+                              {/* Footer com Metadados */}
+                              <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-white/5 grid grid-cols-2 gap-8 relative z-10">
+                                  <div>
+                                      <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-1 block">Primary Focus</span>
+                                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                                        <Cpu className="w-3.5 h-3.5" /> Hardware & IoT
+                                      </span>
+                                  </div>
+                                  <div>
+                                      <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-1 block">Current Status</span>
+                                      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200 flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Open to Research
+                                      </span>
+                                  </div>
                               </div>
+                              
+                              {/* Decoração de Fundo */}
+                              <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none">
+                                <User className="w-40 h-40 text-zinc-500" />
+                              </div>
+
                           </div>
                       </SpotlightCard>
                     </GlowingCircuitBorder>
                 </div>
-                <div className="col-span-7 flex flex-col gap-4">
-                    {/* 2. SKILL CARDS */}
+
+                {/* 2. SKILL CARDS (Coluna Direita - Empilhada uniformemente) */}
+                <div className="col-span-5 flex flex-col gap-4 h-full">
                     {skillGroups.map((group, idx) => (
-                      <PremiumSkillCard key={idx} group={group} />
+                      <div key={idx} className="flex-1">
+                          <PremiumSkillCard group={group} />
+                      </div>
                     ))}
                 </div>
             </div>

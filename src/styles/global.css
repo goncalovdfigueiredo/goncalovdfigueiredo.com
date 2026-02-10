@@ -10,7 +10,8 @@
   --radius: 0.625rem;
 
   /* LIGHT MODE */
-  --background: oklch(0.99 0 0);
+  /* --background: oklch(0.99 0 0); */
+  --background: oklch(0.966 0.005 32.5);
   --foreground: oklch(0.10 0 0);
 
   --card: oklch(1 0 0);

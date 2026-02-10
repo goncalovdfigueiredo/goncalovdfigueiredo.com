@@ -575,7 +575,7 @@ export const publications = [
     venue: "Journal of Materials Chemistry A",
     image: "/GVDF_2.jpg",
     year: 2025,
-    citations: 1,
+    citations: 3,
     abstract: "The engineering of luminescent solar concentrators (LSCs) offers a way to turn windows into energy-generating units...",
     github: "https://pubs.rsc.org/en/content/articlelanding/2025/ta/d4ta08036j",
     manuscript: "journal article",
@@ -605,7 +605,7 @@ export const publications = [
     image: "/GVDF_4.jpg",
     venue: "Journal of Optical Communications and Networking",
     year: 2024,
-    citations: 5, 
+    citations: 6, 
     abstract: "Visible light communication (VLC) has emerged as a dynamic area of research poised to revolutionize high-speed wireless communication...",
     github: "https://opg.optica.org/jocn/abstract.cfm?uri=jocn-16-8-D1",
     manuscript: "journal article",
@@ -651,6 +651,7 @@ export const publications = [
     image: "/GVDF_95.jpg",
     venue: "2025 SBMO/IEEE MTT-S International Microwave and Optoelectronics Conference (IMOC)",
     year: 2025,
+    github: "https://ieeexplore.ieee.org/abstract/document/11365743",
     abstract: "The saturation of radio frequency bands has driven the adoption of new communication mechanisms. In this context, Visible Light Communication (VLC) has emerged as a strong candidate, enabling simultaneous communication and illumination by exploring the visible spectrum, which is unlicensed. This work investigates communication between portable devices, particularly smartphones' screens and cameras, using the Color Shift Keying (CSK) modulation technique and an alternative approach based on spatial cell patterns, similar to QR codes. Preliminary results demonstrate that CSK enables reliable communication up to 1 meter at 1 symbol/s, while the cell-based method shows robustness under various lighting and distance conditions.",
     //github: 
     manuscript:  "conference paper",
@@ -670,6 +671,7 @@ export const publications = [
     github: "https://ieeexplore.ieee.org/abstract/document/11157693?casa_token=TB0h0cx5mjcAAAAA:qLlUMWRPw4VeXNETx_BPDi6eLhy069wHcRWAKwXfV22LInGMm_BUFT3AaNX59e1D5Qx3odX037M",
     manuscript:  "conference paper",
     geo: { lat: 37.016663, lon: -7.936548 }, 
+    citations: 1, 
     links: {
       bibtex: "@inproceedings{barreira2025visible, title={Visible Light Communication for Autonomous Mobile Platform: Evaluation of 16-QAM Transmission System}, author={Barreira, Amanda R{\"u}hlemann and Kalinowski, Hypolito Jos{\'e} and Figueiredo, Gon{\c{c}}alo and de Brito Andr{\'e}, Paulo S{\'e}rgio}, booktitle={2025 IEEE International Conference on Consumer Technology-Europe (ICCT-Europe)}, pages={1--4}, year={2025}, organization={IEEE}}"
     },
@@ -696,7 +698,7 @@ export const publications = [
     authors: ["Gonçalo Figueiredo et al."],
     venue: "2023 SBMO/IEEE MTT-S International Microwave and Optoelectronics Conference (IMOC)",
     year: 2023,
-    citations: 4, 
+    citations: 5, 
     abstract: "Visible Light Communication (VLC) is an emerging technology...",
     github: "https://ieeexplore.ieee.org/abstract/document/10379763",
     manuscript: "conference paper",
