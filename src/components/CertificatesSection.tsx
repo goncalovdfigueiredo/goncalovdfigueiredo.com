@@ -347,7 +347,7 @@ function EventCard({ event, isBackCard = false, isGlass = false }: { event: SciE
                         <span className="px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[9px] font-bold border border-purple-500/20 uppercase tracking-wide">{event.type}</span>
                         {isFeatured && (
                             <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                                <Star className="w-2.5 h-2.5 fill-current" /> <span className="text-[9px] font-bold uppercase">Featured</span>
+                                <Star className="w-2.5 h-2.5 fill-current" /> 
                             </div>
                         )}
                     </div>
