@@ -25,7 +25,7 @@ const certs = [
             title: "Digital IC Design Fundamentals", 
             org: "Cadence Design Systems", 
             year: "2026", 
-            link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53" 
+            link: "https://www.credly.com/earner/earned/badge/719c63f0-1b05-4400-b271-c65cde384bcc" 
           },
       { 
         title: "Semiconductor 101", 
