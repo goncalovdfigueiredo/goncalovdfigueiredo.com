@@ -10,18 +10,30 @@ import {
 import { scientificEvents, type SciEvent } from "@/lib/data";
 
 /* =========================
-   DADOS: CERTIFICAÇÕES
+   DADOS: CERTIFICAÇÕES (Atualizado com Cadence)
    ========================= */
 const certs = [
   {
-    id: "fpga",
-    title: "FPGA & Digital Design",
+    id: "semiconductors",
+    title: "Digital Design & Semiconductors",
     icon: Cpu,
     color: "text-blue-500",
     bg: "bg-blue-500/20",
     border: "hover:border-blue-500/30",
     items: [
-      { title: "Verilog HDL Advanced (Instructor-Led Training)", org: "Intel Corporation", year: "2025" },
+        { 
+            title: "Digital IC Design Fundamentals", 
+            org: "Cadence Design Systems", 
+            year: "2026", 
+            link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53" 
+          },
+      { 
+        title: "Semiconductor 101", 
+        org: "Cadence Design Systems", 
+        year: "2026", 
+        link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53" 
+      },
+      { title: "Verilog HDL Advanced (Instructor-Led Training)", org: "Intel Corporation", year: "2025", link: "https://learn.altera.com/share/gamification/badges/external/a30d1263-6358-40a9-8493-b739811148d0?lang=en" },
       { title: "Beginner Altera® FPGA Designer", org: "Intel Corporation", year: "2025" },
       { title: "FPGA computing systems: Background knowledge", org: "Politecnico di Milano", year: "2025" },
     ]
@@ -45,7 +57,7 @@ const certs = [
     bg: "bg-purple-500/20",
     border: "hover:border-purple-500/30",
     items: [
-      { title: "PCEP™ – Certified Entry-Level Python Programmer", org: "Python Institute", year: "2024", link: "https://pythoninstitute.org/pcep" },
+      { title: "PCEP™ – Certified Entry-Level Python Programmer", org: "Python Institute", year: "2024", link: "https://www.credly.com/badges/2ad45f39-bf39-48c4-8f43-b8300d84e1a9" },
       { title: "Machine Learning, Maths & Ethics", org: "Instituto Superior Técnico", year: "2024" },
       { title: "Building AI", org: "University of Helsinki", year: "2023", link: "https://buildingai.elementsofai.com/" },
     ]
@@ -124,7 +136,7 @@ export default function CertificatesSection() {
         {/* GRID PRINCIPAL */}
         <div className="flex flex-col gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 auto-rows-min">
 
-            {/* 1. CERT: FPGA */}
+            {/* 1. CERT: SEMICONDUCTORS (Updated) */}
             <div className="order-1 md:order-none">
                 <BentoItem cert={certs[0]} />
             </div>
@@ -132,7 +144,6 @@ export default function CertificatesSection() {
             {/* 2. EVENTS DECK */}
             <div className="order-last md:order-none lg:col-span-2 lg:row-span-2 relative h-full min-h-[500px] md:min-h-[380px]">
                 <div className="absolute inset-0 flex flex-col h-full">
-                    {/* Header do Deck */}
                     <div className="flex items-center justify-between mb-4 px-1">
                         <div className="flex items-center gap-2">
                             <Layers className="h-5 w-5 text-purple-500" />
@@ -143,7 +154,6 @@ export default function CertificatesSection() {
                         </div>
                     </div>
 
-                    {/* Deck Interativo */}
                     <div className="relative flex-1 w-full group" style={{ perspective: "1200px" }}>
                         <motion.div
                             key={`back-2-${stackIndex}`}
@@ -183,11 +193,7 @@ export default function CertificatesSection() {
                             </motion.div>
                         </AnimatePresence>
 
-                        {/* BOTÃO NEXT (Mobile: Em baixo / Desktop: Canto Direito) */}
-                        <div className="
-                            absolute bottom-5 left-0 right-0 flex justify-center pb-0 z-30
-                            md:absolute md:bottom-6 md:right-6 md:left-auto md:pb-0 md:justify-end
-                        ">
+                        <div className="absolute bottom-5 left-0 right-0 flex justify-center pb-0 z-30 md:absolute md:bottom-6 md:right-6 md:left-auto md:pb-0 md:justify-end">
                             <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 animate-pulse hidden md:block mr-4 mt-2">
                                 Drag or Click
                             </p>
@@ -223,11 +229,7 @@ export default function CertificatesSection() {
   );
 }
 
-/* =========================================================
-   SUB-COMPONENTE: BENTO CERT ITEM (COM ACCORDION EM MOBILE)
-   ========================================================= */
 function BentoItem({ cert, isGrid = false }: { cert: typeof certs[0], isGrid?: boolean }) {
-    // Estado para controlar se está aberto ou fechado (apenas relevante em mobile)
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -238,7 +240,6 @@ function BentoItem({ cert, isGrid = false }: { cert: typeof certs[0], isGrid?: b
             className="w-full h-auto md:h-full"
         >
             <GlassCard 
-                // Clique no card: Em mobile inverte o estado. Em Desktop não faz nada.
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
                     h-full flex flex-col p-5 md:p-6 relative overflow-hidden group 
@@ -251,8 +252,15 @@ function BentoItem({ cert, isGrid = false }: { cert: typeof certs[0], isGrid?: b
                     <cert.icon className="w-24 h-24" />
                 </div>
 
-                {/* HEADER: Ícone + Título + Seta */}
-                {/* Em mobile, diminuímos a margem bottom (mb-0 se fechado) para ficar compacto */}
+                {/* DECORATIVE FLAGS FOR LANGUAGES */}
+                {cert.id === "lang" && (
+                  <div className="absolute bottom-4 right-4 flex items-center gap-3 opacity-20 group-hover:opacity-60 transition-opacity pointer-events-none">
+                    <span className="text-2xl -rotate-12">🇵🇹</span>
+                    <span className="text-2xl rotate-12">🇬🇧</span>
+                    <span className="text-2xl -rotate-6">🇩🇪</span>
+                  </div>
+                )}
+
                 <div className={`relative z-10 flex items-center justify-between transition-all duration-300 ${isOpen ? 'mb-6' : 'mb-0 md:mb-6'}`}>
                     <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-xl ${cert.bg} ${cert.color} border border-white/10 shadow-sm`}>
@@ -263,11 +271,9 @@ function BentoItem({ cert, isGrid = false }: { cert: typeof certs[0], isGrid?: b
                         </h4>
                     </div>
                     
-                    {/* SETA (Visível apenas em Mobile) */}
                     <ChevronDown className={`w-5 h-5 text-zinc-400 md:hidden transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
                 </div>
 
-                {/* LISTA DE CONTEÚDO (Animação de Altura) */}
                 <motion.div
                     initial={false}
                     animate={{ 
@@ -275,11 +281,8 @@ function BentoItem({ cert, isGrid = false }: { cert: typeof certs[0], isGrid?: b
                         opacity: isOpen ? 1 : 0
                     }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    // TRUQUE: Em desktop (md:), forçamos altura 'auto' e opacidade 1 com !important
-                    // para ignorar a animação do mobile e manter sempre aberto.
                     className="overflow-hidden md:!h-auto md:!opacity-100 md:!block"
                 >
-                    {/* Precisamos de um padding-top na animação para não colar ao header quando abre */}
                     <ul className={`relative z-10 md:mt-auto pt-2 md:pt-0 ${isGrid ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-4'}`}>
                         {cert.items.map((item, i) => (
                             <li 
@@ -314,9 +317,6 @@ function BentoItem({ cert, isGrid = false }: { cert: typeof certs[0], isGrid?: b
     );
 }
 
-/* =========================================================
-   SUB-COMPONENTE: EVENT CARD
-   ========================================================= */
 function EventCard({ event, isBackCard = false, isGlass = false }: { event: SciEvent, isBackCard?: boolean, isGlass?: boolean }) {
     const isFeatured = event.featured;
 
@@ -338,7 +338,6 @@ function EventCard({ event, isBackCard = false, isGlass = false }: { event: SciE
             <div className={`h-2 w-full opacity-90 ${isFeatured ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 'bg-gradient-to-r from-purple-500 to-pink-500'}`} />
             
             <div className="p-5 md:p-6 pb-20 md:pb-6 flex flex-col h-full relative">
-                
                 <div className="flex justify-between items-start mb-4 md:mb-6">
                     <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-400 bg-zinc-50 dark:bg-white/5 px-2 py-1 rounded">
                         <Calendar className="h-3 w-3" /> {event.date}
