@@ -1,14 +1,96 @@
 // src/components/AwardsSection.tsx
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { awards, featuredIn } from "@/lib/data";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight,
   Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car
 } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
+
+// =======================
+// SUB-COMPONENTE: F1 LIGHTS (LÓGICA DE TIMING CORRIGIDA)
+// =======================
+const F1StartingLights = () => {
+  const [lights, setLights] = useState(0);
+  const [status, setStatus] = useState<"none" | "go" | "formation">("none");
+
+  useEffect(() => {
+    const sequence = async () => {
+      // 1. INÍCIO: Luzes acendem 1 a 1 (Sem frase nenhuma)
+      setStatus("none");
+      for (let i = 1; i <= 5; i++) {
+        await new Promise(res => setTimeout(res, 700));
+        setLights(i);
+      }
+      
+      // 2. LIGHTS OUT: Delay aleatório antes de apagar (entre 1.2s e 2.2s)
+      await new Promise(res => setTimeout(res, 1200 + Math.random() * 1000));
+      setLights(0);
+
+      // 3. ARRANQUE: Mostra a frase em 3 linhas por 2.5 segundos
+      setStatus("go");
+      await new Promise(res => setTimeout(res, 2500));
+
+      // 4. ESPERA: Mostra "Formation Lap" antes de reiniciar o ciclo
+      setStatus("formation");
+      await new Promise(res => setTimeout(res, 3000));
+      
+      sequence();
+    };
+    sequence();
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center gap-2 shrink-0 translate-y-1">
+      <div className="flex gap-1 bg-black/40 p-1.5 rounded border border-white/5 backdrop-blur-sm">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="flex flex-col gap-1">
+            {/* LUZ DE CIMA: SEMPRE APAGADA */}
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-zinc-800" />
+            
+            {/* LUZ DE BAIXO: ACENDE */}
+            <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-200 ${
+              lights >= i 
+                ? "bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.9)]" 
+                : "bg-zinc-800"
+            }`} />
+          </div>
+        ))}
+      </div>
+      
+      <div className="h-9 flex flex-col items-center justify-start">
+        <AnimatePresence mode="wait">
+          {status === "go" && (
+            <motion.div 
+              key="go"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-[8px] font-mono font-black text-zinc-500 uppercase leading-[1.1] text-center tracking-tighter"
+            >
+              It's Lights Out<br />and<br />Away We Go!
+            </motion.div>
+          )}
+          {status === "formation" && (
+            <motion.span 
+              key="formation"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-[7px] font-mono font-bold text-zinc-400 uppercase tracking-widest text-center"
+            >
+              FORMATION LAP
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
 
 // =======================
 // HELPERS
@@ -168,22 +250,13 @@ export default function AwardsSection() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-96">
               
-              {/* CARD 1: THE QUANTIFIED SELF (MANTIDO IGUAL) */}
+              {/* CARD 1: THE QUANTIFIED SELF */}
               <div className="md:col-span-2 row-span-1 md:row-span-2 group h-full">
                 <HobbyCard className="h-full flex flex-col justify-between hover:border-emerald-500/30 transition-colors duration-500 relative">
-                  
-                  {/* --- BACKGROUND ICONS --- */}
                   <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-                     <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 dark:opacity-10 text-emerald-500 dark:text-emerald-500">
-                        <Footprints className="w-48 h-48" />
-                     </div>
-                     <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 dark:opacity-10 text-emerald-500 dark:text-emerald-500">
-                        <Dumbbell className="w-40 h-40" />
-                     </div>
-                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-50/20 dark:to-black/20" />
+                     <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 dark:opacity-10 text-emerald-500 dark:text-emerald-500"><Footprints className="w-48 h-48" /></div>
+                     <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 dark:opacity-10 text-emerald-500 dark:text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
                   </div>
-
-                  {/* CONTEÚDO */}
                   <div className="relative z-20 flex flex-col h-full p-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
@@ -191,48 +264,26 @@ export default function AwardsSection() {
                             <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500 group-hover:drop-shadow-[0_0_8px_rgba(16,185,129,0.5)] transition-all" />
                             The Quantified Self
                           </h3>
-                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 max-w-xs leading-relaxed text-justify">
-                            {parseBoldText(
-                              "Balancing mental rigor with physical conditioning.", 
-                              "bg-emerald-500/10"
-                            )}
-                          </p>
-                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0 max-w-xs leading-relaxed text-justify">
-                            {parseBoldText(
-                              "I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", 
-                              "bg-emerald-500/10"
-                            )}
-                          </p>
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 max-w-xs leading-relaxed text-justify">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0 max-w-xs leading-relaxed text-justify">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
                         </div>
                         <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30">
                           <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
                           <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400">ACTIVE</span>
                         </div>
                       </div>
-
-                      {/* SECÇÃO DE DADOS */}
                       <div className="mt-auto">
                         <div className="flex items-center gap-2 mb-3">
                             <Timer className="w-3.5 h-3.5 text-zinc-400" />
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span>
                         </div>
                         <div className="grid grid-cols-3 gap-4 border-t border-zinc-200 dark:border-white/5 pt-4">
-                            {[
-                              { dist: "3KM", time: "00:00", width: "15%" }, 
-                              { dist: "5KM", time: "00:00", width: "25%" }, 
-                              { dist: "10KM", time: "00:00", width: "70%" } 
-                            ].map((stat, i) => (
+                            {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
                               <div key={i} className="flex flex-col relative group/stat">
                                 <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 mb-0.5">{stat.dist}</span>
-                                <span className="text-xl md:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-tight z-10">
-                                    {stat.time}
-                                </span>
-                                <div className="flex justify-end mb-0.5 mt-2">
-                                    <span className="text-[8px] font-bold text-zinc-400 opacity-60">1 HOUR</span>
-                                </div>
-                                <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden">
-                                  <div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div>
-                                </div>
+                                <span className="text-xl md:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-tight z-10">{stat.time}</span>
+                                <div className="flex justify-end mb-0.5 mt-2"><span className="text-[8px] font-bold text-zinc-400 opacity-60">1 HOUR</span></div>
+                                <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
                               </div>
                             ))}
                         </div>
@@ -241,58 +292,35 @@ export default function AwardsSection() {
                 </HobbyCard>
               </div>
 
-              {/* CARD 2: PRECISION & STRATEGY (ATUALIZADO) */}
+              {/* CARD 2: PRECISION & STRATEGY (TIMING E ESPAÇO CORRIGIDOS) */}
               <div className="md:col-span-1 h-48 md:h-auto group">
                 <HobbyCard className="h-full relative overflow-hidden hover:border-blue-500/30 transition-colors duration-500">
-                  
-                  {/* --- BACKGROUND ICONS (AZUL) --- */}
-                  <div className="absolute inset-0 pointer-events-none select-none z-0">
-                      
-                       <div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-blue-500">
-                          <Gauge className="w-16 h-16" />
-                      </div>
-                  </div>
-
+                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-blue-500"><Gauge className="w-16 h-16" /></div></div>
                   <div className="relative z-10 flex flex-col h-full p-6">
-                    <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
-                      <Flag className="w-4 h-4 text-blue-500 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] transition-all" />
-                      Precision & Strategy
-                    </h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">
-                      {parseBoldText(
-                        "Passionate about **automotive engineering** and **Formula 1**. Fascinated by the intersection of aerodynamics, real-time telemetry, and high-stakes strategy.", 
-                        "bg-blue-500/10"
-                      )}
+                    <div className="flex justify-between items-center gap-3 mb-2">
+                        <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
+                        <Flag className="w-4 h-4 text-blue-500 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] transition-all" />
+                        Precision & Strategy
+                        </h3>
+                        <F1StartingLights />
+                    </div>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed text-justify mt-0">
+                      {parseBoldText("Passionate about **automotive engineering** and **Formula 1**. Fascinated by the intersection of aerodynamics, real-time telemetry, and high-stakes strategy.", "bg-blue-500/10")}
                     </p>
                   </div>
                 </HobbyCard>
               </div>
 
-              {/* CARD 3: EXPANDING HORIZONS (ATUALIZADO) */}
+              {/* CARD 3: EXPANDING HORIZONS */}
               <div className="md:col-span-1 h-48 md:h-auto group">
                 <HobbyCard className="h-full relative overflow-hidden hover:border-purple-500/30 transition-colors duration-500">
-                  
-                  {/* --- BACKGROUND ICONS (ROXO) --- */}
-                  <div className="absolute inset-0 pointer-events-none select-none z-0">
-                      <div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-purple-500">
-                          <Languages className="w-16 h-16" />
-                      </div>
-                       <div className="absolute -left-0 -bottom-0 transform -rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-purple-500">
-                          <Terminal className="w-16 h-16" />
-                      </div>
-                  </div>
-
+                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-purple-500"><Languages className="w-16 h-16" /></div></div>
                   <div className="relative z-10 flex flex-col h-full p-6">
                     <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
                       <Brain className="w-4 h-4 text-purple-500 group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] transition-all" />
                       Expanding Horizons
                     </h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">
-                        {parseBoldText(
-                          "Exploring the logic of languages. Currently studying **German** for the challenge, while diving deep into **AI & Programming** to push my technical boundaries.", 
-                          "bg-purple-500/10"
-                        )}
-                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">{parseBoldText("Exploring the logic of languages. Currently studying **German** for the challenge, while diving deep into **AI & Programming** to push my technical boundaries.", "bg-purple-500/10")}</p>
                   </div>
                 </HobbyCard>
               </div>
