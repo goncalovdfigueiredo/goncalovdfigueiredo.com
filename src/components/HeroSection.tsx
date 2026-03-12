@@ -267,11 +267,9 @@ export default function HeroSection() {
   return (
     <section className="relative pt-28 pb-20 md:pt-40 md:pb-32 overflow-hidden">
       
-      {/* BACKGROUND */}
+      {/* BACKGROUND CORRIGIDO - MANCHAS REMOVIDAS */}
       <div className="absolute inset-0 z-0">
          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
-         <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
       </div>
 
       <div className="container max-w-6xl mx-auto px-6 md:px-8 relative z-10">
@@ -366,7 +364,6 @@ export default function HeroSection() {
                                       <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Professional Profile</h3>
                                   </div>
                                   
-                                  {/* 👇 TEXTO RESTAURADO AQUI NA VERSÃO DESKTOP TAMBÉM 👇 */}
                                   <div className="space-y-4 text-base text-zinc-600 dark:text-zinc-300 leading-relaxed relative z-10">
                                       <p>
                                         Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong>Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro.

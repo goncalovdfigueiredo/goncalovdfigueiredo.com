@@ -3,41 +3,49 @@
 
 import React, { useState, useEffect } from "react";
 import { awards, featuredIn } from "@/lib/data";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
 import { 
   Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight,
-  Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car
+  Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car, Clock
 } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
 
 // =======================
-// SUB-COMPONENTE: F1 LIGHTS (LÓGICA DE TIMING CORRIGIDA)
+// SUB-COMPONENTE: F1 LIGHTS
 // =======================
 const F1StartingLights = () => {
   const [lights, setLights] = useState(0);
-  const [status, setStatus] = useState<"none" | "go" | "formation">("none");
+  const [status, setStatus] = useState<"hidden" | "formation" | "lights_on" | "go">("hidden");
 
   useEffect(() => {
     const sequence = async () => {
-      // 1. INÍCIO: Luzes acendem 1 a 1 (Sem frase nenhuma)
-      setStatus("none");
+      setStatus("hidden");
+      setLights(0);
+      await new Promise(res => setTimeout(res, 1000));
+
+      setStatus("formation");
+      await new Promise(res => setTimeout(res, 3000));
+
+      setStatus("hidden");
+      await new Promise(res => setTimeout(res, 500));
+      setStatus("lights_on");
+      await new Promise(res => setTimeout(res, 500));
+
       for (let i = 1; i <= 5; i++) {
         await new Promise(res => setTimeout(res, 700));
         setLights(i);
       }
       
-      // 2. LIGHTS OUT: Delay aleatório antes de apagar (entre 1.2s e 2.2s)
       await new Promise(res => setTimeout(res, 1200 + Math.random() * 1000));
-      setLights(0);
-
-      // 3. ARRANQUE: Mostra a frase em 3 linhas por 2.5 segundos
+      
       setStatus("go");
+      // As luzes ficam acesas no instante da frase conforme pedido anteriormente
       await new Promise(res => setTimeout(res, 2500));
 
-      // 4. ESPERA: Mostra "Formation Lap" antes de reiniciar o ciclo
-      setStatus("formation");
-      await new Promise(res => setTimeout(res, 3000));
+      setStatus("hidden");
+      setLights(0);
+      await new Promise(res => setTimeout(res, 1000));
       
       sequence();
     };
@@ -46,17 +54,13 @@ const F1StartingLights = () => {
 
   return (
     <div className="flex flex-col items-center gap-2 shrink-0 translate-y-1">
-      <div className="flex gap-1 bg-black/40 p-1.5 rounded border border-white/5 backdrop-blur-sm">
+      <div className={`flex gap-1 bg-black/40 p-1.5 rounded border border-white/5 backdrop-blur-sm transition-opacity duration-500 
+        ${status === "hidden" ? "opacity-0" : "opacity-100"}`}>
         {[1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="flex flex-col gap-1">
-            {/* LUZ DE CIMA: SEMPRE APAGADA */}
             <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-zinc-800" />
-            
-            {/* LUZ DE BAIXO: ACENDE */}
             <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-200 ${
-              lights >= i 
-                ? "bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.9)]" 
-                : "bg-zinc-800"
+              lights >= i ? "bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.9)]" : "bg-zinc-800"
             }`} />
           </div>
         ))}
@@ -67,9 +71,7 @@ const F1StartingLights = () => {
           {status === "go" && (
             <motion.div 
               key="go"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="text-[8px] font-mono font-black text-zinc-500 uppercase leading-[1.1] text-center tracking-tighter"
             >
               It's Lights Out<br />and<br />Away We Go!
@@ -78,9 +80,7 @@ const F1StartingLights = () => {
           {status === "formation" && (
             <motion.span 
               key="formation"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="text-[7px] font-mono font-bold text-zinc-400 uppercase tracking-widest text-center"
             >
               FORMATION LAP
@@ -93,16 +93,62 @@ const F1StartingLights = () => {
 };
 
 // =======================
+// HOBBYCARD COM TILT 3D + HAPTIC VISUAL FEEDBACK
+// =======================
+function HobbyCard({ children, className = "" }: any) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const xPct = (e.clientX - rect.left) / rect.width - 0.5;
+    const yPct = (e.clientY - rect.top) / rect.height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.06), transparent 80%)`;
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+      whileTap={{ scale: 0.98 }} // Haptic Feedback Visual ao clicar
+      style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
+      className={`relative overflow-hidden rounded-2xl bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-white/10 transition-colors duration-500 cursor-pointer group ${className}`}
+    >
+      {/* Spotlight Reativo */}
+      <motion.div className="pointer-events-none absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: spotlight }} />
+      
+      <div style={{ transform: "translateZ(20px)" }} className="relative z-10 h-full">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] opacity-50 pointer-events-none" />
+        {children}
+      </div>
+    </motion.div>
+  );
+}
+
+// =======================
 // HELPERS
 // =======================
 const MediaIcon = ({ type }: { type: string }) => {
   const c = "h-6 w-6";
-  if (type === "Podcast") return <Mic className={`${c}`} />;
-  if (type === "TV News") return <Tv className={`${c}`} />;
-  if (type === "Institutional") return <Building2 className={`${c}`} />;
-  if (type === "Print Newspaper") return <Newspaper className={`${c}`} />;
-  if (type === "Online News") return <Globe className={`${c}`} />;
-  return <Newspaper className={`${c}`} />;
+  if (type === "Podcast") return <Mic className={c} />;
+  if (type === "TV News") return <Tv className={c} />;
+  if (type === "Institutional") return <Building2 className={c} />;
+  if (type === "Print Newspaper") return <Newspaper className={c} />;
+  if (type === "Online News") return <Globe className={c} />;
+  return <Newspaper className={c} />;
 };
 
 const getMediaColor = (type: string) => {
@@ -128,15 +174,6 @@ const parseBoldText = (text: string, highlightColor = "bg-emerald-500/10") => {
   });
 };
 
-function HobbyCard({ children, className = "" }: any) {
-  return (
-    <div className={`relative overflow-hidden rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 ${className}`}>
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_14px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-50" />
-      <div className="relative z-10 h-full">{children}</div>
-    </div>
-  );
-}
-
 export default function AwardsSection() {
   return (
     <section id="awards" className="py-16 md:py-20 relative overflow-hidden">
@@ -144,10 +181,17 @@ export default function AwardsSection() {
 
       <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
         
-        {/* CABEÇALHO */}
+        {/* CABEÇALHO COM ETIQUETA DE STATUS */}
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4 text-center md:text-left">
-            <h2 className="text-2xl md:text-4xl font-bold flex flex-col md:flex-row items-center md:items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white gap-3 md:gap-4">
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-[-10px]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">System.log: Retrieving_Recognition_Data...</span>
+            </div>
+            <h2 className="text-2xl md:text-4xl font-bold flex flex-col md:flex-row items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white gap-3 md:gap-4">
               <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm shrink-0">
                 <Trophy className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
@@ -200,25 +244,17 @@ export default function AwardsSection() {
           <div className="relative mb-16">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
                 <span className="w-6 h-1 bg-zinc-900 dark:bg-white rounded-full"></span>
-                <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
-                Featured In
-                </h3>
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Featured In</h3>
             </div>
             
-            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-6 -mx-5 px-5 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 md:grid md:grid-cols-2 xl:grid-cols-4 md:pb-0 md:mx-0 md:px-0 md:overflow-visible">
+            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-6 -mx-5 px-5 md:grid md:grid-cols-2 xl:grid-cols-4 md:pb-0 md:mx-0 md:px-0 md:overflow-visible">
               {featuredIn.map((item: any, idx: number) => {
                 const colors = getMediaColor(item.type);
                 const hasLink = item.link && item.link.trim() !== "" && item.link !== "#";
                 const Wrapper = hasLink ? 'a' : 'div';
                 
                 return (
-                  <Wrapper
-                    key={idx} 
-                    href={hasLink ? item.link : undefined}
-                    target={hasLink ? "_blank" : undefined}
-                    rel={hasLink ? "noopener noreferrer" : undefined}
-                    className={`block h-full min-w-[260px] md:min-w-0 snap-center ${hasLink ? 'group cursor-pointer' : 'cursor-default'}`}
-                  >
+                  <Wrapper key={idx} href={hasLink ? item.link : undefined} target={hasLink ? "_blank" : undefined} rel={hasLink ? "noopener noreferrer" : undefined} className={`block h-full min-w-[260px] md:min-w-0 snap-center ${hasLink ? 'group cursor-pointer' : 'cursor-default'}`}>
                     <GlassCard className={`h-full p-6 flex flex-col items-center text-center rounded-xl border border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-sm transition-all duration-300 ${hasLink ? 'hover:border-zinc-300 dark:hover:border-white/20 hover:shadow-lg hover:-translate-y-1' : ''}`}>
                       <div className={`mb-4 p-3 rounded-full ${colors.bg} ${colors.iconColor} ${hasLink ? 'group-hover:scale-110' : ''} ${hasLink ? colors.glow : ''} transition-all duration-300`}>
                         <MediaIcon type={item.type} />
@@ -227,8 +263,7 @@ export default function AwardsSection() {
                       <p className={`text-[10px] font-bold uppercase tracking-wider mb-3 ${colors.text}`}>{item.type}</p>
                       <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4 line-clamp-3">{item.description}</p>
                       <div className={`mt-auto text-[10px] font-medium flex items-center gap-1 ${colors.text} ${hasLink ? 'opacity-80 group-hover:opacity-100' : 'opacity-100'} transition-opacity`}>
-                        {item.date} 
-                        {hasLink && <ArrowUpRight className="h-3 w-3" />}
+                        {item.date} {hasLink && <ArrowUpRight className="h-3 w-3" />}
                       </div>
                     </GlassCard>
                   </Wrapper>
@@ -238,30 +273,31 @@ export default function AwardsSection() {
           </div>
         </MotionWrapper>
 
-        {/* 3. BEYOND THE LAB */}
+        {/* 3. BEYOND THE LAB COM ETIQUETA DE STATUS */}
         <MotionWrapper delay={0.5}>
           <div className="relative">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
                 <span className="w-6 h-1 bg-zinc-900 dark:bg-white rounded-full"></span>
-                <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
                   Beyond the Lab
+                  <span className="text-[9px] font-mono font-medium text-zinc-400 border border-zinc-200 dark:border-white/10 px-1.5 py-0.5 rounded uppercase bg-zinc-100 dark:bg-white/5">Status: Operational</span>
                 </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-96">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-96" style={{ perspective: "1000px" }}>
               
               {/* CARD 1: THE QUANTIFIED SELF */}
               <div className="md:col-span-2 row-span-1 md:row-span-2 group h-full">
                 <HobbyCard className="h-full flex flex-col justify-between hover:border-emerald-500/30 transition-colors duration-500 relative">
                   <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-                     <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 dark:opacity-10 text-emerald-500 dark:text-emerald-500"><Footprints className="w-48 h-48" /></div>
-                     <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 dark:opacity-10 text-emerald-500 dark:text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
+                     <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
+                     <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
                   </div>
                   <div className="relative z-20 flex flex-col h-full p-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
-                            <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500 group-hover:drop-shadow-[0_0_8px_rgba(16,185,129,0.5)] transition-all" />
+                          <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-emerald-500 transition-colors">
+                            <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" />
                             The Quantified Self
                           </h3>
                           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 max-w-xs leading-relaxed text-justify">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
@@ -273,17 +309,13 @@ export default function AwardsSection() {
                         </div>
                       </div>
                       <div className="mt-auto">
-                        <div className="flex items-center gap-2 mb-3">
-                            <Timer className="w-3.5 h-3.5 text-zinc-400" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span>
-                        </div>
+                        <div className="flex items-center gap-2 mb-3"><Timer className="w-3.5 h-3.5 text-zinc-400" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
                         <div className="grid grid-cols-3 gap-4 border-t border-zinc-200 dark:border-white/5 pt-4">
                             {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
                               <div key={i} className="flex flex-col relative group/stat">
-                                <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 mb-0.5">{stat.dist}</span>
-                                <span className="text-xl md:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-tight z-10">{stat.time}</span>
-                                <div className="flex justify-end mb-0.5 mt-2"><span className="text-[8px] font-bold text-zinc-400 opacity-60">1 HOUR</span></div>
-                                <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
+                                <span className="text-[10px] font-bold text-zinc-500 mb-0.5">{stat.dist}</span>
+                                <span className="text-xl md:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
+                                <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-1"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
                               </div>
                             ))}
                         </div>
@@ -292,19 +324,19 @@ export default function AwardsSection() {
                 </HobbyCard>
               </div>
 
-              {/* CARD 2: PRECISION & STRATEGY (TIMING E ESPAÇO CORRIGIDOS) */}
+              {/* CARD 2: PRECISION & STRATEGY */}
               <div className="md:col-span-1 h-48 md:h-auto group">
-                <HobbyCard className="h-full relative overflow-hidden hover:border-blue-500/30 transition-colors duration-500">
-                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-blue-500"><Gauge className="w-16 h-16" /></div></div>
+                <HobbyCard className="h-full hover:border-blue-500/30 transition-colors duration-500 relative">
+                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] text-blue-500"><Gauge className="w-16 h-16" /></div></div>
                   <div className="relative z-10 flex flex-col h-full p-6">
                     <div className="flex justify-between items-center gap-3 mb-2">
-                        <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
-                        <Flag className="w-4 h-4 text-blue-500 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] transition-all" />
+                        <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-blue-500 transition-colors">
+                        <Flag className="w-4 h-4 text-blue-500" />
                         Precision & Strategy
                         </h3>
                         <F1StartingLights />
                     </div>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed text-justify mt-0">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0 leading-relaxed text-justify">
                       {parseBoldText("Passionate about **automotive engineering** and **Formula 1**. Fascinated by the intersection of aerodynamics, real-time telemetry, and high-stakes strategy.", "bg-blue-500/10")}
                     </p>
                   </div>
@@ -313,11 +345,11 @@ export default function AwardsSection() {
 
               {/* CARD 3: EXPANDING HORIZONS */}
               <div className="md:col-span-1 h-48 md:h-auto group">
-                <HobbyCard className="h-full relative overflow-hidden hover:border-purple-500/30 transition-colors duration-500">
-                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] group-hover:opacity-15 transition-opacity duration-500 text-purple-500"><Languages className="w-16 h-16" /></div></div>
-                  <div className="relative z-10 flex flex-col h-full p-6">
-                    <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
-                      <Brain className="w-4 h-4 text-purple-500 group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] transition-all" />
+                <HobbyCard className="h-full hover:border-purple-500/30 transition-colors duration-500 relative p-6">
+                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] text-purple-500"><Languages className="w-16 h-16" /></div><div className="absolute -left-0 -bottom-0 transform -rotate-12 opacity-[0.08] text-purple-500"><Terminal className="w-16 h-16" /></div></div>
+                  <div className="relative z-10 flex flex-col h-full">
+                    <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-purple-500 transition-colors">
+                      <Brain className="w-4 h-4 text-purple-500" />
                       Expanding Horizons
                     </h3>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">{parseBoldText("Exploring the logic of languages. Currently studying **German** for the challenge, while diving deep into **AI & Programming** to push my technical boundaries.", "bg-purple-500/10")}</p>

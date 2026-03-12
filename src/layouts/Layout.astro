@@ -20,7 +20,6 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const socialImageURL = new URL(image, siteUrl);
 
 // --- SCHEMA.ORG (JSON-LD) ---
-// Isto diz ao Google quem tu és de forma estruturada
 const schema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -31,7 +30,7 @@ const schema = {
   "worksFor": [
     {
       "@type": "Organization",
-      "name": "Instituto de Telecomunicações" // Exemplo: ajusta para a tua afiliação
+      "name": "Instituto de Telecomunicações"
     },
     {
       "@type": "Organization",
@@ -44,9 +43,9 @@ const schema = {
   },
   "description": description,
   "sameAs": [
-    "https://www.linkedin.com/in/goncalovdfigueiredo/", // Teu LinkedIn
-    "https://github.com/SeuUsername", // Teu GitHub
-    "https://scholar.google.com/citations?user=SEU_ID" // Teu Google Scholar (Muito importante!)
+    "https://www.linkedin.com/in/goncalovdfigueiredo/",
+    "https://github.com/SeuUsername",
+    "https://scholar.google.com/citations?user=SEU_ID"
   ]
 };
 ---
@@ -57,7 +56,7 @@ const schema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon2.svg" />
-    <link rel="sitemap" href="/sitemap-index.xml" /> {/* Link para o Sitemap */}
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
 
     {/* --- 1. SEO PRINCIPAL --- */}
@@ -66,7 +65,7 @@ const schema = {
     <meta name="keywords" content="Gonçalo Figueiredo, PhD Candidate, FPGA, VLC, Optical Sensors, Embedded Systems, Verilog, Intel FPGA, IST, Aveiro, Researcher" />
     <meta name="author" content="Gonçalo Figueiredo" />
     <link rel="canonical" href={canonicalURL} />
-    <meta name="robots" content="index, follow" /> {/* Instrução explícita para indexar */}
+    <meta name="robots" content="index, follow" />
 
     {/* --- 2. OPEN GRAPH --- */}
     <meta property="og:type" content={type} />
@@ -85,7 +84,6 @@ const schema = {
     <meta property="twitter:image" content={socialImageURL} />
 
     {/* --- 4. STRUCTURED DATA (JSON-LD) --- */}
-    {/* O Astro injeta isto como script JSON na head */}
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
     {/* FONTS */}
@@ -97,9 +95,10 @@ const schema = {
     />
   </head>
   <body
-  class="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500"
->
-    {/* Mantive o teu Glow original */}
+    class="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500 relative"
+  >
+    <div class="noise-overlay" aria-hidden="true"></div>
+
     <div class="fixed inset-0 -z-10 h-full w-full pointer-events-none">
       <div
         class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.05),rgba(255,255,255,0))]"
@@ -116,7 +115,6 @@ const schema = {
 </html>
 
 <script is:inline>
-  // O teu script de tema (mantido igual)
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -141,7 +139,6 @@ const schema = {
 </script>
 
 <style is:global>
-  /* Os teus estilos globais (mantidos iguais) */
   html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; }
   :root { --transition-standard: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   body { transition: background-color var(--transition-standard), color var(--transition-standard); }
