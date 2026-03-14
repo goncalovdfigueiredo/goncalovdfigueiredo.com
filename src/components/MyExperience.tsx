@@ -75,9 +75,25 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
       subtitle={
         <div className="mt-1 pl-1">
           <div className="flex flex-col gap-1 mb-4">
-            {/* Empresa e Link */}
-            <div className="flex items-center gap-2">
-               {(job as any).url ? (
+            {/* Empresa e Link (Lógica Corrigida para múltiplos links) */}
+            <div className="flex flex-wrap items-center gap-x-1.5">
+               {Array.isArray(job.companyLinks) ? (
+                  job.companyLinks.map((link: any, i: number) => (
+                    <React.Fragment key={i}>
+                      <a 
+                        href={link.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 transition-colors"
+                      >
+                        {link.name} <ExternalLink className="w-3 h-3 opacity-50" />
+                      </a>
+                      {i < job.companyLinks.length - 1 && (
+                        <span className="text-zinc-400 dark:text-zinc-500 font-light">&</span>
+                      )}
+                    </React.Fragment>
+                  ))
+               ) : job.url ? (
                   <a href={job.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 transition-colors">
                     {job.company} <ExternalLink className="w-3 h-3 opacity-50" />
                   </a>
@@ -90,15 +106,12 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
             <div className="flex flex-wrap items-center gap-3 text-[10px] md:text-xs text-zinc-500 dark:text-zinc-400">
                <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {typeof job.location === 'string' ? job.location : job.location.city}</span>
                
-               {/* --- LÓGICA DE CURSOS: MOBILE VS DESKTOP --- */}
                {hasCourses && (
                  <>
-                   {/* 1. VERSÃO MOBILE (Só contador) */}
                    <span className="md:hidden flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-500/5 text-blue-500 border border-blue-500/10">
                       <BookOpen className="w-3 h-3" /> {job.courses.length} Courses
                    </span>
 
-                   {/* 2. VERSÃO DESKTOP (Links Individuais) */}
                    <div className="hidden md:flex flex-wrap gap-2">
                      {job.courses.map((course: any, idx: number) => (
                        <a
@@ -124,7 +137,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
             <div className="mt-2">
               <div className={`grid gap-3 mb-3 ${hasProjects && hasImpact ? 'grid-cols-2' : 'grid-cols-1'}`}>
                 
-                {/* Botão Projects */}
                 {hasProjects && (
                   <button
                     onClick={() => toggleTab('projects')}
@@ -140,7 +152,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                   </button>
                 )}
 
-                {/* Botão Key Impact */}
                 {hasImpact && (
                   <button
                     onClick={() => toggleTab('impact')}
@@ -157,7 +168,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                 )}
               </div>
 
-              {/* Conteúdo Expansível */}
               <AnimatePresence mode="wait">
                 {activeTab === 'projects' && hasProjects && (
                   <motion.div
