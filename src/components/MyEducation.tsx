@@ -117,7 +117,7 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
   ];
 
   // Estilo exato para recriar o grid com aspeto de wireframe vibrante
-  const gridStyle = "absolute w-[350px] h-[350px] opacity-60 dark:opacity-40 border border-emerald-500/30 bg-[linear-gradient(to_right,#10b98130_1px,transparent_1px),linear-gradient(to_bottom,#10b98130_1px,transparent_1px)] bg-[size:40px_40px]";
+  const gridStyle = "absolute w-[350px] h-[350px] opacity-60 dark:opacity-40 border border-emerald-500/30 bg-[linear-gradient(to_right,#10b98130_1px,transparent_1px),linear-gradient(to_bottom,#10b98130_1px,transparent_1px)] bg-[size:40px_40px] bg-[position:right_top]";
 
   return (
     <div className="relative w-full h-[500px] flex items-center justify-center" style={{ perspective: "2000px" }}>
@@ -221,13 +221,11 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
   );
 };
 
-// ADICIONADO AQUI NO FUNDO DA SECÇÃO: "relative overflow-hidden" + bg-gradient como no Leadership
 export default function EducationSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
     <section id="education" className="py-16 md:py-20 relative overflow-hidden">
-      {/* GRADIENTE DE FUNDO IGUAL AO LEADERSHIP */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
       <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
