@@ -253,7 +253,8 @@ export default function EducationSection() {
           <div className="hidden lg:flex lg:col-span-5 sticky top-32 justify-center h-[500px]">
             <IsometricStairs activeIndex={activeIndex} />
           </div>
-          <div className="lg:col-span-7 space-y-4 md:space-y-8">
+          {/* Adicionei lg:pl-12 xl:pl-20 APENAS nesta linha abaixo para empurrar toda a lista da direita */}
+          <div className="lg:col-span-7 space-y-4 md:space-y-8 lg:pl-12 xl:pl-20">
             {education.map((edu, index) => (
               <EducationEntry key={index} edu={edu} index={index} isLast={index === education.length - 1} onHover={setActiveIndex} />
             ))}
