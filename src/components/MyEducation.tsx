@@ -123,7 +123,7 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
     <div className="relative w-full h-[500px] flex items-center justify-center" style={{ perspective: "2000px" }}>
       
       {/* --- EFEITO CANTO DE SALA (3 GRIDS) --- */}
-      <div className="relative" style={{ transformStyle: "preserve-3d", transform: "rotateX(60deg) rotateZ(-45deg)" }}>
+      <div className="relative mt-24" style={{ transformStyle: "preserve-3d", transform: "rotateX(60deg) rotateZ(-45deg)" }}>
         
         {/* 1. CHÃO */}
         <div className={gridStyle} style={{ left: '-180px', top: '-180px', transform: "translateZ(-100px)" }} />
@@ -221,15 +221,19 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
   );
 };
 
+// ADICIONADO AQUI NO FUNDO DA SECÇÃO: "relative overflow-hidden" + bg-gradient como no Leadership
 export default function EducationSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <section id="education" className="py-16 md:py-24 relative overflow-hidden bg-background text-zinc-900 dark:text-white">
-      <div className="container max-w-5xl mx-auto px-6 relative z-10">
+    <section id="education" className="py-16 md:py-20 relative overflow-hidden">
+      {/* GRADIENTE DE FUNDO IGUAL AO LEADERSHIP */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
+
+      <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
           <div className="mb-12 md:mb-16 flex flex-col md:flex-row items-center justify-between gap-6">
-            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight ">
+            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
               <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm shadow-sm text-emerald-600 dark:text-emerald-400">
                 <GraduationCap className="h-6 w-6 md:h-8 md:w-8" />
               </div>
@@ -253,7 +257,6 @@ export default function EducationSection() {
           <div className="hidden lg:flex lg:col-span-5 sticky top-32 justify-center h-[500px]">
             <IsometricStairs activeIndex={activeIndex} />
           </div>
-          {/* Adicionei lg:pl-12 xl:pl-20 APENAS nesta linha abaixo para empurrar toda a lista da direita */}
           <div className="lg:col-span-7 space-y-4 md:space-y-8 lg:pl-12 xl:pl-20">
             {education.map((edu, index) => (
               <EducationEntry key={index} edu={edu} index={index} isLast={index === education.length - 1} onHover={setActiveIndex} />
