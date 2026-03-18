@@ -117,7 +117,7 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
   ];
 
   // Estilo exato para recriar o grid com aspeto de wireframe vibrante
-  const gridStyle = "absolute w-[350px] h-[350px] opacity-60 dark:opacity-40 border border-emerald-500/30 bg-[linear-gradient(to_right,#10b98130_1px,transparent_1px),linear-gradient(to_bottom,#10b98130_1px,transparent_1px)] bg-[size:40px_40px] bg-[position:right_top]";
+  const gridStyle = "absolute w-[350px] h-[350px] opacity-90 dark:opacity-50 border border-emerald-500/30 bg-[linear-gradient(to_right,#10b98130_1px,transparent_1px),linear-gradient(to_bottom,#10b98130_1px,transparent_1px)] bg-[size:40px_40px] bg-[position:right_top]";
 
   return (
     <div className="relative w-full h-[500px] flex items-center justify-center" style={{ perspective: "2000px" }}>
