@@ -769,6 +769,10 @@ export const awards = [
     date: "Nov 2023",
     type: "National",
     position: "First Place",
+    links: [
+      { label: "Autoridade Nacional de Comunicações (ANACOM)", url: "https://www.anacom.pt/render.jsp?contentId=1771803&languageId=1" },
+      { label: "Instituto de Telecomunicações", url: "https://www.it.pt/News/NewsPost/4961" }
+    ]
   },
   {
     name: "PhD Scholarship",
@@ -778,9 +782,9 @@ export const awards = [
     type: "National",
     description: "Research grant to support PhD studies in Electrical and Computer Engineering, under a specific line for applications in non-academic environments.",
     hosts: [
-      "Lightenjin II - Indústria de Iluminação Lda",
-      "Instituto de Telecomunicações",
-      "CICECO - Aveiro Institute of Materials"
+      { name: "Lightenjin II - Indústria de Iluminação Lda", url: "https://lightenjin.pt" },
+      { name: "Instituto de Telecomunicações", url: "https://www.it.pt" },
+      { name: "CICECO - Aveiro Institute of Materials", url: "https://www.ciceco.ua.pt" }
     ]
   },
 ];
