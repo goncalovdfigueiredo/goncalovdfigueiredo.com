@@ -816,6 +816,13 @@ export const featuredIn = [
     type: "Print Newspaper", 
   },
   {
+    source: "University of Aveiro",
+    description: "Glass that isn't glass... It's the future of energy use",
+    date: "May 2024",
+    type: "Institutional",
+    link: "https://www.ua.pt/en/noticias/9/86735"
+  },
+  {
     source: "Podcast da Radiociência (Ep. 3)",
     description: "Guest speaker discussing the award-winning research at the Congress of the Portuguese Committee of URSI.",
     date: "Mar 2024",
