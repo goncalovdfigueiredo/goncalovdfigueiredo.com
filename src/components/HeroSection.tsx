@@ -1,15 +1,59 @@
 // src/components/HeroSection.tsx
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react"; // Adicionado useEffect
 import { personalInfo } from "@/lib/data";
 import { 
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, Sparkles, MapPin, FileText,
-  Cpu, Users, Terminal, Fingerprint, FileBadge
+  Cpu, Users, Terminal, Fingerprint, FileBadge,
+  Hand, ArrowLeftRight // Adicionados ícones para o SwipeHint
 } from "lucide-react";
-import { motion, useMotionTemplate, useMotionValue, useAnimation, type Variants } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useAnimation, AnimatePresence, type Variants } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
+
+/* =========================
+   NOVO COMPONENTE: SWIPE HINT (MOBILE ONLY)
+   ========================= */
+function SwipeHint() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    // Esconde automaticamente após 6 segundos se não houver interação
+    const timer = setTimeout(() => setIsVisible(false), 6000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onTouchStart={() => setIsVisible(false)}
+          onMouseDown={() => setIsVisible(false)}
+          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-[2px] rounded-[1.5rem] cursor-pointer"
+        >
+          <motion.div 
+            animate={{ x: [-20, 20, -20] }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+            className="flex flex-col items-center text-white text-center px-4"
+          >
+            <div className="relative mb-4 flex flex-col items-center">
+              <ArrowLeftRight className="w-6 h-6 mb-1 text-emerald-400 opacity-80" />
+              <Hand className="w-12 h-12 rotate-[15deg]" />
+            </div>
+            <p className="text-sm font-bold tracking-wide uppercase">
+              Swipe to explore skills
+            </p>
+            <span className="text-[10px] mt-1 opacity-60 font-mono">Tap to dismiss</span>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 /* =========================
    GLOWING CIRCUIT BORDER (Versão Corrigida com Padding)
@@ -330,7 +374,11 @@ export default function HeroSection() {
                   </SpotlightCard>
                 </GlowingCircuitBorder>
 
-                <div className="relative">
+                {/* ZONA DE SKILLS COM O NOVO SWIPE HINT */}
+                <div className="relative mt-4">
+                    {/* 👇 COMPONENTE ADICIONADO AQUI 👇 */}
+                    <SwipeHint />
+
                     <div ref={scrollRef} onScroll={handleScroll} className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {skillGroups.map((group, idx) => (
                         <div key={idx} className="min-w-[85vw] snap-center h-[220px]">
