@@ -59,7 +59,7 @@ export default function ProjectsSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
 
   return (
-    <section id="projects" className="py-20 md:py-24 relative overflow-hidden bg-background">
+    <section id="projects" className="py-20 md:py-24 relative overflow-hidden ">
       <div className="container max-w-5xl mx-auto px-6 relative z-10">
         
         {/* CABEÇALHO DA SECÇÃO */}

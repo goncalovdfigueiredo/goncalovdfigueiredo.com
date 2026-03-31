@@ -438,7 +438,7 @@ export const projects = [
 
 export const scientificEvents: SciEvent[] = [
   {
-    title: "IT Lisbon Meeting 2025",
+    title: "Instituto de Telecomunicações Lisbon Meeting 2025",
     date: "Dec 2025",
     location: "Lisbon, Portugal",
     geo: { lat: 38.7436, lon: -9.1586 },
