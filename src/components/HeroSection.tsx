@@ -9,21 +9,13 @@ import {
   Cpu, Users, Terminal, Fingerprint, FileBadge,
   Hand, ArrowLeftRight // Adicionados ícones para o SwipeHint
 } from "lucide-react";
-import { motion, useMotionTemplate, useMotionValue, useAnimation, AnimatePresence, type Variants } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useAnimation, AnimatePresence, type Variants } from "framer-motion"; // Adicionado AnimatePresence
 import MotionWrapper from "./MotionWrapper";
 
 /* =========================
-   NOVO COMPONENTE: SWIPE HINT (MOBILE ONLY)
+   NOVO COMPONENTE: SWIPE HINT (SÓ DESAPARECE NO SCROLL)
    ========================= */
-function SwipeHint() {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    // Esconde automaticamente após 6 segundos se não houver interação
-    const timer = setTimeout(() => setIsVisible(false), 6000);
-    return () => clearTimeout(timer);
-  }, []);
-
+function SwipeHint({ isVisible }: { isVisible: boolean }) {
   return (
     <AnimatePresence>
       {isVisible && (
@@ -31,9 +23,7 @@ function SwipeHint() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onTouchStart={() => setIsVisible(false)}
-          onMouseDown={() => setIsVisible(false)}
-          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-[2px] rounded-[1.5rem] cursor-pointer"
+          className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[2px] rounded-[1.5rem] pointer-events-none"
         >
           <motion.div 
             animate={{ x: [-20, 20, -20] }}
@@ -47,7 +37,6 @@ function SwipeHint() {
             <p className="text-sm font-bold tracking-wide uppercase">
               Swipe to explore skills
             </p>
-            <span className="text-[10px] mt-1 opacity-60 font-mono">Tap to dismiss</span>
           </motion.div>
         </motion.div>
       )}
@@ -297,11 +286,18 @@ export default function HeroSection() {
   ];
 
   const [activeSlide, setActiveSlide] = useState(0);
+  const [showSwipeHint, setShowSwipeHint] = useState(true); // NOVO: Estado para a dica
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
     if (scrollRef.current) {
       const scrollPosition = scrollRef.current.scrollLeft;
+      
+      // Se o utilizador moveu mais de 10px para o lado, remove a dica
+      if (scrollPosition > 10) {
+        setShowSwipeHint(false);
+      }
+
       const cardWidth = scrollRef.current.offsetWidth * 0.85; 
       const index = Math.round(scrollPosition / cardWidth);
       setActiveSlide(index);
@@ -374,10 +370,9 @@ export default function HeroSection() {
                   </SpotlightCard>
                 </GlowingCircuitBorder>
 
-                {/* ZONA DE SKILLS COM O NOVO SWIPE HINT */}
                 <div className="relative mt-4">
-                    {/* 👇 COMPONENTE ADICIONADO AQUI 👇 */}
-                    <SwipeHint />
+                    {/* ADICIONADA A DICA AQUI */}
+                    <SwipeHint isVisible={showSwipeHint} />
 
                     <div ref={scrollRef} onScroll={handleScroll} className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {skillGroups.map((group, idx) => (
