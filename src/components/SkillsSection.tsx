@@ -1,7 +1,7 @@
-// src/components/SkillsSection.tsx
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
@@ -12,22 +12,13 @@ import {
   skills 
 } from "@/lib/data";
 import { 
-  Cpu, 
-  Terminal, 
-  Activity, 
-  Zap, 
-  Briefcase, 
-  GraduationCap, 
-  StickyNote,
-  CircuitBoard, 
-  Monitor,      
-  Globe,
-  Tag,
-  MousePointerClick // Importado para o aviso mobile
+  Cpu, Terminal, Activity, Zap, Briefcase, 
+  GraduationCap, StickyNote, CircuitBoard, 
+  Monitor, Globe, Tag, Fingerprint, X 
 } from "lucide-react";
 
 // =========================================================
-// 1. HELPER: CATEGORIAS E DADOS
+// 1. HELPERS
 // =========================================================
 const subCategories: Record<string, { label: string; color: string; bg: string; border: string }> = {
   "Circuit Design": { label: "Circuit Design", color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
@@ -54,25 +45,21 @@ function findSkillUsage(skill: string) {
     if (tags && tags.some(tag => tag.toLowerCase().includes(cleanSkill.toLowerCase()))) return true;
     return regex.test(text || "");
   };
-
   workExperience.forEach((job) => {
     const tags = (job as any).relatedSkills || [];
     const text = `${job.position} ${job.company} ${job.achievements.join(" ")} ${job.projecttitle?.join(" ")}`;
     if (isMatch(text, tags)) usage.push({ type: "experience", title: job.position, subtitle: job.company, year: job.period.split(" - ")[0] });
   });
-
   education.forEach((edu) => {
     const tags = (edu as any).relatedSkills || [];
     const text = `${edu.degree} ${(edu as any).thesisTitle} ${(edu as any).abstract} ${(edu as any).summary} ${edu.achievements.join(" ")}`;
     if (isMatch(text, tags)) usage.push({ type: "education", title: edu.degree, subtitle: edu.institution, year: edu.period.split(" - ")[0] });
   });
-
   projects.forEach((proj) => {
     const tags = (proj as any).relatedSkills || [];
     const text = `${proj.title} ${proj.description.join(" ")}`;
     if (isMatch(text, tags)) usage.push({ type: "project", title: proj.title, subtitle: "Personal Project", year: "Dev" });
   });
-
   return Array.from(new Set(usage.map(u => JSON.stringify(u)))).map(s => JSON.parse(s)).slice(0, 4);
 }
 
@@ -84,71 +71,69 @@ const skillCategories = [
   { id: "lang", label: "Languages", icon: Globe, color: "amber", items: skills.languages }
 ];
 
+// Tailwind mapping para cores dinâmicas nos botões mobile
+const colorClasses: Record<string, string> = {
+  emerald: "bg-emerald-500 border-emerald-500 shadow-emerald-500/20 text-emerald-500",
+  purple: "bg-purple-500 border-purple-500 shadow-purple-500/20 text-purple-500",
+  blue: "bg-blue-500 border-blue-500 shadow-blue-500/20 text-blue-500",
+  zinc: "bg-zinc-500 border-zinc-500 shadow-zinc-500/20 text-zinc-500",
+  amber: "bg-amber-500 border-amber-500 shadow-amber-500/20 text-amber-500",
+};
+
 // =========================================================
-// 2. COMPONENTE REUTILIZÁVEL: A CONSOLA
+// 2. CONSOLA
 // =========================================================
-const ConsoleWindow = ({ activeSkill, usageData, subCategory }: { activeSkill: string | null, usageData: any[], subCategory: any }) => {
+const ConsoleWindow = ({ activeSkill, usageData, subCategory, onMobileClose }: { activeSkill: string | null, usageData: any[], subCategory: any, onMobileClose?: () => void }) => {
   return (
-    <GlassCard className="h-full min-h-[400px] lg:min-h-[550px] border border-zinc-200 dark:border-white/10 bg-zinc-50/80 dark:bg-[#0c0c0e]/80 backdrop-blur-xl overflow-hidden flex flex-col shadow-2xl">
-      {/* Console Header */}
-      <div className="h-10 bg-zinc-200/50 dark:bg-white/5 border-b border-zinc-200 dark:border-white/10 flex items-center px-4 justify-between">
+    <GlassCard className="h-full min-h-[400px] lg:min-h-[550px] border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#0c0c0e] backdrop-blur-xl overflow-hidden flex flex-col shadow-2xl">
+      <div className="h-12 bg-zinc-200/90 dark:bg-zinc-900 border-b border-zinc-200 dark:border-white/10 flex items-center px-4 justify-between relative z-50">
         <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
-          <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
+          <div className="w-3 h-3 rounded-full bg-red-400" />
+          <div className="w-3 h-3 rounded-full bg-amber-400" />
+          <div className="w-3 h-3 rounded-full bg-emerald-400" />
         </div>
-        <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">CONTEXT_LOG</div>
+        {onMobileClose && (
+          <button onClick={onMobileClose} className="p-1.5 bg-white/10 rounded-lg hover:bg-white/20 transition-colors lg:hidden">
+            <X className="w-5 h-5 text-zinc-400" />
+          </button>
+        )}
+        <div className="hidden lg:block text-[10px] font-mono text-zinc-400 uppercase tracking-widest">CONTEXT_LOG</div>
       </div>
 
-      {/* Console Body */}
-      <div className="p-5 flex-1 flex flex-col">
+      <div className="p-6 flex-1 flex flex-col overflow-hidden">
         <AnimatePresence mode="wait">
           {activeSkill ? (
-            <motion.div
-              key={activeSkill}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="h-full flex flex-col"
-            >
-              <div className="mb-4 pb-3 border-b border-zinc-200 dark:border-white/5 flex flex-col gap-2">
+            <motion.div key={activeSkill} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full flex flex-col">
+              <div className="mb-6 pb-4 border-b border-zinc-200 dark:border-white/5 flex flex-col gap-3">
                 <p className="text-[10px] text-zinc-400 font-mono">Querying database for:</p>
-                <div className="flex flex-col gap-2">
-                  <h4 className="text-lg md:text-xl font-bold text-zinc-900 dark:text-white flex items-start gap-2 leading-tight">
-                    <Terminal className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
-                    <span className="break-words">{activeSkill.split("(")[0]}</span>
-                  </h4>
-                  {subCategory && (
-                    <div className={`self-start flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${subCategory.color} ${subCategory.bg} ${subCategory.border}`}>
-                      <Tag className="w-3 h-3" />
-                      {subCategory.label}
-                    </div>
-                  )}
-                </div>
+                <h4 className="text-xl font-bold text-zinc-900 dark:text-white flex items-start gap-2 leading-tight">
+                  <Terminal className="w-5 h-5 text-emerald-500 mt-1 shrink-0" />
+                  <span>{activeSkill.split("(")[0]}</span>
+                </h4>
+                {subCategory && (
+                  <div className={`self-start flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${subCategory.color} ${subCategory.bg} ${subCategory.border}`}>
+                    <Tag className="w-3.5 h-3.5" /> {subCategory.label}
+                  </div>
+                )}
               </div>
-
-              <div className="space-y-3 overflow-y-auto max-h-[500px] pr-2 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700">
-                {usageData.length > 0 ? (
-                  usageData.map((item: any, i: number) => (
-                    <div key={i} className="group flex items-start gap-3 p-3 rounded-lg bg-white/50 dark:bg-white/5 border border-zinc-200/50 dark:border-white/5 hover:border-emerald-500/30 transition-all">
-                      <div className={`mt-1 p-1.5 rounded-md shrink-0 ${item.type === 'experience' ? 'bg-blue-500/10 text-blue-500' : item.type === 'education' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
-                        {item.type === 'experience' && <Briefcase className="w-3.5 h-3.5" />}
-                        {item.type === 'education' && <GraduationCap className="w-3.5 h-3.5" />}
-                        {item.type === 'project' && <StickyNote className="w-3.5 h-3.5" />}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <h5 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 truncate">{item.title}</h5>
-                          <span className="text-[9px] text-zinc-400 font-mono shrink-0">[{item.year}]</span>
-                        </div>
-                        <p className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-tight line-clamp-2">{item.subtitle}</p>
-                      </div>
+              <div className="space-y-4 overflow-y-auto pr-1 flex-1">
+                {usageData.length > 0 ? usageData.map((item: any, i: number) => (
+                  <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-white/60 dark:bg-white/5 border border-zinc-200 dark:border-white/5">
+                    <div className={`p-2 rounded-lg shrink-0 ${item.type === 'experience' ? 'bg-blue-500/10 text-blue-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
+                      {item.type === 'experience' ? <Briefcase className="w-4 h-4" /> : <GraduationCap className="w-4 h-4" />}
                     </div>
-                  ))
-                ) : (
-                  <div className="p-4 rounded-lg border border-dashed border-zinc-300 dark:border-white/10 text-center">
-                    <p className="text-xs text-zinc-400">Core competence used across general R&D and daily operations.</p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h5 className="text-[13px] font-bold text-zinc-900 dark:text-zinc-100">{item.title}</h5>
+                        <span className="text-[10px] text-zinc-500 font-mono">[{item.year}]</span>
+                      </div>
+                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-snug">{item.subtitle}</p>
+                    </div>
+                  </div>
+                )) : (
+                  <div className="h-full flex flex-col items-center justify-center opacity-40">
+                    <CircuitBoard className="w-10 h-10 mb-2" />
+                    <p className="text-xs text-center">Core competence used across<br/>general R&D operations.</p>
                   </div>
                 )}
               </div>
@@ -165,12 +150,8 @@ const ConsoleWindow = ({ activeSkill, usageData, subCategory }: { activeSkill: s
         </AnimatePresence>
       </div>
 
-      <div className="p-2 border-t border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/20 text-[9px] font-mono text-zinc-400 flex justify-between items-center">
-        {activeSkill ? (
-          <span className="text-emerald-600 dark:text-emerald-400 font-bold">{usageData.length > 0 ? `${usageData.length} REFERENCES FOUND` : "CORE COMPETENCE"}</span>
-        ) : (
-          <span>STATUS: <span className="text-emerald-500 font-bold">ONLINE</span></span>
-        )}
+      <div className="p-3 border-t border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/40 text-[10px] font-mono text-zinc-500 flex justify-between items-center">
+        <span>STATUS: <span className="text-emerald-500 font-bold">ONLINE</span></span>
         <span className="animate-pulse">_CURSOR_ACTIVE</span>
       </div>
     </GlassCard>
@@ -183,135 +164,138 @@ const ConsoleWindow = ({ activeSkill, usageData, subCategory }: { activeSkill: s
 export default function SkillsSection() {
   const [activeSkill, setActiveSkill] = useState<string | null>(null);
   const [isPinned, setIsPinned] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(skillCategories[0].id);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const usageData = useMemo(() => activeSkill ? findSkillUsage(activeSkill) : [], [activeSkill]);
   const subCategory = useMemo(() => activeSkill ? getSkillSubCategory(activeSkill) : null, [activeSkill]);
+  const currentCategoryData = useMemo(() => skillCategories.find(c => c.id === activeCategory), [activeCategory]);
 
   useEffect(() => {
-    if (!activeSkill || isPinned) return;
+    if (!activeSkill || isPinned || typeof window === "undefined" || window.innerWidth < 1024) return;
     const timer = setTimeout(() => { setActiveSkill(null); }, 5000);
     return () => clearTimeout(timer);
   }, [activeSkill, isPinned]);
 
-  const handleMouseEnter = (skill: string) => { if (!isPinned) setActiveSkill(skill); };
-  
-  const handleClick = (skill: string) => {
-    if (activeSkill === skill && isPinned) {
-      setIsPinned(false);
-      setActiveSkill(null);
-    } else {
-      setActiveSkill(skill);
-      setIsPinned(true);
-    }
-  };
-
-  const handleSectionLeave = () => { if (!isPinned) setActiveSkill(null); };
-
   return (
-    <section id="skills" className="py-16 md:py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
-
+    <section id="skills" className="py-16 md:py-24 relative overflow-hidden">
       <div className="container max-w-5xl mx-auto px-5 relative z-10">
         <MotionWrapper>
-          <div className="mb-10 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
-              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
+              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 shadow-sm">
                 <CircuitBoard className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
               Skills
             </h2>
             
-            {/* DESKTOP STATUS */}
-            <div className="hidden md:block text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                Running diagnostic... 
+            {/* CATEGORIAS MOBILE (BOTÕES COM LOGO E CORES) */}
+            <div className="flex flex-wrap gap-2 md:hidden">
+              {skillCategories.map((cat) => {
+                const isSelected = activeCategory === cat.id;
+                return (
+                  <button 
+                    key={cat.id} 
+                    onClick={() => setActiveCategory(cat.id)} 
+                    className={`flex-grow flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all border
+                    ${isSelected 
+                      ? `${colorClasses[cat.color].split(' ')[0]} ${colorClasses[cat.color].split(' ')[1]} text-white shadow-lg` 
+                      : `bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 ${colorClasses[cat.color].split(' ').pop()}`}`}
+                  >
+                    <cat.icon className="w-3.5 h-3.5" />
+                    {cat.label.split(" ")[0]}
+                  </button>
+                );
+              })}
             </div>
-
-            {/* MOBILE INSTRUCTION (NOVO) */}
-            <div className="md:hidden flex items-center gap-2 text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-mono bg-zinc-100 dark:bg-white/5 px-3 py-1.5 rounded-full">
-                <MousePointerClick className="w-3 h-3 animate-pulse text-emerald-500" />
-                <span>Tap to analyze</span>
-            </div>
-
           </div>
         </MotionWrapper>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* ESQUERDA: LISTA DE CATEGORIAS */}
-          <div className="lg:col-span-7 flex flex-col gap-6" onMouseLeave={handleSectionLeave}>
-            {skillCategories.map((cat, idx) => {
-              const hasActiveSkillHere = activeSkill && cat.items.includes(activeSkill);
+          <div className="lg:col-span-7 flex flex-col gap-6" onMouseLeave={() => { if(!isPinned) setActiveSkill(null) }}>
+            
+            {/* TÍTULO DINÂMICO MOBILE */}
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={activeCategory}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                className="md:hidden flex items-center gap-3 mb-2 px-1"
+              >
+                {currentCategoryData && (
+                  <>
+                    <currentCategoryData.icon className={`w-5 h-5 text-${currentCategoryData.color}-500`} />
+                    <h3 className="text-base font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                      {currentCategoryData.label}
+                    </h3>
+                  </>
+                )}
+              </motion.div>
+            </AnimatePresence>
 
-              return (
-                <MotionWrapper key={cat.id} delay={idx * 0.1}>
+            {skillCategories.map((cat, idx) => (
+              <div key={cat.id} className={`${activeCategory === cat.id ? 'block' : 'hidden md:block'}`}>
+                <MotionWrapper delay={idx * 0.1}>
                   <div className="relative group">
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="hidden lg:flex items-center gap-3 mb-4 opacity-70">
                       <cat.icon className={`w-4 h-4 text-${cat.color}-500`} />
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{cat.label}</h3>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {cat.items.map((skill) => {
-                        const isActive = activeSkill === skill;
-                        const displayName = skill; 
-
-                        return (
-                          <button
-                            key={skill}
-                            onMouseEnter={() => handleMouseEnter(skill)}
-                            onClick={() => handleClick(skill)}
-                            className={`
-                              relative px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 border text-left
-                              ${isActive 
-                                ? `bg-${cat.color}-500 text-white border-${cat.color}-500 shadow-md scale-105` 
-                                : `bg-white dark:bg-white/5 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-white/10 hover:border-${cat.color}-500/50 hover:text-${cat.color}-600 dark:hover:text-${cat.color}-400`}
-                            `}
-                          >
-                            {displayName}
-                          </button>
-                        )
-                      })}
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">{cat.label}</h3>
                     </div>
 
-                    {/* MOBILE ONLY CONSOLE */}
-                    <AnimatePresence>
-                      {hasActiveSkillHere && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, height: "auto", scale: 1 }}
-                          exit={{ opacity: 0, height: 0, scale: 0.95 }}
-                          transition={{ duration: 0.3 }}
-                          className="lg:hidden w-full overflow-hidden"
+                    <div className="flex flex-wrap gap-2">
+                      {cat.items.map((skill) => (
+                        <button 
+                          key={skill} 
+                          onMouseEnter={() => { if(typeof window !== "undefined" && window.innerWidth >= 1024 && !isPinned) setActiveSkill(skill) }} 
+                          onClick={() => { setActiveSkill(skill); setIsPinned(true); }} 
+                          className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 border
+                          ${activeSkill === skill 
+                            ? `bg-${cat.color}-500 text-white border-${cat.color}-500 shadow-md` 
+                            : `bg-white dark:bg-white/5 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-white/10 hover:border-${cat.color}-500/50`}`}
                         >
-                          <div className="pb-4">
-                            <ConsoleWindow 
-                                activeSkill={activeSkill} 
-                                usageData={usageData} 
-                                subCategory={subCategory} 
-                            />
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
+                          {skill}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </MotionWrapper>
-              );
-            })}
-          </div>
+              </div>
+            ))}
 
-          {/* DIREITA: CONSOLA (APENAS DESKTOP) */}
-          <div className="hidden lg:block lg:col-span-5 relative">
-            <div className="sticky top-24">
-               <ConsoleWindow 
-                  activeSkill={activeSkill} 
-                  usageData={usageData} 
-                  subCategory={subCategory} 
-               />
+            {/* MOBILE: DIAGNOSTIC MODE */}
+            <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl mt-4">
+              <Fingerprint className="w-5 h-5 text-emerald-500 animate-pulse" />
+              <div className="flex flex-col text-left">
+                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none mb-1">Diagnostic Mode</span>
+                <span className="text-[9px] text-zinc-500">Tap any skill above to analyze application context</span>
+              </div>
             </div>
           </div>
 
+          <div className="hidden lg:block lg:col-span-5 relative">
+            <div className="sticky top-24">
+              <ConsoleWindow activeSkill={activeSkill} usageData={usageData} subCategory={subCategory} />
+            </div>
+          </div>
         </div>
+
+        {mounted && createPortal(
+          <AnimatePresence>
+            {isPinned && activeSkill && typeof window !== "undefined" && window.innerWidth < 1024 && (
+              <div className="fixed inset-0 flex items-end justify-center px-4 pb-10" style={{ zIndex: 999999 }}>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsPinned(false)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+                <motion.div initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }} transition={{ type: "spring", damping: 25, stiffness: 200 }} className="relative w-full max-w-md">
+                  <div className="w-12 h-1.5 bg-zinc-400/50 rounded-full mx-auto mb-4" />
+                  <ConsoleWindow activeSkill={activeSkill} usageData={usageData} subCategory={subCategory} onMobileClose={() => setIsPinned(false)} />
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
       </div>
     </section>
   );
