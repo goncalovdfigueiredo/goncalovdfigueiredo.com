@@ -153,86 +153,68 @@ function buildRows(): Row[] {
 }
 
 /** =========================
- * COMPONENTE 1: Mobile List View (ULTRA COMPACTO)
+ * COMPONENTE 1: Mobile List View (ULTRA COMPACT "ICONS" VERSION)
  * ========================= */
 function MobileTimeline({ rows }: { rows: Row[] }) {
   return (
-    <div className="relative pl-4 pr-2 py-4">
+    <div className="relative pl-2 pr-2 py-4">
       {/* Linha Vertical de Fundo */}
-      <div className="absolute left-[27px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-zinc-500/20 via-zinc-500/10 to-transparent rounded-full" />
+      <div className="absolute left-[24px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-zinc-500/10 via-zinc-500/5 to-transparent rounded-full" />
 
-      <div className="flex flex-col space-y-4"> {/* Reduzi space-y-6 para space-y-4 */}
+      <div className="flex flex-col space-y-1"> 
         {rows.map((row, i) => {
           const Icon = ICON_BY_TYPE[row.type];
           
           let iconColorClass = "text-emerald-500 bg-emerald-500/10 border-emerald-500/20";
-          let glowColor = "group-hover:shadow-emerald-500/10";
           
-          if (row.type === "Experience") {
-            iconColorClass = "text-blue-500 bg-blue-500/10 border-blue-500/20";
-            glowColor = "group-hover:shadow-blue-500/10";
+          if (row.type === "Experience") iconColorClass = "text-blue-500 bg-blue-500/10 border-blue-500/20";
+          if (row.type === "Leadership") iconColorClass = "text-purple-500 bg-purple-500/10 border-purple-500/20";
+
+          // Lógica de Data: Se o ano final for o atual (ou maior), assume 2026.
+          const startYear = row.start.getFullYear();
+          let endYear = row.end.getFullYear();
+          const currentYear = new Date().getFullYear();
+          
+          if (endYear >= currentYear) {
+            endYear = 2026;
           }
-          if (row.type === "Leadership") {
-            iconColorClass = "text-purple-500 bg-purple-500/10 border-purple-500/20";
-            glowColor = "group-hover:shadow-purple-500/10";
-          }
+
+          // Formato: 2025/2026
+          const yearDisplay = `${startYear}/${endYear}`;
 
           return (
             <motion.div 
               key={row.id}
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -5 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
-              className="relative pl-10"
+              viewport={{ once: true, margin: "-20px" }}
+              transition={{ delay: i * 0.03, duration: 0.3 }}
+              // Aumentado pl-12 para dar mais espaço entre ícone e texto
+              className="relative pl-12 pr-2 py-2 group flex flex-col gap-0.5" 
             >
-              {/* Bolinha no eixo */}
+              {/* ÍCONE DE CATEGORIA */}
               <div 
-                className="absolute left-[21px] top-5 h-3.5 w-3.5 rounded-full border-[3px] border-[#09090b] z-10 shadow-sm"
-                style={{ backgroundColor: row.color }}
-              />
+                className={`absolute left-[16px] top-4.5 p-1 rounded-md border shrink-0 z-10 shadow-sm ${iconColorClass}`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+              </div>
 
-              {/* O CARTÃO GLASS (Compacto) */}
-              <div className={`
-                group relative p-3 rounded-xl border border-zinc-200 dark:border-white/5 
-                bg-white/50 dark:bg-white/5 backdrop-blur-md 
-                transition-all duration-300 hover:bg-white/80 dark:hover:bg-white/10 
-                hover:border-zinc-300 dark:hover:border-white/10 hover:-translate-y-0.5
-                shadow-sm ${glowColor}
-              `}>
-                
-                {/* Layout Horizontal: Texto à Esquerda, Ícone à Direita */}
-                <div className="flex justify-between items-start gap-3">
-                  <div className="flex flex-col min-w-0"> {/* min-w-0 para permitir truncate */}
-                    
-                    {/* Data */}
-                    <div className="flex items-center gap-1.5 text-[9px] font-mono font-medium text-zinc-500 uppercase tracking-wider mb-1">
-                      <Calendar className="w-2.5 h-2.5 opacity-70" />
-                      <span>{fmtMY(row.start)} — {fmtMY(row.end)}</span>
-                    </div>
-                    
-                    {/* Título (Cargo) */}
-                    <h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-sm leading-tight mb-1">
-                      {row.label}
-                    </h3>
+              {/* Linha Principal (Título e Ano) */}
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="font-bold text-zinc-100 text-xs leading-snug truncate">
+                  {row.label}
+                </h3>
+                <span className="text-[9px] font-mono text-zinc-500/80 shrink-0 tabular-nums">
+                  {yearDisplay}
+                </span>
+              </div>
 
-                    {/* Empresa (Com Ícone Building) - Agora logo abaixo do título! */}
-                    <div className="flex items-center gap-1.5">
-                       <Building2 className="w-3 h-3 text-zinc-400 dark:text-zinc-500 shrink-0" />
-                       <span className="text-zinc-600 dark:text-zinc-400 font-medium text-xs truncate">
-                         {row.org}
-                       </span>
-                    </div>
-                  </div>
-
-                  {/* Icon Quadrado da Categoria (Direita) */}
-                  <div className={`p-1.5 rounded-md border shrink-0 ${iconColorClass}`}>
-                    <Icon className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-
-                {/* SEM RODAPÉ - O cartão acaba aqui, poupando imenso espaço */}
-
+              {/* Linha Secundária (Empresa) */}
+              <div className="flex items-center gap-1.5 text-zinc-500">
+                <span className="text-[9px] font-mono opacity-50">&gt;_</span>
+                <span className="text-[10px] font-medium truncate">
+                  {row.org}
+                </span>
               </div>
             </motion.div>
           );

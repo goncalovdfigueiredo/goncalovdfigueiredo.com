@@ -205,7 +205,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                             {ach === "__chart__" ? (
                               <div className="mt-2 p-2 rounded bg-black/10 dark:bg-black/20">
                                 <PeerReviewChart company={job.company} />
-                              </div>
+                              </div> 
                             ) : (
                               <div className="flex gap-2">
                                 <span className="block mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />

@@ -207,17 +207,10 @@ export default function AwardsSection() {
         
         {/* CABEÇALHO COM ETIQUETA DE STATUS */}
         <MotionWrapper>
-          <div className="mb-8 md:mb-12 flex flex-col gap-4 text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-[-10px]">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">System.log: Retrieving_Recognition_Data...</span>
-            </div>
-            <h2 className="text-2xl md:text-4xl font-bold flex flex-col md:flex-row items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white gap-3 md:gap-4">
-              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm shrink-0">
-                <Trophy className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+        <div className="mb-8 md:mb-12 flex flex-col gap-4">
+            <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
+              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
+                 <Trophy className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
               <span>Awards & Recognition</span>
             </h2>
