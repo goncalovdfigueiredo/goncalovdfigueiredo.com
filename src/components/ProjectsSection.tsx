@@ -61,7 +61,7 @@ export default function ProjectsSection() {
 
   return (
     <section id="projects" className="py-20 md:py-24 relative overflow-hidden">
-      <div className="container max-w-5xl mx-auto px-6 relative z-10">
+      <div className="container max-w-8xl mx-auto px-6 relative z-10">
         
         <MotionWrapper>
         <div className="mb-8 md:mb-12 flex flex-col gap-4">

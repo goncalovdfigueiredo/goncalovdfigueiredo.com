@@ -203,7 +203,7 @@ export default function AwardsSection() {
     <section id="awards" className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
+      <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10">
         
         {/* CABEÇALHO COM ETIQUETA DE STATUS */}
         <MotionWrapper>
@@ -382,7 +382,7 @@ export default function AwardsSection() {
                 <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Featured In</h3>
             </div>
             
-            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-6 -mx-5 px-5 md:grid md:grid-cols-2 xl:grid-cols-4 md:pb-0 md:mx-0 md:px-0 md:overflow-visible">
+            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-6 -mx-5 px-5 md:grid md:grid-cols-2 xl:grid-cols-5 md:pb-0 md:mx-0 md:px-0 md:overflow-visible">
               {featuredIn.map((item: any, idx: number) => {
                 const colors = getMediaColor(item.type);
                 const hasLink = item.link && item.link.trim() !== "" && item.link !== "#";

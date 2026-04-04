@@ -181,7 +181,7 @@ export default function SkillsSection() {
 
   return (
     <section id="skills" className="py-16 md:py-24 relative overflow-hidden">
-      <div className="container max-w-5xl mx-auto px-5 relative z-10">
+      <div className="container max-w-8xl mx-auto px-5 relative z-10">
         <MotionWrapper>
           <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">

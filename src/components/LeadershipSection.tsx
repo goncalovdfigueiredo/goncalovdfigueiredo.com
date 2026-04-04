@@ -13,6 +13,42 @@ import GanttTimeline from "@/components/GanttTimeline";
 import PeerReviewChart from "./PeerReviewChart";
 import { LeadershipExperience } from "@/lib/data";
 
+// --- MICRO-COMPONENTE: Botão de Navegação com Tooltip ---
+const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: { href: string, icon: any, text: string, tooltip: string, colorClass: string }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div className="relative flex-1 md:flex-none">
+      <a 
+        href={href} 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`group w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 ${colorClass}`}
+      >
+        <Icon className="w-3.5 h-3.5" />
+        <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider">{text}</span>
+      </a>
+      
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 5, scale: 0.95 }}
+            className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none hidden md:block"
+          >
+            <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] py-1.5 px-3 rounded-md shadow-2xl whitespace-nowrap">
+              {tooltip}
+              {/* Seta do Tooltip */}
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-900 border-t border-l border-zinc-800 rotate-45" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const IconMap: any = {
   Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake,
 };
@@ -85,7 +121,7 @@ export default function LeadershipSection() {
     <section id="leadership" className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
+      <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
         <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
@@ -96,17 +132,24 @@ export default function LeadershipSection() {
             </h2>
 
             <div className="flex gap-2 w-full md:w-auto">
-              <a href="#map" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/40 text-[10px] md:text-sm font-medium text-emerald-700 dark:text-emerald-400 transition-all duration-300">
-                <MapPin className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="whitespace-nowrap">Global Footprint</span>
-              </a>
-              <a href="#timeline" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/40 text-[10px] md:text-sm font-medium text-blue-700 dark:text-blue-400 transition-all duration-300">
-                <ChartGantt className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                <span className="whitespace-nowrap">Timeline</span>
-              </a>
+               <NavButtonWithTooltip 
+                 href="#map" 
+                 icon={MapPin} 
+                 text="Global Footprint" 
+                 tooltip="Interactive map of my research, conferences and academic reach"
+                 colorClass="border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+               />
+               <NavButtonWithTooltip 
+                 href="#timeline" 
+                 icon={ChartGantt} 
+                 text="Timeline" 
+                 tooltip="Visual roadmap of my academic and leadership career since 2008"
+                 colorClass="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400"
+               />
             </div>
           </div>
         </MotionWrapper>
+
 
         {/* =======================
             VERSÃO MOBILE

@@ -133,7 +133,7 @@ export default function ScientificOutreachSection() {
       {/* Background Consistente (Idêntico ao das Publicações) */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-5xl mx-auto px-4 md:px-8 relative z-10 flex flex-col h-full">
+      <div className="container max-w-8xl mx-auto px-4 md:px-8 relative z-10 flex flex-col h-full">
         
         <MotionWrapper>
           {/* CABEÇALHO DA SECÇÃO */}

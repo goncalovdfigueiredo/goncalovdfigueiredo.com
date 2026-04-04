@@ -5,11 +5,47 @@ import React, { useState } from "react";
 import { education } from "@/lib/data";
 import TimelineItem from "./TimelineItem";
 import {
-  MapPin, GraduationCap, BarChart3, FileText, ListChecks, ExternalLink,
+  MapPin, GraduationCap, ChartGantt, FileText, ListChecks, ExternalLink,
   BookOpen, Calendar, ChevronDown, ChevronUp, ScrollText, Activity
 } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 import { motion, AnimatePresence } from "framer-motion";
+
+// --- MICRO-COMPONENTE: Botão de Navegação com Tooltip ---
+const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: { href: string, icon: any, text: string, tooltip: string, colorClass: string }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div className="relative flex-1 md:flex-none">
+      <a 
+        href={href} 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`group w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 ${colorClass}`}
+      >
+        <Icon className="w-3.5 h-3.5" />
+        <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider">{text}</span>
+      </a>
+      
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 5, scale: 0.95 }}
+            className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none hidden md:block"
+          >
+            <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] py-1.5 px-3 rounded-md shadow-2xl whitespace-nowrap">
+              {tooltip}
+              {/* Seta do Tooltip */}
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-900 border-t border-l border-zinc-800 rotate-45" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 // --- MICRO-COMPONENTE: Entrada de Educação Individual (Lista Direita) ---
 const EducationEntry = ({ 
@@ -228,7 +264,7 @@ export default function EducationSection() {
     <section id="education" className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-5xl mx-auto px-5 md:px-8 relative z-10">
+      <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
           <div className="mb-12 md:mb-16 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
@@ -239,14 +275,20 @@ export default function EducationSection() {
             </h2>
 
             <div className="flex gap-2 w-full md:w-auto">
-              <a href="#map" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-emerald-500/20 dark:border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all shadow-sm">
-                <MapPin className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Global Footprint</span>
-              </a>
-              <a href="#timeline" className="group flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-blue-500/20 dark:border-blue-500/30 bg-blue-500/5 hover:bg-blue-500/10 transition-all shadow-sm">
-                <BarChart3 className="w-4 h-4 text-blue-500" />
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400">Timeline</span>
-              </a>
+               <NavButtonWithTooltip 
+                 href="#map" 
+                 icon={MapPin} 
+                 text="Global Footprint" 
+                 tooltip="Interactive map of my research, conferences and academic reach"
+                 colorClass="border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+               />
+               <NavButtonWithTooltip 
+                 href="#timeline" 
+                 icon={ChartGantt} 
+                 text="Timeline" 
+                 tooltip="Visual roadmap of my academic and leadership career since 2008"
+                 colorClass="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400"
+               />
             </div>
           </div>
         </MotionWrapper>

@@ -114,7 +114,7 @@ export default function GlobalMapSection() {
       {/* REMOVIDO: Gradiente via-emerald-500/5 para limpar a mancha visual */}
       <div className="absolute inset-0 pointer-events-none" />
         
-      <div className="container max-w-5xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="container max-w-8xl mx-auto px-6 md:px-8 relative z-10">
         
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4">

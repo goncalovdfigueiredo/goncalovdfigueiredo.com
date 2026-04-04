@@ -76,7 +76,7 @@ export default function PublicationsSection() {
   return (
     <section id="publications" className="py-20 relative overflow-hidden min-h-screen">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
-      <div className="container max-w-5xl mx-auto px-4 md:px-8 relative z-10">
+      <div className="container max-w-8xl mx-auto px-4 md:px-8 relative z-10">
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
@@ -117,7 +117,7 @@ export default function PublicationsSection() {
         {/* GRID PRINCIPAL */}
         <motion.div 
           layout 
-          className="grid grid-cols-3 gap-2 md:grid md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 md:gap-6"
+          className="grid grid-cols-3 gap-2 md:grid md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 md:gap-6"
         >
           <AnimatePresence mode="popLayout">
             {filteredPubs.map((pub) => {
