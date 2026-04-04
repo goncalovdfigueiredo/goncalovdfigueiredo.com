@@ -71,7 +71,7 @@ export default function ProjectsSection() {
               </div>
               Projects
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 max-w-8xl text-sm md:text-lg leading-relaxed ml-1">
+            <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
               Developing integrated solutions across hardware design, embedded systems, and mobile software architecture.
             </p>
           </div>

@@ -768,6 +768,7 @@ export const awards = [
     issuer: "17th Congress of the Portuguese Committee of URSI (Smart materials for radioscience)",
     date: "Nov 2023",
     type: "National",
+    description: "Each year, the Portuguese Committee of URSI holds a congress, with the objective of stimulating, promoting and co-ordinating studies, at a national level, in the areas of radioelectric, telecommunications, and electronics science. ANACOM is responsible for organising proceedings.",
     position: "First Place",
     links: [
       { label: "Autoridade Nacional de Comunicações (ANACOM)", url: "https://www.anacom.pt/render.jsp?contentId=1771803&languageId=1" },

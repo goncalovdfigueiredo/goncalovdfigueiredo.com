@@ -145,7 +145,7 @@ export default function ScientificOutreachSection() {
                 </div>
                 Scientific Outreach
               </h2>
-              <p className="text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed ml-1">
+              <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
                 A curated list of professional certifications, scientific events, and public engagement activities.
               </p>
             </div>
