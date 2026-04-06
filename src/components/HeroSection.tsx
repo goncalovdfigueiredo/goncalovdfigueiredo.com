@@ -337,8 +337,10 @@ export default function HeroSection() {
             
             {/* TEXTO ALTERADO COM EFEITO TYPEWRITER */}
             <motion.p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-2xl mx-auto md:mx-0 leading-relaxed mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}> 
-               Bridging the gap between <span className="font-medium text-zinc-900 dark:text-white">Theoretical Science</span> and <span className="font-medium text-zinc-900 dark:text-white">Industrial Application</span> through <TypewriterExpertise />
-            </motion.p>
+   Bridging the gap between <span className="font-medium text-zinc-900 dark:text-white">Theoretical Science</span> and <span className="font-medium text-zinc-900 dark:text-white">Industrial Application</span> through 
+   <br /> 
+   <TypewriterExpertise />
+</motion.p>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-2"> {contacts.map((c, i) => ( <a key={i} href={c.href || "#"} target={c.href ? "_blank" : undefined} className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all duration-300 ${c.href ? "bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-zinc-600 dark:text-zinc-300" : "bg-transparent border-transparent text-zinc-400 cursor-default px-0"}`}> <c.icon className="w-3.5 h-3.5" /> {c.text} </a> ))} </div>
           </div>
