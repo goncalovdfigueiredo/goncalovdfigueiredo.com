@@ -22,6 +22,62 @@ import {
 import MotionWrapper from "./MotionWrapper";
 
 /* =========================
+   COMPONENTE TYPEWRITER (EFEITO MÁQUINA DE ESCREVER)
+   ========================= */
+function TypewriterExpertise() {
+  const words = [
+    "Hardware-Software Integration",
+    "Smart IoT.",
+    "Photonics.",
+    "Embedded Systems.",
+    "Industrial Application."
+  ];
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [speed, setSpeed] = useState(150);
+
+  useEffect(() => {
+    const handleType = () => {
+      const fullWord = words[currentWordIndex];
+      
+      if (!isDeleting) {
+        setCurrentText(fullWord.substring(0, currentText.length + 1));
+        setSpeed(100); 
+        if (currentText === fullWord) {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        setCurrentText(fullWord.substring(0, currentText.length - 1));
+        setSpeed(50);
+        if (currentText === "") {
+          setIsDeleting(false);
+          setCurrentWordIndex((prev) => (prev + 1) % words.length);
+        }
+      }
+    };
+
+    const timer = setTimeout(handleType, speed);
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, currentWordIndex, speed, words]);
+
+  return (
+    <span className="font-bold text-emerald-600 dark:text-emerald-400 inline-block min-w-[10px]">
+      {currentText}
+      <motion.span
+        animate={{ opacity: [1, 1, 0, 0] }}
+        transition={{ 
+          duration: 0.8, 
+          repeat: Infinity, 
+          times: [0, 0.5, 0.5, 1] 
+        }}
+        className="inline-block w-[2px] h-[1em] bg-emerald-500 ml-1 align-middle"
+      />
+    </span>
+  );
+}
+
+/* =========================
    ELECTRON BACKGROUND
    ========================= */
 function ElectronBackground() {
@@ -278,7 +334,12 @@ export default function HeroSection() {
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-3"><Terminal className="w-3 h-3" /> PhD Candidate & Researcher</motion.div>
             </div>
             <motion.h1 className="text-4xl md:text-6xl font-bold tracking-tight text-zinc-900 dark:text-white leading-[1.05] mb-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}> Hello, I am <br className="hidden md:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-blue-600 dark:from-emerald-400 dark:via-teal-400 dark:to-blue-500 animate-gradient-x">{personalInfo.name}</span> </motion.h1>
-            <motion.p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-2xl mx-auto md:mx-0 leading-relaxed mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}> Bridging the gap between <span className="font-medium text-zinc-900 dark:text-white">Theoretical Science</span> and <span className="font-medium text-zinc-900 dark:text-white">Industrial Application</span> através de Hardware-Software Integration, Smart IoT, e Photonics. </motion.p>
+            
+            {/* TEXTO ALTERADO COM EFEITO TYPEWRITER */}
+            <motion.p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-2xl mx-auto md:mx-0 leading-relaxed mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}> 
+               Bridging the gap between <span className="font-medium text-zinc-900 dark:text-white">Theoretical Science</span> and <span className="font-medium text-zinc-900 dark:text-white">Industrial Application</span> through <TypewriterExpertise />
+            </motion.p>
+
             <div className="flex flex-wrap justify-center md:justify-start gap-2"> {contacts.map((c, i) => ( <a key={i} href={c.href || "#"} target={c.href ? "_blank" : undefined} className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all duration-300 ${c.href ? "bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-zinc-600 dark:text-zinc-300" : "bg-transparent border-transparent text-zinc-400 cursor-default px-0"}`}> <c.icon className="w-3.5 h-3.5" /> {c.text} </a> ))} </div>
           </div>
         </motion.div>
