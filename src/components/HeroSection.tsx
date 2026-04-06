@@ -6,7 +6,7 @@ import {
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, Sparkles, MapPin, FileText,
   Cpu, Users, Terminal, Fingerprint, FileBadge,
-  Hand, ArrowLeftRight 
+  Hand, ArrowLeftRight, ChevronDown
 } from "lucide-react";
 import { 
   motion, 
@@ -25,7 +25,7 @@ import MotionWrapper from "./MotionWrapper";
    ELECTRON BACKGROUND
    ========================= */
 function ElectronBackground() {
-  const [windowSize, setWindowSize] = useState({ width: 1200, height: 800 });
+  const [windowSize, setWindowSize] = useState({ width: 1200, height: 1400 });
   useEffect(() => {
     const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     handleResize();
@@ -34,15 +34,33 @@ function ElectronBackground() {
   }, []);
 
   const electrons = [
-    { color: "rgba(16, 185, 129, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", delay: 0, duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", delay: 0, duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
   ];
 
   return (
@@ -51,10 +69,10 @@ function ElectronBackground() {
         <motion.div
           key={i}
           animate={{
-            x: [Math.random() * windowSize.width, Math.random() * windowSize.width, Math.random() * windowSize.width, Math.random() * windowSize.width],
-            y: [Math.random() * windowSize.height, Math.random() * windowSize.height, Math.random() * windowSize.height, Math.random() * windowSize.height],
+            x: [Math.random() * windowSize.width, Math.random() * windowSize.width],
+            y: [Math.random() * windowSize.height, Math.random() * windowSize.height],
           }}
-          transition={{ duration: e.duration, repeat: Infinity, ease: "linear", delay: e.delay }}
+          transition={{ duration: e.duration, repeat: Infinity, ease: "linear" }}
           className="absolute w-2 h-2 rounded-full shadow-[0_0_20px_5px] transition-colors"
           style={{ backgroundColor: e.color, boxShadow: `0 0 25px 5px ${e.color}` }}
         >
@@ -225,18 +243,16 @@ const skillGroups = [
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   
-  // 1. Hook de Scroll para controlar a física de saída
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"]
   });
 
-  // 2. Transformações Tech de Saída
   const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.4], [1, 0.9]);
   const yHeader = useTransform(scrollYProgress, [0, 1], [0, -150]); 
-  const yProfile = useTransform(scrollYProgress, [0, 1], [0, -100]); // Movimento lento
-  const ySkills = useTransform(scrollYProgress, [0, 1], [0, -300]);  // Movimento rápido (Parallax)
+  const yProfile = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const ySkills = useTransform(scrollYProgress, [0, 1], [0, -300]);
 
   const contacts = [{ icon: MapPin, text: "Lisbon, Portugal", href: null }, { icon: Mail, text: "Email", href: `mailto:goncalovdfigueiredo@gmail.com` }, { icon: Linkedin, text: "LinkedIn", href: personalInfo.linkedin }, { icon: Github, text: "GitHub", href: personalInfo.github }, { icon: BookOpen, text: "Scholar", href: personalInfo.scholar }, { icon: FileBadge, text: "CiênciaVitae", href: personalInfo.cienciavitae }, { icon: Fingerprint, text: "ORCID", href: personalInfo.orcid }];
   const [activeSlide, setActiveSlide] = useState(0);
@@ -252,7 +268,7 @@ export default function HeroSection() {
       </div>
 
       <motion.div 
-        style={{ opacity, scale }} // Aplica fade e encolhimento global no scroll
+        style={{ opacity, scale }}
         className="container max-w-8xl mx-auto px-6 md:px-8 relative z-10"
       >
         <motion.div style={{ y: yHeader }} className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 mb-20 md:mb-24 text-center md:text-left">
@@ -267,62 +283,129 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        <MotionWrapper delay={0.4}>
+        <div>
             <div className="md:hidden">
-                <GlowingCircuitBorder className="mb-6 h-full rounded-[1.5rem]" borderColor="#10b981" index={0} alwaysActive={true}>
-                    <div className="p-6 relative overflow-hidden bg-zinc-50 dark:bg-zinc-900/50">
-                        <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-3 mb-4"><div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"><User className="w-5 h-5" /></div> Professional Profile</h3>
-                        <div className="space-y-4 text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                                    <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong>Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
-                                    <p> With a unique <span className="font-semibold text-zinc-900 dark:text-white">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between <span className="font-semibold text-zinc-900 dark:text-white">theoretical science</span> and industrial application. </p>
-                                    <p> His focus is on developing robust <span className="font-semibold text-zinc-900 dark:text-white">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-medium">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-medium">Industrial IoT</span>. </p>
-                                </div>
-                    </div>
-                </GlowingCircuitBorder>
-                <div className="relative mt-4">
-                    <SwipeHint isVisible={showSwipeHint} />
-                    <div ref={scrollRef} onScroll={handleScroll} className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                    {skillGroups.map((group, idx) => ( <div key={idx} className="min-w-[85vw] snap-center h-[220px]"> <PremiumSkillCard group={group} index={idx + 1} /> </div> ))}
-                    </div>
-                    <div className="flex justify-center gap-1.5 mt-2"> {skillGroups.map((_, idx) => ( <div key={idx} className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-4 bg-emerald-500' : 'w-1.5 bg-zinc-300 dark:bg-zinc-700'}`} /> ))} </div>
-                </div>
+                <MotionWrapper delay={0.4}>
+                  <GlowingCircuitBorder className="mb-6 h-full rounded-[1.5rem]" borderColor="#10b981" index={0} alwaysActive={true}>
+                      <div className="p-6 relative overflow-hidden bg-zinc-50 dark:bg-zinc-900/50">
+                          <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-3 mb-4"><div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"><User className="w-5 h-5" /></div> Professional Profile</h3>
+                          <div className="space-y-4 text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                                      <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong>Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
+                                      <p> With a unique <span className="font-semibold text-zinc-900 dark:text-white">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between <span className="font-semibold text-zinc-900 dark:text-white">theoretical science</span> and industrial application. </p>
+                                      <p> His focus is on developing robust <span className="font-semibold text-zinc-900 dark:text-white">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-medium">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-medium">Industrial IoT</span>. </p>
+                                  </div>
+                      </div>
+                  </GlowingCircuitBorder>
+                  <div className="relative mt-4">
+                      <SwipeHint isVisible={showSwipeHint} />
+                      <div ref={scrollRef} onScroll={handleScroll} className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                      {skillGroups.map((group, idx) => ( <div key={idx} className="min-w-[85vw] snap-center h-[220px]"> <PremiumSkillCard group={group} index={idx + 1} /> </div> ))}
+                      </div>
+                      <div className="flex justify-center gap-1.5 mt-2"> {skillGroups.map((_, idx) => ( <div key={idx} className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-4 bg-emerald-500' : 'w-1.5 bg-zinc-300 dark:bg-zinc-700'}`} /> ))} </div>
+                  </div>
+                </MotionWrapper>
             </div>
 
             <div className="hidden md:grid grid-cols-12 gap-6 items-stretch h-full">
-                {/* COLUNA ESQUERDA: Movimento de saída mais suave */}
-                <motion.div style={{ y: yProfile }} className="col-span-7 flex flex-col h-full">
-                    <GlowingCircuitBorder className="flex-1 rounded-[2rem]" borderColor="#10b981" index={0} alwaysActive={true}>
-                        <div className="p-8 h-full flex flex-col relative overflow-hidden group/profile bg-zinc-50 dark:bg-zinc-900/50">
-                            <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm"><User className="w-5 h-5" /></div>
-                                    <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Professional Profile</h3>
-                                </div>
-                                <div className="space-y-4 text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                                    <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong>Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
-                                    <p> With a unique <span className="font-semibold text-zinc-900 dark:text-white">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between <span className="font-semibold text-zinc-900 dark:text-white">theoretical science</span> and industrial application. </p>
-                                    <p> His focus is on developing robust <span className="font-semibold text-zinc-900 dark:text-white">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-medium">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-medium">Industrial IoT</span>. </p>
-                                </div>
-                            </div>
-                            <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-white/5 grid grid-cols-2 gap-8 relative z-10">
-                                <div><span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-1 block">Primary Focus</span><span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-2"><Cpu className="w-3.5 h-3.5" /> Hardware & IoT</span></div>
-                                <div><span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-1 block">Current Status</span><span className="text-sm font-medium text-zinc-700 dark:text-zinc-200 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Open to Research</span></div>
-                            </div>
-                            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover/profile:opacity-[0.06] group-hover/profile:scale-110 transition-all duration-700"><User className="w-40 h-40 text-zinc-500" /></div>
-                        </div>
-                    </GlowingCircuitBorder>
-                </motion.div>
+                {/* COLUNA ESQUERDA (Profile): Efeito Mola (Bounce) + Laser Sweep + 3D Tilt */}
+<motion.div 
+  style={{ y: yProfile }}
+  initial={{ opacity: 0, y: -200 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ 
+    type: "spring", 
+    stiffness: 120, 
+    damping: 8, 
+    delay: 5 
+  }}
+  className="col-span-7 flex flex-col h-full"
+>
+    <GlowingCircuitBorder className="flex-1 rounded-[2rem]" borderColor="#10b981" index={0} alwaysActive={true}>
+        <div className="p-8 h-full flex flex-col relative overflow-hidden group/profile bg-zinc-50 dark:bg-zinc-900/50">
+            
+            {/* NOVO: LASER SWEEP EFFECT (Fotónica) */}
+            <motion.div 
+              className="absolute inset-0 z-0 pointer-events-none"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 5, repeat: Infinity, repeatDelay: 0, ease: "easeInOut" }}
+              style={{
+                background: 'linear-gradient(115deg, transparent 0%, transparent 40%, rgba(16, 185, 129, 0.1) 50%, transparent 60%, transparent 100%)',
+              }}
+            />
 
-                {/* COLUNA DIREITA: Movimento de saída mais rápido (Efeito Parallax 3D) */}
-                <motion.div style={{ y: ySkills }} className="col-span-5 flex flex-col gap-4 h-full">
-                    {skillGroups.map((group, idx) => (
-                        <div key={idx} className="flex-1">
-                            <PremiumSkillCard group={group} index={idx + 1} />
-                        </div>
-                    ))}
-                </motion.div>
+            <div className="flex-1 relative z-10">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-sm">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Professional Profile</h3>
+                </div>
+                <div className="space-y-4 text-base text-zinc-600 dark:text-zinc-300 leading-relaxed text-justify">
+                    <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong>Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
+                    <p> With a unique <span className="font-semibold text-zinc-900 dark:text-white">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between <span className="font-semibold text-zinc-900 dark:text-white">theoretical science</span> and industrial application. </p>
+                    <p> His focus is on developing robust <span className="font-semibold text-zinc-900 dark:text-white">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-medium">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-medium">Industrial IoT</span>. </p>
+                </div>
             </div>
-        </MotionWrapper>
+
+            {/* RODAPÉ DO CARD: Reforçado visualmente */}
+            <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-white/5 grid grid-cols-2 gap-8 relative z-10">
+                <div className="group/stat">
+                  <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-1 block group-hover/stat:text-emerald-500 transition-colors">Primary Focus</span>
+                  <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                    <Cpu className="w-3.5 h-3.5" /> Hardware & IoT
+                  </span>
+                </div>
+                <div className="group/stat">
+                  <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-1 block group-hover/stat:text-emerald-500 transition-colors">Current Status</span>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200 flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" /> 
+                    Open to Research
+                  </span>
+                </div>
+            </div>
+
+            {/* ÍCONE DE FUNDO: Escala reativa no hover */}
+            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover/profile:opacity-[0.08] group-hover/profile:scale-110 transition-all duration-700 pointer-events-none">
+              <User className="w-40 h-40 text-zinc-500" />
+            </div>
+        </div>
+    </GlowingCircuitBorder>
+</motion.div>
+
+                {/* COLUNA DIREITA (Skills): Com animação de "Molinha" horizontal infinita a cada 5s */}
+                <div className="col-span-5 flex flex-col gap-4 h-full">
+                    {skillGroups.map((group, idx) => (
+                        <motion.div 
+                          key={idx} 
+                          className="flex-1"
+                          style={{ y: ySkills }}
+                          initial={{ opacity: 0, x: 10000 }}
+                          animate={{ 
+                            opacity: 1, 
+                            x: 0,
+                            // Keyframes para a mola horizontal a cada 5 segundos
+                            scaleX: [1, 1, 1.03, 0.98, 1, 1], 
+                          }}
+                          transition={{ 
+                            // Transição da entrada inicial
+                            opacity: { delay: 0.7 + (idx * 0.2), duration: 0.5 },
+                            x: { type: "spring", stiffness: 80, damping: 15, delay: 6 + (idx * 0.2) },
+                            // Transição da mola infinita
+                            scaleX: {
+                              duration: 3,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                              times: [0, 0.8, 0.85, 0.9, 0.95, 1], // Mantém escala 1 durante 80% do tempo (4s) e vibra nos últimos 20% (1s)
+                              delay: 1 + idx // Delay escalonado para não vibrarem todos ao mesmo tempo
+                            }
+                          }}
+                        >
+                            <PremiumSkillCard group={group} index={idx + 1} />
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </div>
       </motion.div>
     </section>
   );

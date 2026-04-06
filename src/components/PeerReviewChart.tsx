@@ -13,10 +13,10 @@ type PeerReviewChartProps = {
 const ALL_JOURNALS = [
   // --- IEEE (Roxo/Azul) ---
   { name: "IEEE Internet of Things Journal", count: 23, color: "bg-purple-500", publisher: "IEEE" },
-  { name: "IEEE Photonics Technology Letters", count: 2, color: "bg-purple-500", publisher: "IEEE" }, // Ajustei o nome baseado no teu código anterior "Photonics Journal"
+  { name: "IEEE Photonics Journal", count: 2, color: "bg-purple-500", publisher: "IEEE" }, // Ajustei o nome baseado no teu código anterior "Photonics Journal"
   
   // --- Elsevier (Laranja) ---
-  { name: "Physical Communication", count: 3, color: "bg-orange-500", publisher: "Elsevier" },
+  { name: "Physical Communication", count: 4, color: "bg-orange-500", publisher: "Elsevier" },
   { name: "Computer Communications", count: 1, color: "bg-orange-500", publisher: "Elsevier" },
   { name: "Optics & Laser Technology", count: 1, color: "bg-orange-500", publisher: "Elsevier" },
 

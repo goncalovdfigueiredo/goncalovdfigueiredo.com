@@ -11,6 +11,8 @@ import {
 import MotionWrapper from "./MotionWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 
+
+
 // --- MICRO-COMPONENTE: Botão de Navegação com Tooltip ---
 const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: { href: string, icon: any, text: string, tooltip: string, colorClass: string }) => {
   const [isHovered, setIsHovered] = useState(false);

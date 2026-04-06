@@ -38,7 +38,6 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
           >
             <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] py-1.5 px-3 rounded-md shadow-2xl whitespace-nowrap">
               {tooltip}
-              {/* Seta do Tooltip */}
               <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-900 border-t border-l border-zinc-800 rotate-45" />
             </div>
           </motion.div>
@@ -101,9 +100,8 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
         </div>
       }
       subtitle={
-        <div className="mt-2 pl-1">
+        <div className="mt-2 pl-1 relative pb-10">
           <div className="flex flex-col lg:flex-row gap-6 lg:items-start justify-between">
-            
             <div className="flex-1 space-y-3">
                <div className="flex flex-wrap items-center gap-x-1.5">
                   {Array.isArray(job.companyLinks) ? (
@@ -139,11 +137,8 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                {hasProjects && (
                  <button 
                   onClick={() => toggleTab('projects')} 
-                  className={`
-                    flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
-                    ${activeTab === 'projects' 
-                      ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.3)]' 
-                      : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:scale-[1.02]'}
+                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
+                    ${activeTab === 'projects' ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500'}
                   `}
                  >
                     <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Projects</div>
@@ -153,11 +148,8 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                {hasImpact && (
                  <button 
                   onClick={() => toggleTab('key impact')} 
-                  className={`
-                    flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
-                    ${activeTab === 'key impact' 
-                      ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_20px_rgba(5,150,105,0.3)]' 
-                      : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:scale-[1.02]'}
+                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
+                    ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_20px_rgba(5,150,105,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'}
                   `}
                  >
                     <div className="flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Key Impact</div>
@@ -173,17 +165,9 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                 <div className={`p-4 md:p-6 rounded-2xl border backdrop-blur-sm ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20' : 'bg-emerald-500/5 border-emerald-500/20'}`}>
                   <ul className="space-y-3">
                     {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => (
-                      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full">
-                        {item === "__chart__" ? (
-                          <div className="mt-2 p-2 rounded-lg bg-zinc-900/5 dark:bg-black/20 border border-white/5">
-                            <PeerReviewChart company={job.company} />
-                          </div>
-                        ) : (
-                          <div className="flex gap-3 items-start">
-                            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
-                            <span className="flex-1">{item}</span>
-                          </div>
-                        )}
+                      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-3 items-start">
+                        <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
+                        <span className="flex-1">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -191,6 +175,26 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* LINHA DE PULSO DINÂMICA - CORREÇÃO DE CORES (Verde vs Cinzento) */}
+          {!isLast && (
+            <div className="absolute bottom-2 left-0 w-full h-[2px] bg-zinc-200/30 dark:bg-white/5 overflow-hidden rounded-full">
+              <motion.div 
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ 
+                  duration: isCurrent ? 2.5 : 5, // Mais lento para o histórico
+                  repeat: Infinity, 
+                  ease: "linear",
+                  delay: index * 0.8 
+                }}
+                className={`absolute top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-current to-transparent
+                  ${isCurrent 
+                    ? 'via-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)] text-emerald-500' 
+                    : 'via-zinc-400/50 shadow-[0_0_8px_rgba(161,161,170,0.3)] text-zinc-400'}
+                `}
+              />
+            </div>
+          )}
         </div>
       }
     />
@@ -224,7 +228,7 @@ export default function ExperienceSection() {
                  href="#timeline" 
                  icon={ChartGantt} 
                  text="Timeline" 
-                 tooltip="Visual roadmap of my academic and leadership career since 2008"
+                 tooltip="Visual roadmap of my academic career"
                  colorClass="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400"
                />
             </div>
@@ -237,7 +241,8 @@ export default function ExperienceSection() {
             return (
               <div 
                 key={`${job.position}-${index}`}
-                className={`transition-all duration-700 ${isCurrent ? 'ml-0 opacity-100' : 'md:ml-12 ml-4 opacity-75 hover:opacity-100'}`}
+                // AJUSTADO: md:ml-20 para centralizar os trabalhos passados, esmeralda ativo, zinc para o passado
+                className={`transition-all duration-700 ${isCurrent ? 'ml-0 opacity-100' : 'md:ml-20 ml-6 opacity-85 hover:opacity-100'}`}
               >
                 <JobEntry job={job} index={index} isLast={index === workExperience.length - 1} />
               </div>
