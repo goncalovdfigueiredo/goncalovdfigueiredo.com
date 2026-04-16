@@ -48,6 +48,7 @@ const certs = [
       bg: "bg-emerald-500/20",
       border: "hover:border-emerald-500/30",
       items: [
+        { title: "Fundamentals of PCB Material Selection and Stack-Up Design", org: "Sierra Circuits", year: "2026" },
         { title: "PCB Basic Design Course", org: "Altium Education", year: "2024", link: "https://education.altium.com/" },
       ]
     },
