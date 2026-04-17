@@ -153,51 +153,60 @@ export const education = [
 
 export const workExperience = [
   {
-    company: "Lightenjin II - Industria de Iluminação, Lda",
-    url: "https://lightenjin.pt/",
-    location: {
-      city: "Aguada de Cima, Portugal",
-      lat: 40.54947,
-      lon: -8.395487,
-    },
+    company: "Lightenjin II - Industria de Iluminação, Instituto de Telecomunicações & CICECO - Aveiro Institute of Materials",
     position: "Industrial Ph.D. Candidate",
-    period: "Sep 2025 - Present",
-    relatedSkills: ["Visible Light Communications", "Luminescent Solar Concentrators", "Optoelectronic Prototyping", "PCB Design", "IoT & Smart City Infrastructure", "Altium Designer & KiCad", "Altium Designer & KiCad",
-    "Intel Quartus Prime", 
-    "LTspice",
-    "Visual Studio Code", "Python (Data Science & Control)", 
-    "MATLAB (Data Acquisition & Signal Processing)", 
-    "C/C++ (Embedded)",
-    "Verilog (HDL)", ],
-    logos: ["/lightenjin.png"],
+    period: "Sep 2023 - Present",
+    logos: ["/lightenjin.png", "/it.png", "/ciceco.png"],
+    
+    companyLinks: [
+      { 
+        name: "Lightenjin II - Industria de Iluminação, Lda", 
+        url: "https://lightenjin.pt/",
+        location: { 
+          city: "Aguada de Cima, Portugal", 
+          lat: 40.549461, 
+          lon: -8.395468 
+        }
+      },
+      { 
+        name: "Instituto de Telecomunicações", 
+        url: "https://www.it.pt/",
+        location: { 
+          city: "Lisbon, Portugal", 
+          lat: 38.737709, 
+          lon: -9.138499 
+        }
+      },
+      { 
+        name: "CICECO - Aveiro Institute of Materials", 
+        url: "https://www.ciceco.ua.pt/",
+        location: { 
+          city: "Aveiro, Portugal", 
+          lat: 40.637747, 
+          lon: -8.658116 
+        }
+      }
+    ],
+
+
+    relatedSkills: [
+      "Visible Light Communications",
+      "Luminescent Solar Concentrators",
+      "Optoelectronic Prototyping",
+      "PCB Design",
+      "IoT & Smart City Infrastructure",
+      "Altium Designer & KiCad",
+      "Intel Quartus Prime",
+      "LTspice",
+      "Python (Data Science & Control)",
+      "MATLAB (Data Acquisition & Signal Processing)",
+      "C/C++ (Embedded)",
+      "Verilog (HDL)",
+    ],
+
     projecttitle: [
       "Research and development initiative in progress. Specific project details are currently in the execution phase.",
     ],
-    achievements: [
-      "Ongoing execution. Key outcomes and milestones will be updated as the project matures.",
-    ],
-  },
-  {
-    company: "Instituto de Telecomunicações & CICECO - Aveiro Institute of Materials",
-    location: {
-      city: "Lisbon, Portugal",
-      lat: 38.737709,
-      lon: -9.138499,
-    },
-    companyLinks: [
-      { name: "Instituto de Telecomunicações", url: "https://www.it.pt/ITSites/Index/1" },
-      { name: "CICECO – Aveiro Institute of Materials", url: "https://www.ciceco.ua.pt/" }
-    ],
-    position: "Ph.D. Candidate",
-    period: "Sep 2023 - Present",
-    logos: ["/it.png", "/ciceco.png"],
-    relatedSkills: ["Visible Light Communications","Luminescent Solar Concentrators","Optoelectronic Prototyping", "PCB Design", "Altium Designer & KiCad", "Altium Designer & KiCad",
-    "Intel Quartus Prime", 
-    "LTspice",
-    "Visual Studio Code", "Python (Data Science & Control)", 
-    "MATLAB (Data Acquisition & Signal Processing)", 
-    "C/C++ (Embedded)",
-    "Verilog (HDL)",],    
     achievements: [
       "Ongoing execution. Key outcomes and milestones will be updated as the project matures.",
     ],
@@ -244,6 +253,8 @@ export const workExperience = [
   },
   {
     company: "Instituto de Telecomunicações",
+    position: "Research Fellow",
+    period: "Jan 2022 - Jun 2022",
     relatedSkills: ["Visible Light Communications","Physical Layer Security & Cryptography", "Optoelectronic Prototyping", "Android Studio", 
     "MATLAB (Data Acquisition & Signal Processing)", 
     "C/C++ (Embedded)", 
@@ -254,8 +265,6 @@ export const workExperience = [
       lon: -9.138458,
     },
     url: "https://www.it.pt/ITSites/Index/1",
-    position: "Research Fellow",
-    period: "Jan 2022 - Jun 2022",
     logos: ["/it.png"],
     projecttitle: [
       "Research Fellowship within the project “PC102 – UIDB/50008/2020”, in the area of Optics and Photonics.",

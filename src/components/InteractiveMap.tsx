@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents, ZoomControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,14 +32,44 @@ const FILTER_CATEGORIES = [
   "Conference Paper"
 ];
 
-// --- FUNÇÃO DO ÍCONE (ATUALIZADA: Sem borda, menores dimensões) ---
+// --- COMPONENTE INTERNO PARA CONTROLAR O FOCO E RESET DO MAPA ---
+function MapController({ externalSelectedId, markers, onMarkerSelected }: { 
+  externalSelectedId: string | null, 
+  markers: MapMarker[],
+  onMarkerSelected: (marker: MapMarker | null) => void 
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!externalSelectedId) return;
+
+    // Lógica para RESET: Volta à visão global
+    if (externalSelectedId === "reset") {
+      onMarkerSelected(null);
+      map.flyTo([25, 10], 2, {
+        duration: 2,
+        easeLinearity: 0.25
+      });
+      return;
+    }
+
+    // Lógica para FOCUS: Vai até ao marcador selecionado na lista
+    const target = markers.find(m => m.id === externalSelectedId);
+    if (target) {
+      onMarkerSelected(target);
+      map.flyTo([target.lat, target.lon], 12, {
+        duration: 1.5,
+        easeLinearity: 0.25
+      });
+    }
+  }, [externalSelectedId, markers, map, onMarkerSelected]);
+
+  return null;
+}
+
 const createCustomIcon = (type: string, isSelected: boolean, isDimmed: boolean) => {
   const color = COLOR_MAP[type] || "#10b981";
-  
   const opacity = isDimmed ? 0.3 : 1;
-  
-  // NOVOS TAMANHOS (Mais pequenos)
-  // Antes: Selected 24, Dimmed 10, Normal 16
   const size = isSelected ? 20 : (isDimmed ? 8 : 12); 
   
   const html = `
@@ -47,10 +77,9 @@ const createCustomIcon = (type: string, isSelected: boolean, isDimmed: boolean) 
       <style>
         @keyframes pulse-ring-${type.replace(/\s/g, '')} {
           0% { transform: scale(0.5); opacity: 0.8; }
-          100% { transform: scale(3); opacity: 0; } /* Aumentei um pouco a escala do pulse para compensar o ponto menor */
+          100% { transform: scale(3); opacity: 0; }
         }
       </style>
-      
       ${!isDimmed ? `
         <div style="
           position: absolute;
@@ -60,14 +89,11 @@ const createCustomIcon = (type: string, isSelected: boolean, isDimmed: boolean) 
           animation: pulse-ring-${type.replace(/\s/g, '')} 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
         "></div>
       ` : ''}
-
       <div style="
         position: relative;
         width: ${size}px; height: ${size}px;
         background-color: ${color};
-        /* border: 2px solid white;  <-- REMOVIDO */
         border-radius: 50%;
-        /* Aumentei ligeiramente a sombra para definição */
         box-shadow: 0 2px 6px rgba(0,0,0,0.5); 
         transition: all 0.3s ease;
         z-index: 10;
@@ -78,7 +104,6 @@ const createCustomIcon = (type: string, isSelected: boolean, isDimmed: boolean) 
   return L.divIcon({
     className: "custom-pulse-marker",
     html: html,
-    // Reduzi ligeiramente a área do ícone também
     iconSize: [36, 36], 
     iconAnchor: [18, 18],
     popupAnchor: [0, -18],
@@ -92,7 +117,12 @@ function MapBackgroundEvents({ clearSelection }: { clearSelection: () => void })
   return null;
 }
 
-export default function InteractiveMap({ customMarkers }: { customMarkers: MapMarker[] }) {
+interface InteractiveMapProps {
+  customMarkers: MapMarker[];
+  externalSelectedId?: string | null;
+}
+
+export default function InteractiveMap({ customMarkers, externalSelectedId = null }: InteractiveMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredMarker, setHoveredMarker] = useState<MapMarker | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<MapMarker | null>(null);
@@ -114,7 +144,7 @@ export default function InteractiveMap({ customMarkers }: { customMarkers: MapMa
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full h-full">
       {/* Filters */}
       <div className="flex flex-wrap justify-center gap-3 mb-6 relative z-10">
         {FILTER_CATEGORIES.map((cat) => {
@@ -153,7 +183,7 @@ export default function InteractiveMap({ customMarkers }: { customMarkers: MapMa
       </div>
 
       {/* Map Container */}
-      <div className="relative h-[550px] w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl z-0 bg-zinc-900">
+      <div className="relative flex-1 w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl z-0 bg-zinc-900">
         <MapContainer
           center={[25, 10]} 
           zoom={2}
@@ -165,6 +195,12 @@ export default function InteractiveMap({ customMarkers }: { customMarkers: MapMa
           maxBoundsViscosity={1.0}
           zoomControl={false}
         >
+          <MapController 
+            externalSelectedId={externalSelectedId} 
+            markers={customMarkers} 
+            onMarkerSelected={setSelectedMarker}
+          />
+
           <ZoomControl position="bottomright" />
           
           <TileLayer

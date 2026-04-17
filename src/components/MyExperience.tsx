@@ -1,4 +1,3 @@
-// src/components/ExperienceSection.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -6,13 +5,15 @@ import { workExperience } from "@/lib/data";
 import TimelineItem from "./TimelineItem";
 import { 
   Briefcase, MapPin, BarChart3, ChartGantt, FileText, ExternalLink, BookOpen, 
-  ChevronDown, Calendar, Sparkles
+  ChevronDown, Calendar, Sparkles, GraduationCap, Building2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import PeerReviewChart from "./PeerReviewChart";
 
-// --- MICRO-COMPONENTE: Botão de Navegação com Tooltip ---
+/* =========================
+   MICRO-COMPONENTE: BOTÃO DE NAVEGAÇÃO COM TOOLTIP
+   ========================= */
 const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: { href: string, icon: any, text: string, tooltip: string, colorClass: string }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -47,7 +48,24 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
   );
 };
 
-// --- MICRO-COMPONENTE: Entrada de Trabalho Individual ---
+/* =========================
+   MICRO-COMPONENTE: BADGE DE TIPO DE AMBIENTE
+   ========================= */
+const EnvironmentBadge = ({ type }: { type: 'Academic' | 'Industry' }) => (
+  <span className={`
+    inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border shrink-0
+    ${type === 'Academic' 
+      ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' 
+      : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'}
+  `}>
+    {type === 'Academic' ? <GraduationCap className="w-2.5 h-2.5" /> : <Building2 className="w-2.5 h-2.5" />}
+    {type}
+  </span>
+);
+
+/* =========================
+   MICRO-COMPONENTE: ENTRADA DE TRABALHO (JOB ENTRY)
+   ========================= */
 const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boolean }) => {
   const isCurrent = job.period.toLowerCase().includes('present');
   const [activeTab, setActiveTab] = useState<'projects' | 'key impact' | null>(null);
@@ -102,24 +120,58 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
       subtitle={
         <div className="mt-2 pl-1 relative pb-10">
           <div className="flex flex-col lg:flex-row gap-6 lg:items-start justify-between">
-            <div className="flex-1 space-y-3">
-               <div className="flex flex-wrap items-center gap-x-1.5">
+            <div className="flex-1 space-y-5">
+               <div className="flex flex-col gap-5">
                   {Array.isArray(job.companyLinks) ? (
                       job.companyLinks.map((link: any, i: number) => (
-                        <React.Fragment key={i}>
-                          <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors">
-                            {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50" />
-                          </a>
-                          {i < job.companyLinks.length - 1 && <span className="text-zinc-400 dark:text-zinc-500 font-light">&</span>}
-                        </React.Fragment>
+                        <div key={i} className="flex flex-col gap-1 group">
+                          <div className="flex flex-col md:flex-row md:items-center items-start gap-2">
+                            {/* Ordem adaptativa: Badge à esquerda no Desktop, Nome primeiro no Mobile */}
+                            <div className="md:order-first flex items-center gap-2">
+                               <EnvironmentBadge type={link.name.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
+                               {/* Badge Active sempre ao lado da badge de ambiente */}
+                               {isCurrent && (
+                                 <span className="flex items-center gap-1 text-[9px] text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
+                                   <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                                   ACTIVE
+                                 </span>
+                               )}
+                            </div>
+
+                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight md:order-last">
+                              {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
+                            </a>
+                          </div>
+                          {/* Alinhamento da localização com padding no desktop para compensar a badge à esquerda */}
+                          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                            <MapPin className="w-3 h-3 text-zinc-400" />
+                            {link.location?.city || "Portugal"}
+                          </div>
+                        </div>
                       ))
-                  ) : job.url ? (
-                    <a href={job.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1">{job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50" /></a>
-                  ) : <span className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold">{job.company}</span>}
-               </div>
-               
-               <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
-                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {typeof job.location === 'string' ? job.location : job.location.city}</span>
+                  ) : (
+                    <div className="flex flex-col gap-1">
+                      <div className="flex flex-col md:flex-row md:items-center items-start gap-2">
+                        <div className="md:order-first flex items-center gap-2">
+                           <EnvironmentBadge type={job.company.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
+                           {isCurrent && (
+                             <span className="flex items-center gap-1 text-[9px] text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
+                               <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                               ACTIVE
+                             </span>
+                           )}
+                        </div>
+                        
+                        <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 leading-tight md:order-last">
+                          {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                        <MapPin className="w-3 h-3 text-zinc-400" />
+                        {typeof job.location === 'string' ? job.location : job.location.city}
+                      </div>
+                    </div>
+                  )}
                </div>
 
                {hasCourses && (
@@ -133,7 +185,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                )}
             </div>
 
-            <div className="flex flex-row lg:flex-col gap-2.5 shrink-0">
+            <div className="flex flex-row lg:flex-col gap-2.5 shrink-0 mt-4 md:mt-0">
                {hasProjects && (
                  <button 
                   onClick={() => toggleTab('projects')} 
@@ -165,7 +217,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                 <div className={`p-4 md:p-6 rounded-2xl border backdrop-blur-sm ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20' : 'bg-emerald-500/5 border-emerald-500/20'}`}>
                   <ul className="space-y-3">
                     {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => (
-                      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-3 items-start">
+                      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-3 items-start text-justify">
                         <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
                         <span className="flex-1">{item}</span>
                       </li>
@@ -176,13 +228,12 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
             )}
           </AnimatePresence>
 
-          {/* LINHA DE PULSO DINÂMICA - CORREÇÃO DE CORES (Verde vs Cinzento) */}
           {!isLast && (
             <div className="absolute bottom-2 left-0 w-full h-[2px] bg-zinc-200/30 dark:bg-white/5 overflow-hidden rounded-full">
               <motion.div 
                 animate={{ x: ['-100%', '200%'] }}
                 transition={{ 
-                  duration: isCurrent ? 2.5 : 5, // Mais lento para o histórico
+                  duration: isCurrent ? 2.5 : 5, 
                   repeat: Infinity, 
                   ease: "linear",
                   delay: index * 0.8 
@@ -201,6 +252,9 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
   );
 };
 
+/* =========================
+   COMPONENTE PRINCIPAL: EXPERIENCE SECTION
+   ========================= */
 export default function ExperienceSection() {
   return (
     <section id="experience" className="py-16 md:py-24 relative overflow-hidden">
@@ -241,7 +295,6 @@ export default function ExperienceSection() {
             return (
               <div 
                 key={`${job.position}-${index}`}
-                // AJUSTADO: md:ml-20 para centralizar os trabalhos passados, esmeralda ativo, zinc para o passado
                 className={`transition-all duration-700 ${isCurrent ? 'ml-0 opacity-100' : 'md:ml-20 ml-6 opacity-85 hover:opacity-100'}`}
               >
                 <JobEntry job={job} index={index} isLast={index === workExperience.length - 1} />
