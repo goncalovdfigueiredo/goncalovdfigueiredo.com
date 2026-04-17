@@ -187,8 +187,6 @@ export const workExperience = [
         }
       }
     ],
-
-
     relatedSkills: [
       "Visible Light Communications",
       "Luminescent Solar Concentrators",
@@ -203,7 +201,6 @@ export const workExperience = [
       "C/C++ (Embedded)",
       "Verilog (HDL)",
     ],
-
     projecttitle: [
       "Research and development initiative in progress. Specific project details are currently in the execution phase.",
     ],
