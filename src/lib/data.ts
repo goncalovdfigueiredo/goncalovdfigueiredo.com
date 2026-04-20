@@ -800,6 +800,13 @@ export const awards = [
 
 export const featuredIn = [
   {
+    source: "CNN Portugal",
+    description: "CNN Innovation segment showcasing cutting-edge research and scientific excellence at the University of Aveiro's Physics Department.",
+    date: "Jul 2025",
+    type: "TV News", // Mantém
+    link: "https://cnnportugal.iol.pt/videos/cnn-inovacao-universidade-de-aveiro-departamento-de-fisica/688a045b0cf2ba9f720f0963"
+  },
+  {
     source: "SIC Notícias",
     description: "TV interview showcasing the PLANETa project and smart window technology.",
     date: "Jun 2024",
