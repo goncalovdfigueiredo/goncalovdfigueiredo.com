@@ -308,6 +308,7 @@ export const LeadershipExperience = [
         year: "2026", // 👈 Identificador do Ano
         items: [
           { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
+          { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
         ]
       },
 
