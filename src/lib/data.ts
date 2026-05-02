@@ -154,7 +154,7 @@ export const education = [
 export const workExperience = [
   {
     company: "Lightenjin II - Industria de Iluminação, Instituto de Telecomunicações & CICECO - Aveiro Institute of Materials",
-    position: "Industrial Ph.D. Candidate",
+    position: "Ph.D. Candidate",
     period: "Sep 2023 - Present",
     logos: ["/lightenjin.png", "/it.png", "/ciceco.png"],
     

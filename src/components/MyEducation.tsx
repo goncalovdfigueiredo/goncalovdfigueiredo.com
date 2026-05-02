@@ -6,7 +6,7 @@ import { education } from "@/lib/data";
 import TimelineItem from "./TimelineItem";
 import {
   MapPin, GraduationCap, ChartGantt, FileText, ListChecks, ExternalLink,
-  BookOpen, Calendar, ChevronDown, ChevronUp, ScrollText, Activity
+  BookOpen, Calendar, ChevronDown, ChevronUp, ScrollText, Activity, BookCheck
 } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 import { motion, AnimatePresence } from "framer-motion";
@@ -176,9 +176,9 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
         {/* --- CAMADAS ISOMÉTRICAS --- */}
         {steps.map((step, idx) => {
           const isActive = activeIndex === idx;
-          const thickness = step.years * 12; 
+          const thickness = step.years * 18; 
           const zBase = (2 - idx) * 50; 
-          const yBase = (idx - 1) * 45;
+          const yBase = (idx - 1) * 5;
 
           return (
             <motion.div 
@@ -205,8 +205,8 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
                     style={{ transform: "rotateZ(90deg) rotateX(60deg) translateZ(0px)" }}
                   >
                     <div className="bg-white/90 dark:bg-black/80 border border-zinc-200 dark:border-white/10 px-2 py-1 rounded flex items-center gap-1.5 backdrop-blur-md shadow-sm">
-                       <Activity className="w-3 h-3 text-emerald-500" />
-                       <span className="text-[12px] font-mono dark:text-white text-zinc-900 uppercase tracking-tighter">{step.status}</span>
+                       <BookCheck className="w-4 h-4 text-red-500" />
+                       <span className="text-[16px] font-mono dark:text-white text-zinc-900 uppercase tracking-tighter">{step.status}</span>
                     </div>
                   </motion.div>
                 )}
@@ -224,13 +224,13 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
 
                  <div style={{ transform: "rotateZ(45deg) rotateX(-15deg)" }} className="flex flex-col items-center mb-6">
                     <GraduationCap className="w-10 h-10 mb-1 transition-colors" style={{ color: isActive ? step.color : "rgba(128,128,128,0.3)" }} />
-                    <span className="font-mono text-[14px] font-bold normal-case tracking-tight transition-colors dark:text-white text-zinc-800">
+                    <span className="font-mono text-[18px] font-bold normal-case tracking-tight transition-colors dark:text-white text-zinc-800">
                       {step.label}
                     </span>
                  </div>
 
                  <div className="absolute bottom-3 w-[80%] flex flex-col items-center gap-1.5">
-                    <span className="font-mono text-[9px] font-bold tracking-wider transition-colors" style={{ color: isActive ? step.color : "rgba(128,128,128,0.4)" }}>
+                    <span className="font-mono text-[12px] font-bold tracking-wider transition-colors" style={{ color: isActive ? step.color : "rgba(128,128,128,0.4)" }}>
                       {step.yearsLabel}
                     </span>
                     <div className="w-full h-[3px] flex gap-1 justify-center items-center">

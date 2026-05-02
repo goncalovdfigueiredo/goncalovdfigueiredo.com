@@ -53,7 +53,7 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
    ========================= */
 const EnvironmentBadge = ({ type }: { type: 'Academic' | 'Industry' }) => (
   <span className={`
-    inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border shrink-0
+    inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[14px] font-black uppercase tracking-tighter border shrink-0
     ${type === 'Academic' 
       ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' 
       : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'}
@@ -108,12 +108,12 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                       </div>
                   ))
               ) : job.logos ? (
-                  <div className="w-8 h-8 rounded-lg bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm">
+                  <div className="w-12 h-12 rounded-lg bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm">
                       <img src={job.logos} alt="" className="w-full h-full object-contain" />
                   </div>
               ) : null}
             </div>
-            <span className="text-base md:text-lg font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</span>
+            <span className="text-base md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</span>
           </div>
         </div>
       }
@@ -131,19 +131,19 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                                <EnvironmentBadge type={link.name.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
                                {/* Badge Active sempre ao lado da badge de ambiente */}
                                {isCurrent && (
-                                 <span className="flex items-center gap-1 text-[9px] text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
-                                   <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                                   ACTIVE
+                                 <span className="flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
+                                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                     
                                  </span>
                                )}
                             </div>
 
-                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight md:order-last">
+                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-lg text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight md:order-last">
                               {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
                             </a>
                           </div>
                           {/* Alinhamento da localização com padding no desktop para compensar a badge à esquerda */}
-                          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                          <div className="flex items-center gap-1.5 text-lg text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
                             <MapPin className="w-3 h-3 text-zinc-400" />
                             {link.location?.city || "Portugal"}
                           </div>
@@ -155,18 +155,18 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                         <div className="md:order-first flex items-center gap-2">
                            <EnvironmentBadge type={job.company.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
                            {isCurrent && (
-                             <span className="flex items-center gap-1 text-[9px] text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
+                             <span className="flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
                                <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
                                ACTIVE
                              </span>
                            )}
                         </div>
                         
-                        <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 leading-tight md:order-last">
+                        <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" className="text-lg  md:text-lg text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 leading-tight md:order-last">
                           {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
                         </a>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                      <div className="flex items-center gap-1.5 text-lg  text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
                         <MapPin className="w-3 h-3 text-zinc-400" />
                         {typeof job.location === 'string' ? job.location : job.location.city}
                       </div>
@@ -177,7 +177,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                {hasCourses && (
                  <div className="flex flex-wrap gap-2 pt-1">
                    {job.courses.map((course: any, idx: number) => (
-                     <a key={idx} href={course.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/5 text-[10px] font-medium text-blue-600 dark:text-blue-400 border border-blue-500/10 hover:bg-blue-500/10 transition-all">
+                     <a key={idx} href={course.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/5 text-base font-medium text-blue-600 dark:text-blue-400 border border-blue-500/10 hover:bg-blue-500/10 transition-all">
                        <BookOpen className="w-3 h-3" /> {course.name}
                      </a>
                    ))}
@@ -189,22 +189,22 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                {hasProjects && (
                  <button 
                   onClick={() => toggleTab('projects')} 
-                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
+                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-xs  font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
                     ${activeTab === 'projects' ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500'}
                   `}
                  >
-                    <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Projects</div>
+                    <div className="flex items-center gap-2"><FileText className="w-6 h-6" /> Projects</div>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeTab === 'projects' ? 'rotate-180' : ''}`} />
                  </button>
                )}
                {hasImpact && (
                  <button 
                   onClick={() => toggleTab('key impact')} 
-                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
+                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-xs font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
                     ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_20px_rgba(5,150,105,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'}
                   `}
                  >
-                    <div className="flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Key Impact</div>
+                    <div className="flex items-center gap-2"><BarChart3 className="w-6 h-6" /> Key Impact</div>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeTab === 'key impact' ? 'rotate-180' : ''}`} />
                  </button>
                )}
