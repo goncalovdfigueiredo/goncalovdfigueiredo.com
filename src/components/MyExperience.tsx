@@ -5,11 +5,10 @@ import { workExperience } from "@/lib/data";
 import TimelineItem from "./TimelineItem";
 import { 
   Briefcase, MapPin, BarChart3, ChartGantt, FileText, ExternalLink, BookOpen, 
-  ChevronDown, Calendar, Sparkles, GraduationCap, Building2
+  ChevronDown, Calendar, GraduationCap, Building2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
-import PeerReviewChart from "./PeerReviewChart";
 
 /* =========================
    MICRO-COMPONENTE: BOTÃO DE NAVEGAÇÃO COM TOOLTIP
@@ -126,14 +125,11 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                       job.companyLinks.map((link: any, i: number) => (
                         <div key={i} className="flex flex-col gap-1 group">
                           <div className="flex flex-col md:flex-row md:items-center items-start gap-2">
-                            {/* Ordem adaptativa: Badge à esquerda no Desktop, Nome primeiro no Mobile */}
                             <div className="md:order-first flex items-center gap-2">
                                <EnvironmentBadge type={link.name.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
-                               {/* Badge Active sempre ao lado da badge de ambiente */}
                                {isCurrent && (
                                  <span className="flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
                                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                     
                                  </span>
                                )}
                             </div>
@@ -142,7 +138,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                               {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
                             </a>
                           </div>
-                          {/* Alinhamento da localização com padding no desktop para compensar a badge à esquerda */}
                           <div className="flex items-center gap-1.5 text-lg text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
                             <MapPin className="w-3 h-3 text-zinc-400" />
                             {link.location?.city || "Portugal"}
@@ -174,11 +169,22 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                   )}
                </div>
 
+               {/* CURRICULAR UNITS SECTION - Orange (Amber) Style */}
                {hasCourses && (
-                 <div className="flex flex-wrap gap-2 pt-1">
+                 <div className="flex flex-col gap-3 pt-1">
                    {job.courses.map((course: any, idx: number) => (
-                     <a key={idx} href={course.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/5 text-base font-medium text-blue-600 dark:text-blue-400 border border-blue-500/10 hover:bg-blue-500/10 transition-all">
-                       <BookOpen className="w-3 h-3" /> {course.name}
+                     <a 
+                       key={idx} 
+                       href={course.url} 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500/5 text-base font-medium text-amber-600 dark:text-amber-400 border border-amber-500/10 hover:bg-amber-500/10 hover:underline transition-all w-fit group/course"
+                     >
+                       <BookOpen className="w-4 h-4 shrink-0" /> 
+                       <span className="flex items-center gap-1">
+                         {course.name} 
+                         <ExternalLink className="w-3 h-3 opacity-50 shrink-0 group-hover/course:opacity-100 transition-opacity" />
+                       </span>
                      </a>
                    ))}
                  </div>
@@ -189,22 +195,28 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                {hasProjects && (
                  <button 
                   onClick={() => toggleTab('projects')} 
-                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-xs  font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
+                  className={`flex items-center justify-between gap-2 md:gap-3 py-1.5 px-3 md:py-2.5 md:px-5 rounded-xl border text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 min-w-[130px] md:min-w-[160px]
                     ${activeTab === 'projects' ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500'}
                   `}
                  >
-                    <div className="flex items-center gap-2"><FileText className="w-6 h-6" /> Projects</div>
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 md:w-6 md:h-6" /> 
+                      Projects
+                    </div>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeTab === 'projects' ? 'rotate-180' : ''}`} />
                  </button>
                )}
                {hasImpact && (
                  <button 
                   onClick={() => toggleTab('key impact')} 
-                  className={`flex items-center justify-between gap-3 py-2.5 px-5 rounded-xl border text-xs font-bold uppercase tracking-widest transition-all duration-300 min-w-[160px]
+                  className={`flex items-center justify-between gap-2 md:gap-3 py-1.5 px-3 md:py-2.5 md:px-5 rounded-xl border text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 min-w-[130px] md:min-w-[160px]
                     ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_20px_rgba(5,150,105,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'}
                   `}
                  >
-                    <div className="flex items-center gap-2"><BarChart3 className="w-6 h-6" /> Key Impact</div>
+                    <div className="flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 md:w-6 md:h-6" /> 
+                      Key Impact
+                    </div>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeTab === 'key impact' ? 'rotate-180' : ''}`} />
                  </button>
                )}
@@ -215,14 +227,32 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
             {activeTab && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-4">
                 <div className={`p-4 md:p-6 rounded-2xl border backdrop-blur-sm ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20' : 'bg-emerald-500/5 border-emerald-500/20'}`}>
-                  <ul className="space-y-3">
-                    {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => (
-                      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-3 items-start text-justify">
-                        <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
-                        <span className="flex-1">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <ul className="space-y-3">
+  {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => {
+    // Lógica para detetar "Project:" ou "Area:" e aplicar estilo
+    const parts = item.split(':');
+    const isProjectStyle = parts.length > 1 && (item.includes('Project') || item.includes('Area'));
+
+    return (
+      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-3 items-start text-justify">
+        <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
+        
+        <span className="flex-1">
+          {isProjectStyle ? (
+            <>
+              <span className="font-bold text-blue-500 dark:text-blue-400">
+                {parts[0].replace(/\*\*/g, '')}:
+              </span>
+              <span className="ml-1">{parts[1]}</span>
+            </>
+          ) : (
+            item
+          )}
+        </span>
+      </li>
+    );
+  })}
+</ul>
                 </div>
               </motion.div>
             )}
@@ -252,9 +282,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
   );
 };
 
-/* =========================
-   COMPONENTE PRINCIPAL: EXPERIENCE SECTION
-   ========================= */
 export default function ExperienceSection() {
   return (
     <section id="experience" className="py-16 md:py-24 relative overflow-hidden">

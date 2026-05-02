@@ -154,12 +154,12 @@ export default function ScientificOutreachSection() {
             <div className="hidden md:flex items-center gap-8 text-right pt-2 pr-2"> 
               <div className="flex flex-col items-center">
                 <span className="text-3xl font-bold text-zinc-900 dark:text-white leading-none">{totalCerts}</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-2">Certifications</span>
+                <span className="text-[16px] font-bold uppercase tracking-widest text-zinc-500 mt-2">Certifications</span>
               </div>
               <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
               <div className="flex flex-col items-center">
                 <span className="text-3xl font-bold text-zinc-900 dark:text-white leading-none">{scientificEvents.length}</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-2">Events</span>
+                <span className="text-[16px] font-bold uppercase tracking-widest text-zinc-500 mt-2">Events</span>
               </div>
             </div>
           </div>
@@ -183,7 +183,7 @@ export default function ScientificOutreachSection() {
                     key={mod.id}
                     onClick={() => handleRootClick(mod.id)}
                     className={`
-                      relative px-4 py-3 flex items-center justify-between font-mono text-xs font-bold uppercase transition-all duration-200 border min-w-[200px] lg:min-w-0
+                      relative px-4 py-3 flex items-center justify-between font-mono text-lg font-bold uppercase transition-all duration-200 border min-w-[200px] lg:min-w-0
                       ${isActive 
                         ? "bg-blue-600 border-blue-500 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
                         : "bg-transparent border-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/50"}
@@ -248,9 +248,9 @@ export default function ScientificOutreachSection() {
                           `}
                         >
                           <div className="flex items-center gap-3">
-                            <cert.icon className={`w-4 h-4 ${isActive ? "text-blue-500" : "text-zinc-500"}`} />
+                            <cert.icon className={`w-6 h-6 ${isActive ? "text-blue-500" : "text-zinc-500"}`} />
                             <div className="flex flex-col">
-                              <span className={`text-[11px] font-bold truncate max-w-[180px] ${isActive ? "text-zinc-900 dark:text-white" : "text-zinc-600 dark:text-zinc-400"}`}>
+                              <span className={`text-[16px] font-bold truncate max-w-[260px] ${isActive ? "text-zinc-900 dark:text-white" : "text-zinc-600 dark:text-zinc-400"}`}>
                                 {cert.title}
                               </span>
                               <span className="text-[9px] text-zinc-500">{cert.items.length} Certifications</span>
@@ -326,7 +326,7 @@ export default function ScientificOutreachSection() {
                         <activeCertCategory.icon className={`w-6 h-6 ${activeCertCategory.color}`} />
                       </div>
                       <div className="flex flex-col">
-                        <h3 className="text-sm md:text-base font-bold font-mono text-zinc-900 dark:text-white">
+                        <h3 className="text-lg md:text-lg font-bold font-mono text-zinc-900 dark:text-white">
                           {activeCertCategory.title}
                         </h3>
                         <span className="text-[9px] font-mono text-zinc-500">CERT_DETECTED: {activeCertCategory.items.length}</span>
@@ -397,7 +397,7 @@ export default function ScientificOutreachSection() {
         href={link.href} 
         target="_blank" 
         rel="noopener noreferrer" 
-        className="group flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-purple-500 dark:hover:border-purple-500 hover:text-purple-600 dark:hover:text-purple-400 transition-all"
+        className="group flex items-center gap-1.5 px-3 py-1.5 text-[16px] font-bold uppercase bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-purple-500 dark:hover:border-purple-500 hover:text-purple-600 dark:hover:text-purple-400 transition-all"
       >
         {link.label} <ExternalLink className="w-3 h-3 shrink-0" />
       </a>

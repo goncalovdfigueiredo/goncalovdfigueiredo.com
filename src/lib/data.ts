@@ -203,6 +203,8 @@ export const workExperience = [
     ],
     projecttitle: [
       "Research and development initiative in progress. Specific project details are currently in the execution phase.",
+      "**Project: ",
+      "**Area: ",
     ],
     achievements: [
       "Ongoing execution. Key outcomes and milestones will be updated as the project matures.",
@@ -242,7 +244,8 @@ export const workExperience = [
     relatedSkills: ["Luminescent Solar Concentrators","MATLAB (Data Acquisition & Signal Processing)", 
     "C/C++ (Embedded)", ],
     projecttitle: [
-      "Research Fellowship within the project “PLANETa (CENTRO-01-0145-FEDER-181242) - Photonic devices for energy generation from sunlight and temperature sensing towards real-time and user-based post-occupancy evaluation in zero-energy buildings”, in the area of Optics and Photonics.",
+      "**Project: PLANETa (CENTRO-01-0145-FEDER-181242) - Photonic devices for energy generation from sunlight and temperature sensing towards real-time and user-based post-occupancy evaluation in zero-energy buildings",
+      "**Area: Optics & Photonics",
     ],
     achievements: [
       "Research Fellowship dedicated to the design and assembly of a large-scale luminescent solar concentrator (LSC) prototype, fabricated at the scale of a real window and capable of energy generation and optical temperature sensing, integrated into an Internet of Things (IoT) platform.",
@@ -264,7 +267,8 @@ export const workExperience = [
     url: "https://www.it.pt/ITSites/Index/1",
     logos: ["/it.png"],
     projecttitle: [
-      "Research Fellowship within the project “PC102 – UIDB/50008/2020”, in the area of Optics and Photonics.",
+      "**Project: PC102 – UIDB/50008/2020",
+      "**Area: Optics & Photonics",
     ],
     achievements: [
       "Research Fellowship dedicated to the design, development, simulation, implementation, integration, validation, and demonstration of visible light communication (VLC) systems with data encryption.",
