@@ -161,7 +161,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                           {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
                         </a>
                       </div>
-                      <div className="flex items-center gap-1.5 text-lg  text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                      <div className="flex items-center gap-1.5 text-lg md:text-lg text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
                         <MapPin className="w-3 h-3 text-zinc-400" />
                         {typeof job.location === 'string' ? job.location : job.location.city}
                       </div>

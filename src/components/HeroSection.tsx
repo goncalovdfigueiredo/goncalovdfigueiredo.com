@@ -231,21 +231,40 @@ function DisintegratingProfile() {
 }
 
 /* =========================
-   5. HARDWARE UNLOCK CARD
+   5. HARDWARE UNLOCK CARD (MANTENDO BORDAS, ATUALIZANDO FUNDO)
    ========================= */
 const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   let themeColor = "rgba(16,185,129,"; 
   let textColor = "text-emerald-400";
+  let glowColor = "bg-emerald-500/10";
+  let glowHoverColor = "group-hover/card:bg-emerald-500/20";
   
-  if (group.color.includes('blue')) { themeColor = "rgba(59,130,246,"; textColor = "text-blue-400"; }
-  if (group.color.includes('purple')) { themeColor = "rgba(168,85,247,"; textColor = "text-purple-400"; }
-  if (group.color.includes('red')) { themeColor = "rgba(239,68,68,"; textColor = "text-red-400"; }
+  if (group.color.includes('blue')) { 
+    themeColor = "rgba(59,130,246,"; 
+    textColor = "text-blue-400"; 
+    glowColor = "bg-blue-500/10";
+    glowHoverColor = "group-hover/card:bg-blue-500/20";
+  }
+  if (group.color.includes('purple')) { 
+    themeColor = "rgba(168,85,247,"; 
+    textColor = "text-purple-400"; 
+    glowColor = "bg-purple-500/10";
+    glowHoverColor = "group-hover/card:bg-purple-500/20";
+  }
+  if (group.color.includes('red')) { 
+    themeColor = "rgba(239,68,68,"; 
+    textColor = "text-red-400"; 
+    glowColor = "bg-red-500/10";
+    glowHoverColor = "group-hover/card:bg-red-500/20";
+  }
+
+  const startAngle = index * 120; 
 
   return (
     <motion.div 
-      className="relative w-full flex-1 min-h-[140px] rounded-2xl overflow-hidden cursor-pointer group/card"
+      className="relative w-full flex-1 min-h-[140px] rounded-2xl overflow-hidden cursor-pointer group/card flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       initial={{ opacity: 0, y: 50 }}
@@ -253,19 +272,25 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
       whileHover={{ scale: 1.02 }}
     >
-      {/* Background Layers */}
-      <div className={`absolute inset-0 bg-[#0a0a0c] border-2 transition-colors duration-500 ${isHovered ? `border-transparent` : 'border-zinc-800'}`} />
+      {/* 1. Base para as Bordas (mantém a borda inicial) */}
+      <div className="absolute inset-0 bg-[#0a0a0c] border border-white/5 rounded-2xl z-0" />
       
+      {/* 2. Efeito Eletrão / Comet Tail (Mantém as bordas animadas intactas) */}
       <motion.div 
-        className="absolute inset-0 z-0"
-        style={{ background: `linear-gradient(45deg, transparent, ${themeColor}0.8), transparent)` }}
-        animate={{ opacity: isHovered ? 1 : 0, rotate: isHovered ? [0, 360] : 0 }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] z-0 pointer-events-none opacity-60 group-hover/card:opacity-100 transition-opacity duration-500"
+        style={{ background: `conic-gradient(from 0deg, transparent 0%, transparent 80%, ${themeColor}1) 100%)` }}
+        animate={{ x: "-50%", y: "-50%", rotate: [startAngle, startAngle + 360] }}
+        transition={{ rotate: { duration: 4, repeat: Infinity, ease: "linear" } }}
       />
-      <div className="absolute inset-[2px] bg-[#0a0a0c] rounded-2xl z-0" />
       
-      {/* Background Hover Especial */}
-      <div className={`absolute inset-[2px] rounded-2xl z-0 transition-opacity duration-500 bg-gradient-to-br from-[#0a0a0c] to-[#121215] ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+      {/* 3. Tampão Sólido (Impede que o eletrão passe no meio do cartão, deixando só 1.5px de borda livre) */}
+      <div className="absolute inset-[1.5px] bg-[#09090b] rounded-[calc(1rem-1.5px)] z-0" />
+
+      {/* 4. O Novo Fundo (Exatamente igual ao Professional Profile: bg-zinc-900/40) */}
+      <div className="absolute inset-[1.5px] bg-zinc-900/40 rounded-[calc(1rem-1.5px)] z-0 transition-colors duration-500" />
+      
+      {/* 5. Glow Superior Direito (Igual ao Profile, adaptado à cor do respetivo cartão) */}
+      <div className={`absolute top-0 right-0 w-48 h-48 ${glowColor} rounded-full blur-[50px] ${glowHoverColor} transition-colors pointer-events-none z-0`} />
 
       {/* ÍCONE EMBUTIDO DE FUNDO */}
       <group.icon 
@@ -282,8 +307,8 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
             <group.icon className={`w-10 h-10 mb-3 opacity-30 ${textColor}`} />
             <h3 className="text-sm font-bold text-zinc-500 uppercase tracking-[0.2em]">{group.title}</h3>
             <div className="flex gap-2 mt-4">
-              <div className="w-2 h-2 rounded-full bg-zinc-700" />
-              <div className="w-2 h-2 rounded-full bg-zinc-700" />
+              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-500" />
+              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-500" />
               <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-500" />
             </div>
           </motion.div>
@@ -295,7 +320,7 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
         {isHovered && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-            className="absolute inset-0 z-30 p-6 flex flex-col justify-center bg-gradient-to-br from-[#0a0a0c] to-[#121215] overflow-hidden"
+            className="absolute inset-0 z-30 p-6 flex flex-col justify-center bg-transparent overflow-hidden h-full"
           >
             <motion.div 
               animate={{ top: ['0%', '150%', '0%'] }} 
@@ -304,7 +329,7 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
               style={{ backgroundColor: `${themeColor}0.8)`, color: `${themeColor}1)` }}
             />
             
-            <div className="flex justify-between items-start mb-4 relative z-10">
+            <div className="flex justify-between items-start mb-3 relative z-10">
               <div>
                 <span className={`text-[10px] font-black uppercase tracking-widest ${textColor} mb-1 block`}>{group.subtitle}</span>
                 <h4 className="text-lg font-bold text-white leading-none">{group.title}</h4>
@@ -312,7 +337,7 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
               <div className={`p-2 rounded-lg bg-white/5 ${textColor}`}><group.icon className="w-5 h-5" /></div>
             </div>
             
-            <div className="flex flex-wrap gap-2 relative z-10"> 
+            <div className="flex flex-wrap gap-1 relative z-10"> 
               {group.skills.map((skill: string) => (
                 <span key={skill} className="px-2.5 py-1 rounded bg-white/10 text-white text-[8px] font-medium border border-white/5 shadow-sm">
                   {skill}
@@ -351,7 +376,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section ref={sectionRef} className="relative pt-30 pb-20 md:pt-30 md:pb-32 overflow-hidden perspective-1000">
+    <section ref={sectionRef} className="relative pt-25 pb-20 md:pt-30 md:pb-32 overflow-hidden perspective-1000">
       
       {/* ENVOLVEDOR DE FUNDO COM FADE-OUT SUAVE */}
       <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
@@ -387,20 +412,20 @@ export default function HeroSection() {
 
           <motion.p 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-            className="text-lg md:text-l text-zinc-400 font-light max-w-l leading-relaxed mb-10">
+            className="text-lg md:text-l text-zinc-400 font-light max-w-l leading-relaxed mb-5">
             Bridging the gap between <strong className="text-white font-bold">Theoretical Science</strong> and <strong className="text-white font-bold">Industrial Application</strong>  <br className="hidden md:block"/>
             through <TypewriterExpertise />
           </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-3 max-w-4xl"
+            className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mb-5"
           >
             {contacts.map((c, i) => {
               if (!c.href) {
                 // Localização
                 return (
-                  <div key={i} className="flex items-center gap-1.5 text-zinc-400 mr-2 md:mr-3">
+                  <div key={i} className="flex items-center gap-1.5 text-zinc-400 mr-0 md:mr-0">
                     <c.icon className="w-4 h-4" /> 
                     <span className="text-xs font-medium">{c.text}</span>
                   </div>
@@ -421,13 +446,12 @@ export default function HeroSection() {
         {/* === ZONA 2: BENTO BOX INTERATIVA === */}
         <motion.div 
           style={{ y: yElement }}
-          className="grid grid-cols-1 md:grid-cols-15 gap-6 mt-2" 
+          className="grid grid-cols-1 md:grid-cols-20 gap-6 mt-2" 
         >
           {/* Main Profile Card */}
-          <div className="col-span-1 md:col-span-10 flex flex-col">
+          <div className="col-span-1 md:col-span-15 flex flex-col">
             <div className="flex-1 w-full relative rounded-2xl bg-zinc-900/40 border border-white/10 px-8 pt-8 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />
-              
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />              
               <div className="relative z-10 flex flex-col flex-1 h-full">
                 <div>
                   <div className="flex items-center gap-4 mb-8">
