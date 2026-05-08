@@ -99,19 +99,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex -space-x-2 overflow-hidden shrink-0"> 
-              {Array.isArray(job.logos) ? (
-                  job.logos.map((logo: string, i: number) => (
-                      <div key={i} className="relative z-10 w-8 h-8 rounded-lg bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm">
-                          <img src={logo} alt="" className="w-full h-full object-contain" />
-                      </div>
-                  ))
-              ) : job.logos ? (
-                  <div className="w-12 h-12 rounded-lg bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm">
-                      <img src={job.logos} alt="" className="w-full h-full object-contain" />
-                  </div>
-              ) : null}
-            </div>
             <span className="text-base md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</span>
           </div>
         </div>
@@ -122,73 +109,121 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
             <div className="flex-1 space-y-5">
                <div className="flex flex-col gap-5">
                   {Array.isArray(job.companyLinks) ? (
-                      job.companyLinks.map((link: any, i: number) => (
-                        <div key={i} className="flex flex-col gap-1 group">
-                          <div className="flex flex-col md:flex-row md:items-center items-start gap-2">
-                            <div className="md:order-first flex items-center gap-2">
-                               <EnvironmentBadge type={link.name.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
-                               {isCurrent && (
-  <span className="hidden md:flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
-    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-  </span>
-)}
-                            </div>
+                      job.companyLinks.map((link: any, i: number) => {
+                        const isAcademic = !link.name.toLowerCase().includes("lightenjin");
+                        const currentLogo = Array.isArray(job.logos) ? job.logos[i] : (i === 0 ? job.logos : null);
 
-                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight md:order-last">
-                              {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
-                            </a>
+                        return (
+                          <div key={i} className="flex flex-col gap-1 group">
+                            <div className="flex flex-col md:flex-row md:items-start items-start gap-2 md:gap-3">
+                              
+                              <div className="md:order-first flex items-center gap-2 shrink-0 md:mt-0.5">
+                                 <EnvironmentBadge type={isAcademic ? "Academic" : "Industry"} />
+                              </div>
+
+                              <div className="flex flex-col gap-1 md:order-last">
+                                <div className="flex items-center gap-2">
+                                  {currentLogo && (
+                                    <div className="relative z-10 w-6 h-6 md:w-7 md:h-7 rounded bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-0.5 shadow-sm shrink-0">
+                                      <img src={currentLogo} alt="" className="w-full h-full object-contain" />
+                                    </div>
+                                  )}
+                                  
+                                  <a href={link.url} target="_blank" rel="noopener noreferrer" 
+                                    className={`text-sm md:text-base font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight
+                                      ${isAcademic ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400'}
+                                    `}>
+                                    {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
+                                  </a>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium">
+                                  <MapPin className="w-3 h-3 text-zinc-400" />
+                                  {link.location?.city || "Portugal"}
+                                </div>
+
+                                {/* CURRICULAR UNITS: Agora dentro do bloco da empresa, alinhadas em baixo da localização */}
+                                {hasCourses && i === 0 && ( // Supondo que os cursos pertencem à primeira empresa da lista, se houver várias
+                                  <div className="flex flex-col gap-3 pt-2">
+                                    {job.courses.map((course: any, idx: number) => (
+                                      <a 
+                                        key={idx} 
+                                        href={course.url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-yellow-600/10 text-sm font-medium text-yellow-600 dark:text-[#c4b59b] border border-yellow-600/20 dark:border-[#c4b59b]/20 hover:bg-yellow-600/20 hover:underline transition-all w-fit group/course"
+                                      >
+                                        <BookOpen className="w-4 h-4 shrink-0" /> 
+                                        <span className="flex items-center gap-1">
+                                          {course.name} 
+                                          <ExternalLink className="w-3 h-3 opacity-50 shrink-0 group-hover/course:opacity-100 transition-opacity" />
+                                        </span>
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
-                            <MapPin className="w-3 h-3 text-zinc-400" />
-                            {link.location?.city || "Portugal"}
-                          </div>
-                        </div>
-                      ))
+                        );
+                      })
                   ) : (
                     <div className="flex flex-col gap-1">
-                      <div className="flex flex-col md:flex-row md:items-center items-start gap-2">
-                        <div className="md:order-first flex items-center gap-2">
-                           <EnvironmentBadge type={job.company.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
-                           {isCurrent && (
-                             <span className="flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
-                               <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                               ACTIVE
-                             </span>
-                           )}
-                        </div>
-                        
-                        <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 leading-tight md:order-last">
-                          {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
-                        </a>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
-                        <MapPin className="w-3 h-3 text-zinc-400" />
-                        {typeof job.location === 'string' ? job.location : job.location.city}
-                      </div>
+                      {(() => {
+                        const isAcademic = !job.company.toLowerCase().includes("lightenjin");
+                        const currentLogo = Array.isArray(job.logos) ? job.logos[0] : job.logos;
+
+                        return (
+                          <div className="flex flex-col md:flex-row md:items-start items-start gap-2 md:gap-3">
+                            <div className="md:order-first flex items-center gap-2 shrink-0 md:mt-0.5">
+                               <EnvironmentBadge type={isAcademic ? "Academic" : "Industry"} />
+                            </div>
+                            
+                            <div className="flex flex-col gap-1 md:order-last">
+                              <div className="flex items-center gap-2">
+                                {currentLogo && (
+                                  <div className="relative z-10 w-6 h-6 md:w-7 md:h-7 rounded bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-0.5 shadow-sm shrink-0">
+                                    <img src={currentLogo} alt="" className="w-full h-full object-contain" />
+                                  </div>
+                                )}
+                                <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" 
+                                  className={`text-sm md:text-base font-semibold hover:underline flex items-center gap-1 leading-tight
+                                    ${isAcademic ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400'}
+                                  `}>
+                                  {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
+                                </a>
+                              </div>
+                              <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium">
+                                <MapPin className="w-3 h-3 text-zinc-400" />
+                                {typeof job.location === 'string' ? job.location : job.location.city}
+                              </div>
+
+                              {/* CURRICULAR UNITS: Agora dentro do bloco da empresa singular */}
+                              {hasCourses && (
+                                <div className="flex flex-col gap-3 pt-2">
+                                  {job.courses.map((course: any, idx: number) => (
+                                    <a 
+                                      key={idx} 
+                                      href={course.url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer" 
+                                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-yellow-600/10 text-sm font-medium text-yellow-600 dark:text-[#c4b59b] border border-yellow-600/20 dark:border-[#c4b59b]/20 hover:bg-yellow-600/20 hover:underline transition-all w-fit group/course"
+                                    >
+                                      <BookOpen className="w-4 h-4 shrink-0" /> 
+                                      <span className="flex items-center gap-1">
+                                        {course.name} 
+                                        <ExternalLink className="w-3 h-3 opacity-50 shrink-0 group-hover/course:opacity-100 transition-opacity" />
+                                      </span>
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                </div>
-
-               {/* CURRICULAR UNITS SECTION - Orange (Amber) Style */}
-               {hasCourses && (
-                 <div className="flex flex-col gap-3 pt-1">
-                   {job.courses.map((course: any, idx: number) => (
-                     <a 
-                       key={idx} 
-                       href={course.url} 
-                       target="_blank" 
-                       rel="noopener noreferrer" 
-                       className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500/5 text-sm font-medium text-amber-600 dark:text-amber-400 border border-amber-500/10 hover:bg-amber-500/10 hover:underline transition-all w-fit group/course"
-                     >
-                       <BookOpen className="w-4 h-4 shrink-0" /> 
-                       <span className="flex items-center gap-1">
-                         {course.name} 
-                         <ExternalLink className="w-3 h-3 opacity-50 shrink-0 group-hover/course:opacity-100 transition-opacity" />
-                       </span>
-                     </a>
-                   ))}
-                 </div>
-               )}
             </div>
 
             <div className="flex flex-row lg:flex-col gap-2.5 shrink-0 mt-4 md:mt-0">
@@ -213,7 +248,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                     ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_20px_rgba(5,150,105,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'}
                   `}
                  >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-0">
                       <BarChart3 className="w-4 h-4 md:w-6 md:h-6" /> 
                       Key Impact
                     </div>
@@ -289,7 +324,7 @@ export default function ExperienceSection() {
 
       <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
-          <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="mb-5 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
               <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 shadow-sm">
                 <Briefcase className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
@@ -316,7 +351,7 @@ export default function ExperienceSection() {
           </div>
         </MotionWrapper>
 
-        <div className="grid gap-8">
+        <div className="grid gap-0 md:gap-0">
           {workExperience.map((job, index) => {
             const isCurrent = job.period.toLowerCase().includes('present');
             return (

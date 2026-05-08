@@ -50,7 +50,7 @@ export default function TimelineItem({
       </div>
 
       {/* pb-6 em mobile para os blocos não ficarem distantes */}
-      <div className="flex-1 pb-6 md:pb-12">
+      <div className="flex-1 pb-6 md:pb-5">
         
         {/* Data acima do título */}
         <div className={`flex items-center gap-2 mb-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest ${isCurrent ? "text-emerald-500" : "text-zinc-500"}`}>

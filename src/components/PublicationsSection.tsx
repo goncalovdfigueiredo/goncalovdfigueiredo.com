@@ -83,11 +83,10 @@ export default function PublicationsSection() {
               <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
                 <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
-              Publications
+              Publications & Metrics
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
-              Explore my academic journey through {publications.length} research outputs. Use the filters below to navigate by category.
-            </p>
+            <p className="text-zinc-600 dark:text-zinc-400 max-w-6xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
+              Peer-reviewed output across Photonics, Optical Wireless Communications, and Internet of Things (IoT) — synced weekly from Google Scholar.            </p>
           </div>
         </MotionWrapper>
 
