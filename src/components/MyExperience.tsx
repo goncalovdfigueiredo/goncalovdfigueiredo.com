@@ -52,7 +52,7 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
    ========================= */
 const EnvironmentBadge = ({ type }: { type: 'Academic' | 'Industry' }) => (
   <span className={`
-    inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[14px] font-black uppercase tracking-tighter border shrink-0
+    inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-black uppercase tracking-tighter border shrink-0
     ${type === 'Academic' 
       ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' 
       : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'}
@@ -128,17 +128,17 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                             <div className="md:order-first flex items-center gap-2">
                                <EnvironmentBadge type={link.name.toLowerCase().includes("lightenjin") ? "Industry" : "Academic"} />
                                {isCurrent && (
-                                 <span className="flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
-                                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                 </span>
-                               )}
+  <span className="hidden md:flex items-center gap-1 text-lg text-emerald-500 font-bold bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10 shrink-0">
+    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+  </span>
+)}
                             </div>
 
-                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-lg text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight md:order-last">
+                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight md:order-last">
                               {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
                             </a>
                           </div>
-                          <div className="flex items-center gap-1.5 text-lg text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                          <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
                             <MapPin className="w-3 h-3 text-zinc-400" />
                             {link.location?.city || "Portugal"}
                           </div>
@@ -157,11 +157,11 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                            )}
                         </div>
                         
-                        <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" className="text-lg  md:text-lg text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 leading-tight md:order-last">
+                        <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 leading-tight md:order-last">
                           {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
                         </a>
                       </div>
-                      <div className="flex items-center gap-1.5 text-lg md:text-lg text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
+                      <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium md:pl-[85px]">
                         <MapPin className="w-3 h-3 text-zinc-400" />
                         {typeof job.location === 'string' ? job.location : job.location.city}
                       </div>
@@ -178,7 +178,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                        href={course.url} 
                        target="_blank" 
                        rel="noopener noreferrer" 
-                       className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500/5 text-base font-medium text-amber-600 dark:text-amber-400 border border-amber-500/10 hover:bg-amber-500/10 hover:underline transition-all w-fit group/course"
+                       className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-amber-500/5 text-sm font-medium text-amber-600 dark:text-amber-400 border border-amber-500/10 hover:bg-amber-500/10 hover:underline transition-all w-fit group/course"
                      >
                        <BookOpen className="w-4 h-4 shrink-0" /> 
                        <span className="flex items-center gap-1">

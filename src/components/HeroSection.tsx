@@ -5,8 +5,8 @@ import { personalInfo } from "@/lib/data";
 import { 
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, MapPin, FileText,
-  Cpu, Users, Terminal, Fingerprint, FileBadge
-} from "lucide-react";
+  Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown
+} from "lucide-react"; // <-- ChevronDown Adicionado
 import { 
   motion, 
   AnimatePresence, 
@@ -231,7 +231,7 @@ function DisintegratingProfile() {
 }
 
 /* =========================
-   5. HARDWARE UNLOCK CARD (MANTENDO BORDAS, ATUALIZANDO FUNDO)
+   5. HARDWARE UNLOCK CARD 
    ========================= */
 const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -272,10 +272,8 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
       whileHover={{ scale: 1.02 }}
     >
-      {/* 1. Base para as Bordas (mantém a borda inicial) */}
       <div className="absolute inset-0 bg-[#0a0a0c] border border-white/5 rounded-2xl z-0" />
       
-      {/* 2. Efeito Eletrão / Comet Tail (Mantém as bordas animadas intactas) */}
       <motion.div 
         className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] z-0 pointer-events-none opacity-60 group-hover/card:opacity-100 transition-opacity duration-500"
         style={{ background: `conic-gradient(from 0deg, transparent 0%, transparent 80%, ${themeColor}1) 100%)` }}
@@ -283,21 +281,16 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
         transition={{ rotate: { duration: 4, repeat: Infinity, ease: "linear" } }}
       />
       
-      {/* 3. Tampão Sólido (Impede que o eletrão passe no meio do cartão, deixando só 1.5px de borda livre) */}
       <div className="absolute inset-[1.5px] bg-[#09090b] rounded-[calc(1rem-1.5px)] z-0" />
 
-      {/* 4. O Novo Fundo (Exatamente igual ao Professional Profile: bg-zinc-900/40) */}
       <div className="absolute inset-[1.5px] bg-zinc-900/40 rounded-[calc(1rem-1.5px)] z-0 transition-colors duration-500" />
       
-      {/* 5. Glow Superior Direito (Igual ao Profile, adaptado à cor do respetivo cartão) */}
       <div className={`absolute top-0 right-0 w-48 h-48 ${glowColor} rounded-full blur-[50px] ${glowHoverColor} transition-colors pointer-events-none z-0`} />
 
-      {/* ÍCONE EMBUTIDO DE FUNDO */}
       <group.icon 
         className={`absolute -bottom-4 -right-4 w-28 h-28 ${textColor} opacity-[0.06] -rotate-12 transition-all duration-700 group-hover/card:rotate-0 group-hover/card:scale-125 group-hover/card:opacity-[0.25] pointer-events-none z-10`} 
       />
 
-      {/* STAGE 1: LOCKED */}
       <AnimatePresence>
         {!isHovered && (
           <motion.div 
@@ -315,7 +308,6 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
         )}
       </AnimatePresence>
 
-      {/* STAGE 2: UNLOCKED */}
       <AnimatePresence>
         {isHovered && (
           <motion.div 
@@ -364,6 +356,9 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const yElement = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  
+  // ESTADO PARA O ACORDEÃO NO MOBILE
+  const [isProfileExpanded, setIsProfileExpanded] = useState(false);
 
   const contacts = [
     { icon: MapPin, text: "Lisbon, Portugal", href: null }, 
@@ -376,7 +371,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section ref={sectionRef} className="relative pt-25 pb-20 md:pt-30 md:pb-32 overflow-hidden perspective-1000">
+    <section ref={sectionRef} className="relative pt-25 pb-16 md:pt-30 md:pb-32 overflow-hidden perspective-1000">
       
       {/* ENVOLVEDOR DE FUNDO COM FADE-OUT SUAVE */}
       <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
@@ -389,22 +384,22 @@ export default function HeroSection() {
       <div className="container max-w-8xl mx-auto px-6 relative z-10">
         
         {/* === ZONA 1: INTRODUÇÃO GIGANTE === */}
-        <motion.div style={{ y: yElement }} className="flex flex-col items-center text-center mb-8 group">
+        <motion.div style={{ y: yElement }} className="flex flex-col items-center text-center mb-4 md:mb-8 group">
           
           <motion.div 
             initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", damping: 12 }}
-            className="relative mb-8 group"
+            className="relative mb-6 md:mb-8 group"
           >
             <DisintegratingProfile />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-6 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-            <Terminal className="w-3.5 h-3.5" /> PhD Candidate & Researcher
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+            <Terminal className="w-3.5 h-3.5" /> PhD Candidate
           </motion.div>
 
           <motion.h1 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-5xl md:text-5xl font-black tracking-tighter text-white mb-6 uppercase leading-[0.9]"
+            className="text-4xl md:text-5xl font-black tracking-tighter text-white mb-4 md:mb-6 uppercase leading-[0.9]"
           >
             Gonçalo <br className="md:hidden" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-700">Figueiredo</span>
@@ -412,30 +407,30 @@ export default function HeroSection() {
 
           <motion.p 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-            className="text-lg md:text-l text-zinc-400 font-light max-w-l leading-relaxed mb-5">
+            className="text-base md:text-lg text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4">
             Bridging the gap between <strong className="text-white font-bold">Theoretical Science</strong> and <strong className="text-white font-bold">Industrial Application</strong>  <br className="hidden md:block"/>
             through <TypewriterExpertise />
           </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mb-5"
+            className="flex flex-wrap items-center justify-center gap-2 md:gap-3 max-w-4xl mb-4 md:mb-7"
           >
             {contacts.map((c, i) => {
               if (!c.href) {
                 // Localização
                 return (
-                  <div key={i} className="flex items-center gap-1.5 text-zinc-400 mr-0 md:mr-0">
-                    <c.icon className="w-4 h-4" /> 
-                    <span className="text-xs font-medium">{c.text}</span>
+                  <div key={i} className="flex items-center gap-1.5 text-zinc-400 mr-1 md:mr-3">
+                    <c.icon className="w-3.5 h-3.5 md:w-4 md:h-4" /> 
+                    <span className="text-[11px] md:text-xs font-medium">{c.text}</span>
                   </div>
                 );
               }
               // Botões Magnéticos
               return (
                 <MagneticButton key={i} href={c.href}>
-                  <c.icon className="w-4 h-4" /> 
-                  <span className="text-xs">{c.text}</span>
+                  <c.icon className="w-3.5 h-3.5 md:w-4 md:h-4" /> 
+                  <span className="text-[11px] md:text-xs">{c.text}</span>
                 </MagneticButton>
               );
             })}
@@ -446,51 +441,72 @@ export default function HeroSection() {
         {/* === ZONA 2: BENTO BOX INTERATIVA === */}
         <motion.div 
           style={{ y: yElement }}
-          className="grid grid-cols-1 md:grid-cols-20 gap-6 mt-2" 
+          className="grid grid-cols-1 md:grid-cols-15 gap-4 md:gap-6 mt-2" 
         >
           {/* Main Profile Card */}
-          <div className="col-span-1 md:col-span-15 flex flex-col">
-            <div className="flex-1 w-full relative rounded-2xl bg-zinc-900/40 border border-white/10 px-8 pt-8 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col">
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />              
+          <div className="col-span-1 md:col-span-10 flex flex-col">
+            <div className="flex-1 w-full relative rounded-2xl bg-zinc-900/40 border border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />
+              
               <div className="relative z-10 flex flex-col flex-1 h-full">
                 <div>
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="p-3 rounded-2xl bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.5)]">
-                      <User className="w-6 h-6" />
+                  <div className="flex items-center gap-3 md:gap-4 mb-5 md:mb-8">
+                    <div className="p-2 md:p-3 rounded-2xl bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.5)]">
+                      <User className="w-5 h-5 md:w-6 md:h-6" />
                     </div>
-                    <h2 className="text-2xl md:text-2xl font-bold text-white tracking-tight">Professional Profile</h2>
+                    <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">Professional Profile</h2>
                   </div>
                   
-                  <div className="space-y-2 text-base md:text-lg text-zinc-300 font-light leading-relaxed">
-                    <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-white">Electrical and Computer Engineering</strong> at <strong className="text-white border-b border-emerald-500/50">Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
-                    <p> With a unique <span className="text-emerald-400 font-medium">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application. </p>
-                    <p> His focus is on developing robust <span className="text-white font-medium bg-white/10 px-2 py-1 rounded">hardware prototypes</span>, from <span className="text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-400 font-bold">Industrial IoT</span>. </p>
+                  {/* CONTEÚDO DO PERFIL COM ACORDEÃO (Expansível no Mobile) */}
+                  <div className={`relative overflow-hidden transition-all duration-500 ease-in-out ${isProfileExpanded ? 'max-h-[800px]' : 'max-h-[70px] md:max-h-[800px]'}`}>
+                    
+                    <div className="space-y-4 md:space-y-2 text-sm md:text-lg text-zinc-300 font-light leading-relaxed">
+                      <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-white">Electrical and Computer Engineering</strong> at <strong className="text-white border-b border-emerald-500/50">Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
+                      <p> With a unique <span className="text-emerald-400 font-medium">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application. </p>
+                      <p> His focus is on developing robust <span className="text-white font-medium bg-white/10 px-2 py-1 rounded">hardware prototypes</span>, from <span className="text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-400 font-bold">Industrial IoT</span>. </p>
+                    </div>
+
+                    {/* FADE EFFECT: Invisível no PC, visível no Mobile quando está encolhido */}
+                    <div className={`absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#131315] to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${isProfileExpanded ? 'opacity-0' : 'opacity-100'}`} />
+                  
                   </div>
+
+                  {/* BOTÃO READ MORE (Aparece só no Mobile) */}
+                  <div className="md:hidden mt-2 flex justify-center">
+                    <button 
+                      onClick={() => setIsProfileExpanded(!isProfileExpanded)}
+                      className="flex items-center gap-1.5 text-[10px] text-emerald-500 hover:text-emerald-400 font-bold uppercase tracking-widest py-2 transition-colors"
+                    >
+                      {isProfileExpanded ? "Read Less" : "Read More"}
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isProfileExpanded ? "rotate-180" : ""}`} />
+                    </button>
+                  </div>
+
                 </div>
 
-                <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-2">
+                <div className="mt-0 md:mt-auto flex items-center justify-between border-t border-white/10 pt-4">
                   <div>
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Status</p>
-                    <div className="flex items-center gap-2 text-emerald-400 font-bold">
-                      <span className="relative flex h-3 w-3">
+                    <p className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Status</p>
+                    <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs md:text-sm">
+                      <span className="relative flex h-2.5 w-2.5 md:h-3 md:w-3">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 md:h-3 md:w-3 bg-emerald-500"></span>
                       </span>
                       Open to Research
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Primary Focus</p>
-                    <p className="text-white font-bold flex items-center gap-2 justify-end"><Cpu className="w-4 h-4 text-emerald-500"/> Hardware & IoT</p>
+                    <p className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Primary Focus</p>
+                    <p className="text-white font-bold flex items-center gap-1.5 md:gap-2 justify-end text-xs md:text-sm"><Cpu className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-500"/> Hardware & IoT</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Sci-Fi Skill Cards (Scroll Horizontal em Mobile, Vertical em Desktop) */}
+          {/* Sci-Fi Skill Cards (Scroll Horizontal em Mobile) */}
           <div 
-            className="col-span-1 md:col-span-5 flex flex-row md:flex-col gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 h-full [&::-webkit-scrollbar]:hidden"
+            className="col-span-1 md:col-span-5 flex flex-row md:flex-col gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-2 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 h-full [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {skillGroups.map((group, idx) => (
