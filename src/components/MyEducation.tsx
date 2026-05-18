@@ -149,9 +149,10 @@ const EducationEntry = ({
 // --- COMPONENTE VISUAL: Escadas Isométricas (Chão + 4 Paredes em cada bloco) ---
 const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
   const steps = [
-    { label: 'Ph.D.', years: 4, size: 160, color: '#10b981', sideColor: '#10b981', status: 'In Progress', yearsLabel: '2022 - 2026', coords: '38.7367° N, 9.1389° W', ref: '', range: [5, 9] },
-    { label: 'M.Sc.', years: 2, size: 210, color: '#3b82f6', sideColor: '#3b82f6', status: 'Completed', yearsLabel: '2020 - 2022', coords: '40.6308° N, 8.6559° W', ref: '', range: [3, 5] },
-    { label: 'B.Sc.', years: 3, size: 260, color: '#5D3FD3', sideColor: '#5D3FD3', status: 'Completed', yearsLabel: '2017 - 2020', coords: '40.6308° N, 8.6559° W', ref: '', range: [0, 3] }
+    { label: 'Summer School', years: 0.2, size: 130, color: '#DBA400', sideColor: '#DBA400', status: 'Completed', yearsLabel: '2026', coords: '38.7367° N, 9.1389° W', ref: '', range: [9, 10], zBase: 150 },
+    { label: 'Ph.D.', years: 4, size: 170, color: '#10b981', sideColor: '#10b981', status: 'In Progress', yearsLabel: '2022 - 2026', coords: '38.7367° N, 9.1389° W', ref: '', range: [5, 9], zBase: 65 },
+    { label: 'M.Sc.', years: 2, size: 220, color: '#3b82f6', sideColor: '#3b82f6', status: 'Completed', yearsLabel: '2020 - 2022', coords: '40.6308° N, 8.6559° W', ref: '', range: [3, 5], zBase: 15 },
+    { label: 'B.Sc.', years: 3, size: 280, color: '#5D3FD3', sideColor: '#5D3FD3', status: 'Completed', yearsLabel: '2017 - 2020', coords: '40.6308° N, 8.6559° W', ref: '', range: [0, 3], zBase: -50 }
   ];
 
   // Estilo exato para recriar o grid com aspeto de wireframe vibrante
@@ -177,7 +178,7 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
         {steps.map((step, idx) => {
           const isActive = activeIndex === idx;
           const thickness = step.years * 18; 
-          const zBase = (2 - idx) * 50; 
+          const zBase = step.zBase; 
           const yBase = (idx - 1) * 5;
 
           return (
@@ -212,7 +213,7 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
                 )}
               </AnimatePresence>
 
-              <div className="absolute inset-0  border-2 flex flex-col justify-center items-center overflow-hidden transition-all duration-500 bg-zinc-50 dark:bg-[#0d0d0f]"
+              <div className="absolute inset-0 border-2 flex flex-col justify-center items-center overflow-hidden transition-all duration-500 bg-zinc-50 dark:bg-[#0d0d0f]"
                 style={{ 
                   borderColor: isActive ? step.color : "rgba(128,128,128,0.2)",
                   transform: `translateZ(${thickness}px)`,
@@ -222,9 +223,9 @@ const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
                  <div className="absolute top-2 left-3 font-mono text-[7px] text-zinc-400 dark:text-white/20 uppercase tracking-tighter">{step.coords}</div>
                  <div className="absolute top-2 right-3 font-mono text-[7px] text-zinc-400 dark:text-white/20">{step.ref}</div>
 
-                 <div style={{ transform: "rotateZ(45deg) rotateX(-15deg)" }} className="flex flex-col items-center mb-6">
-                    <GraduationCap className="w-10 h-10 mb-1 transition-colors" style={{ color: isActive ? step.color : "rgba(128,128,128,0.3)" }} />
-                    <span className="font-mono text-[18px] font-bold normal-case tracking-tight transition-colors dark:text-white text-zinc-800">
+                 {/* CORRIGIDO: Sem chapéu e com texto centrado */}
+                 <div style={{ transform: "rotateZ(45deg) rotateX(-15deg)" }} className="flex flex-col items-center justify-center mb-4 w-full px-2">
+                    <span className="font-mono text-[17px] font-bold normal-case tracking-tight transition-colors dark:text-white text-zinc-800 text-center leading-none">
                       {step.label}
                     </span>
                  </div>

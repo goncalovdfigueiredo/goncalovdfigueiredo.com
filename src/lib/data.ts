@@ -43,6 +43,24 @@ export const personalInfo = {
 
 export const education = [
   {
+    institution: "Portuguese Competence Centre in Semiconductors (POEMS)",
+    url: "https://www.poemscentre.eu/en/ai-for-ics-and-ics-for-ai-summer-school/2026",
+    location: {
+      city: "Lisbon, Portugal",
+      lat: 38.736303,
+      lon: -9.140784,
+    },
+    degree: "Artificial Intelligence for Integrated Circuits and Integrated Circuits for Artificial Intelligence - Summer Schhol",
+    period: "Jun 2026",
+    logo: "/POEMS.png",
+    relatedSkills: [
+     
+    ],
+    summary: 
+    "This summer school explores the powerful convergence of AI-driven Integrated Circuit design and specialised hardware for AI. As traditional design reaches its limits, we examine how machine learning is automating the design flow - from circuit sizing to layout - while simultaneously diving into the next-generation architectures like chiplets and in-memory computing that power modern AI workloads. Join leading experts to master the tools reshaping the future of the semiconductor landscape.    Through a mix of expert-led lectures and technical tutorials, the programme bridges the gap between theoretical algorithms and physical silicon. You will explore cutting-edge paradigms such as 3D integration, photonic computing, and near-sensor processing, while gaining a holistic perspective on how these architectures must evolve to meet the massive parallelism and energy demands of modern AI. By fostering cross-disciplinary collaboration, this summer school equips you with the practical insights and systemic thinking necessary to contribute to the next generation of intelligent electronic systems.",
+  },
+
+  {
     institution: "Instituto Superior Técnico",
     url: "https://tecnico.ulisboa.pt/",
     location: {
