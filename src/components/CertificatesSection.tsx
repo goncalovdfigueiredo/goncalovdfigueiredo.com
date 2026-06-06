@@ -183,7 +183,7 @@ export default function ScientificOutreachSection() {
                     key={mod.id}
                     onClick={() => handleRootClick(mod.id)}
                     className={`
-                      relative px-4 py-3 flex items-center justify-between font-mono text-lg font-bold uppercase transition-all duration-200 border min-w-[200px] lg:min-w-0
+                      relative px-4 py-3 flex items-center justify-between font-mono text-sm font-bold uppercase transition-all duration-200 border min-w-[200px] lg:min-w-0
                       ${isActive 
                         ? "bg-blue-600 border-blue-500 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
                         : "bg-transparent border-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/50"}
@@ -250,10 +250,10 @@ export default function ScientificOutreachSection() {
                           <div className="flex items-center gap-3">
                             <cert.icon className={`w-6 h-6 ${isActive ? "text-blue-500" : "text-zinc-500"}`} />
                             <div className="flex flex-col">
-                              <span className={`text-[16px] font-bold truncate max-w-[260px] ${isActive ? "text-zinc-900 dark:text-white" : "text-zinc-600 dark:text-zinc-400"}`}>
+                              <span className={`text-sm md:text-[16px] font-bold truncate max-w-[260px] ${isActive ? "text-zinc-900 dark:text-white" : "text-zinc-600 dark:text-zinc-400"}`}>
                                 {cert.title}
                               </span>
-                              <span className="text-[9px] text-zinc-500">{cert.items.length} Certifications</span>
+                              <span className="text-[11px] text-zinc-500">{cert.items.length} Certifications</span>
                             </div>
                           </div>
                           <ChevronRight className={`w-3 h-3 text-blue-500 ${isActive ? 'block' : 'block lg:hidden'}`} />
@@ -326,7 +326,7 @@ export default function ScientificOutreachSection() {
                         <activeCertCategory.icon className={`w-6 h-6 ${activeCertCategory.color}`} />
                       </div>
                       <div className="flex flex-col">
-                        <h3 className="text-lg md:text-lg font-bold font-mono text-zinc-900 dark:text-white">
+                        <h3 className="text-base md:text-lg font-bold font-mono text-zinc-900 dark:text-white">
                           {activeCertCategory.title}
                         </h3>
                         <span className="text-[9px] font-mono text-zinc-500">CERT_DETECTED: {activeCertCategory.items.length}</span>
@@ -334,25 +334,43 @@ export default function ScientificOutreachSection() {
                     </div>
 
                     <div className="flex flex-col gap-3">
-                      {activeCertCategory.items.map((item: any, i: number) => (
-                        <div key={i} className="flex justify-between items-center p-3 border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 rounded">
-                          <div className="flex flex-col">
-                            {/* 👇 AQUI: Ícone invertido com o texto e shrink-0 adicionado */}
-                            {item.link ? (
-                                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                        <ExternalLink className="w-3 h-3 shrink-0 text-blue-700 dark:text-blue-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" /> 
-                                        {item.title}
-                                    </a>
-                                    ) : (
-                                    <span className="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">{item.title}</span>
-                                    )}
-                            {item.org && <span className="text-[9px] font-mono text-zinc-500 uppercase mt-1">{item.org}</span>}
-                          </div>
-                          <div className="px-2 py-1 bg-zinc-200 dark:bg-black border border-zinc-300 dark:border-zinc-800 text-[9px] font-mono text-zinc-600 dark:text-zinc-400">
-                            {item.year}
-                          </div>
-                        </div>
-                      ))}
+                    {activeCertCategory.items.map((item: any, i: number) => (
+  <div key={i} className="group relative p-4 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/50 transition-all rounded-lg flex justify-between items-center">
+    
+    <div className="flex flex-col gap-1.5 overflow-hidden">
+      {/* Título com Link à esquerda */}
+      <div className="flex items-start gap-2">
+        {item.link ? (
+          <a href={item.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group/link">
+            <ExternalLink className="w-3.5 h-3.5 shrink-0 text-blue-400 group-hover/link:text-emerald-500 transition-colors" />
+            <span className="text-sm font-bold text-zinc-900 dark:text-zinc-200 hover:text-emerald-500 transition-colors leading-tight">
+              {item.title}
+            </span>
+          </a>
+        ) : (
+          <span className="text-sm font-bold text-zinc-900 dark:text-zinc-200 leading-tight">
+            {item.title}
+          </span>
+        )}
+      </div>
+
+      {/* Instituição com ponto uniforme */}
+      {item.org && (
+        <div className="flex items-center gap-2 mt-1">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+          <span className="text-[8px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-500/80 truncate">
+            {item.org}
+          </span>
+        </div>
+      )}
+    </div>
+    
+    {/* Ano (Alinhado à direita, mantido fixo) */}
+    <div className="text-[10px] font-mono bg-zinc-200 dark:bg-black px-2 py-1 rounded text-zinc-600 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-800 shrink-0 ml-4">
+      {item.year}
+    </div>
+  </div>
+))}
                     </div>
                   </motion.div>
                 )}
@@ -390,20 +408,20 @@ export default function ScientificOutreachSection() {
                     </div>
 
                     {activeEventData.links && activeEventData.links.length > 0 && (
-  <div className="mt-auto pt-4 border-t border-zinc-300 dark:border-zinc-800 flex flex-wrap gap-3">
-    {activeEventData.links.map((link: any, i: number) => (
-      <a 
-        key={i} 
-        href={link.href} 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="group flex items-center gap-1.5 px-3 py-1.5 text-[16px] font-bold uppercase bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-purple-500 dark:hover:border-purple-500 hover:text-purple-600 dark:hover:text-purple-400 transition-all"
-      >
-        {link.label} <ExternalLink className="w-3 h-3 shrink-0" />
-      </a>
-    ))}
-  </div>
-)}
+                    <div className="mt-auto pt-4 border-t border-zinc-300 dark:border-zinc-800 flex flex-wrap gap-3">
+                      {activeEventData.links.map((link: any, i: number) => (
+                        <a 
+                          key={i} 
+                          href={link.href} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="group flex items-center gap-1.5 px-3 py-1.5 text-[16px] font-bold uppercase bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 hover:border-purple-500 dark:hover:border-purple-500 hover:text-purple-600 dark:hover:text-purple-400 transition-all"
+                        >
+                          {link.label} <ExternalLink className="w-3 h-3 shrink-0" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                   </motion.div>
                 )}
 
