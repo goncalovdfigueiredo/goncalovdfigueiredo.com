@@ -5,8 +5,8 @@ import { personalInfo } from "@/lib/data";
 import { 
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, MapPin, FileText,
-  Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown
-} from "lucide-react"; 
+  Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown, MousePointerClick
+} from "lucide-react"; // <-- MousePointerClick Adicionado
 import { 
   motion, 
   AnimatePresence, 
@@ -242,6 +242,7 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
       className="relative w-full flex-1 min-h-[140px] rounded-2xl overflow-hidden cursor-pointer group/card flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsHovered(!isHovered)} // <-- Adicionado o Click Event (Toggle) para Mobile
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
@@ -278,10 +279,21 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
           >
             <group.icon className={`w-10 h-10 mb-3 opacity-60 dark:opacity-30 ${textColorClass}`} />
             <h3 className="text-sm font-bold text-zinc-600 dark:text-zinc-500 uppercase tracking-[0.2em]">{group.title}</h3>
-            <div className="flex gap-2 mt-4">
-              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
-              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
-              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
+            
+            {/* Lógica Diferente Mobile vs Desktop */}
+            <div className="flex flex-col items-center mt-4">
+              {/* Bolinhas Desktop */}
+              <div className="hidden md:flex gap-2">
+                <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
+                <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
+                <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
+              </div>
+              
+              {/* Tap to View Mobile */}
+              <div className="md:hidden flex items-center gap-1.5 opacity-70">
+                <MousePointerClick className={`w-3.5 h-3.5 ${textColorClass}`} />
+                <span className={`text-[9px] font-bold uppercase tracking-widest ${textColorClass}`}>Tap to explore</span>
+              </div>
             </div>
           </motion.div>
         )}
