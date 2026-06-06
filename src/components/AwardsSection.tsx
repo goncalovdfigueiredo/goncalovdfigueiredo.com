@@ -129,7 +129,7 @@ export default function AwardsSection() {
 
 
 {/* 1. ACHIEVEMENT GALLERY - BENTO GRID AJUSTADO */}
-<div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-20">
+<div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 mb-10">
   {awards.map((award: any, index: number) => {
     const isFeatured = index === 0;
     // Estado para controlar a expansão no mobile
@@ -305,84 +305,98 @@ export default function AwardsSection() {
         </MotionWrapper>
 
         {/* 3. BEYOND THE LAB (Mantido inalterado conforme pedido) */}
-        <MotionWrapper delay={0.5}>
-          <div className="relative">
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
-                <span className="w-6 h-1 bg-zinc-900 dark:bg-white rounded-full"></span>
-                <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
-                  Beyond the Lab
-                  <span className="text-[9px] font-mono font-medium text-zinc-400 border border-zinc-200 dark:border-white/10 px-1.5 py-0.5 rounded uppercase bg-zinc-100 dark:bg-white/5">Status: Operational</span>
-                </h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-96" style={{ perspective: "1000px" }}>
-              <div className="md:col-span-2 row-span-1 md:row-span-2 group h-full">
-                <HobbyCard className="h-full flex flex-col justify-between hover:border-emerald-500/30 transition-colors duration-500 relative">
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-                     <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
-                     <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
-                  </div>
-                  <div className="relative z-20 flex flex-col h-full p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-emerald-500 transition-colors">
-                            <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" />
-                            The Quantified Self
-                          </h3>
-                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 max-w-xs leading-relaxed text-justify">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
-                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0 max-w-xs leading-relaxed text-justify">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
-                        </div>
-                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30">
-                          <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-                          <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400">ACTIVE</span>
-                        </div>
-                      </div>
-                      <div className="mt-auto">
-                        <div className="flex items-center gap-2 mb-3"><Timer className="w-3.5 h-3.5 text-zinc-400" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
-                        <div className="grid grid-cols-3 gap-4 border-t border-zinc-200 dark:border-white/5 pt-4">
-                            {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
-                              <div key={i} className="flex flex-col relative group/stat">
-                                <span className="text-[10px] font-bold text-zinc-500 mb-0.5">{stat.dist}</span>
-                                <span className="text-xl md:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
-                                <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-1"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                  </div>
-                </HobbyCard>
-              </div>
-              <div className="md:col-span-1 h-48 md:h-auto group">
-                <HobbyCard className="h-full hover:border-blue-500/30 transition-colors duration-500 relative">
-                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] text-blue-500"><Gauge className="w-16 h-16" /></div></div>
-                  <div className="relative z-10 flex flex-col h-full p-6">
-                    <div className="flex justify-between items-center gap-3 mb-2">
-                        <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-blue-500 transition-colors">
-                        <Flag className="w-4 h-4 text-blue-500" />
-                        Precision & Strategy
-                        </h3>
-                        <F1StartingLights />
-                    </div>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0 leading-relaxed text-justify">
-                      {parseBoldText("Passionate about **automotive engineering** and **Formula 1**. Fascinated by the intersection of aerodynamics, real-time telemetry, and high-stakes strategy.", "bg-blue-500/10")}
-                    </p>
-                  </div>
-                </HobbyCard>
-              </div>
-              <div className="md:col-span-1 h-48 md:h-auto group">
-                <HobbyCard className="h-full hover:border-purple-500/30 transition-colors duration-500 relative p-6">
-                  <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] text-purple-500"><Languages className="w-16 h-16" /></div><div className="absolute -left-0 -bottom-0 transform -rotate-12 opacity-[0.08] text-purple-500"><Terminal className="w-16 h-16" /></div></div>
-                  <div className="relative z-10 flex flex-col h-full">
-                    <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-purple-500 transition-colors">
-                      <Brain className="w-4 h-4 text-purple-500" />
-                      Expanding Horizons
-                    </h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">{parseBoldText("Exploring the logic of languages. Currently studying **German** for the challenge, while diving deep into **AI & Programming** to push my technical boundaries.", "bg-purple-500/10")}</p>
-                  </div>
-                </HobbyCard>
-              </div>
-            </div>
+        
+<MotionWrapper delay={0.5}>
+  <div className="relative">
+    <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
+      <span className="w-6 h-1 bg-zinc-900 dark:bg-white rounded-full"></span>
+      <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
+        Beyond the Lab
+        <span className="text-[9px] font-mono font-medium text-zinc-400 border border-zinc-200 dark:border-white/10 px-1.5 py-0.5 rounded uppercase bg-zinc-100 dark:bg-white/5">Status: Operational</span>
+      </h3>
+    </div>
+
+    {/* CONTAINER COM SCROLL HORIZONTAL (MOBILE) E GRID (DESKTOP) */}
+    <div 
+      className="flex md:grid md:grid-cols-3 gap-4 overflow-x-auto pb-6 -mx-5 px-5 md:mx-0 md:px-0 md:h-96 snap-x snap-mandatory scrollbar-none items-stretch" 
+      style={{ perspective: "1000px" }}
+    >
+      {/* CARD 1 (QUANTIFIED SELF) */}
+      <div className="min-w-[85vw] md:min-w-0 snap-center md:col-span-2 md:row-span-2 group h-full">
+        <HobbyCard className="h-full flex flex-col justify-between hover:border-emerald-500/30 transition-colors duration-500 relative">
+          <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
+             <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
+             <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
           </div>
-        </MotionWrapper>
+          <div className="relative z-20 flex flex-col h-full p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-emerald-500 transition-colors">
+                    <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" />
+                    The Quantified Self
+                  </h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 max-w-xs leading-relaxed text-justify">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0 max-w-xs leading-relaxed text-justify">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30">
+                  <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+                  <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400">ACTIVE</span>
+                </div>
+              </div>
+              <div className="mt-auto">
+                <div className="flex items-center gap-2 mb-1"><Timer className="w-3.5 h-3.5 text-zinc-400" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
+                <div className="grid grid-cols-3 gap-4 border-t border-zinc-200 dark:border-white/5 pt-4">
+                    {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
+                      <div key={i} className="flex flex-col relative group/stat">
+                        <span className="text-[10px] font-bold text-zinc-500 mb-0.5">{stat.dist}</span>
+                        <span className="text-xl md:text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
+                        <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-1"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+          </div>
+        </HobbyCard>
+      </div>
+
+      {/* CARD 2 (PRECISION & STRATEGY) */}
+      <div className="min-w-[85vw] md:min-w-0 snap-center h-full group">
+        <HobbyCard className="h-full hover:border-blue-500/30 transition-colors duration-500 relative">
+          <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] text-blue-500"><Gauge className="w-16 h-16" /></div></div>
+          <div className="relative z-10 flex flex-col h-full p-6 justify-center">
+            <div className="flex justify-between items-center gap-3 mb-2">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-blue-500 transition-colors">
+                <Flag className="w-4 h-4 text-blue-500" />
+                Precision & Strategy
+                </h3>
+                <F1StartingLights />
+            </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0 leading-relaxed text-justify">
+            {parseBoldText("Passionate about **automotive engineering** and **Formula 1**. Fascinated by the intersection of aerodynamics, real-time telemetry, and high-stakes strategy.", "bg-blue-500/10")}
+            </p>
+          </div>
+        </HobbyCard>
+      </div>
+
+      {/* CARD 3 (EXPANDING HORIZONS) */}
+      <div className="min-w-[85vw] md:min-w-0 snap-center h-full group">
+        <HobbyCard className="h-full hover:border-purple-500/30 transition-colors duration-500 relative p-6">
+          <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] text-purple-500"><Languages className="w-16 h-16" /></div></div>
+          <div className="relative z-10 flex flex-col h-full justify-center">
+            <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2 group-hover:text-purple-500 transition-colors">
+              <Brain className="w-4 h-4 text-purple-500" />
+              Expanding Horizons
+            </h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">{parseBoldText("Exploring the logic of languages. Currently studying **German** for the challenge, while diving deep into **AI & Programming** to push my technical boundaries.", "bg-purple-500/10")}</p>
+            </div>
+        </HobbyCard>
+      </div>
+    </div>
+  </div>
+</MotionWrapper>
+
+
+
       </div>
     </section>
   );
