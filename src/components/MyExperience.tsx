@@ -52,7 +52,7 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
    ========================= */
 const EnvironmentBadge = ({ type }: { type: 'Academic' | 'Industry' }) => (
   <span className={`
-    inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-black uppercase tracking-tighter border shrink-0
+    inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm font-black tracking-tighter border shrink-2
     ${type === 'Academic' 
       ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' 
       : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'}
