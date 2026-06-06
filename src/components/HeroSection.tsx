@@ -6,14 +6,13 @@ import {
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, MapPin, FileText,
   Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown
-} from "lucide-react"; // <-- ChevronDown Adicionado
+} from "lucide-react"; 
 import { 
   motion, 
   AnimatePresence, 
-  useSpring, 
+  useAnimation,
   useScroll, 
   useTransform,
-  useAnimation,
   type Variants
 } from "framer-motion";
 
@@ -51,12 +50,12 @@ function TypewriterExpertise() {
   }, [currentText, isDeleting, currentWordIndex, words]);
 
   return (
-    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 font-bold drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]">
+    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600 dark:from-emerald-400 dark:to-cyan-400 font-bold drop-shadow-[0_0_10px_rgba(16,185,129,0.2)] dark:drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]">
       {currentText}
       <motion.span
         animate={{ opacity: [1, 0] }}
         transition={{ duration: 0.5, repeat: Infinity }}
-        className="absolute -right-2 top-0 bottom-0 w-[3px] bg-emerald-400 shadow-[0_0_8px_#34d399]"
+        className="absolute -right-2 top-0 bottom-0 w-[3px] bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_8px_#34d399]"
       />
     </span>
   );
@@ -75,37 +74,19 @@ function ElectronBackground() {
   }, []);
 
   const electrons = [
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.6)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.6)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.6)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.4)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.4)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.4)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.4)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.4)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.4)", duration: 50 },
+    { color: "rgba(16, 185, 129, 0.4)", duration: 50 },
+    { color: "rgba(59, 130, 246, 0.4)", duration: 50 },
+    { color: "rgba(168, 85, 247, 0.4)", duration: 50 },
   ];
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-20 dark:opacity-40">
       {electrons.map((e, i) => (
         <motion.div
           key={i}
@@ -150,7 +131,7 @@ function MagneticButton({ children, href }: { children: React.ReactNode, href: s
       onMouseLeave={reset}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-zinc-300 font-medium hover:bg-emerald-500 hover:text-black hover:border-emerald-400 transition-colors duration-300 group overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] z-10"
+      className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-emerald-500 hover:text-white dark:hover:text-black hover:border-emerald-500 dark:hover:border-emerald-400 transition-colors duration-300 group overflow-hidden shadow-sm dark:shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] z-10"
     >
       {children}
     </motion.a>
@@ -217,13 +198,13 @@ function DisintegratingProfile() {
       </div>
       <motion.div 
         animate={imageControls} 
-        className="relative w-full h-full rounded-full p-1 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 shadow-[0_0_40px_rgba(16,185,129,0.3)] z-20"
+        className="relative w-full h-full rounded-full p-1 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 shadow-[0_0_20px_rgba(16,185,129,0.2)] dark:shadow-[0_0_40px_rgba(16,185,129,0.3)] z-20"
       >
-        <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#09090b] bg-[#09090b]">
+        <div className="w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-[#09090b] bg-white dark:bg-[#09090b]">
           <img src={personalInfo.profilePicture} alt="Profile" className="w-full h-full object-cover scale-110 filter contrast-125" />
         </div>
       </motion.div>
-      <a href="/CV_Goncalo_Figueiredo.pdf" download className="absolute -bottom-2 -right-6 flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full font-bold text-xs shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:scale-110 transition-transform z-50 pointer-events-auto">
+      <a href="/CV_Goncalo_Figueiredo.pdf" download className="absolute -bottom-2 -right-6 flex items-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-bold text-xs shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:scale-110 transition-transform z-50 pointer-events-auto">
         <Download className="w-4 h-4" /> CV
       </a>
     </div>
@@ -237,27 +218,21 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   let themeColor = "rgba(16,185,129,"; 
-  let textColor = "text-emerald-400";
+  let textColorClass = "text-emerald-600 dark:text-emerald-400";
   let glowColor = "bg-emerald-500/10";
   let glowHoverColor = "group-hover/card:bg-emerald-500/20";
   
   if (group.color.includes('blue')) { 
     themeColor = "rgba(59,130,246,"; 
-    textColor = "text-blue-400"; 
+    textColorClass = "text-blue-600 dark:text-blue-400"; 
     glowColor = "bg-blue-500/10";
     glowHoverColor = "group-hover/card:bg-blue-500/20";
   }
   if (group.color.includes('purple')) { 
     themeColor = "rgba(168,85,247,"; 
-    textColor = "text-purple-400"; 
+    textColorClass = "text-purple-600 dark:text-purple-400"; 
     glowColor = "bg-purple-500/10";
     glowHoverColor = "group-hover/card:bg-purple-500/20";
-  }
-  if (group.color.includes('red')) { 
-    themeColor = "rgba(239,68,68,"; 
-    textColor = "text-red-400"; 
-    glowColor = "bg-red-500/10";
-    glowHoverColor = "group-hover/card:bg-red-500/20";
   }
 
   const startAngle = index * 120; 
@@ -272,23 +247,27 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
       whileHover={{ scale: 1.02 }}
     >
-      <div className="absolute inset-0 bg-[#0a0a0c] border border-white/5 rounded-2xl z-0" />
+      {/* Fundo do Cartão (Light/Dark) */}
+      <div className="absolute inset-0 bg-zinc-100 dark:bg-[#0a0a0c] border border-zinc-200 dark:border-white/5 rounded-2xl z-0" />
       
+      {/* Gradiente Rotativo de Fundo */}
       <motion.div 
-        className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] z-0 pointer-events-none opacity-60 group-hover/card:opacity-100 transition-opacity duration-500"
+        className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] z-0 pointer-events-none opacity-20 dark:opacity-60 group-hover/card:opacity-40 dark:group-hover/card:opacity-100 transition-opacity duration-500"
         style={{ background: `conic-gradient(from 0deg, transparent 0%, transparent 80%, ${themeColor}1) 100%)` }}
         animate={{ x: "-50%", y: "-50%", rotate: [startAngle, startAngle + 360] }}
         transition={{ rotate: { duration: 4, repeat: Infinity, ease: "linear" } }}
       />
       
-      <div className="absolute inset-[1.5px] bg-[#09090b] rounded-[calc(1rem-1.5px)] z-0" />
-
-      <div className="absolute inset-[1.5px] bg-zinc-900/40 rounded-[calc(1rem-1.5px)] z-0 transition-colors duration-500" />
+      {/* Camadas Interiores do Cartão */}
+      <div className="absolute inset-[1.5px] bg-white dark:bg-[#09090b] rounded-[calc(1rem-1.5px)] z-0" />
+      <div className="absolute inset-[1.5px] bg-zinc-50/80 dark:bg-zinc-900/40 rounded-[calc(1rem-1.5px)] z-0 transition-colors duration-500" />
       
+      {/* Brilho Superior Direito */}
       <div className={`absolute top-0 right-0 w-48 h-48 ${glowColor} rounded-full blur-[50px] ${glowHoverColor} transition-colors pointer-events-none z-0`} />
 
+      {/* Ícone Gigante Escondido */}
       <group.icon 
-        className={`absolute -bottom-4 -right-4 w-28 h-28 ${textColor} opacity-[0.06] -rotate-12 transition-all duration-700 group-hover/card:rotate-0 group-hover/card:scale-125 group-hover/card:opacity-[0.25] pointer-events-none z-10`} 
+        className={`absolute -bottom-4 -right-4 w-28 h-28 ${textColorClass} opacity-[0.03] dark:opacity-[0.06] -rotate-12 transition-all duration-700 group-hover/card:rotate-0 group-hover/card:scale-125 group-hover/card:opacity-[0.15] dark:group-hover/card:opacity-[0.25] pointer-events-none z-10`} 
       />
 
       <AnimatePresence>
@@ -297,12 +276,12 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center"
           >
-            <group.icon className={`w-10 h-10 mb-3 opacity-30 ${textColor}`} />
-            <h3 className="text-sm font-bold text-zinc-500 uppercase tracking-[0.2em]">{group.title}</h3>
+            <group.icon className={`w-10 h-10 mb-3 opacity-60 dark:opacity-30 ${textColorClass}`} />
+            <h3 className="text-sm font-bold text-zinc-600 dark:text-zinc-500 uppercase tracking-[0.2em]">{group.title}</h3>
             <div className="flex gap-2 mt-4">
-              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-500" />
-              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-500" />
-              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-500" />
+              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
+              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
+              <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
             </div>
           </motion.div>
         )}
@@ -317,21 +296,21 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
             <motion.div 
               animate={{ top: ['0%', '150%', '0%'] }} 
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute left-0 right-0 h-[1px] shadow-[0_0_10px_currentColor] z-50 pointer-events-none"
+              className="absolute left-0 right-0 h-[1px] shadow-[0_0_10px_currentColor] z-50 pointer-events-none opacity-50 dark:opacity-100"
               style={{ backgroundColor: `${themeColor}0.8)`, color: `${themeColor}1)` }}
             />
             
             <div className="flex justify-between items-start mb-3 relative z-10">
               <div>
-                <span className={`text-[10px] font-black uppercase tracking-widest ${textColor} mb-1 block`}>{group.subtitle}</span>
-                <h4 className="text-lg font-bold text-white leading-none">{group.title}</h4>
+                <span className={`text-[10px] font-black uppercase tracking-widest ${textColorClass} mb-1 block`}>{group.subtitle}</span>
+                <h4 className="text-lg font-bold text-zinc-900 dark:text-white leading-none">{group.title}</h4>
               </div>
-              <div className={`p-2 rounded-lg bg-white/5 ${textColor}`}><group.icon className="w-5 h-5" /></div>
+              <div className={`p-2 rounded-lg bg-zinc-100 dark:bg-white/5 ${textColorClass}`}><group.icon className="w-5 h-5" /></div>
             </div>
             
             <div className="flex flex-wrap gap-1 relative z-10"> 
               {group.skills.map((skill: string) => (
-                <span key={skill} className="px-2.5 py-1 rounded bg-white/10 text-white text-[8px] font-medium border border-white/5 shadow-sm">
+                <span key={skill} className="px-2.5 py-1 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-white text-[8px] font-medium border border-zinc-300 dark:border-white/5 shadow-sm">
                   {skill}
                 </span>
               ))}
@@ -357,12 +336,11 @@ export default function HeroSection() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const yElement = useTransform(scrollYProgress, [0, 1], [0, 150]);
   
-  // ESTADO PARA O ACORDEÃO NO MOBILE
   const [isProfileExpanded, setIsProfileExpanded] = useState(false);
 
   const contacts = [
     { icon: MapPin, text: "Lisbon, Portugal", href: null }, 
-    { icon: Mail, text: "Email", href: `mailto:goncalovdfigueiredo@gmail.com` }, 
+    { icon: Mail, text: "Email", href: `mailto:${personalInfo.email}` }, 
     { icon: Linkedin, text: "LinkedIn", href: personalInfo.linkedin }, 
     { icon: Github, text: "GitHub", href: personalInfo.github }, 
     { icon: BookOpen, text: "Scholar", href: personalInfo.scholar }, 
@@ -393,22 +371,22 @@ export default function HeroSection() {
             <DisintegratingProfile />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]">
             <Terminal className="w-3.5 h-3.5" /> PhD Candidate
           </motion.div>
 
           <motion.h1 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black tracking-tighter text-white mb-4 md:mb-6 uppercase leading-[0.9]"
+            className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-6 uppercase leading-[0.9]"
           >
             Gonçalo <br className="md:hidden" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-700">Figueiredo</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700">Figueiredo</span>
           </motion.h1>
 
           <motion.p 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-            className="text-base md:text-lg text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4">
-            Bridging the gap between <strong className="text-white font-bold">Theoretical Science</strong> and <strong className="text-white font-bold">Industrial Application</strong>  <br className="hidden md:block"/>
+            className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4">
+            Bridging the gap between <strong className="text-zinc-900 dark:text-white font-bold">Theoretical Science</strong> and <strong className="text-zinc-900 dark:text-white font-bold">Industrial Application</strong>  <br className="hidden md:block"/>
             through <TypewriterExpertise />
           </motion.p>
           
@@ -420,7 +398,7 @@ export default function HeroSection() {
               if (!c.href) {
                 // Localização
                 return (
-                  <div key={i} className="flex items-center gap-1.5 text-zinc-400 mr-1 md:mr-3">
+                  <div key={i} className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mr-1 md:mr-3">
                     <c.icon className="w-3.5 h-3.5 md:w-4 md:h-4" /> 
                     <span className="text-[11px] md:text-xs font-medium">{c.text}</span>
                   </div>
@@ -445,29 +423,29 @@ export default function HeroSection() {
         >
           {/* Main Profile Card */}
           <div className="col-span-1 md:col-span-10 flex flex-col">
-            <div className="flex-1 w-full relative rounded-2xl bg-zinc-900/40 border border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col">
+            <div className="flex-1 w-full relative rounded-2xl bg-white/60 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />
               
               <div className="relative z-10 flex flex-col flex-1 h-full">
                 <div>
                   <div className="flex items-center gap-3 md:gap-4 mb-5 md:mb-8">
-                    <div className="p-2 md:p-3 rounded-2xl bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.5)]">
+                    <div className="p-2 md:p-3 rounded-2xl bg-emerald-500 text-white dark:text-black shadow-[0_0_20px_rgba(16,185,129,0.3)] dark:shadow-[0_0_20px_rgba(16,185,129,0.5)]">
                       <User className="w-5 h-5 md:w-6 md:h-6" />
                     </div>
-                    <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">Professional Profile</h2>
+                    <h2 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Professional Profile</h2>
                   </div>
                   
                   {/* CONTEÚDO DO PERFIL COM ACORDEÃO (Expansível no Mobile) */}
                   <div className={`relative overflow-hidden transition-all duration-500 ease-in-out ${isProfileExpanded ? 'max-h-[800px]' : 'max-h-[70px] md:max-h-[800px]'}`}>
                     
-                    <div className="space-y-4 md:space-y-2 text-sm md:text-lg text-zinc-300 font-light leading-relaxed">
-                      <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-white">Electrical and Computer Engineering</strong> at <strong className="text-white border-b border-emerald-500/50">Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
-                      <p> With a unique <span className="text-emerald-400 font-medium">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application. </p>
-                      <p> His focus is on developing robust <span className="text-white font-medium bg-white/10 px-2 py-1 rounded">hardware prototypes</span>, from <span className="text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-400 font-bold">Industrial IoT</span>. </p>
+                    <div className="space-y-4 md:space-y-2 text-sm md:text-lg text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
+                      <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50">Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
+                      <p> With a unique <span className="text-emerald-600 dark:text-emerald-400 font-medium">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application. </p>
+                      <p> His focus is on developing robust <span className="text-zinc-900 dark:text-white font-medium bg-zinc-200 dark:bg-white/10 px-2 py-1 rounded">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-bold">Industrial IoT</span>. </p>
                     </div>
 
                     {/* FADE EFFECT: Invisível no PC, visível no Mobile quando está encolhido */}
-                    <div className={`absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#131315] to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${isProfileExpanded ? 'opacity-0' : 'opacity-100'}`} />
+                    <div className={`absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-zinc-50 dark:from-[#131315] to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${isProfileExpanded ? 'opacity-0' : 'opacity-100'}`} />
                   
                   </div>
 
@@ -475,7 +453,7 @@ export default function HeroSection() {
                   <div className="md:hidden mt-2 flex justify-center">
                     <button 
                       onClick={() => setIsProfileExpanded(!isProfileExpanded)}
-                      className="flex items-center gap-1.5 text-[10px] text-emerald-500 hover:text-emerald-400 font-bold uppercase tracking-widest py-2 transition-colors"
+                      className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-500 hover:text-emerald-500 dark:hover:text-emerald-400 font-bold uppercase tracking-widest py-2 transition-colors"
                     >
                       {isProfileExpanded ? "Read Less" : "Read More"}
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isProfileExpanded ? "rotate-180" : ""}`} />
@@ -484,10 +462,10 @@ export default function HeroSection() {
 
                 </div>
 
-                <div className="mt-0 md:mt-auto flex items-center justify-between border-t border-white/10 pt-4">
+                <div className="mt-0 md:mt-auto flex items-center justify-between border-t border-zinc-200 dark:border-white/10 pt-4">
                   <div>
                     <p className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Status</p>
-                    <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs md:text-sm">
+                    <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-xs md:text-sm">
                       <span className="relative flex h-2.5 w-2.5 md:h-3 md:w-3">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 md:h-3 md:w-3 bg-emerald-500"></span>
@@ -497,7 +475,7 @@ export default function HeroSection() {
                   </div>
                   <div className="text-right">
                     <p className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Primary Focus</p>
-                    <p className="text-white font-bold flex items-center gap-1.5 md:gap-2 justify-end text-xs md:text-sm"><Cpu className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-500"/> Hardware & IoT</p>
+                    <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1.5 md:gap-2 justify-end text-xs md:text-sm"><Cpu className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-600 dark:text-emerald-500"/> Hardware & IoT</p>
                   </div>
                 </div>
               </div>

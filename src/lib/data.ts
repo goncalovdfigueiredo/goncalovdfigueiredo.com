@@ -31,7 +31,7 @@ export const personalInfo = {
   name: "Gonçalo",
   location: "Lisbon, Portugal",
   email: "goncalovdfigueiredo@gmail.com",
-  github: "https://github.com/loremipsum",
+  github: "https://github.com/goncalo-vfigueiredo",
   linkedin: "https://www.linkedin.com/in/goncalovdfigueiredo/",
   orcid: "https://orcid.org/0000-0002-7097-5511",
   cienciavitae: "https://www.cienciavitae.pt//en/C613-EA2F-CFDC",
