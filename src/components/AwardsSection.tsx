@@ -139,7 +139,7 @@ export default function AwardsSection() {
       <MotionWrapper 
         key={index} 
         delay={index * 0.1} 
-        className={isFeatured ? "md:col-span-4" : "md:col-span-4"}
+        className={isFeatured ? "md:col-span-5" : "md:col-span-5"}
       >
         <div className="group relative h-full">
           <div className="absolute -inset-0.5 bg-gradient-to-br from-amber-500/20 via-transparent to-transparent rounded-3xl blur opacity-0 group-hover:opacity-100 transition duration-700" />
@@ -155,9 +155,7 @@ export default function AwardsSection() {
 
             <div className="flex flex-col gap-4 relative z-10">
               <div className="flex justify-between items-start">
-                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-                  <Trophy className="h-6 w-6 text-amber-600 dark:text-amber-500" />
-                </div>
+                
                 {award.position && (
                   <span className="px-3 py-1 rounded-full bg-amber-500 text-white text-[10px] font-black uppercase tracking-tighter shadow-lg shadow-amber-500/40">
                     {award.position}
@@ -177,7 +175,7 @@ export default function AwardsSection() {
               </div>
             </div>
 
-            <div className="mt-6 space-y-6 flex-grow relative z-10 text-justify">
+            <div className="mt-4 space-y-6 flex-grow relative z-10 text-justify">
               {award.description && (
                 <div className="relative">
                   <motion.p 
@@ -190,7 +188,7 @@ export default function AwardsSection() {
                   {/* Botão para encurtar/expandir apenas no mobile */}
                   <button 
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="md:hidden mt-2 text-amber-600 dark:text-amber-500 text-[10px] font-bold uppercase flex items-center gap-1"
+                    className="md:hidden mt-1 text-amber-600 dark:text-amber-500 text-[10px] font-bold uppercase flex items-center gap-1"
                   >
                     {isExpanded ? (
                       <>Show Less <ChevronDown className="w-3 h-3 rotate-180 transition-transform" /></>
@@ -239,9 +237,9 @@ export default function AwardsSection() {
                     )}
 
                     {award.links && award.links.length > 0 && (
-                      <div className="flex flex-wrap gap-2 pt-2">
+                      <div className="flex flex-wrap gap-1 pt-1">
                         {award.links.map((link: any, i: number) => (
-                          <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] font-bold uppercase tracking-tighter hover:scale-105 transition-transform shadow-md">
+                          <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-2 py-2 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] font-bold uppercase tracking-tighter hover:scale-105 transition-transform shadow-md">
                             <span className="truncate">{link.label}</span>
                             <ArrowUpRight className="w-3 h-3" />
                           </a>
