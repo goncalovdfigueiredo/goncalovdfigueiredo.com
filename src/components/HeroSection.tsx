@@ -25,7 +25,6 @@ function TypewriterExpertise() {
     "Smart IoT Ecosystems.",
     "Photonics & Sensing.",
     "Embedded Systems.",
-    "Industrial Application."
   ];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
@@ -396,10 +395,17 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-            className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4">
-            Bridging the gap between <strong className="text-zinc-900 dark:text-white font-bold">Theoretical Science</strong> and <strong className="text-zinc-900 dark:text-white font-bold">Industrial Application</strong>  <br className="hidden md:block"/>
-            through <TypewriterExpertise />
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ delay: 0.2 }}
+            className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4"
+          >
+            Bridging the gap between 
+            <strong className="text-zinc-900 dark:text-white font-bold ml-1">Theoretical Science</strong> and 
+            <strong className="text-zinc-900 dark:text-white font-bold ml-1">Industrial Application</strong>
+            {/* Esta quebra só existe no Mobile */}
+            <br className="block md:hidden" /> 
+            <span className="md:ml-1">through <TypewriterExpertise /></span>
           </motion.p>
           
           <motion.div 
