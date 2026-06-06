@@ -173,7 +173,7 @@ export const workExperience = [
   {
     company: "Lightenjin II - Industria de Iluminação, Instituto de Telecomunicações & CICECO - Aveiro Institute of Materials",
     position: "Ph.D. Candidate",
-    period: "Sep 2023 - Present",
+    period: "Sep 2022 - Present",
     logos: ["/lightenjin.png", "/it.png", "/ciceco.png"],
     
     companyLinks: [

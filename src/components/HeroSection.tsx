@@ -395,20 +395,20 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.p 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              transition={{ delay: 0.2 }}
-              className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4"
-            >
-              Bridging the gap between 
-              <strong className="text-zinc-900 dark:text-white font-bold ml-1">Theoretical Science</strong> and 
-              <strong className="text-zinc-900 dark:text-white font-bold ml-1">Industrial Application</strong>
-              
-              {/* Quebra de linha universal (Mobile e Desktop) */}
-              <br /> 
-              
-              <span className="mt-1 inline-block">through <TypewriterExpertise /></span>
-            </motion.p>
+  initial={{ opacity: 0 }} 
+  animate={{ opacity: 1 }} 
+  transition={{ delay: 0.2 }}
+  className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4"
+>
+  Bridging the gap between 
+  <strong className="text-zinc-900 dark:text-white font-bold ml-1">Theoretical Science</strong> and 
+  <strong className="text-zinc-900 dark:text-white font-bold ml-1">Industrial Application</strong>
+  
+  {/* Quebra de linha universal (Mobile e Desktop) */}
+  <br /> 
+  
+  <span className="mt-1 inline-block">through <TypewriterExpertise /></span>
+</motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
