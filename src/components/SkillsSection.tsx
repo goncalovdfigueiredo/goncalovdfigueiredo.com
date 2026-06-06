@@ -212,7 +212,7 @@ export default function SkillsSection() {
             </h2>
             
             {/* CATEGORIAS MOBILE */}
-            <div className="flex flex-wrap gap-2 md:hidden">
+            <div className="flex flex-wrap gap-2 md:hidden mb-0">
               {skillCategories.map((cat) => {
                 const isSelected = activeCategory === cat.id;
                 const style = getColorStyles(cat.color);
@@ -221,7 +221,7 @@ export default function SkillsSection() {
                   <button 
                     key={cat.id} 
                     onClick={() => setActiveCategory(cat.id)} 
-                    className={`flex-grow flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all border
+                    className={`flex-grow flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all border mb-0
                     ${isSelected 
                       ? `${style.activeBg} text-white shadow-lg border-transparent` 
                       : `bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 ${style.text}`}`}
@@ -235,28 +235,44 @@ export default function SkillsSection() {
           </div>
         </MotionWrapper>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-7 flex flex-col gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 md:gap-8">
+          <div className="lg:col-span-7 flex flex-col gap-2 md:gap-6">
             
+          
+
             {/* TÍTULO DINÂMICO MOBILE */}
-            <AnimatePresence mode="wait">
-              <motion.div 
-                key={activeCategory}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                className="md:hidden flex items-center gap-3 mb-2 px-1"
-              >
-                {currentCategoryData && (
-                  <>
-                    <currentCategoryData.icon className={`w-5 h-5 ${getColorStyles(currentCategoryData.color).text}`} />
-                    <h3 className="text-base font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
-                      {currentCategoryData.label}
-                    </h3>
-                  </>
-                )}
-              </motion.div>
-            </AnimatePresence>
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeCategory}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="md:hidden flex flex-col mt-0 mb-0 px-1"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    {currentCategoryData && (
+                      <>
+                        <currentCategoryData.icon className={`w-5 h-5 ${getColorStyles(currentCategoryData.color).text}`} />
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">
+                          {currentCategoryData.label}
+                        </h3>
+                      </>
+                    )}
+                  </div>
+                  {/* O Divisor Premium Dinâmico */}
+<div 
+  className="h-px w-full"
+  style={{ 
+    background: `linear-gradient(to right, ${
+      currentCategoryData?.color === 'emerald' ? '#10b981' :
+      currentCategoryData?.color === 'purple' ? '#a855f7' :
+      currentCategoryData?.color === 'blue' ? '#3b82f6' :
+      currentCategoryData?.color === 'amber' ? '#f59e0b' : '#71717a'
+    }80, #27272a, transparent)` 
+  }}
+/>
+                </motion.div>
+              </AnimatePresence>
 
             {skillCategories.map((cat, idx) => {
               const style = getColorStyles(cat.color);
