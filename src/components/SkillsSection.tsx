@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 // =========================================================
-// 1. HELPERS
+// 1. HELPERS E MAPEAMENTOS
 // =========================================================
 const subCategories: Record<string, { label: string; color: string; bg: string; border: string }> = {
   "Circuit Design": { label: "Circuit Design", color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
@@ -36,30 +36,53 @@ function getSkillSubCategory(skillName: string) {
   return null; 
 }
 
+// LÓGICA CORRIGIDA (À PROVA DE ERROS FATAIS)
 function findSkillUsage(skill: string) {
   const usage: any[] = [];
   const cleanSkill = skill.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "").split("(")[0].trim();
   const safeSkill = cleanSkill.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`(^|\\s|\\W)${safeSkill}($|\\s|\\W)`, "i");
+  
   const isMatch = (text: string, tags?: string[]) => {
     if (tags && tags.some(tag => tag.toLowerCase().includes(cleanSkill.toLowerCase()))) return true;
     return regex.test(text || "");
   };
-  workExperience.forEach((job) => {
-    const tags = (job as any).relatedSkills || [];
-    const text = `${job.position} ${job.company} ${job.achievements.join(" ")} ${job.projecttitle?.join(" ")}`;
-    if (isMatch(text, tags)) usage.push({ type: "experience", title: job.position, subtitle: job.company, year: job.period.split(" - ")[0] });
+
+  (workExperience || []).forEach((job: any) => {
+    const tags = job.relatedSkills || [];
+    // Verificação de segurança: só faz join se for um array válido
+    const ach = Array.isArray(job.achievements) ? job.achievements.join(" ") : "";
+    const proj = Array.isArray(job.projecttitle) ? job.projecttitle.join(" ") : "";
+    
+    const text = `${job.position || ""} ${job.company || ""} ${ach} ${proj}`;
+    
+    if (isMatch(text, tags)) {
+      usage.push({ type: "experience", title: job.position, subtitle: job.company, year: (job.period || "").split(" - ")[0] });
+    }
   });
-  education.forEach((edu) => {
-    const tags = (edu as any).relatedSkills || [];
-    const text = `${edu.degree} ${(edu as any).thesisTitle} ${(edu as any).abstract} ${(edu as any).summary} ${edu.achievements.join(" ")}`;
-    if (isMatch(text, tags)) usage.push({ type: "education", title: edu.degree, subtitle: edu.institution, year: edu.period.split(" - ")[0] });
+
+  (education || []).forEach((edu: any) => {
+    const tags = edu.relatedSkills || [];
+    const ach = Array.isArray(edu.achievements) ? edu.achievements.join(" ") : "";
+    
+    const text = `${edu.degree || ""} ${edu.thesisTitle || ""} ${edu.abstract || ""} ${edu.summary || ""} ${ach}`;
+    
+    if (isMatch(text, tags)) {
+      usage.push({ type: "education", title: edu.degree, subtitle: edu.institution, year: (edu.period || "").split(" - ")[0] });
+    }
   });
-  projects.forEach((proj) => {
-    const tags = (proj as any).relatedSkills || [];
-    const text = `${proj.title} ${proj.description.join(" ")}`;
-    if (isMatch(text, tags)) usage.push({ type: "project", title: proj.title, subtitle: "Personal Project", year: "Dev" });
+
+  (projects || []).forEach((proj: any) => {
+    const tags = proj.relatedSkills || [];
+    const desc = Array.isArray(proj.description) ? proj.description.join(" ") : (proj.description || "");
+    
+    const text = `${proj.title || ""} ${desc}`;
+    
+    if (isMatch(text, tags)) {
+      usage.push({ type: "project", title: proj.title, subtitle: "Personal Project", year: "Dev" });
+    }
   });
+
   return Array.from(new Set(usage.map(u => JSON.stringify(u)))).map(s => JSON.parse(s)).slice(0, 4);
 }
 
@@ -71,14 +94,18 @@ const skillCategories = [
   { id: "lang", label: "Languages", icon: Globe, color: "amber", items: skills.languages }
 ];
 
-// Tailwind mapping para cores dinâmicas nos botões mobile
-const colorClasses: Record<string, string> = {
-  emerald: "bg-emerald-500 border-emerald-500 shadow-emerald-500/20 text-emerald-500",
-  purple: "bg-purple-500 border-purple-500 shadow-purple-500/20 text-purple-500",
-  blue: "bg-blue-500 border-blue-500 shadow-blue-500/20 text-blue-500",
-  zinc: "bg-zinc-500 border-zinc-500 shadow-zinc-500/20 text-zinc-500",
-  amber: "bg-amber-500 border-amber-500 shadow-amber-500/20 text-amber-500",
+// Tailwind Style Dictionary (Seguro contra erros de compilação)
+const getColorStyles = (colorName: string) => {
+  const styles: Record<string, { activeBg: string, text: string, hover: string }> = {
+    emerald: { activeBg: "bg-emerald-500", text: "text-emerald-500", hover: "hover:border-emerald-500/50" },
+    purple: { activeBg: "bg-purple-500", text: "text-purple-500", hover: "hover:border-purple-500/50" },
+    blue: { activeBg: "bg-blue-500", text: "text-blue-500", hover: "hover:border-blue-500/50" },
+    zinc: { activeBg: "bg-zinc-500", text: "text-zinc-500", hover: "hover:border-zinc-500/50" },
+    amber: { activeBg: "bg-amber-500", text: "text-amber-500", hover: "hover:border-amber-500/50" },
+  };
+  return styles[colorName] || styles.emerald;
 };
+
 
 // =========================================================
 // 2. CONSOLA
@@ -163,7 +190,6 @@ const ConsoleWindow = ({ activeSkill, usageData, subCategory, onMobileClose }: {
 // =========================================================
 export default function SkillsSection() {
   const [activeSkill, setActiveSkill] = useState<string | null>(null);
-  const [isPinned, setIsPinned] = useState(false);
   const [activeCategory, setActiveCategory] = useState(skillCategories[0].id);
   const [mounted, setMounted] = useState(false);
 
@@ -172,12 +198,6 @@ export default function SkillsSection() {
   const usageData = useMemo(() => activeSkill ? findSkillUsage(activeSkill) : [], [activeSkill]);
   const subCategory = useMemo(() => activeSkill ? getSkillSubCategory(activeSkill) : null, [activeSkill]);
   const currentCategoryData = useMemo(() => skillCategories.find(c => c.id === activeCategory), [activeCategory]);
-
-  useEffect(() => {
-    if (!activeSkill || isPinned || typeof window === "undefined" || window.innerWidth < 1024) return;
-    const timer = setTimeout(() => { setActiveSkill(null); }, 5000);
-    return () => clearTimeout(timer);
-  }, [activeSkill, isPinned]);
 
   return (
     <section id="skills" className="py-16 md:py-24 relative overflow-hidden">
@@ -191,18 +211,20 @@ export default function SkillsSection() {
               Skills
             </h2>
             
-            {/* CATEGORIAS MOBILE (BOTÕES COM LOGO E CORES) */}
+            {/* CATEGORIAS MOBILE */}
             <div className="flex flex-wrap gap-2 md:hidden">
               {skillCategories.map((cat) => {
                 const isSelected = activeCategory === cat.id;
+                const style = getColorStyles(cat.color);
+                
                 return (
                   <button 
                     key={cat.id} 
                     onClick={() => setActiveCategory(cat.id)} 
                     className={`flex-grow flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all border
                     ${isSelected 
-                      ? `${colorClasses[cat.color].split(' ')[0]} ${colorClasses[cat.color].split(' ')[1]} text-white shadow-lg` 
-                      : `bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 ${colorClasses[cat.color].split(' ').pop()}`}`}
+                      ? `${style.activeBg} text-white shadow-lg border-transparent` 
+                      : `bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 ${style.text}`}`}
                   >
                     <cat.icon className="w-3.5 h-3.5" />
                     {cat.label.split(" ")[0]}
@@ -214,7 +236,7 @@ export default function SkillsSection() {
         </MotionWrapper>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-7 flex flex-col gap-6" onMouseLeave={() => { if(!isPinned) setActiveSkill(null) }}>
+          <div className="lg:col-span-7 flex flex-col gap-6">
             
             {/* TÍTULO DINÂMICO MOBILE */}
             <AnimatePresence mode="wait">
@@ -227,7 +249,7 @@ export default function SkillsSection() {
               >
                 {currentCategoryData && (
                   <>
-                    <currentCategoryData.icon className={`w-5 h-5 text-${currentCategoryData.color}-500`} />
+                    <currentCategoryData.icon className={`w-5 h-5 ${getColorStyles(currentCategoryData.color).text}`} />
                     <h3 className="text-base font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
                       {currentCategoryData.label}
                     </h3>
@@ -236,36 +258,43 @@ export default function SkillsSection() {
               </motion.div>
             </AnimatePresence>
 
-            {skillCategories.map((cat, idx) => (
-              <div key={cat.id} className={`${activeCategory === cat.id ? 'block' : 'hidden md:block'}`}>
-                <MotionWrapper delay={idx * 0.1}>
-                  <div className="relative group">
-                    <div className="hidden lg:flex items-center gap-3 mb-4 opacity-70">
-                      <cat.icon className={`w-4 h-4 text-${cat.color}-500`} />
-                      <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">{cat.label}</h3>
-                    </div>
+            {skillCategories.map((cat, idx) => {
+              const style = getColorStyles(cat.color);
+              
+              return (
+                <div key={cat.id} className={`${activeCategory === cat.id ? 'block' : 'hidden md:block'}`}>
+                  <MotionWrapper delay={idx * 0.1}>
+                    <div className="relative group">
+                      <div className="hidden lg:flex items-center gap-3 mb-4 opacity-70">
+                        <cat.icon className={`w-4 h-4 ${style.text}`} />
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">{cat.label}</h3>
+                      </div>
 
-                    <div className="flex flex-wrap gap-2">
-                      {cat.items.map((skill) => (
-                        <button 
-                          key={skill} 
-                          onMouseEnter={() => { if(typeof window !== "undefined" && window.innerWidth >= 1024 && !isPinned) setActiveSkill(skill) }} 
-                          onClick={() => { setActiveSkill(skill); setIsPinned(true); }} 
-                          className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 border
-                          ${activeSkill === skill 
-                            ? `bg-${cat.color}-500 text-white border-${cat.color}-500 shadow-md` 
-                            : `bg-white dark:bg-white/5 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-white/10 hover:border-${cat.color}-500/50`}`}
-                        >
-                          {skill}
-                        </button>
-                      ))}
+                      <div className="flex flex-wrap gap-2">
+                        {cat.items.map((skill) => {
+                          const isActive = activeSkill === skill;
+                          return (
+                            <button 
+                              key={skill} 
+                              onMouseEnter={() => { if(typeof window !== "undefined" && window.innerWidth >= 1024) setActiveSkill(skill) }} 
+                              onClick={() => { setActiveSkill(skill); }} 
+                              className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 border
+                              ${isActive 
+                                ? `${style.activeBg} text-white border-transparent shadow-md` 
+                                : `bg-white dark:bg-white/5 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-white/10 ${style.hover}`}`}
+                            >
+                              {skill}
+                            </button>
+                          )
+                        })}
+                      </div>
                     </div>
-                  </div>
-                </MotionWrapper>
-              </div>
-            ))}
+                  </MotionWrapper>
+                </div>
+              );
+            })}
 
-            {/* MOBILE: DIAGNOSTIC MODE */}
+            {/* MOBILE: DIAGNOSTIC MODE INFO */}
             <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl mt-4">
               <Fingerprint className="w-5 h-5 text-emerald-500 animate-pulse" />
               <div className="flex flex-col text-left">
@@ -282,14 +311,15 @@ export default function SkillsSection() {
           </div>
         </div>
 
+        {/* PORTAL MOBILE PARA A CONSOLA (FECHA AO CLICAR FORA OU NO BOTÃO X) */}
         {mounted && createPortal(
           <AnimatePresence>
-            {isPinned && activeSkill && typeof window !== "undefined" && window.innerWidth < 1024 && (
+            {activeSkill && typeof window !== "undefined" && window.innerWidth < 1024 && (
               <div className="fixed inset-0 flex items-end justify-center px-4 pb-10" style={{ zIndex: 999999 }}>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsPinned(false)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveSkill(null)} className="absolute inset-0 bg-black/90 backdrop-blur-md" />
                 <motion.div initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }} transition={{ type: "spring", damping: 25, stiffness: 200 }} className="relative w-full max-w-md">
                   <div className="w-12 h-1.5 bg-zinc-400/50 rounded-full mx-auto mb-4" />
-                  <ConsoleWindow activeSkill={activeSkill} usageData={usageData} subCategory={subCategory} onMobileClose={() => setIsPinned(false)} />
+                  <ConsoleWindow activeSkill={activeSkill} usageData={usageData} subCategory={subCategory} onMobileClose={() => setActiveSkill(null)} />
                 </motion.div>
               </div>
             )}
