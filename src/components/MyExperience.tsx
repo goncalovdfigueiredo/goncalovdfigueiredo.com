@@ -104,9 +104,9 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
         </div>
       }
       subtitle={
-        <div className="mt-2 pl-1 relative pb-10">
+        <div className="mt-2 pl-4 relative pb-10">
           <div className="flex flex-col lg:flex-row gap-6 lg:items-start justify-between">
-            <div className="flex-1 space-y-5">
+            <div className="flex-1 space-y-10">
                <div className="flex flex-col gap-5">
                   {Array.isArray(job.companyLinks) ? (
                       job.companyLinks.map((link: any, i: number) => {

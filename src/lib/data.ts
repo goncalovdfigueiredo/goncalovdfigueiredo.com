@@ -187,10 +187,10 @@ export const workExperience = [
         }
       },
       { 
-        name: "Instituto de Telecomunicações", 
+        name: "Instituto de Telecomunicações (Aveiro and Lisbon)", 
         url: "https://www.it.pt/",
         location: { 
-          city: "Lisbon, Portugal", 
+          city: "Aveiro and Lisbon, Portugal", 
           lat: 38.737709, 
           lon: -9.138499 
         }
