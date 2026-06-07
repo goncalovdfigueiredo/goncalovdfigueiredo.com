@@ -34,22 +34,60 @@ const FILTER_CATEGORIES = [
 
 function ResetViewControl({ onReset }: { onReset: () => void }) {
   const map = useMap();
-  
-  return (
-    <div className="leaflet-bottom leaflet-left" style={{ marginBottom: '20px', marginLeft: '10px', zIndex: 1000 }}>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onReset();
-          map.flyTo([25, 10], 2, { duration: 1.5 });
-        }}
-        className="bg-white dark:bg-zinc-800 p-2 rounded-lg shadow-md border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-        title="Reset Map View"
-      >
-        <Globe className="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
-      </button>
-    </div>
-  );
+
+  useEffect(() => {
+    const ResetControl = L.Control.extend({
+      onAdd: () => {
+        const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        
+        // Mantemos o texto e o ícone do Globe como pediste
+        div.innerHTML = `
+          <button style="
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            padding: 8px 14px; 
+            background: rgba(255, 255, 255, 0.95); 
+            border: 1px solid rgba(228, 228, 231, 1); 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            color: #52525b;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+          ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            Global View
+          </button>`;
+        
+        // Bloqueios necessários para o mobile
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
+        
+        const handleAction = (e: any) => {
+           L.DomEvent.stopPropagation(e);
+           onReset();
+           map.flyTo([25, -25], 2, { duration: 1.5 });
+        };
+
+        div.ontouchstart = handleAction;
+        div.onclick = handleAction;
+        
+        return div;
+      }
+    });
+
+    // Posição no topo direito para não colidir com outros elementos
+    const control = new ResetControl({ position: 'topright' });
+    map.addControl(control);
+    return () => { map.removeControl(control); };
+  }, [map, onReset]);
+
+  return null;
 }
 
 // --- COMPONENTE INTERNO PARA CONTROLAR O FOCO E RESET DO MAPA ---
@@ -66,7 +104,7 @@ function MapController({ externalSelectedId, markers, onMarkerSelected }: {
     // Lógica para RESET: Volta à visão global
     if (externalSelectedId === "reset") {
       onMarkerSelected(null);
-      map.flyTo([25, 10], 2, {
+      map.flyTo([25, -25], 2, {
         duration: 2,
         easeLinearity: 0.25
       });
@@ -205,7 +243,7 @@ export default function InteractiveMap({ customMarkers, externalSelectedId = nul
       {/* Map Container */}
       <div className="relative flex-1 w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl z-0 bg-zinc-900">
         <MapContainer
-          center={[45, 10]} 
+          center={[25, -25]} 
           zoom={2}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%", zIndex: 0 }}
@@ -272,7 +310,11 @@ export default function InteractiveMap({ customMarkers, externalSelectedId = nul
               <div className="pointer-events-auto relative p-5 rounded-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200 dark:border-white/10 shadow-2xl shadow-black/40">
                 {selectedMarker && (
                   <button
-                    onClick={() => setSelectedMarker(null)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedMarker(null);
+                      setHoveredMarker(null);
+                    }}
                     className="absolute top-3 right-3 p-1 rounded-full bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-500 transition-colors"
                   >
                     <X className="h-4 w-4" />
