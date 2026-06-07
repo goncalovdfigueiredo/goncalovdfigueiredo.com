@@ -70,14 +70,31 @@ export default function GlobalMapSection() {
 
     // 3. Leadership: Cargo -> Entidade
     LeadershipExperience?.forEach(item => {
+      // 1. O local principal do cargo
       if (item.location?.lat) {
         markers.push({ 
           id: `lead-${item.company}`, 
-          label: item.position,   // CARGO EM DESTAQUE
-          subLabel: item.company, // Entidade como subLabel
+          label: item.position, 
+          subLabel: item.company, 
           type: "Leadership", 
           lat: item.location.lat, 
           lon: item.location.lon 
+        });
+      }
+
+      // 2. CORREÇÃO: Adicionar os locais extra (KTH, Linköping, etc)
+      if (item.relatedLocations && Array.isArray(item.relatedLocations)) {
+        item.relatedLocations.forEach((loc: any, idx: number) => {
+          if (loc.lat && loc.lon) {
+            markers.push({ 
+              id: `lead-loc-${item.company}-${idx}`, 
+              label: loc.label, // Ex: "Linköping University (Exchange Visit)"
+              subLabel: item.company, 
+              type: "Leadership", 
+              lat: loc.lat, 
+              lon: loc.lon 
+            });
+          }
         });
       }
     });

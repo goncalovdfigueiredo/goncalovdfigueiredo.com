@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents, ZoomControl, useMap } fr
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MapPin } from "lucide-react";
+import { X, MapPin, Globe } from "lucide-react";
 
 export type MapMarker = {
   id: string;
@@ -31,6 +31,26 @@ const FILTER_CATEGORIES = [
   "Scientific Outreach",
   "Conference Paper"
 ];
+
+function ResetViewControl({ onReset }: { onReset: () => void }) {
+  const map = useMap();
+  
+  return (
+    <div className="leaflet-bottom leaflet-left" style={{ marginBottom: '20px', marginLeft: '10px', zIndex: 1000 }}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onReset();
+          map.flyTo([25, 10], 2, { duration: 1.5 });
+        }}
+        className="bg-white dark:bg-zinc-800 p-2 rounded-lg shadow-md border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
+        title="Reset Map View"
+      >
+        <Globe className="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
+      </button>
+    </div>
+  );
+}
 
 // --- COMPONENTE INTERNO PARA CONTROLAR O FOCO E RESET DO MAPA ---
 function MapController({ externalSelectedId, markers, onMarkerSelected }: { 
@@ -185,7 +205,7 @@ export default function InteractiveMap({ customMarkers, externalSelectedId = nul
       {/* Map Container */}
       <div className="relative flex-1 w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl z-0 bg-zinc-900">
         <MapContainer
-          center={[25, 10]} 
+          center={[45, 10]} 
           zoom={2}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%", zIndex: 0 }}
@@ -202,6 +222,8 @@ export default function InteractiveMap({ customMarkers, externalSelectedId = nul
           />
 
           <ZoomControl position="bottomright" />
+
+          <ResetViewControl onReset={() => setSelectedMarker(null)} />
           
           <TileLayer
             attribution='Tiles &copy; Esri'
