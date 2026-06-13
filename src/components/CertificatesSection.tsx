@@ -23,18 +23,8 @@ const certs = [
       bg: "bg-blue-500/20",
       border: "hover:border-blue-500/30",
       items: [
-          { 
-              title: "Digital IC Design Fundamentals", 
-              org: "Cadence Design Systems", 
-              year: "2026", 
-              link: "https://www.credly.com/badges/719c63f0-1b05-4400-b271-c65cde384bcc/public_url" 
-            },
-        { 
-          title: "Semiconductor 101", 
-          org: "Cadence Design Systems", 
-          year: "2026", 
-          link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53/public_url" 
-        },
+        { title: "Digital IC Design Fundamentals", org: "Cadence Design Systems", year: "2026", link: "https://www.credly.com/badges/719c63f0-1b05-4400-b271-c65cde384bcc/public_url" },
+        { title: "Semiconductor 101", org: "Cadence Design Systems", year: "2026", link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53/public_url" },
         { title: "Verilog HDL Advanced (Instructor-Led Training)", org: "Intel Corporation", year: "2025", link: "https://learn.altera.com/share/gamification/badges/external/a30d1263-6358-40a9-8493-b739811148d0?lang=en" },
         { title: "Beginner Altera® FPGA Designer", org: "Intel Corporation", year: "2025" },
         { title: "FPGA computing systems: Background knowledge", org: "Politecnico di Milano", year: "2025" },
@@ -60,6 +50,7 @@ const certs = [
       bg: "bg-purple-500/20",
       border: "hover:border-purple-500/30",
       items: [
+        { title: "Machine Learning with Python: Professional Certificate", org: "Anaconda", year: "2026" },
         { title: "PCEP™ – Certified Entry-Level Python Programmer", org: "Python Institute", year: "2024", link: "https://www.credly.com/badges/2ad45f39-bf39-48c4-8f43-b8300d84e1a9" },
         { title: "Machine Learning, Maths & Ethics", org: "Instituto Superior Técnico", year: "2024" },
         { title: "Building AI", org: "University of Helsinki", year: "2023", link: "https://buildingai.elementsofai.com/" },
