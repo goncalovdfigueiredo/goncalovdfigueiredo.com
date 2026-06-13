@@ -52,7 +52,7 @@ const certs = [
       items: [
         { title: "Machine Learning with Python: Professional Certificate", org: "Anaconda", year: "2026" },
         { title: "PCEP™ – Certified Entry-Level Python Programmer", org: "Python Institute", year: "2024", link: "https://www.credly.com/badges/2ad45f39-bf39-48c4-8f43-b8300d84e1a9" },
-        { title: "Machine Learning, Maths & Ethics", org: "Instituto Superior Técnico", year: "2024" },
+        { title: "Machine Learning, Maths & Ethics: Hands-on", org: "Instituto Superior Técnico", year: "2024" },
         { title: "Building AI", org: "University of Helsinki", year: "2023", link: "https://buildingai.elementsofai.com/" },
       ]
     },
