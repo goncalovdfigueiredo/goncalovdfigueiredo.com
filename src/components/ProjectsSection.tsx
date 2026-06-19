@@ -50,7 +50,7 @@ const myProjects: Project[] = [
     highlight: "Hardware & Firmware",
     category: "Embedded Systems",
     icon: Bluetooth,
-    tags: ["ATmega328P", "Bluetooth", "Custom Android App"]
+    tags: ["ATmega328P", "Bluetooth", "Java/Kotlin"]
   },
   {
     id: "smart-tags-crypto",
