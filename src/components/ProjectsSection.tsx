@@ -22,6 +22,15 @@ interface Project {
 
 const myProjects: Project[] = [
   {
+    id: "power-mgmt-charger",
+    title: "Integrated Power Management & Charging Circuit",
+    highlight: "PCB Design & Power Electronics",
+    category: "Power Electronics",
+    year: "2026",
+    icon: Zap,
+    tags: ["KiCad", "Buck Converter", "Energy Harvesting", "Battery Charging"]
+  },
+  {
     id: "vlc-pcb-kicad",
     title: "Full-Duplex VLC Transceiver PCB",
     highlight: "PCB Design & Assembly",
