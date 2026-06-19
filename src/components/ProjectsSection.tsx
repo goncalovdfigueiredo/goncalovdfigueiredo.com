@@ -22,35 +22,43 @@ interface Project {
 const myProjects: Project[] = [
   {
     id: "vlc-app",
-    title: "Secure VLC Decoder",
-    highlight: "Android Mobile App",
+    title: "Real-Time VLC Mobile Decoder",
+    highlight: "Android App",
     category: "Mobile Software Stack",
     icon: Smartphone,
-    tags: ["Android Studio", "Java/Kotlin"]
+    tags: ["Java/Kotlin", "Signal Processing", "Cryptography"]
   },
   {
-    id: "capacitance-iot",
-    title: "Bluetooth Capacitance Logger",
-    highlight: "Android Mobile App",
-    category: "Industrial IoT",
-    icon: Bluetooth,
-    tags: ["Android", "Bluetooth LE"]
+    id: "planeta-iot",
+    title: "Solar-Powered IoT Telemetry Board",
+    highlight: "IoT Hardware",
+    category: "Embedded Systems",
+    icon: Zap,
+    tags: ["ESP32", "Power Management", "Data Acquisition", "Cloud Integration"]
   },
   {
-    id: "vlc-pcb",
-    title: "Integrated VLC Transceiver",
-    highlight: "PCB Design",
+    id: "vlc-pcb-kicad",
+    title: "Full-Duplex VLC Transceiver PCB",
+    highlight: "PCB Design & Assembly",
     category: "Hardware Engineering",
     icon: Microchip,
-    tags: ["Altium", "VLC Design"]
+    tags: ["KiCad", "Simultaneous Rx/Tx", "Hardware"]
   },
   {
-    id: "energy-harvesting",
-    title: "Energy Harvesting PMU",
-    highlight: "PCB Design",
-    category: "Hardware Engineering",
-    icon: Zap,
-    tags: ["Power Mgmt", "PCB Design"]
+    id: "capacitance-wireless",
+    title: "Wireless Capacitive Sensor Node",
+    highlight: "Hardware & Firmware",
+    category: "Embedded Systems",
+    icon: Bluetooth,
+    tags: ["ATmega328P", "Bluetooth", "Custom Android App"]
+  },
+  {
+    id: "smart-tags-crypto",
+    title: "Sustainable Anti-Counterfeiting Tags",
+    highlight: "Optical Cryptography",
+    category: "Security & Applied R&D",
+    icon: BrainCircuit,
+    tags: ["SHA-256", "Reed-Solomon", "Cryptography", "Eco-Materials"]
   }
 ];
 
