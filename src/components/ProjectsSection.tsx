@@ -15,32 +15,18 @@ interface Project {
   title: string;
   highlight: string; 
   category: string;
+  year: string;
   icon: any;
   tags: string[];
 }
 
 const myProjects: Project[] = [
   {
-    id: "vlc-app",
-    title: "Real-Time VLC Mobile Decoder",
-    highlight: "Android App",
-    category: "Mobile Software Stack",
-    icon: Smartphone,
-    tags: ["Java/Kotlin", "Signal Processing", "Cryptography"]
-  },
-  {
-    id: "planeta-iot",
-    title: "Solar-Powered IoT Telemetry Board",
-    highlight: "IoT Hardware",
-    category: "Embedded Systems",
-    icon: Zap,
-    tags: ["ESP32", "Power Management", "Data Acquisition", "Cloud Integration"]
-  },
-  {
     id: "vlc-pcb-kicad",
     title: "Full-Duplex VLC Transceiver PCB",
     highlight: "PCB Design & Assembly",
     category: "Hardware Engineering",
+    year: "2025",
     icon: Microchip,
     tags: ["KiCad", "Simultaneous Rx/Tx", "Hardware"]
   },
@@ -49,16 +35,36 @@ const myProjects: Project[] = [
     title: "Wireless Capacitive Sensor Node",
     highlight: "Hardware & Firmware",
     category: "Embedded Systems",
+    year: "2024",
     icon: Bluetooth,
     tags: ["ATmega328P", "Bluetooth", "Java/Kotlin"]
+  },
+  {
+    id: "planeta-iot",
+    title: "Solar-Powered IoT Telemetry Board",
+    highlight: "IoT Hardware",
+    category: "Embedded Systems",
+    year: "2023",
+    icon: Zap,
+    tags: ["ESP32", "Power Management", "Data Acquisition", "Cloud Integration"]
   },
   {
     id: "smart-tags-crypto",
     title: "Sustainable Anti-Counterfeiting Tags",
     highlight: "Optical Cryptography",
     category: "Security & Applied R&D",
+    year: "2023",
     icon: BrainCircuit,
     tags: ["SHA-256", "Reed-Solomon", "Cryptography", "Eco-Materials"]
+  },
+  {
+    id: "vlc-app",
+    title: "Real-Time VLC Mobile Decoder",
+    highlight: "Android App",
+    category: "Mobile Software Stack",
+    year: "2022",
+    icon: Smartphone,
+    tags: ["Java/Kotlin", "Signal Processing", "Cryptography"]
   }
 ];
 
@@ -121,6 +127,8 @@ export default function ProjectsSection() {
                   
                   <div className="p-5 relative z-20">
                     <div className="flex items-center justify-between gap-4">
+                      
+                      {/* BLOCO DA ESQUERDA: Ícone e Títulos */}
                       <div className="flex items-center gap-4">
                         <div className={`p-2 rounded-lg ${(hoveredIndex === idx || isExpanded) ? "bg-emerald-500/10 text-emerald-500" : "bg-zinc-100 dark:bg-white/5 text-zinc-400"}`}>
                           <project.icon className="w-5 h-5" />
@@ -141,8 +149,15 @@ export default function ProjectsSection() {
                           </div>
                         </div>
                       </div>
-                      {/* Seta indicadora apenas para Mobile */}
-                      <ChevronDown className={`w-4 h-4 text-zinc-500 transition-transform lg:hidden ${isExpanded ? "rotate-180" : ""}`} />
+
+                      {/* BLOCO DA DIREITA: Ano e Seta indicadora */}
+                      <div className="flex items-center gap-3">
+                        <span className={`text-xs font-mono font-semibold transition-colors ${(hoveredIndex === idx || isExpanded) ? "text-emerald-500" : "text-zinc-400 dark:text-zinc-600"}`}>
+                          {project.year}
+                        </span>
+                        <ChevronDown className={`w-4 h-4 text-zinc-500 transition-transform lg:hidden ${isExpanded ? "rotate-180" : ""}`} />
+                      </div>
+
                     </div>
 
                     {/* CONTEÚDO EXPANSÍVEL (Apenas visível em Mobile quando aberto) */}
@@ -192,7 +207,9 @@ export default function ProjectsSection() {
                   
                   <div className="flex justify-between items-start mb-10 relative z-30">
                     <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase tracking-widest">Active Module</span>
+                      <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase tracking-widest">
+                        {myProjects[hoveredIndex].year} • Active Module
+                      </span>
                       <h4 className="text-xl font-bold text-zinc-900 dark:text-white">
                         {myProjects[hoveredIndex].title}
                       </h4>
