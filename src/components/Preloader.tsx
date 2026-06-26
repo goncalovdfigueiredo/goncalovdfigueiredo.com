@@ -31,23 +31,51 @@ export default function Preloader() {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center 
-                     bg-zinc-50 dark:bg-[#060608] gap-6"
+          key="preloader"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center pointer-events-none"
         >
-          {/* BACKGROUND DECORATION: GRID TÉCNICO */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
+          {/* =========================================
+              PAINÉIS DA "PERSIANA" (BACKGROUND SPLIT)
+              ========================================= */}
           
-          <div className="relative flex flex-col items-center">
+          {/* Painel Esquerdo */}
+          <motion.div
+            initial={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+            className="absolute top-0 left-0 w-1/2 h-full bg-zinc-50 dark:bg-[#060608] z-0 border-r border-zinc-200/50 dark:border-white/5"
+          />
+
+          {/* Painel Direito */}
+          <motion.div
+            initial={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+            className="absolute top-0 right-0 w-1/2 h-full bg-zinc-50 dark:bg-[#060608] z-0 border-l border-zinc-200/50 dark:border-white/5"
+          />
+
+          {/* BACKGROUND DECORATION: GRID TÉCNICO */}
+          {/* Fica numa camada superior e desaparece antes das portas abrirem */}
+          <motion.div 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] z-10" 
+          />
+          
+          {/* =========================================
+              CONTEÚDO DO PRELOADER (Texto e Barras)
+              ========================================= */}
+          <motion.div 
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="relative z-20 flex flex-col items-center gap-6"
+          >
             {/* SCANLINE EFFECT */}
             <motion.div 
               initial={{ top: "-10%" }}
               animate={{ top: "110%" }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute left-0 right-0 h-[2px] bg-emerald-500/20 blur-sm z-20"
+              className="absolute left-0 right-0 h-[2px] bg-emerald-500/20 blur-sm z-20 pointer-events-none"
             />
 
             {/* NOME COM EFEITO DE REVELAÇÃO */}
@@ -60,38 +88,50 @@ export default function Preloader() {
               Gonçalo Figueiredo
             </motion.h1>
 
-            {/* BARRA DE PROGRESSO ESTILO TELEMETRIA */}
-            <div className="w-48 md:w-64 h-[2px] bg-zinc-200 dark:bg-zinc-800 relative mt-4 overflow-hidden">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                className="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]"
-              />
-            </div>
+            <div>
+              {/* BARRA DE PROGRESSO ESTILO TELEMETRIA */}
+              <div className="w-48 md:w-64 h-[2px] bg-zinc-200 dark:bg-zinc-800 relative mt-4 overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  className="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]"
+                />
+              </div>
 
-            {/* STATUS E CONTADOR */}
-            <div className="flex justify-between w-48 md:w-64 mt-2 font-mono text-[10px] text-zinc-400 uppercase tracking-tighter">
-              <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
-              >
-                System Booting...
-              </motion.span>
-              <span>{progress}%</span>
+              {/* STATUS E CONTADOR */}
+              <div className="flex justify-between w-48 md:w-64 mt-2 font-mono text-[10px] text-zinc-400 uppercase tracking-tighter">
+                <motion.span
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                >
+                  System Booting...
+                </motion.span>
+                <span>{progress}%</span>
+              </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* DADOS ALEATÓRIOS NOS CANTOS (OPCIONAL) */}
-          <div className="absolute bottom-8 left-8 hidden md:block font-mono text-[8px] text-zinc-500/50 space-y-1 uppercase">
+          {/* =========================================
+              DADOS LATERAIS (LAT/LON E CORE)
+              ========================================= */}
+          <motion.div 
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-8 left-8 hidden md:block font-mono text-[8px] text-zinc-500/50 space-y-1 uppercase z-20"
+          >
             <p>Lat: 41.1579° N</p>
             <p>Lon: 8.6291° W</p>
             <p>Status: Ready</p>
-          </div>
-          <div className="absolute bottom-8 right-8 hidden md:block font-mono text-[8px] text-zinc-500/50 text-right space-y-1 uppercase">
+          </motion.div>
+          <motion.div 
+             exit={{ opacity: 0 }}
+             transition={{ duration: 0.3 }}
+             className="absolute bottom-8 right-8 hidden md:block font-mono text-[8px] text-zinc-500/50 text-right space-y-1 uppercase z-20"
+          >
             <p>Core: v3.2.0</p>
             <p>Engine: Stable</p>
             <p>© 2026</p>
-          </div>
+          </motion.div>
 
         </motion.div>
       )}
