@@ -52,7 +52,7 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
    ========================= */
 const EnvironmentBadge = ({ type }: { type: 'Academic' | 'Industry' }) => (
   <span className={`
-    inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm font-black tracking-tighter border shrink-2
+    inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm font-black tracking-tighter border shrink-0
     ${type === 'Academic' 
       ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' 
       : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'}
@@ -77,6 +77,53 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
   const hasImpact = Array.isArray(job.achievements) && job.achievements.length > 0;
   const hasCourses = job.courses && job.courses.length > 0;
 
+  // Função que constrói o layout premium (Logo à esquerda, conteúdo compacto à direita)
+  const renderCompanyBlock = (name: string, url: string, location: string, logo: string | null, isAcademic: boolean, courses?: any[]) => (
+    <div className="flex items-start gap-3 md:gap-4 group">
+      {/* Logo fixo à esquerda com mt-1 para alinhar melhor com títulos longos */}
+      {logo && (
+        <div className="relative z-10 w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1.5 shadow-sm shrink-0 mt-1 md:mt-0.5">
+          <img src={logo} alt={name} className="w-full h-full object-contain" />
+        </div>
+      )}
+
+      {/* Conteúdo à direita */}
+      <div className="flex flex-col flex-1 min-w-0">
+        <a href={url || "#"} target="_blank" rel="noopener noreferrer" 
+          className={`text-sm md:text-lg font-bold hover:underline flex items-start gap-1.5 leading-tight
+            ${isAcademic ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400'}
+          `}>
+          {/* Removido o truncate para permitir quebra de linha em nomes muito longos */}
+          <span className="line-clamp-2 text-wrap">{name}</span>
+          <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0 mt-0.5" />
+        </a>
+        
+        {/* Badge e Localização com gap-x e gap-y para lidar com quebras de linha em ecrãs pequenos */}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-1.5">
+          <EnvironmentBadge type={isAcademic ? "Academic" : "Industry"} />
+          <span className="flex items-center gap-1 text-[11px] md:text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            <MapPin className="w-3 h-3 shrink-0" />
+            <span className="truncate">{location}</span>
+          </span>
+        </div>
+
+        {/* Curricular Units como "chips" */}
+        {courses && courses.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-1 mt-2">
+            {courses.map((course: any, idx: number) => (
+              <a key={idx} href={course.url} target="_blank" rel="noopener noreferrer" 
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-yellow-600/10 text-[10px] md:text-xs font-medium text-yellow-600 dark:text-[#c4b59b] border border-yellow-600/20 dark:border-[#c4b59b]/20 hover:bg-yellow-600/20 hover:underline transition-all group/course"
+              >
+                <BookOpen className="w-3 h-3 shrink-0" /> 
+                <span className="line-clamp-1">{course.name}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <TimelineItem
       index={index}
@@ -97,216 +144,119 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
                {isCurrent && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse ml-1" />}
              </div>
           </div>
-
           <div className="flex items-center gap-3">
-            <span className="text-base md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</span>
+            <span className="text-lg md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</span>
           </div>
         </div>
       }
       subtitle={
-        <div className="mt-2 pl-4 relative pb-10">
-          <div className="flex flex-col lg:flex-row gap-6 lg:items-start justify-between">
-            <div className="flex-1 space-y-10">
-               <div className="flex flex-col gap-5">
+        <div className="mt-3 md:mt-4 pl-0 md:pl-4 relative pb-10">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 lg:items-start justify-between">
+            
+            {/* INFORMAÇÃO DA EMPRESA */}
+            <div className="flex-1 space-y-6">
+               <div className="flex flex-col gap-4">
                   {Array.isArray(job.companyLinks) ? (
-                      job.companyLinks.map((link: any, i: number) => {
-                        const isAcademic = !link.name.toLowerCase().includes("lightenjin");
-                        const currentLogo = Array.isArray(job.logos) ? job.logos[i] : (i === 0 ? job.logos : null);
-
-                        return (
-                          <div key={i} className="flex flex-col gap-1 group">
-                            <div className="flex flex-col md:flex-row md:items-start items-start gap-2 md:gap-3">
-                              
-                              <div className="md:order-first flex items-center gap-2 shrink-0 md:mt-0.5">
-                                 <EnvironmentBadge type={isAcademic ? "Academic" : "Industry"} />
-                              </div>
-
-                              <div className="flex flex-col gap-1 md:order-last">
-                                <div className="flex items-center gap-2">
-                                  {currentLogo && (
-                                    <div className="relative z-10 w-6 h-6 md:w-7 md:h-7 rounded bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-0.5 shadow-sm shrink-0">
-                                      <img src={currentLogo} alt="" className="w-full h-full object-contain" />
-                                    </div>
-                                  )}
-                                  
-                                  <a href={link.url} target="_blank" rel="noopener noreferrer" 
-                                    className={`text-sm md:text-base font-semibold hover:underline flex items-center gap-1 transition-colors leading-tight
-                                      ${isAcademic ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400'}
-                                    `}>
-                                    {link.name} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
-                                  </a>
-                                </div>
-                                <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium">
-                                  <MapPin className="w-3 h-3 text-zinc-400" />
-                                  {link.location?.city || "Portugal"}
-                                </div>
-
-                                {/* CURRICULAR UNITS: Agora dentro do bloco da empresa, alinhadas em baixo da localização */}
-                                {hasCourses && i === 0 && ( // Supondo que os cursos pertencem à primeira empresa da lista, se houver várias
-                                  <div className="flex flex-col gap-3 pt-2">
-                                    {job.courses.map((course: any, idx: number) => (
-                                      <a 
-                                        key={idx} 
-                                        href={course.url} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer" 
-                                        className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-yellow-600/10 text-sm font-medium text-yellow-600 dark:text-[#c4b59b] border border-yellow-600/20 dark:border-[#c4b59b]/20 hover:bg-yellow-600/20 hover:underline transition-all w-fit group/course"
-                                      >
-                                        <BookOpen className="w-4 h-4 shrink-0" /> 
-                                        <span className="flex items-center gap-1">
-                                          {course.name} 
-                                          <ExternalLink className="w-3 h-3 opacity-50 shrink-0 group-hover/course:opacity-100 transition-opacity" />
-                                        </span>
-                                      </a>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })
+                    job.companyLinks.map((link: any, i: number) => {
+                      const isAcademic = !link.name.toLowerCase().includes("lightenjin");
+                      const currentLogo = Array.isArray(job.logos) ? job.logos[i] : (i === 0 ? job.logos : null);
+                      const currentCourses = (hasCourses && i === 0) ? job.courses : undefined;
+                      
+                      return (
+                        <div key={i}>
+                          {renderCompanyBlock(link.name, link.url, link.location?.city || "Portugal", currentLogo, isAcademic, currentCourses)}
+                        </div>
+                      );
+                    })
                   ) : (
-                    <div className="flex flex-col gap-1">
+                    <div>
                       {(() => {
                         const isAcademic = !job.company.toLowerCase().includes("lightenjin");
                         const currentLogo = Array.isArray(job.logos) ? job.logos[0] : job.logos;
-
-                        return (
-                          <div className="flex flex-col md:flex-row md:items-start items-start gap-2 md:gap-3">
-                            <div className="md:order-first flex items-center gap-2 shrink-0 md:mt-0.5">
-                               <EnvironmentBadge type={isAcademic ? "Academic" : "Industry"} />
-                            </div>
-                            
-                            <div className="flex flex-col gap-1 md:order-last">
-                              <div className="flex items-center gap-2">
-                                {currentLogo && (
-                                  <div className="relative z-10 w-6 h-6 md:w-7 md:h-7 rounded bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-0.5 shadow-sm shrink-0">
-                                    <img src={currentLogo} alt="" className="w-full h-full object-contain" />
-                                  </div>
-                                )}
-                                <a href={job.url || "#"} target="_blank" rel="noopener noreferrer" 
-                                  className={`text-sm md:text-base font-semibold hover:underline flex items-center gap-1 leading-tight
-                                    ${isAcademic ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400'}
-                                  `}>
-                                  {job.company} <ExternalLink className="w-3.5 h-3.5 opacity-50 shrink-0" />
-                                </a>
-                              </div>
-                              <div className="flex items-center gap-1.5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium">
-                                <MapPin className="w-3 h-3 text-zinc-400" />
-                                {typeof job.location === 'string' ? job.location : job.location.city}
-                              </div>
-
-                              {/* CURRICULAR UNITS: Agora dentro do bloco da empresa singular */}
-                              {hasCourses && (
-                                <div className="flex flex-col gap-3 pt-2">
-                                  {job.courses.map((course: any, idx: number) => (
-                                    <a 
-                                      key={idx} 
-                                      href={course.url} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer" 
-                                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-yellow-600/10 text-sm font-medium text-yellow-600 dark:text-[#c4b59b] border border-yellow-600/20 dark:border-[#c4b59b]/20 hover:bg-yellow-600/20 hover:underline transition-all w-fit group/course"
-                                    >
-                                      <BookOpen className="w-4 h-4 shrink-0" /> 
-                                      <span className="flex items-center gap-1">
-                                        {course.name} 
-                                        <ExternalLink className="w-3 h-3 opacity-50 shrink-0 group-hover/course:opacity-100 transition-opacity" />
-                                      </span>
-                                    </a>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
+                        const loc = typeof job.location === 'string' ? job.location : job.location.city;
+                        
+                        return renderCompanyBlock(job.company, job.url, loc, currentLogo, isAcademic, hasCourses ? job.courses : undefined);
                       })()}
                     </div>
                   )}
                </div>
             </div>
 
-            <div className="flex flex-row lg:flex-col gap-2.5 shrink-0 mt-4 md:mt-0">
+            {/* BOTÕES DE ACORDEÃO (Projects / Key Impact) */}
+<div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 shrink-0 mt-2 lg:-mt-12 relative z-10 w-full lg:w-auto">
                {hasProjects && (
                  <button 
                   onClick={() => toggleTab('projects')} 
-                  className={`flex items-center justify-between gap-2 md:gap-3 py-1.5 px-3 md:py-2.5 md:px-5 rounded-xl border text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 min-w-[130px] md:min-w-[160px]
+                  className={`flex items-center justify-between gap-1.5 py-2 px-3 md:py-2.5 md:px-5 rounded-xl border text-[9px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 w-full
                     ${activeTab === 'projects' ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500'}
                   `}
                  >
-                    <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 md:w-6 md:h-6" /> 
-                      Projects
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <FileText className="w-3.5 h-3.5 md:w-5 md:h-5 shrink-0" /> 
+                      <span className="truncate">Projects</span>
                     </div>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeTab === 'projects' ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3 h-3 md:w-3.5 md:h-3.5 shrink-0 transition-transform duration-300 ${activeTab === 'projects' ? 'rotate-180' : ''}`} />
                  </button>
                )}
                {hasImpact && (
                  <button 
                   onClick={() => toggleTab('key impact')} 
-                  className={`flex items-center justify-between gap-2 md:gap-3 py-1.5 px-3 md:py-2.5 md:px-5 rounded-xl border text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 min-w-[130px] md:min-w-[160px]
+                  className={`flex items-center justify-between gap-1.5 py-2 px-3 md:py-2.5 md:px-5 rounded-xl border text-[9px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 w-full
                     ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_20px_rgba(5,150,105,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'}
                   `}
                  >
-                    <div className="flex items-center gap-0">
-                      <BarChart3 className="w-4 h-4 md:w-6 md:h-6" /> 
-                      Key Impact
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <BarChart3 className="w-3.5 h-3.5 md:w-5 md:h-5 shrink-0" /> 
+                      <span className="truncate">Key Impact</span>
                     </div>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeTab === 'key impact' ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3 h-3 md:w-3.5 md:h-3.5 shrink-0 transition-transform duration-300 ${activeTab === 'key impact' ? 'rotate-180' : ''}`} />
                  </button>
                )}
             </div>
           </div>
 
+          {/* ACORDEÃO (CONTEÚDO) */}
           <AnimatePresence mode="wait">
             {activeTab && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-4">
-                <div className={`p-4 md:p-6 rounded-2xl border backdrop-blur-sm ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20' : 'bg-emerald-500/5 border-emerald-500/20'}`}>
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-3 md:mt-4 overflow-hidden">
+                <div className={`p-4 md:p-6 rounded-xl md:rounded-2xl border backdrop-blur-sm ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20' : 'bg-emerald-500/5 border-emerald-500/20'}`}>
                 <ul className="space-y-3">
-  {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => {
-    // Lógica para detetar "Project:" ou "Area:" e aplicar estilo
-    const parts = item.split(':');
-    const isProjectStyle = parts.length > 1 && (item.includes('Project') || item.includes('Area'));
+                  {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => {
+                    const parts = item.split(':');
+                    const isProjectStyle = parts.length > 1 && (item.includes('Project') || item.includes('Area'));
 
-    return (
-      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-3 items-start text-justify">
-        <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
-        
-        <span className="flex-1">
-          {isProjectStyle ? (
-            <>
-              <span className="font-bold text-blue-500 dark:text-blue-400">
-                {parts[0].replace(/\*\*/g, '')}:
-              </span>
-              <span className="ml-1">{parts[1]}</span>
-            </>
-          ) : (
-            item
-          )}
-        </span>
-      </li>
-    );
-  })}
-</ul>
+                    return (
+                      <li key={i} className="text-xs md:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-2 md:gap-3 items-start text-justify">
+                        <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
+                        <span className="flex-1">
+                          {isProjectStyle ? (
+                            <>
+                              <span className="font-bold text-blue-500 dark:text-blue-400">
+                                {parts[0].replace(/\*\*/g, '')}:
+                              </span>
+                              <span className="ml-1">{parts[1]}</span>
+                            </>
+                          ) : (
+                            item
+                          )}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
+          {/* LINHA DE TIMELINE INFERIOR */}
           {!isLast && (
             <div className="absolute bottom-2 left-0 w-full h-[2px] bg-zinc-200/30 dark:bg-white/5 overflow-hidden rounded-full">
               <motion.div 
                 animate={{ x: ['-100%', '200%'] }}
-                transition={{ 
-                  duration: isCurrent ? 2.5 : 5, 
-                  repeat: Infinity, 
-                  ease: "linear",
-                  delay: index * 0.8 
-                }}
+                transition={{ duration: isCurrent ? 2.5 : 5, repeat: Infinity, ease: "linear", delay: index * 0.8 }}
                 className={`absolute top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-current to-transparent
-                  ${isCurrent 
-                    ? 'via-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)] text-emerald-500' 
-                    : 'via-zinc-400/50 shadow-[0_0_8px_rgba(161,161,170,0.3)] text-zinc-400'}
+                  ${isCurrent ? 'via-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)] text-emerald-500' : 'via-zinc-400/50 shadow-[0_0_8px_rgba(161,161,170,0.3)] text-zinc-400'}
                 `}
               />
             </div>
@@ -332,7 +282,7 @@ export default function ExperienceSection() {
               Experience
             </h2>
             
-            <div className="flex gap-2 w-full md:w-auto">
+            <div className="grid grid-cols-2 md:flex gap-2 md:gap-3 w-full md:w-auto mt-4 md:mt-0 shrink-0">
                <NavButtonWithTooltip 
                  href="#map" 
                  icon={MapPin} 
