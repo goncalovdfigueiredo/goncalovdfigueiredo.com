@@ -6,7 +6,7 @@ import {
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, MapPin, FileText,
   Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown, MousePointerClick
-} from "lucide-react"; // <-- MousePointerClick Adicionado
+} from "lucide-react"; 
 import { 
   motion, 
   AnimatePresence, 
@@ -15,6 +15,10 @@ import {
   useTransform,
   type Variants
 } from "framer-motion";
+
+// IMPORTAÇÕES DE FUNDOS E EFEITOS 3D
+import LiquidEther from "./LiquidEther";
+import MagicRings from "./MagicRings"; // <-- Novo Import
 
 /* =========================
    1. CYBER TYPEWRITER
@@ -61,51 +65,7 @@ function TypewriterExpertise() {
 }
 
 /* =========================
-   2. ELECTRON BACKGROUND
-   ========================= */
-function ElectronBackground() {
-  const [windowSize, setWindowSize] = useState({ width: 1200, height: 1400 });
-  useEffect(() => {
-    const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const electrons = [
-    { color: "rgba(16, 185, 129, 0.4)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.4)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.4)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.4)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.4)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.4)", duration: 50 },
-    { color: "rgba(16, 185, 129, 0.4)", duration: 50 },
-    { color: "rgba(59, 130, 246, 0.4)", duration: 50 },
-    { color: "rgba(168, 85, 247, 0.4)", duration: 50 },
-  ];
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-20 dark:opacity-40">
-      {electrons.map((e, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            x: [Math.random() * windowSize.width, Math.random() * windowSize.width],
-            y: [Math.random() * windowSize.height, Math.random() * windowSize.height],
-          }}
-          transition={{ duration: e.duration, repeat: Infinity, ease: "linear" }}
-          className="absolute w-2 h-2 rounded-full shadow-[0_0_20px_5px] transition-colors"
-          style={{ backgroundColor: e.color, boxShadow: `0 0 25px 5px ${e.color}` }}
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-3xl opacity-20" style={{ backgroundColor: e.color }} />
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-/* =========================
-   3. MAGNETIC BUTTONS 
+   2. MAGNETIC BUTTONS 
    ========================= */
 function MagneticButton({ children, href }: { children: React.ReactNode, href: string | null }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -130,7 +90,7 @@ function MagneticButton({ children, href }: { children: React.ReactNode, href: s
       onMouseLeave={reset}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-emerald-500 hover:text-white dark:hover:text-black hover:border-emerald-500 dark:hover:border-emerald-400 transition-colors duration-300 group overflow-hidden shadow-sm dark:shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] z-10"
+      className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-emerald-500 hover:text-white dark:hover:text-black hover:border-emerald-500 dark:hover:border-emerald-400 transition-colors duration-300 group overflow-hidden shadow-sm dark:shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] z-10 backdrop-blur-md"
     >
       {children}
     </motion.a>
@@ -138,7 +98,7 @@ function MagneticButton({ children, href }: { children: React.ReactNode, href: s
 }
 
 /* =========================
-   4. DISINTEGRATING PROFILE
+   3. DISINTEGRATING PROFILE + MAGIC RINGS
    ========================= */
 function DisintegratingProfile() {
   const particleControls = useAnimation();
@@ -186,7 +146,24 @@ function DisintegratingProfile() {
   };
 
   return (
-    <div className="relative w-32 h-32 md:w-40 md:h-40 group">
+    <div className="relative w-32 h-32 md:w-40 md:h-40 group flex items-center justify-center">
+      
+      {/* MAGIC RINGS: Centrados atrás da foto, com o dobro do tamanho 
+        para que orbitem à volta da borda exterior do teu perfil.
+      */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[350px] md:h-[350px] z-0 pointer-events-none opacity-40 mix-blend-screen">
+        <MagicRings
+          color="#c4ff9f"         // Verde Limão (Liga com o Liquid Ether)
+          colorTwo="#10b981"      // Verde Esmeralda 
+          ringCount={5}           // 5 Anéis rotativos
+          speed={1.2}             // Velocidade orgânica
+          baseRadius={0.15}       // Raio inicial perfeito para contornar a foto
+          radiusStep={0.06}       // Distância entre cada anel
+          opacity={0.85}
+          followMouse={true}      // Reage ligeiramente ao passar o rato por cima
+        />
+      </div>
+
       <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 z-30 pointer-events-none rounded-full overflow-hidden">
         {[...Array(totalParticles)].map((_, i) => (
           <motion.div
@@ -195,14 +172,16 @@ function DisintegratingProfile() {
           />
         ))}
       </div>
+      
       <motion.div 
         animate={imageControls} 
-        className="relative w-full h-full rounded-full p-1 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 shadow-[0_0_20px_rgba(16,185,129,0.2)] dark:shadow-[0_0_40px_rgba(16,185,129,0.3)] z-20"
+        className="relative w-full h-full rounded-full p-1 bg-gradient-to-br from-emerald-500 via-emerald-400 to-cyan-500 shadow-[0_0_20px_rgba(16,185,129,0.2)] dark:shadow-[0_0_40px_rgba(16,185,129,0.3)] z-20"
       >
         <div className="w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-[#09090b] bg-white dark:bg-[#09090b]">
           <img src={personalInfo.profilePicture} alt="Profile" className="w-full h-full object-cover scale-110 filter contrast-125" />
         </div>
       </motion.div>
+      
       <a href="/CV_Goncalo_Figueiredo.pdf" download className="absolute -bottom-2 -right-6 flex items-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-bold text-xs shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:scale-110 transition-transform z-50 pointer-events-auto">
         <Download className="w-4 h-4" /> CV
       </a>
@@ -211,7 +190,7 @@ function DisintegratingProfile() {
 }
 
 /* =========================
-   5. HARDWARE UNLOCK CARD 
+   4. HARDWARE UNLOCK CARD 
    ========================= */
 const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -238,19 +217,17 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
 
   return (
     <motion.div 
-      className="relative w-full flex-1 min-h-[140px] rounded-2xl overflow-hidden cursor-pointer group/card flex flex-col"
+      className="relative w-full flex-1 min-h-[140px] rounded-2xl overflow-hidden cursor-pointer group/card flex flex-col backdrop-blur-md"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => setIsHovered(!isHovered)} // <-- Adicionado o Click Event (Toggle) para Mobile
+      onClick={() => setIsHovered(!isHovered)} 
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
       whileHover={{ scale: 1.02 }}
     >
-      {/* Fundo do Cartão (Light/Dark) */}
-      <div className="absolute inset-0 bg-zinc-100 dark:bg-[#0a0a0c] border border-zinc-200 dark:border-white/5 rounded-2xl z-0" />
+      <div className="absolute inset-0 bg-white/70 dark:bg-[#0a0a0c]/70 border border-zinc-200 dark:border-white/5 rounded-2xl z-0 backdrop-blur-xl" />
       
-      {/* Gradiente Rotativo de Fundo */}
       <motion.div 
         className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] z-0 pointer-events-none opacity-20 dark:opacity-60 group-hover/card:opacity-40 dark:group-hover/card:opacity-100 transition-opacity duration-500"
         style={{ background: `conic-gradient(from 0deg, transparent 0%, transparent 80%, ${themeColor}1) 100%)` }}
@@ -258,14 +235,11 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
         transition={{ rotate: { duration: 4, repeat: Infinity, ease: "linear" } }}
       />
       
-      {/* Camadas Interiores do Cartão */}
-      <div className="absolute inset-[1.5px] bg-white dark:bg-[#09090b] rounded-[calc(1rem-1.5px)] z-0" />
-      <div className="absolute inset-[1.5px] bg-zinc-50/80 dark:bg-zinc-900/40 rounded-[calc(1rem-1.5px)] z-0 transition-colors duration-500" />
+      <div className="absolute inset-[1.5px] bg-white/80 dark:bg-[#09090b]/80 rounded-[calc(1rem-1.5px)] z-0" />
+      <div className="absolute inset-[1.5px] bg-zinc-50/50 dark:bg-zinc-900/40 rounded-[calc(1rem-1.5px)] z-0 transition-colors duration-500" />
       
-      {/* Brilho Superior Direito */}
       <div className={`absolute top-0 right-0 w-48 h-48 ${glowColor} rounded-full blur-[50px] ${glowHoverColor} transition-colors pointer-events-none z-0`} />
 
-      {/* Ícone Gigante Escondido */}
       <group.icon 
         className={`absolute -bottom-4 -right-4 w-28 h-28 ${textColorClass} opacity-[0.03] dark:opacity-[0.06] -rotate-12 transition-all duration-700 group-hover/card:rotate-0 group-hover/card:scale-125 group-hover/card:opacity-[0.15] dark:group-hover/card:opacity-[0.25] pointer-events-none z-10`} 
       />
@@ -279,16 +253,13 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
             <group.icon className={`w-10 h-10 mb-3 opacity-60 dark:opacity-30 ${textColorClass}`} />
             <h3 className="text-sm font-bold text-zinc-600 dark:text-zinc-500 uppercase tracking-[0.2em]">{group.title}</h3>
             
-            {/* Lógica Diferente Mobile vs Desktop */}
             <div className="flex flex-col items-center mt-4">
-              {/* Bolinhas Desktop */}
               <div className="hidden md:flex gap-2">
                 <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
                 <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
                 <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
               </div>
               
-              {/* Tap to View Mobile */}
               <div className="md:hidden flex items-center gap-1.5 opacity-70">
                 <MousePointerClick className={`w-3.5 h-3.5 ${textColorClass}`} />
                 <span className={`text-[9px] font-bold uppercase tracking-widest ${textColorClass}`}>Tap to explore</span>
@@ -334,7 +305,7 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
 };
 
 /* =========================
-   6. O COMPONENTE PRINCIPAL
+   5. O COMPONENTE PRINCIPAL
    ========================= */
 const skillGroups = [
   { id: "core", title: "Core Engineering", subtitle: "Hardware", icon: Cpu, color: "text-emerald-500", skills: ["FPGA & Verilog", "PCB Design", "Embedded Systems & Firmware", "Hardware Prototyping", "Python & MATLAB"] },
@@ -360,13 +331,25 @@ export default function HeroSection() {
   ];
 
   return (
-    <section ref={sectionRef} className="relative pt-25 pb-16 md:pt-30 md:pb-32 overflow-hidden perspective-1000">
+    <section ref={sectionRef} className="relative pt-25 pb-16 md:pt-25 md:pb-32 overflow-hidden perspective-1000">
       
-      {/* ENVOLVEDOR DE FUNDO COM FADE-OUT SUAVE */}
-      <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
-        <ElectronBackground />
-        <div className="absolute inset-0">
-           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* ================================== */}
+      {/* FUNDO LIQUIDO (React Bits)         */}
+      {/* ================================== */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        
+        {/* Renderiza o componente 3D por trás de tudo */}
+        <LiquidEther 
+          color1="#c4ff9f" // Verde Limão
+          color2="#a6cf97" // Verde Menta
+          color3="#10b981" // Esmeralda base
+          mouseForce={30}
+          cursorSize={150}
+        />
+
+        {/* Máscara escura e Grelha sobrepostas ao fundo líquido para o "desvanecer" na parte de baixo */}
+        <div className="absolute inset-0 z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] opacity-80 mix-blend-overlay">
+           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
         </div>
       </div>
 
@@ -377,54 +360,51 @@ export default function HeroSection() {
           
           <motion.div 
             initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", damping: 12 }}
-            className="relative mb-6 md:mb-8 group"
+            className="relative mb-6 md:mb-8 group pointer-events-auto"
           >
             <DisintegratingProfile />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)] backdrop-blur-md pointer-events-auto">
             <Terminal className="w-3.5 h-3.5" /> PhD Candidate
           </motion.div>
 
           <motion.h1 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-6 uppercase leading-[0.9]"
+            className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-6 uppercase leading-[0.9] pointer-events-auto"
           >
             Gonçalo <br className="md:hidden" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700">Figueiredo</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 drop-shadow-sm">Figueiredo</span>
           </motion.h1>
 
           <motion.p 
-  initial={{ opacity: 0 }} 
-  animate={{ opacity: 1 }} 
-  transition={{ delay: 0.2 }}
-  className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 font-light max-w-l leading-relaxed mb-6 md:mb-4"
->
-  Bridging the gap between 
-  <strong className="text-zinc-900 dark:text-white font-bold ml-1">Theoretical Science</strong> and 
-  <strong className="text-zinc-900 dark:text-white font-bold ml-1">Industrial Application</strong>
-  
-  {/* Quebra de linha universal (Mobile e Desktop) */}
-  <br /> 
-  
-  <span className="mt-1 inline-block">through <TypewriterExpertise /></span>
-</motion.p>
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ delay: 0.2 }}
+            className="text-base md:text-lg text-zinc-600 dark:text-zinc-300 font-medium max-w-l leading-relaxed mb-6 md:mb-4 relative z-10 pointer-events-auto"
+          >
+            Bridging the gap between 
+            <strong className="text-zinc-900 dark:text-white font-bold ml-1">Theoretical Science</strong> and 
+            <strong className="text-zinc-900 dark:text-white font-bold ml-1">Industrial Application</strong>
+            
+            <br /> 
+            
+            <span className="mt-1 inline-block">through <TypewriterExpertise /></span>
+          </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-2 md:gap-3 max-w-4xl mb-4 md:mb-7"
+            className="flex flex-wrap items-center justify-center gap-2 md:gap-3 max-w-4xl mb-4 md:mb-7 relative z-10 pointer-events-auto"
           >
             {contacts.map((c, i) => {
               if (!c.href) {
-                // Localização
                 return (
-                  <div key={i} className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 mr-1 md:mr-3">
+                  <div key={i} className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 mr-1 md:mr-3 px-3 py-1.5 rounded-full bg-white/50 dark:bg-black/20 border border-zinc-200/50 dark:border-white/10 backdrop-blur-md">
                     <c.icon className="w-3.5 h-3.5 md:w-4 md:h-4" /> 
-                    <span className="text-[11px] md:text-xs font-medium">{c.text}</span>
+                    <span className="text-[11px] md:text-xs font-semibold">{c.text}</span>
                   </div>
                 );
               }
-              // Botões Magnéticos
               return (
                 <MagneticButton key={i} href={c.href}>
                   <c.icon className="w-3.5 h-3.5 md:w-4 md:h-4" /> 
@@ -437,13 +417,14 @@ export default function HeroSection() {
         </motion.div>
 
         {/* === ZONA 2: BENTO BOX INTERATIVA === */}
-        <motion.div 
-          style={{ y: yElement }}
-          className="grid grid-cols-1 md:grid-cols-15 gap-4 md:gap-6 mt-2" 
-        >
+        {/* === ZONA 2: BENTO BOX INTERATIVA === */}
+<motion.div 
+  style={{ y: yElement }}
+  className="grid grid-cols-1 md:grid-cols-15 gap-4 md:gap-6 -mt-6 md:-mt-5 relative z-20" 
+>
           {/* Main Profile Card */}
           <div className="col-span-1 md:col-span-10 flex flex-col">
-            <div className="flex-1 w-full relative rounded-2xl bg-white/60 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
+            <div className="flex-1 w-full relative rounded-2xl bg-white/60 dark:bg-[#0a0a0c]/60 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />
               
               <div className="relative z-10 flex flex-col flex-1 h-full">
@@ -455,21 +436,19 @@ export default function HeroSection() {
                     <h2 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Professional Profile</h2>
                   </div>
                   
-                  {/* CONTEÚDO DO PERFIL COM ACORDEÃO (Expansível no Mobile) */}
+                  {/* CONTEÚDO DO PERFIL COM ACORDEÃO */}
                   <div className={`relative overflow-hidden transition-all duration-500 ease-in-out ${isProfileExpanded ? 'max-h-[800px]' : 'max-h-[70px] md:max-h-[800px]'}`}>
                     
-                    <div className="space-y-4 md:space-y-2 text-sm md:text-lg text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
+                    <div className="space-y-4 md:space-y-2 text-sm md:text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
                       <p> Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50">Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro. </p>
-                      <p> With a unique <span className="text-emerald-600 dark:text-emerald-400 font-medium">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application. </p>
-                      <p> His focus is on developing robust <span className="text-zinc-900 dark:text-white font-medium bg-zinc-200 dark:bg-white/10 px-2 py-1 rounded">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-bold">Industrial IoT</span>. </p>
+                      <p> With a unique <span className="text-emerald-600 dark:text-emerald-400 font-bold">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application. </p>
+                      <p> His focus is on developing robust <span className="text-zinc-900 dark:text-white font-bold bg-white/50 dark:bg-white/10 px-2 py-1 rounded border border-zinc-200 dark:border-white/5">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-bold">Industrial IoT</span>. </p>
                     </div>
 
-                    {/* FADE EFFECT: Invisível no PC, visível no Mobile quando está encolhido */}
-                    <div className={`absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-zinc-50 dark:from-[#131315] to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${isProfileExpanded ? 'opacity-0' : 'opacity-100'}`} />
+                    <div className={`absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/80 dark:from-[#0a0a0c]/80 to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${isProfileExpanded ? 'opacity-0' : 'opacity-100'}`} />
                   
                   </div>
 
-                  {/* BOTÃO READ MORE (Aparece só no Mobile) */}
                   <div className="md:hidden mt-2 flex justify-center">
                     <button 
                       onClick={() => setIsProfileExpanded(!isProfileExpanded)}
@@ -502,7 +481,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Sci-Fi Skill Cards (Scroll Horizontal em Mobile) */}
+          {/* Sci-Fi Skill Cards */}
           <div 
             className="col-span-1 md:col-span-5 flex flex-row md:flex-col gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-2 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 h-full [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
