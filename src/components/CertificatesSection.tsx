@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { scientificEvents } from "@/lib/data";
 import { 
   ChevronRight, Cpu, CircuitBoard, BrainCircuit, Speech, Layers, Globe,
-  Calendar, Star, Mic, MapPin, Quote, ExternalLink, BadgeCheck, ArrowLeft
+  Calendar, Star, Mic, MapPin, Quote, ExternalLink, BadgeCheck, ArrowLeft,ShieldCheck
 } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 
@@ -15,6 +15,19 @@ import MotionWrapper from "./MotionWrapper";
 // =======================
 
 const certs = [
+  {
+      id: "security",
+      title: "Cybersecurity & Networking",
+      icon: ShieldCheck, 
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/20",
+      border: "hover:border-emerald-500/30",
+      items: [
+        { title: "Network Security Expert (NSE) 3 - Network Security Associate", org: "Fortinet", year: "2026" },
+        { title: "Network Security Expert (NSE) 2 - Network Security Fundamentals", org: "Fortinet", year: "2026" },
+        { title: "Network Security Expert (NSE) 1  - Network Security Fundamentals", org: "Fortinet", year: "2026" },
+      ]
+    },
     {
       id: "semiconductors",
       title: "Digital Design & Semiconductors",
