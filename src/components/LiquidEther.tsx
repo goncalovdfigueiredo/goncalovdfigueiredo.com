@@ -5,25 +5,26 @@ import * as THREE from 'three';
 import './LiquidEther.css';
 
 export default function LiquidEther({
-  mouseForce = 5,
-  cursorSize = 100,
+  mouseForce = 15,          // Aumentado: Interação mais responsiva e imponente ao rato
+  cursorSize = 120,         // Aumentado: Área de influência maior
   isViscous = false,
   viscous = 30,
   iterationsViscous = 32,
   iterationsPoisson = 32,
-  dt = 0.014,
+  dt = 0.012,               // Diminuído: Simulação corre de forma ligeiramente mais lenta e pesada
   BFECC = true,
-  resolution = 0.5,
+  resolution = 0.5,         // Mantido: 0.5 garante excelente performance em Mobile e Desktop
   isBounce = false,
-  colors = ['#5227FF', '#FF9FFC', '#B497CF'],
+  // CORES PREMIUM: Um gradiente perfeito desde o verde escuro até ao verde limão brilhante
+  colors = ['#065f46', '#10b981', '#34d399', '#c4ff9f'], 
   style = {},
   className = '',
   autoDemo = true,
-  autoSpeed = 0.5,
-  autoIntensity = 2.2,
-  takeoverDuration = 0.25,
-  autoResumeDelay = 1000,
-  autoRampDuration = 0.6
+  autoSpeed = 0.3,          // Diminuído: Movimento autónomo muito mais subtil e elegante
+  autoIntensity = 1.5,      // Diminuído: Menos turbulência caótica no ecrã
+  takeoverDuration = 0.5,   // Aumentado: Transição mais suave quando agarras o controlo com o rato
+  autoResumeDelay = 2000,   // Aumentado: Demora 2 segundos até o auto-demo voltar após tirares o rato
+  autoRampDuration = 1.0    // Aumentado: O auto-demo volta a acelerar de forma gradual
 }) {
   const mountRef = useRef(null);
   const webglRef = useRef(null);

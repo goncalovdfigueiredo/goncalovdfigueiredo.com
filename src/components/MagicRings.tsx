@@ -60,8 +60,8 @@ void main() {
 `;
 
 export default function MagicRings({
-  color = '#fc42ff',
-  colorTwo = '#42fcff',
+  color = '#34d399',    // <-- NÉON: Verde Esmeralda Vibrante (Anéis de dentro)
+  colorTwo = '#10b981', // <-- BASE: Verde Esmeralda Sólido (Anéis de fora)
   speed = 1,
   ringCount = 6,
   attenuation = 10,

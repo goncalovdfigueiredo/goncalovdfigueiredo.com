@@ -5,7 +5,7 @@ import { personalInfo } from "@/lib/data";
 import { 
   Mail, Github, Linkedin, BookOpen, 
   User, Microscope, Download, MapPin, FileText,
-  Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown, MousePointerClick
+  Cpu, Users, Terminal, Fingerprint, FileBadge, ChevronDown, MousePointerClick, EarthLock
 } from "lucide-react"; 
 import { 
   motion, 
@@ -366,7 +366,7 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)] backdrop-blur-md pointer-events-auto">
-            <Terminal className="w-3.5 h-3.5" /> PhD Candidate
+            <Terminal className="w-3.5 h-3.5" /> Ph.D. Candidate
           </motion.div>
 
           <motion.h1 
@@ -469,12 +469,12 @@ export default function HeroSection() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 md:h-3 md:w-3 bg-emerald-500"></span>
                       </span>
-                      Open to Research
+                      Ph.D. Candidate
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Primary Focus</p>
-                    <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1.5 md:gap-2 justify-end text-xs md:text-sm"><Cpu className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-600 dark:text-emerald-500"/> Hardware & IoT</p>
+                    <p className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">CORE EXPERTISE</p>
+                    <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1.5 md:gap-2 justify-end text-xs md:text-sm"><EarthLock className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-600 dark:text-emerald-500"/> Secure IoT & Systems Analysis</p>
                   </div>
                 </div>
               </div>
