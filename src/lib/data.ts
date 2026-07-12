@@ -331,6 +331,7 @@ export const LeadershipExperience = [
         items: [
           { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
+          { label: "AIM Further 2025", icon: "Rocket", tag: "Event" },
         ]
       },
 
