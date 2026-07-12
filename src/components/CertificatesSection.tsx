@@ -63,6 +63,7 @@ const certs = [
       bg: "bg-purple-500/20",
       border: "hover:border-purple-500/30",
       items: [
+        { title: "AI for ICs and ICs for AI: Summer School", org: "POEMS: Portuguese Competence Centre in Semiconductors", year: "2026" },
         { title: "Machine Learning with Python: Professional Certificate", org: "Anaconda", year: "2026" },
         { title: "PCEP™ – Certified Entry-Level Python Programmer", org: "Python Institute", year: "2024", link: "https://www.credly.com/badges/2ad45f39-bf39-48c4-8f43-b8300d84e1a9" },
         { title: "Machine Learning, Maths & Ethics: Hands-on", org: "Instituto Superior Técnico", year: "2024" },
