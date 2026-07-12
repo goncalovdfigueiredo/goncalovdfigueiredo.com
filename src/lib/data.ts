@@ -356,7 +356,7 @@ export const LeadershipExperience = [
     company: "IEEE, Elsevier & Optica", 
     location: "Remote",
     position: "Scientific Peer Reviewer", 
-    period: "Oct 2024 - Present", 
+    period: "Oct 2024 - Jul 2026", 
     logo: "/IEEE.png", 
     logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
     achievements: [
