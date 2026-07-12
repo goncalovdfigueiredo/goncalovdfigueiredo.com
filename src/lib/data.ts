@@ -329,9 +329,10 @@ export const LeadershipExperience = [
         type: "activity_grid",
         year: "2026", // 👈 Identificador do Ano
         items: [
+          { label: "AIM Further 2026", icon: "Rocket", tag: "Event" },
           { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
-          { label: "AIM Further 2025", icon: "Rocket", tag: "Event" },
+          
         ]
       },
 
