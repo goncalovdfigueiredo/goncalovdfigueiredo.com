@@ -29,33 +29,6 @@ const certs = [
       ]
     },
     {
-      id: "semiconductors",
-      title: "Digital Design & Semiconductors",
-      icon: Cpu,
-      color: "text-blue-500",
-      bg: "bg-blue-500/20",
-      border: "hover:border-blue-500/30",
-      items: [
-        { title: "Digital IC Design Fundamentals", org: "Cadence Design Systems", year: "2026", link: "https://www.credly.com/badges/719c63f0-1b05-4400-b271-c65cde384bcc/public_url" },
-        { title: "Semiconductor 101", org: "Cadence Design Systems", year: "2026", link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53/public_url" },
-        { title: "Verilog HDL Advanced (Instructor-Led Training)", org: "Intel Corporation", year: "2025", link: "https://learn.altera.com/share/gamification/badges/external/a30d1263-6358-40a9-8493-b739811148d0?lang=en" },
-        { title: "Beginner Altera® FPGA Designer", org: "Intel Corporation", year: "2025" },
-        { title: "FPGA computing systems: Background knowledge", org: "Politecnico di Milano", year: "2025" },
-      ]
-    },
-    {
-      id: "elec",
-      title: "Electronics & PCB Design",
-      icon: CircuitBoard,
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/20",
-      border: "hover:border-emerald-500/30",
-      items: [
-        { title: "Fundamentals of PCB Material Selection and Stack-Up Design", org: "Sierra Circuits", year: "2026" },
-        { title: "PCB Basic Design Course", org: "Altium Education", year: "2024", link: "https://education.altium.com/" },
-      ]
-    },
-    {
       id: "ai",
       title: "Data Science & AI",
       icon: BrainCircuit,
@@ -70,6 +43,33 @@ const certs = [
         { title: "Building AI", org: "University of Helsinki", year: "2023", link: "https://buildingai.elementsofai.com/" },
       ]
     },
+    {
+      id: "semiconductors",
+      title: "Digital Design & Semiconductors",
+      icon: Cpu,
+      color: "text-blue-500",
+      bg: "bg-blue-500/20",
+      border: "hover:border-blue-500/30",
+      items: [
+        { title: "Digital IC Design Fundamentals", org: "Cadence Design Systems", year: "2026", link: "https://www.credly.com/badges/719c63f0-1b05-4400-b271-c65cde384bcc/public_url" },
+        { title: "Semiconductor 101", org: "Cadence Design Systems", year: "2026", link: "https://www.credly.com/badges/54ed918d-4857-4239-aace-c947ab303a53/public_url" },
+        { title: "Verilog HDL Advanced (Instructor-Led Training)", org: "Intel Corporation", year: "2025", link: "https://learn.altera.com/share/gamification/badges/external/a30d1263-6358-40a9-8493-b739811148d0?lang=en" },
+
+      ]
+    },
+    {
+      id: "elec",
+      title: "Electronics & PCB Design",
+      icon: CircuitBoard,
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/20",
+      border: "hover:border-emerald-500/30",
+      items: [
+        { title: "Fundamentals of PCB Material Selection and Stack-Up Design", org: "Sierra Circuits", year: "2026" },
+        { title: "PCB Basic Design Course", org: "Altium Education", year: "2024", link: "https://education.altium.com/" },
+      ]
+    },
+    
     {
       id: "lang",
       title: "Languages",
