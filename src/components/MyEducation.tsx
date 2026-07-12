@@ -149,7 +149,6 @@ const EducationEntry = ({
 // --- COMPONENTE VISUAL: Escadas Isométricas (Chão + 4 Paredes em cada bloco) ---
 const IsometricStairs = ({ activeIndex }: { activeIndex: number | null }) => {
   const steps = [
-    { label: 'Summer School', years: 0.2, size: 130, color: '#DBA400', sideColor: '#DBA400', status: 'Completed', yearsLabel: '2026', coords: '38.7367° N, 9.1389° W', ref: '', range: [9, 10], zBase: 150 },
     { label: 'Ph.D.', years: 4, size: 170, color: '#10b981', sideColor: '#10b981', status: 'In Progress', yearsLabel: '2022 - 2026', coords: '38.7367° N, 9.1389° W', ref: '', range: [5, 9], zBase: 65 },
     { label: 'M.Sc.', years: 2, size: 220, color: '#3b82f6', sideColor: '#3b82f6', status: 'Completed', yearsLabel: '2020 - 2022', coords: '40.6308° N, 8.6559° W', ref: '', range: [3, 5], zBase: 15 },
     { label: 'B.Sc.', years: 3, size: 280, color: '#5D3FD3', sideColor: '#5D3FD3', status: 'Completed', yearsLabel: '2017 - 2020', coords: '40.6308° N, 8.6559° W', ref: '', range: [0, 3], zBase: -50 }
