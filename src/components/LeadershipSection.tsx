@@ -249,7 +249,7 @@ export default function LeadershipSection() {
             VERSÃO DESKTOP
            ======================= */}
         <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4">
-          <div className="flex items-start min-w-max gap-4">
+          <div className="flex items-start min-w-max gap-8">
             {LeadershipExperience.map((job: any, idx: number) => {
               const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
@@ -275,7 +275,7 @@ export default function LeadershipSection() {
                     <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">{job.period}</span>
                   </div>
 
-                  <GlassCard className="p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between bg-zinc-100/90 border border-zinc-200 shadow-xl dark:bg-[#09090b]/60 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40">
+                  <GlassCard className="p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between bg-zinc-100/0 border border-zinc-200 shadow-xl dark:bg-[#09090b]/0 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40">
                     <div className="mb-6 mt-2">
                       <div className="flex items-center gap-4 mb-4">
                         <div className={`
