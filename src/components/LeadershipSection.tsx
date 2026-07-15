@@ -49,14 +49,23 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
 };
 
 const IconMap: any = {
-  Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake,
+  Rocket, 
+  BrainCircuit, 
+  Gamepad2, 
+  BookOpen, 
+  MessageCircleHeart, 
+  Globe, 
+  HeartHandshake,
+  Mic,    // Adicionado
+  Medal   // Adicionado
 };
 
 const TagColors: Record<string, string> = {
   Event: "text-amber-600 bg-amber-500/10 border-amber-500/20",       
   Resource: "text-blue-600 bg-blue-500/10 border-blue-500/20",       
   Community: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20", 
-  Networking: "text-purple-600 bg-purple-500/10 border-purple-500/20",   
+  Networking: "text-purple-600 bg-purple-500/10 border-purple-500/20",
+  "PhD Jury": "text-rose-600 bg-rose-500/10 border-rose-500/20", 
 };
 
 const CompanyLogo = ({ job }: { job: any }) => {
