@@ -4,8 +4,7 @@
 import { useState } from "react";
 import {
   Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit,
-  Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, ChevronUp
-} from "lucide-react";
+  Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, ChevronUp, Mic, Medal} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
