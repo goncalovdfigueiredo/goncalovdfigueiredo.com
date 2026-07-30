@@ -67,35 +67,36 @@ function TypewriterExpertise() {
 /* =========================
    2. MAGNETIC BUTTONS 
    ========================= */
-function MagneticButton({ children, href }: { children: React.ReactNode, href: string | null }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+   function MagneticButton({ children, href }: { children: React.ReactNode, href: string | null }) {
+    const ref = useRef<HTMLAnchorElement>(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+  
+    const handleMouse = (e: React.MouseEvent) => {
+      const { clientX, clientY } = e;
+      const { height, width, left, top } = ref.current!.getBoundingClientRect();
+      const middleX = clientX - (left + width / 2);
+      const middleY = clientY - (top + height / 2);
+      setPosition({ x: middleX * 0.3, y: middleY * 0.3 });
+    };
+  
+    const reset = () => setPosition({ x: 0, y: 0 });
+  
+    return (
+      <motion.a
+        href={href || "#"}
+        target={href ? "_blank" : undefined}
+        ref={ref}
+        onMouseMove={handleMouse}
+        onMouseLeave={reset}
+        animate={{ x: position.x, y: position.y }}
+        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+        className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 font-medium transition-all duration-300 group overflow-hidden shadow-sm dark:shadow-[0_0_15px_rgba(255,255,255,0.02)] z-10 backdrop-blur-md hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white dark:hover:text-zinc-950 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]"
+      >
+        {children}
+      </motion.a>
+    );
+  }
 
-  const handleMouse = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current!.getBoundingClientRect();
-    const middleX = clientX - (left + width / 2);
-    const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX * 0.3, y: middleY * 0.3 });
-  };
-
-  const reset = () => setPosition({ x: 0, y: 0 });
-
-  return (
-    <motion.a
-      href={href || "#"}
-      target={href ? "_blank" : undefined}
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={reset}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-emerald-500 hover:text-white dark:hover:text-black hover:border-emerald-500 dark:hover:border-emerald-400 transition-colors duration-300 group overflow-hidden shadow-sm dark:shadow-[0_0_15px_rgba(255,255,255,0.02)] hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] z-10 backdrop-blur-md"
-    >
-      {children}
-    </motion.a>
-  );
-}
 
 /* =========================
    3. DISINTEGRATING PROFILE + MAGIC RINGS
@@ -254,16 +255,15 @@ const HardwareSkillCard = ({ group, index }: { group: any, index: number }) => {
             <h3 className="text-sm font-bold text-zinc-600 dark:text-zinc-500 uppercase tracking-[0.2em]">{group.title}</h3>
             
             <div className="flex flex-col items-center mt-4">
-              <div className="hidden md:flex gap-2">
-                <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
-                <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
-                <div className="w-2 h-2 rounded-full animate-pulse bg-zinc-300 dark:bg-zinc-500" />
-              </div>
-              
-              <div className="md:hidden flex items-center gap-1.5 opacity-70">
-                <MousePointerClick className={`w-3.5 h-3.5 ${textColorClass}`} />
-                <span className={`text-[9px] font-bold uppercase tracking-widest ${textColorClass}`}>Tap to explore</span>
-              </div>
+            <div className="flex flex-col items-center mt-4">
+  <div className="flex items-center gap-1.5 opacity-70 animate-pulse">
+    <MousePointerClick className={`w-3.5 h-3.5 ${textColorClass}`} />
+    <span className={`text-[9px] font-bold uppercase tracking-widest ${textColorClass}`}>
+      <span className="hidden md:inline">Hover to explore</span>
+      <span className="inline md:hidden">Tap to explore</span>
+    </span>
+  </div>
+</div>
             </div>
           </motion.div>
         )}
@@ -365,7 +365,7 @@ export default function HeroSection() {
             <DisintegratingProfile />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[8px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)] backdrop-blur-md pointer-events-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[10px] md:text-xxs font-black uppercase tracking-[0.3em] mb-4 md:mb-6 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.2)] backdrop-blur-md pointer-events-auto">
             <Terminal className="w-3.5 h-3.5" /> Ph.D. Candidate
           </motion.div>
 
@@ -424,7 +424,7 @@ export default function HeroSection() {
 >
           {/* Main Profile Card */}
           <div className="col-span-1 md:col-span-10 flex flex-col">
-            <div className="flex-1 w-full relative rounded-2xl bg-white/60 dark:bg-[#0a0a0c]/60 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
+            <div className="flex-1 w-full relative rounded-2xl bg-white/95 dark:bg-[#0a0a0c]/95 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 px-6 pt-6 pb-5 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] group-hover:bg-emerald-500/20 transition-colors pointer-events-none" />
               
               <div className="relative z-10 flex flex-col flex-1 h-full">

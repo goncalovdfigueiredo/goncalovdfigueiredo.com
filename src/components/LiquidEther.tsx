@@ -5,10 +5,10 @@ import * as THREE from 'three';
 import './LiquidEther.css';
 
 export default function LiquidEther({
-  mouseForce = 15,          // Aumentado: Interação mais responsiva e imponente ao rato
-  cursorSize = 120,         // Aumentado: Área de influência maior
-  isViscous = false,
-  viscous = 30,
+  mouseForce = 4,          // Aumentado: Interação mais responsiva e imponente ao rato
+  cursorSize = 40,         // Aumentado: Área de influência maior
+  isViscous = true,
+  viscous = 3,
   iterationsViscous = 32,
   iterationsPoisson = 32,
   dt = 0.012,               // Diminuído: Simulação corre de forma ligeiramente mais lenta e pesada
@@ -16,12 +16,14 @@ export default function LiquidEther({
   resolution = 0.5,         // Mantido: 0.5 garante excelente performance em Mobile e Desktop
   isBounce = false,
   // CORES PREMIUM: Um gradiente perfeito desde o verde escuro até ao verde limão brilhante
-  colors = ['#065f46', '#10b981', '#34d399', '#c4ff9f'], 
+  //colors = ['#065f46', '#10b981', '#34d399', '#c4ff9f'], 
+  colors = ['#050505', '#022c22', '#064e3b', '#059669'],
   style = {},
   className = '',
   autoDemo = true,
-  autoSpeed = 0.3,          // Diminuído: Movimento autónomo muito mais subtil e elegante
-  autoIntensity = 1.5,      // Diminuído: Menos turbulência caótica no ecrã
+  autoSpeed = 0.03,          // Diminuído: Movimento autónomo muito mais subtil e elegante
+  //autoIntensity = 1.5,      // Diminuído: Menos turbulência caótica no ecrã
+  autoIntensity = 0.4,
   takeoverDuration = 0.5,   // Aumentado: Transição mais suave quando agarras o controlo com o rato
   autoResumeDelay = 2000,   // Aumentado: Demora 2 segundos até o auto-demo voltar após tirares o rato
   autoRampDuration = 1.0    // Aumentado: O auto-demo volta a acelerar de forma gradual
