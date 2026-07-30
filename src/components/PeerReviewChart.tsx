@@ -12,7 +12,7 @@ type PeerReviewChartProps = {
 // Aqui definimos todos os jornais, a contagem e a cor/editora associada
 const ALL_JOURNALS = [
   // --- IEEE (Roxo/Azul) ---
-  { name: "IEEE Internet of Things Journal", count: 30, color: "bg-purple-500", publisher: "IEEE" },
+  { name: "IEEE Internet of Things Journal", count: 32, color: "bg-purple-500", publisher: "IEEE" },
   { name: "IEEE Photonics Journal", count: 2, color: "bg-purple-500", publisher: "IEEE" }, // Ajustei o nome baseado no teu código anterior "Photonics Journal"
   
   // --- Elsevier (Laranja) ---
