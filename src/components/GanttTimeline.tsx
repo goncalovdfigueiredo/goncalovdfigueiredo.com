@@ -246,12 +246,12 @@ function DesktopGantt({
   const laneGap = 8;
 
   const totalDays = Math.max(1, daysBetween(minStart, maxEnd));
-  const timeW = Math.max(600, totalDays * (pxPerDay || 0.35));
+  const timeW = Math.max(800, totalDays * (pxPerDay || 0.45)); // <--- Subir de 0.35 para 1.2
 
   const totalRows = rows.length;
   const height = padTop + headerH + padBottom + totalRows * ((rowHeight || 56) + laneGap);
 
-  const startXR = (d: Date) => padLeft + (daysBetween(d, maxEnd) * (pxPerDay || 0.35));
+  const startXR = (d: Date) => padLeft + (daysBetween(d, maxEnd) * (pxPerDay || 0.45)); // <--- Subir aqui também
 
   const years: number[] = [];
   const y0 = minStart.getFullYear();
