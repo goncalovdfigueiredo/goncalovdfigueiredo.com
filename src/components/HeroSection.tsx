@@ -152,18 +152,18 @@ function DisintegratingProfile() {
       {/* MAGIC RINGS: Centrados atrás da foto, com o dobro do tamanho 
         para que orbitem à volta da borda exterior do teu perfil.
       */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[350px] md:h-[350px] z-0 pointer-events-none opacity-40 mix-blend-screen">
-        <MagicRings
-          color="#c4ff9f"         // Verde Limão (Liga com o Liquid Ether)
-          colorTwo="#10b981"      // Verde Esmeralda 
-          ringCount={5}           // 5 Anéis rotativos
-          speed={1.2}             // Velocidade orgânica
-          baseRadius={0.15}       // Raio inicial perfeito para contornar a foto
-          radiusStep={0.06}       // Distância entre cada anel
-          opacity={0.85}
-          followMouse={true}      // Reage ligeiramente ao passar o rato por cima
-        />
-      </div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] md:w-[420px] md:h-[420px] z-0 pointer-events-none opacity-60 mix-blend-screen">
+  <MagicRings 
+    color="#34d399"       // Verde Menta Luminoso
+    colorTwo="#059669"    // Verde Esmeralda Profundo
+    ringCount={4}         // Apenas 4 anéis para maior limpeza visual
+    speed={0.8}           // Velocidade mais lenta e elegante
+    baseRadius={0.22}     // Raio alinhado para envolver perfeitamente a foto de fora a fora
+    radiusStep={0.08}     // Maior espaçamento entre anéis
+    opacity={0.7} 
+    followMouse={true}    
+  />
+</div>
 
       <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 z-30 pointer-events-none rounded-full overflow-hidden">
         {[...Array(totalParticles)].map((_, i) => (
