@@ -154,8 +154,8 @@ export const education = [
 export const workExperience = [
   {
     company: "Lightenjin II - Industria de Iluminação, Instituto de Telecomunicações & CICECO - Aveiro Institute of Materials",
-    position: "Ph.D. Candidate",
-    period: "Sep 2022 - Present",
+    position: "Industrial Ph.D. Candidate",
+    period: "Sep 2023 - Present",
     logos: ["/lightenjin.png", "/it.png", "/ciceco.png"],
     
     companyLinks: [
@@ -287,7 +287,7 @@ export const LeadershipExperience = [
       lon: -8.658116,
     },
     position: "PhD Student Council Secretary",
-    period: "Jan 2025 - Present",
+    period: "Jan 2025 - Sep 2026",
     logo: "/ciceco.png",
     relatedLocations: [
       {
@@ -313,7 +313,7 @@ export const LeadershipExperience = [
           { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
           { label: "Research Summit 2026", icon: "Medal", tag: "PhD Jury" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
-          { label: "Karaoke Night", icon: "Mic", tag: "Event" },
+          //{ label: "Karaoke Night", icon: "Mic", tag: "Event" },
           
         ]
       },
@@ -343,7 +343,7 @@ export const LeadershipExperience = [
     logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
     achievements: [
       "Ensuring scientific integrity by serving as a subject matter expert reviewer for high-impact journals across multiple publishers.",
-      "Active contribution to the scientific community through critical evaluation of over 50+ manuscripts in Optics and Photonics.",
+      "Active contribution to the scientific community through critical evaluation of over 65+ manuscripts in Optics and Photonics.",
       "__chart__", 
     ],
   },

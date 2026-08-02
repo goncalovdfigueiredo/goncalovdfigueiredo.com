@@ -56,8 +56,8 @@ const IconMap: any = {
   MessageCircleHeart, 
   Globe, 
   HeartHandshake,
-  Mic,    // Adicionado
-  Medal   // Adicionado
+  Mic,
+  Medal
 };
 
 const TagColors: Record<string, string> = {
@@ -94,10 +94,10 @@ export default function LeadershipSection() {
     setActiveCard(activeCard === idx ? null : idx);
   };
 
-  // 👇 FUNÇÃO HELPER PARA RENDERIZAR A GRID (Reutilizada no Mobile e Desktop)
+  // 👇 FUNÇÃO HELPER PARA RENDERIZAR A GRID (Adaptável para 4 colunas no hover do desktop)
   const renderActivityGrid = (ach: any, i: number) => (
     <div key={i} className="pt-2 first:pt-0">
-      {/* SEPARADOR DE ANO (Se existir 'year' nos dados) */}
+      {/* SEPARADOR DE ANO */}
       {ach.year && (
         <div className="flex items-center gap-2 mb-3 mt-1">
           <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
@@ -107,8 +107,8 @@ export default function LeadershipSection() {
         </div>
       )}
       
-      {/* GRID DE ÍCONES */}
-      <div className="grid grid-cols-2 gap-2">
+      {/* GRID DE ÍCONES (2 colunas por defeito, passa para 4 colunas quando o cartão expande no desktop) */}
+      <div className="grid grid-cols-2 sm:group-hover:grid-cols-4 gap-2 transition-all duration-500">
         {ach.items.map((item: any, k: number) => {
           const IconComp = IconMap[item.icon] || Rocket;
           const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
@@ -157,7 +157,6 @@ export default function LeadershipSection() {
             </div>
           </div>
         </MotionWrapper>
-
 
         {/* =======================
             VERSÃO MOBILE
@@ -218,7 +217,7 @@ export default function LeadershipSection() {
                             <div className="space-y-3">
                               {job.achievements.map((ach: any, i: number) => {
                                 if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                  return renderActivityGrid(ach, i); // 👇 USANDO A NOVA FUNÇÃO HELPER
+                                  return renderActivityGrid(ach, i);
                                 }
                                 if (ach === "__chart__") {
                                   return (
@@ -246,7 +245,7 @@ export default function LeadershipSection() {
         </div>
 
         {/* =======================
-            VERSÃO DESKTOP
+            VERSÃO DESKTOP (Com largura duplicada no hover: w-[800px])
            ======================= */}
         <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4">
           <div className="flex items-start min-w-max gap-8">
@@ -264,10 +263,10 @@ export default function LeadershipSection() {
                   style={{ zIndex }} 
                   className={`
                     relative flex-shrink-0 
-                    w-[400px] 
+                    w-[400px] hover:w-[550px]
                     ${idx > 0 ? "-ml-32" : ""}
                     transition-all duration-500 ease-out group
-                    hover:!ml-4 hover:z-50 hover:scale-105 hover:-translate-y-2
+                    hover:!ml-4 hover:z-50 hover:-translate-y-2
                   `}
                 >
                   <div className="absolute -top-3 right-6 z-30 px-3 py-1.5 rounded-full flex items-center gap-1.5 bg-zinc-50 border border-zinc-200 shadow-sm dark:bg-zinc-900 dark:border-emerald-500/30 dark:shadow-[0_0_10px_rgba(16,185,129,0.2)] transition-transform duration-500 group-hover:-translate-y-1">
@@ -287,7 +286,7 @@ export default function LeadershipSection() {
 
                         <div>
                             <h3 className="text-lg font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[300px]">{job.company}</p>
+                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[300px] group-hover:max-w-none transition-all duration-500">{job.company}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400">
@@ -311,7 +310,7 @@ export default function LeadershipSection() {
                           <div className="space-y-3 mt-2 pl-1">
                             {job.achievements.map((ach: any, i: number) => {
                               if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                return renderActivityGrid(ach, i); // 👇 USANDO A NOVA FUNÇÃO HELPER
+                                return renderActivityGrid(ach, i);
                               }
                               if (ach === "__chart__") {
                                 return (
@@ -342,7 +341,7 @@ export default function LeadershipSection() {
           </div>
         </div>
 
-        {/* TIMELINE - Mantida igual... */}
+        {/* TIMELINE */}
         <MotionWrapper>
           <div id="timeline" className="mt-16 md:mt-20 scroll-mt-24">
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
