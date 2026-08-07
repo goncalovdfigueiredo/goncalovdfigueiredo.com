@@ -861,4 +861,11 @@ export const featuredIn = [
     type: "Institutional",
     link: "https://www.it.pt/News/NewsPost/4961"
   },
+  {
+    source: "ANACOM",
+    description: "Official announcement of the Best Student Paper Award (1st Prize) at the 17th URSI Congress.",
+    date: "Nov 2023",
+    type: "Institutional",
+    link: "https://www.anacom.pt/render.jsp?contentId=1771803&languageId=1" 
+  }
 ];
