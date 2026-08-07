@@ -1,4 +1,9 @@
-"use client"; import React, { useState, useEffect } from "react"; import { awards, featuredIn } from "@/lib/data"; import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion"; import { Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight, Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car, Clock, ChevronDown, ChevronRight, Plus, X, Speech } from "lucide-react"; import MotionWrapper from "./MotionWrapper"; import { GlassCard } from "./ui/glass-card";
+"use client"; import React, { useState, useEffect } from "react"; 
+import { awards, featuredIn } from "@/lib/data"; 
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion"; 
+import { Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight, Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car, Clock, ChevronDown, ChevronRight, Plus, X, Speech } from "lucide-react"; 
+import MotionWrapper from "./MotionWrapper"; 
+import { GlassCard } from "./ui/glass-card";
 
 const F1StartingLights = () => {
   const [lights, setLights] = useState(0);
@@ -499,45 +504,44 @@ export default function AwardsSection() {
               <div className="hidden md:grid md:grid-cols-5 gap-5 pb-6 items-stretch" style={{ perspective: "1000px" }}>
                 
                 {/* Cartão 1: The Quantified Self (3 colunas) */}
-                <div className="w-full md:col-span-3 flex">
-                  <HobbyCard className="w-full h-full flex flex-col justify-between hover:border-emerald-500/40 transition-all duration-500 relative shadow-xl">
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-                      <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
-                      <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
-                    </div>
-                    <div className="relative z-20 flex flex-col h-full p-8 justify-between">
-                      <div>
-                        <div className="flex justify-between items-start mb-5">
-                          <div>
-                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2.5 group-hover:text-emerald-500 transition-colors">
-                              <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" /> The Quantified Self
-                            </h3>
-                            <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-3 leading-relaxed text-justify font-medium">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering:", "bg-emerald-500/10")}</p>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-justify">{parseBoldText("consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
-
-                          </div>
-                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30 shrink-0 ml-4">
-                            <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-                            <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider">ACTIVE</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-8 pt-6 border-t border-zinc-200/60 dark:border-white/5">
-                        <div className="flex items-center gap-2 mb-3"><Timer className="w-3.5 h-3.5 text-emerald-500" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
-                        <div className="grid grid-cols-3 gap-6">
-                          {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
-                            <div key={i} className="flex flex-col relative group/stat bg-white/40 dark:bg-black/20 p-3 rounded-xl border border-zinc-200/50 dark:border-white/5">
-                              <span className="text-[10px] font-bold text-zinc-400 mb-1">{stat.dist}</span>
-                              <span className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
-                              <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-2"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </HobbyCard>
-                </div>
+<div className="w-full md:col-span-3 flex">
+  <HobbyCard className="w-full h-full flex flex-col justify-between hover:border-emerald-500/40 transition-all duration-500 relative shadow-xl">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
+      <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
+      <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
+    </div>
+    <div className="relative z-20 flex flex-col h-full p-8 justify-between">
+      <div>
+        <div className="flex justify-between items-start mb-5">
+          <div className="max-w-[72%]">
+            <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2.5 group-hover:text-emerald-500 transition-colors">
+              <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" /> The Quantified Self
+            </h3>
+            {/* Texto alinhado à esquerda, idêntico aos blocos vizinhos */}
+            <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-3 leading-relaxed text-left font-medium">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-left">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
+          </div>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30 shrink-0 ml-4">
+            <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+            <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider">ACTIVE</span>
+          </div>
+        </div>
+      </div>
+      <div className="mt-8 pt-6 border-t border-zinc-200/60 dark:border-white/5">
+        <div className="flex items-center gap-2 mb-3"><Timer className="w-3.5 h-3.5 text-emerald-500" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
+        <div className="grid grid-cols-3 gap-6">
+          {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
+            <div key={i} className="flex flex-col relative group/stat bg-white/40 dark:bg-black/20 p-3 rounded-xl border border-zinc-200/50 dark:border-white/5">
+              <span className="text-[10px] font-bold text-zinc-400 mb-1">{stat.dist}</span>
+              <span className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
+              <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-2"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </HobbyCard>
+</div>
 
                 {/* Cartão 2: Precision & Strategy (1 coluna) */}
                 <div className="w-full md:col-span-1 flex">
