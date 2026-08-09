@@ -108,7 +108,7 @@ export default function LeadershipSection() {
       )}
       
       {/* GRID DE ÍCONES (2 colunas por defeito, passa para 4 colunas quando o cartão expande no desktop) */}
-      <div className="grid grid-cols-2 sm:group-hover:grid-cols-4 gap-2 transition-all duration-500">
+      <div className="grid grid-cols-4 sm:group-hover:grid-cols-4 gap-2 transition-all duration-500">
         {ach.items.map((item: any, k: number) => {
           const IconComp = IconMap[item.icon] || Rocket;
           const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";

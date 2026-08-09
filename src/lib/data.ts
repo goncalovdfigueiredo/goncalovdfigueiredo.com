@@ -309,9 +309,9 @@ export const LeadershipExperience = [
         type: "activity_grid",
         year: "2026", 
         items: [
-          { label: "AIM Further 2026", icon: "Rocket", tag: "Event" },
+          { label: "AIM Further", icon: "Rocket", tag: "Event" },
           { label: "Welcome Guide", icon: "BookOpen", tag: "Resource" },
-          { label: "Research Summit 2026", icon: "Medal", tag: "PhD Jury" },
+          { label: "Research Summit", icon: "Medal", tag: "PhD Jury" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
           //{ label: "Karaoke Night", icon: "Mic", tag: "Event" },
           
@@ -321,10 +321,10 @@ export const LeadershipExperience = [
         type: "activity_grid",
         year: "2025", 
         items: [
-          { label: "AIM Further 2025", icon: "Rocket", tag: "Event" },
+          { label: "AIM Further", icon: "Rocket", tag: "Event" },
           { label: "CICECO Welcome Event", icon: "HeartHandshake", tag: "Event" },
-          { label: "Jornadas CICECO 2025", icon: "Rocket", tag: "Event" },
-          { label: "Research Summit 2025", icon: "Medal", tag: "PhD Jury" },
+          { label: "Jornadas CICECO", icon: "Rocket", tag: "Event" },
+          { label: "Research Summit", icon: "Medal", tag: "PhD Jury" },
           { label: "Quiz Night", icon: "BrainCircuit", tag: "Event" },
           { label: "Game Night", icon: "Gamepad2", tag: "Event" },
           { label: "WhatsApp Community", icon: "MessageCircleHeart", tag: "Community" },

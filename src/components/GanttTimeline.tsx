@@ -158,31 +158,39 @@ function buildRows(): Row[] {
  * ========================= */
 function MobileTimeline({ rows }: { rows: Row[] }) {
   if (rows.length === 0) return null;
-
   const currentYear = new Date().getFullYear();
   const rawMinYear = Math.min(...rows.map(r => r.start.getFullYear()));
   const rawMaxYear = Math.max(...rows.map(r => r.end.getFullYear()));
   const minYear = rawMinYear;
   const maxYear = Math.max(currentYear, rawMaxYear);
   const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
-  const [selectedYear, setSelectedYear] = React.useState<number | null>(maxYear);
+  
+  // MUDANÇAS AQUI: Começa a null para não abrir nenhum ano por defeito
+  const [selectedYear, setSelectedYear] = React.useState<number | null>(null);
 
-  const activeRows = selectedYear !== null 
-    ? rows.filter(r => {
-        const start = r.start.getFullYear();
-        const end = r.end.getFullYear();
-        return start <= selectedYear && end >= selectedYear;
-      })
-    : [];
+  const activeRows = selectedYear !== null ? rows.filter(r => {
+    const start = r.start.getFullYear();
+    const end = r.end.getFullYear();
+    return start <= selectedYear && end >= selectedYear;
+  }) : [];
 
   return (
     <div className="flex flex-col py-2 px-1">
+      {/* MENSAGEM SUCINTA DE INSTRUÇÃO */}
+      <div className="mb-3 px-1 flex items-center justify-between">
+        <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
+          Tap a year to explore milestones
+        </span>
+        <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-600">
+          {rows.length} records
+        </span>
+      </div>
+
       <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
         {years.map(year => {
           const itemsInYear = rows.filter(r => r.start.getFullYear() <= year && r.end.getFullYear() >= year);
           const isActive = selectedYear === year;
           const hasItems = itemsInYear.length > 0;
-
           return (
             <React.Fragment key={year}>
               <button
@@ -190,10 +198,10 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
                 disabled={!hasItems}
                 className={`
                   relative flex flex-col items-center justify-center py-2.5 rounded-xl border transition-all duration-300
-                  ${isActive
-                    ? "bg-zinc-800 border-zinc-700 text-white shadow-lg dark:bg-white/10 dark:border-white/20 z-10 ring-2 ring-zinc-500/20"
-                    : hasItems
-                      ? "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:bg-white/10 cursor-pointer"
+                  ${isActive 
+                    ? "bg-zinc-800 border-zinc-700 text-white shadow-lg dark:bg-white/10 dark:border-white/20 z-10 ring-2 ring-zinc-500/20" 
+                    : hasItems 
+                      ? "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:bg-white/10 cursor-pointer" 
                       : "bg-transparent border-transparent text-zinc-300 dark:text-zinc-700 cursor-not-allowed opacity-40"
                   }
                 `}
@@ -201,14 +209,13 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
                 <span className={`text-[11px] font-black tracking-widest ${isActive ? 'opacity-100' : 'opacity-80'}`}>
                   {year}
                 </span>
-
                 {/* 5 Bolas de atividade no Mobile */}
                 <div className="flex gap-[3px] mt-1.5 h-1.5 items-center">
                   {itemsInYear.slice(0, 5).map((item, i) => (
-                    <span 
-                      key={i} 
-                      className={`w-1.5 h-1.5 rounded-full ${isActive ? 'animate-pulse' : ''}`} 
-                      style={{ backgroundColor: item.color, animationDelay: `${i * 150}ms` }} 
+                    <span
+                      key={i}
+                      className={`w-1.5 h-1.5 rounded-full ${isActive ? 'animate-pulse' : ''}`}
+                      style={{ backgroundColor: item.color, animationDelay: `${i * 150}ms` }}
                     />
                   ))}
                   {itemsInYear.length > 5 && (
@@ -250,15 +257,21 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
                                   {fmtMY(row.start)} — <strong className="font-bold">{isPresent ? "Present" : fmtMY(row.end)}</strong>
                                 </span>
                                 <span 
-                                  className="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider border shrink-0 ml-2" 
-                                  style={{ color: row.color, backgroundColor: row.color.replace('0.9', '0.05'), borderColor: row.color.replace('0.9', '0.2') }}
+                                  className="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider border shrink-0 ml-2"
+                                  style={{ 
+                                    color: row.color, 
+                                    backgroundColor: row.color.replace('0.9', '0.05'), 
+                                    borderColor: row.color.replace('0.9', '0.2') 
+                                  }}
                                 >
                                   {row.type}
                                 </span>
                               </div>
+
                               <h3 className="font-bold text-[15px] text-zinc-900 dark:text-white leading-tight mb-2.5">
                                 {row.label}
                               </h3>
+
                               <div className="flex items-center gap-2.5">
                                 {row.logos && row.logos.length > 0 ? (
                                   <div className="flex items-center -space-x-1.5 shrink-0">
@@ -269,7 +282,14 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
                                     ))}
                                   </div>
                                 ) : (
-                                  <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 border" style={{ backgroundColor: row.color.replace('0.9', '0.05'), color: row.color, borderColor: row.color.replace('0.9', '0.2') }}>
+                                  <div 
+                                    className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 border"
+                                    style={{ 
+                                      backgroundColor: row.color.replace('0.9', '0.05'), 
+                                      color: row.color, 
+                                      borderColor: row.color.replace('0.9', '0.2') 
+                                    }}
+                                  >
                                     <Icon className="w-3 h-3" />
                                   </div>
                                 )}
@@ -375,7 +395,7 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
             <rect x={0} y={0} width={labelW + padLeft} height={height} fill="transparent" />
             <g transform={`translate(0, ${padTop})`}>
               <text x={colColorX} y={headerH - 10} fontSize={fontSize} fill="currentColor" opacity={0.5}>
-                Item
+                Item ({rows.length} records)
               </text>
             </g>
             {displayRows.map((r, i) => {
@@ -503,6 +523,10 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
               {selectedDesktopYear !== null ? `Viewing Details for ${selectedDesktopYear}` : "Activity Heatmap"}
             </span>
           </div>
+
+          <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
+          Tap a year to explore milestones
+        </span>
           
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 pt-1">
             {desktopYears.map(year => {

@@ -31,122 +31,163 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
   ); 
 }; 
 
-// --- MICRO-COMPONENTE: Entrada de Educação Individual (Lista Direita) --- 
-const EducationEntry = ({ edu, index, isLast, onHover }: { edu: any, index: number, isLast: boolean, onHover: (idx: number | null) => void }) => { 
-  const isCurrent = edu.period.toLowerCase().includes('present') || edu.period.toLowerCase().includes('atual'); 
-  const [isOpen, setIsOpen] = useState(false); 
-  const [isAbstractExpanded, setIsAbstractExpanded] = useState(false); 
-  const curriculumItems = (edu.achievements || []).map((a: string) => a.replace(/^-+\s*/, "").replace(/[;,.]\s*$/, "")); 
-  
-  const entryRef = useRef<HTMLDivElement>(null); 
-  
-  useEffect(() => { 
-    if (isOpen && entryRef.current) { 
-      setTimeout(() => { 
-        entryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
-      }, 300); 
-    } 
-  }, [isOpen]); 
+// --- MICRO-COMPONENTE: Entrada de Educação Individual (Lista Direita) ---
+const EducationEntry = ({ edu, index, isLast, onHover }: { edu: any, index: number, isLast: boolean, onHover: (idx: number | null) => void }) => {
+  const isCurrent = edu.period.toLowerCase().includes('present') || edu.period.toLowerCase().includes('atual');
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAbstractExpanded, setIsAbstractExpanded] = useState(false);
+  const curriculumItems = (edu.achievements || []).map((a: string) => a.replace(/^-+\s*/, "").replace(/[;,.]\s*$/, ""));
+  const entryRef = useRef<HTMLDivElement>(null);
 
-  return ( 
-    <div ref={entryRef} onMouseEnter={() => onHover(index)} onMouseLeave={() => onHover(null)} onFocus={() => onHover(index)} 
-         onBlur={() => onHover(null)} tabIndex={0} 
-         className="outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl transition-shadow" > 
-      <TimelineItem index={index} isLast={isLast} period={edu.period} isCurrent={isCurrent} title={ 
-        <div className="flex flex-col gap-2 text-left"> 
-          <div className="flex items-center"> 
-            <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-wider border transition-colors duration-300 ${isCurrent ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400'}`}> 
-              <Calendar className={`w-3 h-3 ${isCurrent ? 'text-emerald-500' : 'text-zinc-400'}`} /> 
-              <span>{edu.period}</span> 
-            </div> 
-          </div> 
-          <div className="flex items-center gap-3 dark:text-zinc-100 text-zinc-800"> 
-            <div className="relative z-10 w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-1 shrink-0"> 
-              <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain" /> 
-            </div> 
-            <span className="text-base md:text-lg font-bold leading-tight">{edu.degree}</span> 
-          </div> 
-        </div> 
-      } subtitle={ 
-        <div className="mt-1 pl-1 w-full dark:text-zinc-100 text-zinc-700 text-left"> 
-          <div className="flex flex-col gap-1 mb-4"> 
-            {edu.url ? ( 
-              <a href={edu.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 transition-colors w-fit"> 
-                {edu.institution} <ExternalLink className="w-3 h-3 opacity-50" /> 
-              </a> 
-            ) : ( 
-              <span className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium w-fit">{edu.institution}</span> 
-            )} 
-            <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-zinc-500 dark:text-zinc-400"> 
-              <MapPin className="w-3 h-3 text-emerald-500/70" /> 
-              <span>{typeof edu.location === 'string' ? edu.location : edu.location.city}</span> 
-            </div> 
-          </div> 
-          <div className="mt-2 text-left"> 
-            <button onClick={() => setIsOpen(!isOpen)} className={`flex items-center justify-between w-full py-2.5 px-4 rounded-lg border text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${isOpen ? 'bg-blue-500/10 border-blue-500/50 text-blue-600 dark:text-blue-400 shadow-sm' : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 hover:text-blue-500'}`} > 
-              <div className="flex items-center gap-2"><FileText className="w-3.5 h-3.5" /><span>Academic Details</span></div> 
-              {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />} 
-            </button> 
-            <AnimatePresence> 
-              {isOpen && ( 
-                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden text-left" > 
-                  <div className="mt-2 p-4 md:p-5 rounded-xl bg-blue-500/5 border border-blue-500/10 text-xs md:text-sm text-zinc-600 dark:text-zinc-300"> 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"> 
-                      <div className="space-y-1.5 text-left"> 
-                        <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 opacity-80 mb-1"> 
-                          <BookOpen className="w-3.5 h-3.5" /> 
-                          <h5 className="text-[10px] font-bold uppercase tracking-wider">Key Details / Focus:</h5> 
-                        </div> 
-                        <div className="pl-3 border-l-2 border-blue-500/20 text-left"> 
-                          <p className="leading-relaxed font-medium dark:text-zinc-200 text-zinc-700">{edu.summary}</p> 
-                        </div> 
-                      </div> 
-                      {curriculumItems.length > 0 && ( 
-                        <div className="space-y-1.5 text-left"> 
-                          <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 opacity-80 mb-1"> 
-                            <ListChecks className="w-3.5 h-3.5" /> 
-                            <h5 className="text-[10px] font-bold uppercase tracking-wider">Relevant Curricular Units:</h5> 
-                          </div> 
-                          <ul className="pl-3 border-l-2 border-blue-500/20 space-y-1 text-left"> 
-                            {curriculumItems.map((item: string, i: number) => ( 
-                              <li key={i} className="flex items-start gap-2 font-light leading-snug"> 
-                                <span className="block mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 opacity-70" /> 
-                                <span>{item}</span> 
-                              </li> 
-                            ))} 
-                          </ul> 
-                        </div> 
-                      )} 
-                    </div> 
-                    {edu.abstract && ( 
-                      <div className="space-y-2 pt-4 border-t border-blue-500/10"> 
-                        <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 opacity-90 mb-1"> 
-                          <ScrollText className="w-4 h-4" /> 
-                          <h5 className="text-[11px] font-bold uppercase tracking-wider">Abstract</h5> 
-                        </div> 
-                        <div className="pl-3 border-l-2 border-blue-500/20 space-y-2"> 
-                          {edu.thesisTitle && <p className="font-bold text-zinc-800 dark:text-white italic text-sm">"{edu.thesisTitle}"</p>} 
-                          <div className="relative"> 
-                            <p className={`leading-relaxed font-light text-justify opacity-90 text-xs md:text-sm transition-all duration-500 ${isAbstractExpanded ? "" : "line-clamp-3"}`}> 
-                              {edu.abstract} 
-                            </p> 
-                            <button onClick={() => setIsAbstractExpanded(!isAbstractExpanded)} className="mt-1 text-[10px] font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400 hover:underline"> 
-                              {isAbstractExpanded ? "Read Less" : "Read More"} 
-                            </button> 
-                          </div> 
-                        </div> 
-                      </div> 
-                    )} 
-                  </div> 
-                </motion.div> 
-              )} 
-            </AnimatePresence> 
-          </div> 
-        </div> 
-      } /> 
-    </div> 
-  ); 
-}; 
+  const locationText = typeof edu.location === 'string' ? edu.location : edu.location.city;
+
+  useEffect(() => {
+    if (isOpen && entryRef.current) {
+      setTimeout(() => {
+        entryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 300);
+    }
+  }, [isOpen]);
+
+  return (
+    <div 
+      ref={entryRef}
+      onMouseEnter={() => onHover(index)}
+      onMouseLeave={() => onHover(null)}
+      onFocus={() => onHover(index)}
+      onBlur={() => onHover(null)}
+      tabIndex={0}
+      className="outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl transition-shadow"
+    >
+      <TimelineItem 
+        index={index} 
+        isLast={isLast} 
+        period={edu.period} 
+        isCurrent={isCurrent}
+        title={
+          <div className="flex flex-col gap-2 text-left">
+            <div className="flex items-center">
+              <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-wider border transition-colors duration-300 ${isCurrent ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400'}`}>
+                <Calendar className={`w-3 h-3 ${isCurrent ? 'text-emerald-500' : 'text-zinc-400'}`} />
+                <span>{edu.period}</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3 dark:text-zinc-100 text-zinc-800">
+              <div className="relative z-10 w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-1 shrink-0">
+                <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain" />
+              </div>
+              {/* Título ligeiramente reduzido em mobile (text-sm md:text-lg) */}
+              <span className="text-sm sm:text-base md:text-lg font-bold leading-tight">{edu.degree}</span>
+            </div>
+          </div>
+        }
+        subtitle={
+          <div className="mt-1 pl-1 w-full dark:text-zinc-100 text-zinc-700 text-left">
+            <div className="flex flex-col gap-1 mb-4">
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                {edu.url ? (
+                  <a href={edu.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 transition-colors w-fit">
+                    {edu.institution} <ExternalLink className="w-3 h-3 opacity-50" />
+                  </a>
+                ) : (
+                  <span className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium w-fit">{edu.institution}</span>
+                )}
+
+                {/* Localização visível apenas em mobile logo à frente da universidade */}
+                <div className="flex lg:hidden items-center gap-1 text-[11px] text-zinc-400 dark:text-zinc-500 font-normal">
+                  <MapPin className="w-3 h-3 text-emerald-500/70" />
+                  <span>{locationText}</span>
+                </div>
+              </div>
+
+              {/* Localização tradicional oculta em mobile, mantida apenas para desktop se necessário */}
+              <div className="hidden lg:flex items-center gap-1.5 text-[10px] md:text-xs text-zinc-500 dark:text-zinc-400">
+                <MapPin className="w-3 h-3 text-emerald-500/70" />
+                <span>{locationText}</span>
+              </div>
+            </div>
+
+            <div className="mt-2 text-left">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className={`flex items-center justify-between w-full py-2.5 px-4 rounded-lg border text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${isOpen ? 'bg-blue-500/10 border-blue-500/50 text-blue-600 dark:text-blue-400 shadow-sm' : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 hover:text-blue-500'}`}
+              >
+                <div className="flex items-center gap-2"><FileText className="w-3.5 h-3.5" /><span>Academic Details</span></div>
+                {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden text-left"
+                  >
+                    <div className="mt-2 p-4 md:p-5 rounded-xl bg-blue-500/5 border border-blue-500/10 text-xs md:text-sm text-zinc-600 dark:text-zinc-300">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div className="space-y-1.5 text-left">
+                          <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 opacity-80 mb-1">
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <h5 className="text-[10px] font-bold uppercase tracking-wider">Key Details / Focus:</h5>
+                          </div>
+                          <div className="pl-3 border-l-2 border-blue-500/20 text-left">
+                            <p className="leading-relaxed font-medium dark:text-zinc-200 text-zinc-700">{edu.summary}</p>
+                          </div>
+                        </div>
+
+                        {curriculumItems.length > 0 && (
+                          <div className="space-y-1.5 text-left">
+                            <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 opacity-80 mb-1">
+                              <ListChecks className="w-3.5 h-3.5" />
+                              <h5 className="text-[10px] font-bold uppercase tracking-wider">Relevant Curricular Units:</h5>
+                            </div>
+                            <ul className="pl-3 border-l-2 border-blue-500/20 space-y-1 text-left">
+                              {curriculumItems.map((item: string, i: number) => (
+                                <li key={i} className="flex items-start gap-2 font-light leading-snug">
+                                  <span className="block mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 opacity-70" />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+
+                      {edu.abstract && (
+                        <div className="space-y-2 pt-4 border-t border-blue-500/10">
+                          <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 opacity-90 mb-1">
+                            <ScrollText className="w-4 h-4" />
+                            <h5 className="text-[11px] font-bold uppercase tracking-wider">Abstract</h5>
+                          </div>
+                          <div className="pl-3 border-l-2 border-blue-500/20 space-y-2">
+                            {edu.thesisTitle && <p className="font-bold text-zinc-800 dark:text-white italic text-sm">"{edu.thesisTitle}"</p>}
+                            <div className="relative">
+                              <p className={`leading-relaxed font-light text-justify opacity-90 text-xs md:text-sm transition-all duration-500 ${isAbstractExpanded ? "" : "line-clamp-3"}`}>
+                                {edu.abstract}
+                              </p>
+                              <button 
+                                onClick={() => setIsAbstractExpanded(!isAbstractExpanded)} 
+                                className="mt-1 text-[10px] font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400 hover:underline"
+                              >
+                                {isAbstractExpanded ? "Read Less" : "Read More"}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        }
+      />
+    </div>
+  );
+};
 
 // --- COMPONENTE VISUAL PREMIUM: Academic Orbit --- 
 const AcademicOrbit = ({ activeIndex }: { activeIndex: number | null }) => { 
