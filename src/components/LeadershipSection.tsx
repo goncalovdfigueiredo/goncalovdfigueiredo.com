@@ -2,9 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit,
-  Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, ChevronUp, Mic, Medal} from "lucide-react";
+import { Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, ChevronUp, Mic, Medal, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
@@ -15,30 +13,17 @@ import { LeadershipExperience } from "@/lib/data";
 // --- MICRO-COMPONENTE: Botão de Navegação com Tooltip ---
 const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: { href: string, icon: any, text: string, tooltip: string, colorClass: string }) => {
   const [isHovered, setIsHovered] = useState(false);
-
   return (
     <div className="relative flex-1 md:flex-none">
-      <a 
-        href={href} 
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className={`group w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 ${colorClass}`}
-      >
+      <a href={href} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`group w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 ${colorClass}`} >
         <Icon className="w-3.5 h-3.5" />
         <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider">{text}</span>
       </a>
-      
       <AnimatePresence>
         {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 5, scale: 0.95 }}
-            className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none hidden md:block"
-          >
+          <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 5, scale: 0.95 }} className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none hidden md:block">
             <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] py-1.5 px-3 rounded-md shadow-2xl whitespace-nowrap">
               {tooltip}
-              {/* Seta do Tooltip */}
               <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-900 border-t border-l border-zinc-800 rotate-45" />
             </div>
           </motion.div>
@@ -48,24 +33,13 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
   );
 };
 
-const IconMap: any = {
-  Rocket, 
-  BrainCircuit, 
-  Gamepad2, 
-  BookOpen, 
-  MessageCircleHeart, 
-  Globe, 
-  HeartHandshake,
-  Mic,
-  Medal
-};
-
+const IconMap: any = { Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, Mic, Medal };
 const TagColors: Record<string, string> = {
-  Event: "text-amber-600 bg-amber-500/10 border-amber-500/20",       
-  Resource: "text-blue-600 bg-blue-500/10 border-blue-500/20",       
-  Community: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20", 
+  Event: "text-amber-600 bg-amber-500/10 border-amber-500/20",
+  Resource: "text-blue-600 bg-blue-500/10 border-blue-500/20",
+  Community: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20",
   Networking: "text-purple-600 bg-purple-500/10 border-purple-500/20",
-  "PhD Jury": "text-rose-600 bg-rose-500/10 border-rose-500/20", 
+  "PhD Jury": "text-rose-600 bg-rose-500/10 border-rose-500/20",
 };
 
 const CompanyLogo = ({ job }: { job: any }) => {
@@ -73,11 +47,7 @@ const CompanyLogo = ({ job }: { job: any }) => {
     return (
       <div className="flex items-center -space-x-2 overflow-hidden py-1 pl-1">
         {job.logos.map((logo: string, idx: number) => (
-          <div 
-            key={idx} 
-            className="relative z-10 inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900 bg-white dark:bg-white/10 p-0.5"
-            style={{ zIndex: 10 - idx }}
-          >
+          <div key={idx} className="relative z-10 inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900 bg-white dark:bg-white/10 p-0.5" style={{ zIndex: 10 - idx }} >
             <img src={logo} alt="Publisher Logo" className="h-full w-full object-contain rounded-full" />
           </div>
         ))}
@@ -88,16 +58,10 @@ const CompanyLogo = ({ job }: { job: any }) => {
 };
 
 export default function LeadershipSection() {
-  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [selectedMobileJob, setSelectedMobileJob] = useState<any | null>(null);
 
-  const handleCardClick = (idx: number) => {
-    setActiveCard(activeCard === idx ? null : idx);
-  };
-
-  // 👇 FUNÇÃO HELPER PARA RENDERIZAR A GRID (Adaptável para 4 colunas no hover do desktop)
-  const renderActivityGrid = (ach: any, i: number) => (
-    <div key={i} className="pt-2 first:pt-0">
-      {/* SEPARADOR DE ANO */}
+  const renderActivityGrid = (ach: any, isModal: boolean) => (
+    <div className="pt-2 first:pt-0">
       {ach.year && (
         <div className="flex items-center gap-2 mb-3 mt-1">
           <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
@@ -107,17 +71,16 @@ export default function LeadershipSection() {
         </div>
       )}
       
-      {/* GRID DE ÍCONES (2 colunas por defeito, passa para 4 colunas quando o cartão expande no desktop) */}
-      <div className="grid grid-cols-4 sm:group-hover:grid-cols-4 gap-2 transition-all duration-500">
+      <div className={`grid ${isModal ? "grid-cols-4" : "grid-cols-4 sm:group-hover:grid-cols-4"} gap-2 transition-all duration-500`}>
         {ach.items.map((item: any, k: number) => {
           const IconComp = IconMap[item.icon] || Rocket;
           const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
           
           return (
-            <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center hover:bg-emerald-50 dark:hover:bg-emerald-500/20 transition-all duration-300 group/item">
-              <IconComp className="h-5 w-5 mb-2 text-zinc-400 dark:text-zinc-500 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 transition-colors" />
-              <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mb-1.5">{item.label}</span>
-              <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded border ${tagColor}`}>{item.tag}</span>
+            <div key={k} className="flex flex-col items-center justify-center p-2.5 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center transition-all duration-300">
+              <IconComp className="h-4 w-4 mb-1.5 text-emerald-500" />
+              <span className="text-[10px] font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mb-1">{item.label}</span>
+              <span className={`text-[8px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded border ${tagColor}`}>{item.tag}</span>
             </div>
           )
         })}
@@ -159,12 +122,11 @@ export default function LeadershipSection() {
         </MotionWrapper>
 
         {/* =======================
-            VERSÃO MOBILE
+            VERSÃO MOBILE (Com a seta no canto superior direito)
            ======================= */}
-        <div className="lg:hidden flex flex-col gap-4">
+        <div className="lg:hidden flex flex-col gap-3">
             {LeadershipExperience.map((job: any, idx: number) => {
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
-              const isSelected = activeCard === idx;
               
               return (
                 <motion.div
@@ -175,69 +137,33 @@ export default function LeadershipSection() {
                   viewport={{ once: true }}
                 >
                   <div 
-                    onClick={() => handleCardClick(idx)}
-                    className={`
-                      relative rounded-xl border transition-all duration-300 overflow-hidden cursor-pointer
-                      ${isSelected 
-                        ? 'bg-white dark:bg-white/5 border-emerald-500/30 shadow-lg ring-1 ring-emerald-500/20' 
-                        : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30'}
-                    `}
+                    onClick={() => setSelectedMobileJob(job)}
+                    className="relative rounded-xl border bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30 transition-all duration-300 overflow-hidden cursor-pointer p-4 active:scale-[0.98]"
                   >
-                    <div className="p-4 flex items-start gap-3">
+                    {/* Seta no canto superior direito */}
+                    <div className="absolute top-3 right-3">
+                      <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
+                    </div>
+
+                    <div className="flex items-start gap-3 pr-6">
                        <div className={`
-                         rounded-lg border border-zinc-200 dark:border-white/10 shrink-0 flex items-center justify-center bg-white dark:bg-white/5
-                         ${job.logos ? 'px-1 py-1 w-auto' : 'p-2 w-12 h-12'} 
+                         rounded-lg border border-zinc-200 dark:border-white/10 shrink-0 flex items-center justify-center bg-white dark:bg-white/5 shadow-sm
+                         ${job.logos ? 'px-1.5 py-1 w-auto' : 'p-2 w-10 h-10'} 
                        `}>
                           <CompanyLogo job={job} />
                        </div>
                        
                        <div className="flex-1 min-w-0">
-                          <div className="flex justify-between items-start">
-                             <h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight truncate pr-2">{job.position}</h3>
-                             {isSelected ? <ChevronUp className="w-4 h-4 text-emerald-500 shrink-0" /> : <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />}
-                          </div>
-                          <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate mb-1">{job.company}</p>
-                          <div className="flex items-center gap-3 text-[10px] text-zinc-500 dark:text-zinc-400">
-                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {job.period}</span>
-                             <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {locationDisplay}</span>
+                          <h3 className="text-[15px] font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</h3>
+                          <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 mb-0">{job.company}</p>
+                          
+                          
+                          <div className="flex flex-wrap items-center gap-y-0 gap-x-3 text-[8px] text-zinc-500 dark:text-zinc-400">
+                             <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-emerald-500/70" /> {job.period}</span>
+                             <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-emerald-500/70" /> {locationDisplay}</span>
                           </div>
                        </div>
                     </div>
-
-                    <AnimatePresence>
-                      {isSelected && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-4 pb-4 pt-0">
-                            <div className="h-px w-full bg-zinc-200 dark:bg-white/10 mb-3" />
-                            <div className="space-y-3">
-                              {job.achievements.map((ach: any, i: number) => {
-                                if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                  return renderActivityGrid(ach, i);
-                                }
-                                if (ach === "__chart__") {
-                                  return (
-                                    <div key={i} className="w-full pt-2">
-                                        <PeerReviewChart company={job.company} forceAnimation={true} />
-                                    </div>
-                                  );
-                                }
-                                return (
-                                  <div key={i} className="flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
-                                    <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
-                                    <p>{ach}</p>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </div>
                 </motion.div>
               );
@@ -245,7 +171,81 @@ export default function LeadershipSection() {
         </div>
 
         {/* =======================
-            VERSÃO DESKTOP (Com largura duplicada no hover: w-[800px])
+            MODAL MOBILE (Popup Flutuante com os detalhes completos)
+           ======================= */}
+        <AnimatePresence>
+          {selectedMobileJob && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 lg:hidden">
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }} 
+                onClick={() => setSelectedMobileJob(null)} 
+                className="absolute inset-0 bg-black/80 backdrop-blur-md" 
+              />
+              <motion.div 
+                initial={{ scale: 0.9, y: 20, opacity: 0 }} 
+                animate={{ scale: 1, y: 0, opacity: 1 }} 
+                exit={{ scale: 0.9, y: 20, opacity: 0 }} 
+                className="relative w-full max-w-sm z-10 max-h-[85vh] flex flex-col"
+              >
+                <GlassCard className="flex flex-col w-full rounded-2xl overflow-hidden border border-emerald-500/30 bg-zinc-50 dark:bg-[#0c0c0e] relative p-5 shadow-2xl text-left">
+                  
+                  <button 
+                    onClick={() => setSelectedMobileJob(null)} 
+                    className="absolute top-3 right-3 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors shadow-sm"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+
+                  <div className="flex items-center gap-1 mb-2 pr-8">
+                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 flex items-center justify-center shrink-0">
+                      <CompanyLogo job={selectedMobileJob} />
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-widest">
+                        {selectedMobileJob.period}
+                      </span>
+                      <h3 className="text-xs font-bold text-zinc-900 dark:text-white leading-tight">
+                        {selectedMobileJob.position}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mb-3 pb-2.5 border-b border-zinc-200 dark:border-white/10">
+                    {selectedMobileJob.company} • {typeof selectedMobileJob.location === 'string' ? selectedMobileJob.location : selectedMobileJob.location.city}
+                  </p>
+
+                  <div className="space-y-2.5 overflow-y-auto max-h-[50vh] no-scrollbar pr-1">
+                    {selectedMobileJob.achievements.map((ach: any, i: number) => {
+                      if (typeof ach === 'object' && ach.type === 'activity_grid') {
+                        return renderActivityGrid(ach, true);
+                      }
+                      if (ach === "__chart__") {
+                        return (
+                          <div key={i} className="w-full pt-0">
+                              <PeerReviewChart company={selectedMobileJob.company} forceAnimation={true} />
+                          </div>
+                        );
+                      }
+                      return (
+                        <div key={i} className="flex items-start gap-2 text-[11px] text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
+                          <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                          <p>{ach}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </GlassCard>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* =======================
+            VERSÃO DESKTOP (Inalterada)
            ======================= */}
         <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4">
           <div className="flex items-start min-w-max gap-8">
@@ -310,7 +310,7 @@ export default function LeadershipSection() {
                           <div className="space-y-3 mt-2 pl-1">
                             {job.achievements.map((ach: any, i: number) => {
                               if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                return renderActivityGrid(ach, i);
+                                return renderActivityGrid(ach, false);
                               }
                               if (ach === "__chart__") {
                                 return (

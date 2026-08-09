@@ -342,8 +342,9 @@ export const LeadershipExperience = [
     logo: "/IEEE.png", 
     logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
     achievements: [
-      "Ensuring scientific integrity by serving as a subject matter expert reviewer for high-impact journals across multiple publishers.",
-      "Active contribution to the scientific community through critical evaluation of over 65+ manuscripts in Optics and Photonics.",
+      //"Ensuring scientific integrity by serving as a subject matter expert reviewer for high-impact journals across multiple publishers.",
+      //"Active contribution to the scientific community through critical evaluation of over 65+ manuscripts in Optics and Photonics.",
+      "Ensuring scientific integrity and actively contributing to Optics and Photonics through the critical evaluation of over 65+ manuscripts across multiple top-tier publishers.",
       "__chart__", 
     ],
   },
