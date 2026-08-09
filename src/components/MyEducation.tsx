@@ -78,7 +78,16 @@ const EducationEntry = ({ edu, index, isLast, onHover }: { edu: any, index: numb
                 <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain" />
               </div>
               {/* Título ligeiramente reduzido em mobile (text-sm md:text-lg) */}
-              <span className="text-sm sm:text-base md:text-lg font-bold leading-tight">{edu.degree}</span>
+              <span className="text-[12px] sm:text-base md:text-lg font-bold leading-tight">{edu.degree}
+              {edu.url ? (
+                  <a href={edu.url} target="_blank" rel="noopener noreferrer" className="text-[11px] md:text-base text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 transition-colors w-fit">
+                    {edu.institution} <ExternalLink className="w-3 h-3 opacity-50" />
+                  </a>
+                ) : (
+                  <span className="text-[11px] md:text-base text-emerald-600 dark:text-emerald-400 font-medium w-fit">{edu.institution}</span>
+                )}
+
+              </span>
             </div>
           </div>
         }
@@ -86,14 +95,6 @@ const EducationEntry = ({ edu, index, isLast, onHover }: { edu: any, index: numb
           <div className="mt-1 pl-1 w-full dark:text-zinc-100 text-zinc-700 text-left">
             <div className="flex flex-col gap-1 mb-4">
               <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-                {edu.url ? (
-                  <a href={edu.url} target="_blank" rel="noopener noreferrer" className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 transition-colors w-fit">
-                    {edu.institution} <ExternalLink className="w-3 h-3 opacity-50" />
-                  </a>
-                ) : (
-                  <span className="text-sm md:text-base text-emerald-600 dark:text-emerald-400 font-medium w-fit">{edu.institution}</span>
-                )}
-
                 {/* Localização visível apenas em mobile logo à frente da universidade */}
                 <div className="flex lg:hidden items-center gap-1 text-[11px] text-zinc-400 dark:text-zinc-500 font-normal">
                   <MapPin className="w-3 h-3 text-emerald-500/70" />
@@ -101,8 +102,7 @@ const EducationEntry = ({ edu, index, isLast, onHover }: { edu: any, index: numb
                 </div>
               </div>
 
-              {/* Localização tradicional oculta em mobile, mantida apenas para desktop se necessário */}
-              <div className="hidden lg:flex items-center gap-1.5 text-[10px] md:text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="hidden lg:flex items-center gap-0 text-[9px] md:text-xs text-zinc-500 dark:text-zinc-400">
                 <MapPin className="w-3 h-3 text-emerald-500/70" />
                 <span>{locationText}</span>
               </div>
@@ -111,7 +111,7 @@ const EducationEntry = ({ edu, index, isLast, onHover }: { edu: any, index: numb
             <div className="mt-2 text-left">
               <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center justify-between w-full py-2.5 px-4 rounded-lg border text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${isOpen ? 'bg-blue-500/10 border-blue-500/50 text-blue-600 dark:text-blue-400 shadow-sm' : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 hover:text-blue-500'}`}
+                className={`flex items-center justify-between w-full py-2.5 px-4 rounded-lg border text-[8px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${isOpen ? 'bg-blue-500/10 border-blue-500/50 text-blue-600 dark:text-blue-400 shadow-sm' : 'bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 hover:text-blue-500'}`}
               >
                 <div className="flex items-center gap-2"><FileText className="w-3.5 h-3.5" /><span>Academic Details</span></div>
                 {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
