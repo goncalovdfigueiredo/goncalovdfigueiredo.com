@@ -287,7 +287,7 @@ export const LeadershipExperience = [
       lon: -8.658116,
     },
     position: "PhD Student Council Secretary",
-    period: "Jan 2025 - Sep 2026",
+    period: "Jan 2025 - Aug 2026",
     logo: "/ciceco.png",
     relatedLocations: [
       {
@@ -338,7 +338,7 @@ export const LeadershipExperience = [
     company: "IEEE, Elsevier & Optica", 
     location: "Remote",
     position: "Scientific Peer Reviewer", 
-    period: "Oct 2024 - Jul 2026", 
+    period: "Oct 2024 - Present", 
     logo: "/IEEE.png", 
     logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
     achievements: [
