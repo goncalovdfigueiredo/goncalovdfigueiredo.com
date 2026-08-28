@@ -302,7 +302,7 @@ export const LeadershipExperience = [
       lon: -8.658116,
     },
     position: "PhD Student Council Secretary",
-    period: "Jan 2025 - Aug 2026",
+    period: "Jan 2025 - Sep 2026",
     logo: "/ciceco.png",
     relatedLocations: [
       {
