@@ -11,7 +11,7 @@ type PeerReviewChartProps = {
 // =================== DADOS CENTRALIZADOS ===================
 const ALL_JOURNALS = [
   // --- IEEE (Roxo/Azul) ---
-  { name: "IEEE Internet of Things Journal", count: 32, color: "bg-purple-500", publisher: "IEEE" },
+  { name: "IEEE Internet of Things Journal", count: 34, color: "bg-purple-500", publisher: "IEEE" },
   { name: "IEEE Photonics Journal", count: 2, color: "bg-purple-500", publisher: "IEEE" },
   // --- Elsevier (Laranja) ---
   { name: "Physical Communication", count: 4, color: "bg-orange-500", publisher: "Elsevier" },
