@@ -1,3 +1,4 @@
+// src/components/HeroSection.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -17,7 +18,6 @@ import {
   Fingerprint,
   FileBadge,
   ChevronDown,
-  MousePointerClick,
   EarthLock,
 } from "lucide-react";
 import {
@@ -30,8 +30,51 @@ import {
 } from "framer-motion";
 
 // IMPORTAÇÕES DE FUNDOS E EFEITOS 3D
-import LiquidEther from "./LiquidEther";
 import MagicRings from "./MagicRings";
+import GhostCursor from "./GhostCursor";
+
+/* ========================================================================
+   0. VARIANTES DE ANIMAÇÃO
+   ======================================================================== */
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemFadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: "spring", stiffness: 80, damping: 20 } 
+  },
+};
+
+const itemZoomIn: Variants = {
+  hidden: { opacity: 0, scale: 0.5 },
+  visible: { 
+    opacity: 1, 
+    scale: 1, 
+    transition: { type: "spring", stiffness: 100, damping: 20 } 
+  },
+};
+
+const cardContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 3.8,
+    },
+  },
+};
 
 /* ========================================================================
    1. CYBER TYPEWRITER
@@ -238,7 +281,7 @@ function DisintegratingProfile() {
 /* ========================================================================
    4. HARDWARE UNLOCK CARD
    ======================================================================== */
-const HardwareSkillCard = ({ group, index }: { group: any; index: number }) => {
+const HardwareSkillCard = ({ group, index }: { group: any; index?: number }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   let themeColor = "rgba(16,185,129,";
@@ -259,22 +302,13 @@ const HardwareSkillCard = ({ group, index }: { group: any; index: number }) => {
     glowHoverColor = "group-hover/card:bg-purple-500/20";
   }
 
-  const startAngle = index * 120;
-
   return (
     <motion.div
+      variants={itemFadeUp}
       className="relative w-full rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group/card flex flex-col backdrop-blur-md h-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered(!isHovered)}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        delay: index * 0.1,
-      }}
     >
       <div className="absolute inset-0 bg-white/70 dark:bg-[#0a0a0c]/70 border border-zinc-200 dark:border-white/5 rounded-xl md:rounded-2xl z-0 backdrop-blur-xl" />
 
@@ -286,7 +320,7 @@ const HardwareSkillCard = ({ group, index }: { group: any; index: number }) => {
         animate={{
           x: "-50%",
           y: "-50%",
-          rotate: [startAngle, startAngle + 360],
+          rotate: [0, 360],
         }}
         transition={{
           rotate: { duration: 4, repeat: Infinity, ease: "linear" },
@@ -441,229 +475,225 @@ export default function HeroSection() {
   ];
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative pt-28 pb-12 md:pt-25 md:pb-32 overflow-hidden perspective-1000"
-    >
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <LiquidEther
-          color1="#c4ff9f"
-          color2="#a6cf97"
-          color3="#10b981"
-          mouseForce={30}
-          cursorSize={150}
-        />
-        <div className="absolute inset-0 z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] opacity-80 mix-blend-overlay">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+    <>
+      {/* 
+        GhostCursor com as configurações do código original!
+      */}
+      <GhostCursor
+        color="#10b981"         // Verde Esmeralda
+        trailLength={15}        // BEM MAIS CURTO (antes era 30 ou 40)
+        brightness={1.5}        
+        inertia={0.5}           
+        fadeDelayMs={200}       // Começa a desaparecer muito mais rápido
+        fadeDurationMs={800}    // Dissipa-se mais rápido
+        style={{ zIndex: 0 }}
+        className="fixed inset-0 w-screen h-screen pointer-events-none"
+      />
+
+<section
+        ref={sectionRef}
+        /* 1. Removi o overflow-hidden daqui para o fumo poder espalhar-se livremente */
+        className="relative pt-28 pb-12 md:pt-25 md:pb-32 perspective-1000"
+      >
+        {/* 2. Mantive o overflow-hidden APENAS na div da grelha de fundo, para ela não passar por cima das outras secções */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {/* Grelha Cibernética de Fundo */}
+          <div className="absolute inset-0 z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] opacity-80 mix-blend-overlay">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+          </div>
         </div>
-      </div>
 
-      <div className="container max-w-8xl mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          style={{ y: yElement }}
-          className="flex flex-col items-center text-center mb-6 md:mb-8 group"
-        >
+        <div className="container max-w-8xl mx-auto px-4 md:px-6 relative z-10">
+          
+          {/* BLOCO DE TOPO (Perfil, Título, Info, Botões) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", damping: 12 }}
-            className="relative mb-4 md:mb-8 group pointer-events-auto"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{ y: yElement }}
+            className="flex flex-col items-center text-center mb-6 md:mb-8 group"
           >
-            <DisintegratingProfile />
-          </motion.div>
+            <motion.div variants={itemZoomIn} className="relative mb-4 md:mb-8 group pointer-events-auto">
+              <DisintegratingProfile />
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[9px] md:text-xxs font-black uppercase tracking-[0.25em] mb-3 md:mb-6 shadow-sm backdrop-blur-md pointer-events-auto"
-          >
-            <Terminal className="w-3 h-3" /> Ph.D. Candidate
-          </motion.div>
+            <motion.div variants={itemFadeUp} className="inline-flex items-center gap-1.5 px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[9px] md:text-xxs font-black uppercase tracking-[0.25em] mb-3 md:mb-6 shadow-sm backdrop-blur-md pointer-events-auto">
+              <Terminal className="w-3 h-3" /> Ph.D. Candidate
+            </motion.div>
 
-          <motion.h1
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.1 }}
-  className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-6 uppercase leading-[0.85] pointer-events-auto"
->
-  Gonçalo <br className="md:hidden" />{" "}
-  <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 drop-shadow-sm">
-    Figueiredo
-  </span>
-</motion.h1>
+            <motion.h1 variants={itemFadeUp} className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-6 uppercase leading-[0.85] pointer-events-auto">
+              Gonçalo <br className="md:hidden" />{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 drop-shadow-sm">
+                Figueiredo
+              </span>
+            </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-xs sm:text-sm md:text-lg text-zinc-600 dark:text-zinc-300 font-medium max-w-lg leading-relaxed mb-4 md:mb-4 relative z-10 pointer-events-auto px-2"
-          >
-            Bridging the gap between{" "}
-            <strong className="text-zinc-900 dark:text-white font-bold ml-0.5">
-              Theoretical Science
-            </strong>{" "}
-            and{" "}
-            <strong className="text-zinc-900 dark:text-white font-bold ml-0.5">
-              Industrial Application
-            </strong>{" "}
-            <br />{" "}
-            <span className="mt-1 inline-block">
-              through <TypewriterExpertise />
-            </span>
-          </motion.p>
+            <motion.p variants={itemFadeUp} className="text-xs sm:text-sm md:text-lg text-zinc-600 dark:text-zinc-300 font-medium max-w-lg leading-relaxed mb-4 md:mb-4 relative z-10 pointer-events-auto px-2">
+              Bridging the gap between{" "}
+              <strong className="text-zinc-900 dark:text-white font-bold ml-0.5">
+                Theoretical Science
+              </strong>{" "}
+              and{" "}
+              <strong className="text-zinc-900 dark:text-white font-bold ml-0.5">
+                Industrial Application
+              </strong>{" "}
+              <br />{" "}
+              <span className="mt-1 inline-block">
+                through <TypewriterExpertise />
+              </span>
+            </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 max-w-4xl mb-4 md:mb-7 relative z-10 pointer-events-auto px-2"
-          >
-            {contacts.map((c, i) => {
-              if (!c.href) {
+            <motion.div variants={itemFadeUp} className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 max-w-4xl mb-4 md:mb-7 relative z-10 pointer-events-auto px-2">
+              {contacts.map((c, i) => {
+                if (!c.href) {
+                  return (
+                    <div key={i} className="flex items-center gap-1 text-zinc-700 dark:text-zinc-300 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-full bg-white/50 dark:bg-black/20 border border-zinc-200/50 dark:border-white/10 backdrop-blur-md text-[10px] md:text-xs">
+                      <c.icon className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="font-semibold">{c.text}</span>
+                    </div>
+                  );
+                }
                 return (
-                  <div
-                    key={i}
-                    className="flex items-center gap-1 text-zinc-700 dark:text-zinc-300 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-full bg-white/50 dark:bg-black/20 border border-zinc-200/50 dark:border-white/10 backdrop-blur-md text-[10px] md:text-xs"
-                  >
+                  <MagneticButton key={i} href={c.href}>
                     <c.icon className="w-3 h-3 md:w-4 md:h-4" />
-                    <span className="font-semibold">{c.text}</span>
-                  </div>
+                    <span className="text-[10px] md:text-xs">{c.text}</span>
+                  </MagneticButton>
                 );
-              }
-              return (
-                <MagneticButton key={i} href={c.href}>
-                  <c.icon className="w-3 h-3 md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs">{c.text}</span>
-                </MagneticButton>
-              );
-            })}
+              })}
+            </motion.div>
           </motion.div>
-        </motion.div>
 
-        <motion.div
-          style={{ y: yElement }}
-          className="grid grid-cols-1 md:grid-cols-15 gap-3 md:gap-6 relative z-20"
-        >
-          <div className="col-span-1 md:col-span-10 flex flex-col">
-            <div className="flex-1 w-full relative rounded-xl md:rounded-2xl bg-white/95 dark:bg-[#0a0a0c]/95 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 p-4 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
-              <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-emerald-500/10 rounded-full blur-[60px] md:blur-[80px] pointer-events-none" />
-              <div className="relative z-10 flex flex-col flex-1 h-full">
-                <div>
-                  <div className="flex items-center gap-2.5 md:gap-4 mb-3 md:mb-8">
-                    <div className="p-2 md:p-3 rounded-xl md:rounded-2xl bg-emerald-500 text-white dark:text-black shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                      <User className="w-4 h-4 md:w-6 md:h-6" />
+          {/* BLOCO INFERIOR (Perfil Detalhado + Cartões) */}
+          <motion.div
+            variants={cardContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            style={{ y: yElement }}
+            className="grid grid-cols-1 md:grid-cols-15 gap-3 md:gap-6 relative z-20"
+          >
+            {/* Cartão Central / Esquerdo */}
+            <motion.div variants={itemFadeUp} className="col-span-1 md:col-span-10 flex flex-col">
+              <div className="flex-1 w-full relative rounded-xl md:rounded-2xl bg-white/95 dark:bg-[#0a0a0c]/95 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 p-4 md:px-10 md:pt-10 md:pb-6 overflow-hidden group flex flex-col shadow-sm">
+                <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-emerald-500/10 rounded-full blur-[60px] md:blur-[80px] pointer-events-none" />
+                <div className="relative z-10 flex flex-col flex-1 h-full">
+                  <div>
+                    <div className="flex items-center gap-2.5 md:gap-4 mb-3 md:mb-8">
+                      <div className="p-2 md:p-3 rounded-xl md:rounded-2xl bg-emerald-500 text-white dark:text-black shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        <User className="w-4 h-4 md:w-6 md:h-6" />
+                      </div>
+                      <h2 className="text-base md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+                        Professional Profile
+                      </h2>
                     </div>
-                    <h2 className="text-base md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                      Professional Profile
-                    </h2>
-                  </div>
 
-                  <div
-                    className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
-                      isProfileExpanded
-                        ? "max-h-[800px]"
-                        : "max-h-[60px] md:max-h-[800px]"
-                    }`}
-                  >
-                    <div className="space-y-3 md:space-y-2 text-xs sm:text-sm md:text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
-                      <p>
-                        Gonçalo Figueiredo is a Ph.D. Candidate in{" "}
-                        <strong className="text-zinc-900 dark:text-white">
-                          Electrical and Computer Engineering
-                        </strong>{" "}
-                        at{" "}
-                        <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50">
-                          Instituto Superior Técnico
-                        </strong>
-                        , researching photonics for future sustainable smart
-                        cities. He holds an M.Sc. in Physics Engineering from
-                        the University of Aveiro.
-                      </p>
-                      <p>
-                        With a unique{" "}
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                          dual-background
-                        </span>{" "}
-                        in <strong>Physics Engineering</strong> and{" "}
-                        <strong>Electrical Engineering</strong>, he bridges the
-                        gap between theoretical science and industrial
-                        application.
-                      </p>
-                      <p>
-                        His focus is on developing robust{" "}
-                        <span className="text-zinc-900 dark:text-white font-bold bg-white/50 dark:bg-white/10 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5">
-                          hardware prototypes
-                        </span>
-                        , from{" "}
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-                          Smart Cities
-                        </span>{" "}
-                        to{" "}
-                        <span className="text-blue-600 dark:text-blue-400 font-bold">
-                          Industrial IoT
-                        </span>
-                        .
-                      </p>
-                    </div>
                     <div
-                      className={`absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/90 dark:from-[#0a0a0c]/90 to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${
-                        isProfileExpanded ? "opacity-0" : "opacity-100"
+                      className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
+                        isProfileExpanded
+                          ? "max-h-[800px]"
+                          : "max-h-[60px] md:max-h-[800px]"
                       }`}
-                    />
-                  </div>
-
-                  <div className="md:hidden mt-1 flex justify-center">
-                    <button
-                      onClick={() => setIsProfileExpanded(!isProfileExpanded)}
-                      className="flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest py-1 transition-colors"
                     >
-                      {isProfileExpanded ? "Read Less" : "Read More"}
-                      <ChevronDown
-                        className={`w-3 h-3 transition-transform duration-300 ${
-                          isProfileExpanded ? "rotate-180" : ""
+                      <div className="space-y-3 md:space-y-2 text-xs sm:text-sm md:text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
+                        <p>
+                          Gonçalo Figueiredo is a Ph.D. Candidate in{" "}
+                          <strong className="text-zinc-900 dark:text-white">
+                            Electrical and Computer Engineering
+                          </strong>{" "}
+                          at{" "}
+                          <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50">
+                            Instituto Superior Técnico
+                          </strong>
+                          , researching photonics for future sustainable smart
+                          cities. He holds an M.Sc. in Physics Engineering from
+                          the University of Aveiro.
+                        </p>
+                        <p>
+                          With a unique{" "}
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                            dual-background
+                          </span>{" "}
+                          in <strong>Physics Engineering</strong> and{" "}
+                          <strong>Electrical Engineering</strong>, he bridges the
+                          gap between theoretical science and industrial
+                          application.
+                        </p>
+                        <p>
+                          His focus is on developing robust{" "}
+                          <span className="text-zinc-900 dark:text-white font-bold bg-white/50 dark:bg-white/10 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5">
+                            hardware prototypes
+                          </span>
+                          , from{" "}
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                            Smart Cities
+                          </span>{" "}
+                          to{" "}
+                          <span className="text-blue-600 dark:text-blue-400 font-bold">
+                            Industrial IoT
+                          </span>
+                          .
+                        </p>
+                      </div>
+                      <div
+                        className={`absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/90 dark:from-[#0a0a0c]/90 to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${
+                          isProfileExpanded ? "opacity-0" : "opacity-100"
                         }`}
                       />
-                    </button>
-                  </div>
-                </div>
+                    </div>
 
-                <div className="mt-3 md:mt-auto flex items-center justify-between border-t border-zinc-200 dark:border-white/10 pt-3 md:pt-4">
-                  <div>
-                    <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">
-                      Status
-                    </p>
-                    <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] md:text-sm">
-                      <span className="relative flex h-2 w-2 md:h-3 md:w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 md:h-3 md:w-3 bg-emerald-500"></span>
-                      </span>
-                      Ph.D. Candidate
+                    <div className="md:hidden mt-1 flex justify-center">
+                      <button
+                        onClick={() => setIsProfileExpanded(!isProfileExpanded)}
+                        className="flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest py-1 transition-colors"
+                      >
+                        {isProfileExpanded ? "Read Less" : "Read More"}
+                        <ChevronDown
+                          className={`w-3 h-3 transition-transform duration-300 ${
+                            isProfileExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">
-                      CORE EXPERTISE
-                    </p>
-                    <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1 justify-end text-[11px] md:text-sm">
-                      <EarthLock className="w-3 h-3 md:w-4 md:h-4 text-emerald-600 dark:text-emerald-500" />{" "}
-                      Secure IoT & Systems
-                    </p>
+
+                  <div className="mt-3 md:mt-auto flex items-center justify-between border-t border-zinc-200 dark:border-white/10 pt-3 md:pt-4">
+                    <div>
+                      <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">
+                        Status
+                      </p>
+                      <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] md:text-sm">
+                        <span className="relative flex h-2 w-2 md:h-3 md:w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 md:h-3 md:w-3 bg-emerald-500"></span>
+                        </span>
+                        Ph.D. Candidate
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-0.5">
+                        CORE EXPERTISE
+                      </p>
+                      <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1 justify-end text-[11px] md:text-sm">
+                        <EarthLock className="w-3 h-3 md:w-4 md:h-4 text-emerald-600 dark:text-emerald-500" />{" "}
+                        Secure IoT & Systems
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
 
-          {/* Grelha de 3 colunas em 1 linha no Mobile / Grid original no Desktop */}
-          <div className="col-span-1 md:col-span-5 grid grid-cols-3 md:flex md:flex-col gap-2 md:gap-6">
-            {skillGroups.map((group, idx) => (
-              <div key={idx} className="flex flex-col flex-1">
-                <HardwareSkillCard group={group} index={idx} />
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </section>
+            {/* Cartões da Direita */}
+            <div className="col-span-1 md:col-span-5 grid grid-cols-3 md:flex md:flex-col gap-2 md:gap-6">
+              {skillGroups.map((group, idx) => (
+                <div key={idx} className="flex flex-col flex-1">
+                  <HardwareSkillCard group={group} index={idx} />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 }

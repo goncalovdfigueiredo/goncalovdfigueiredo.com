@@ -82,7 +82,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
       )}
       
       <div className="flex flex-col flex-1 min-w-0 w-full">
-        {/* NOME DA EMPRESA (Tamanho refinado no desktop: text-base) */}
+        {/* NOME DA EMPRESA */}
         <div className="min-w-0">
           <a href={url || "#"} target="_blank" rel="noopener noreferrer" className={`inline text-xs md:text-base font-bold hover:underline leading-tight ${isAcademic ? 'text-blue-500 md:text-blue-600 dark:text-blue-400' : 'text-amber-500 md:text-amber-600 dark:text-amber-400'}`}>
             {renderCompanyName(name)}
@@ -145,7 +145,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           </div>
         </div>
         <div className="flex items-center gap-3 min-w-0">
-          {/* CARGO: Reduzido subtilmente no Desktop para text-xl */}
           <span className="text-[15px] md:text-xl font-extrabold text-zinc-900 dark:text-white leading-tight break-words">{job.position}</span>
         </div>
       </div>
@@ -234,10 +233,11 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           )}
         </AnimatePresence>
 
+        {/* ============================================================== */}
+        {/* AQUI ESTÁ A ALTERAÇÃO: LINHA ESTÁTICA SUBTIL EM VEZ DA ANIMADA */}
+        {/* ============================================================== */}
         {!isLast && (
-          <div className="absolute bottom-1 md:bottom-2 left-0 w-full h-[1px] md:h-[2px] bg-zinc-200/30 dark:bg-white/5 overflow-hidden rounded-full">
-            <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: isCurrent ? 2.5 : 5, repeat: Infinity, ease: "linear", delay: index * 0.8 }} className={`absolute top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-current to-transparent ${isCurrent ? 'via-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)] text-emerald-500' : 'via-zinc-400/50 shadow-[0_0_8px_rgba(161,161,170,0.3)] text-zinc-400'} `} />
-          </div>
+          <div className="absolute bottom-1 md:bottom-2 left-0 w-full h-[1px] bg-gradient-to-r from-zinc-200 via-zinc-300 to-transparent dark:from-white/5 dark:via-white/10 dark:to-transparent rounded-full" />
         )}
       </div>
     } />

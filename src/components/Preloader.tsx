@@ -43,7 +43,8 @@ export default function Preloader() {
             initial={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
-            className="absolute top-0 left-0 w-1/2 h-full bg-zinc-50 dark:bg-[#060608] z-0 border-r border-zinc-200/50 dark:border-white/5"
+            // ALTERADO: Adicionado /60 na cor e a classe backdrop-blur-xl
+            className="absolute top-0 left-0 w-1/2 h-full bg-zinc-50/60 dark:bg-[#060608]/60 backdrop-blur-xl z-0 border-r border-zinc-200/50 dark:border-white/5"
           />
 
           {/* Painel Direito */}
@@ -51,7 +52,8 @@ export default function Preloader() {
             initial={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
-            className="absolute top-0 right-0 w-1/2 h-full bg-zinc-50 dark:bg-[#060608] z-0 border-l border-zinc-200/50 dark:border-white/5"
+            // ALTERADO: Adicionado /60 na cor e a classe backdrop-blur-xl
+            className="absolute top-0 right-0 w-1/2 h-full bg-zinc-50/60 dark:bg-[#060608]/60 backdrop-blur-xl z-0 border-l border-zinc-200/50 dark:border-white/5"
           />
 
           {/* BACKGROUND DECORATION: GRID TÉCNICO */}
