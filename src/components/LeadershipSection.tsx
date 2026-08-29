@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, ChevronUp, Mic, Medal, X } from "lucide-react";
+import { Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, X, Mic, Medal, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
@@ -42,23 +42,43 @@ const TagColors: Record<string, string> = {
   "PhD Jury": "text-rose-600 bg-rose-500/10 border-rose-500/20",
 };
 
-const CompanyLogo = ({ job }: { job: any }) => {
-  if (job.logos && job.logos.length > 0) {
-    return (
-      <div className="flex items-center -space-x-2 overflow-hidden py-1 pl-1">
-        {job.logos.map((logo: string, idx: number) => (
-          <div key={idx} className="relative z-10 inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900 bg-white dark:bg-white/10 p-0.5" style={{ zIndex: 10 - idx }} >
-            <img src={logo} alt="Publisher Logo" className="h-full w-full object-contain rounded-full" />
-          </div>
-        ))}
-      </div>
-    );
-  }
-  return <img src={job.logo} alt={job.company} className="w-full h-full object-contain" />;
+// --- COMPONENTE REFATORADO: O Retângulo Unificado por baixo! ---
+const CompanyLogo = ({ job, isModal = false }: { job: any, isModal?: boolean }) => {
+  const heightClass = isModal ? "h-10 md:h-12" : "h-10 md:h-[46px]";
+  const singleWidthClass = isModal ? "w-10 md:w-12" : "w-10 md:w-[46px]";
+  
+  const isMulti = job.logos && job.logos.length > 1;
+
+  return (
+    <div className={`
+      flex items-center justify-center shrink-0 rounded-xl shadow-sm
+      bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10
+      ${heightClass}
+      ${isMulti ? 'w-auto px-2.5' : `${singleWidthClass} p-2`}
+    `}>
+      {isMulti ? (
+        /* Logótipos em círculos sobrepostos DENTRO do retângulo */
+        <div className="flex items-center -space-x-2">
+          {job.logos.map((logo: string, idx: number) => (
+            <div 
+              key={idx} 
+              className="relative z-10 h-7 w-7 md:h-8 md:w-8 rounded-full ring-2 ring-white dark:ring-[#1a1a1c] bg-white p-0.5 shadow-sm" 
+              style={{ zIndex: 10 - idx }}
+            >
+              <img src={logo} alt="Publisher Logo" className="h-full w-full object-contain rounded-full" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* Logótipo único ocupa o quadrado normal */
+        <img src={job.logo || (job.logos && job.logos[0])} alt={job.company} className="w-full h-full object-contain" />
+      )}
+    </div>
+  );
 };
 
 export default function LeadershipSection() {
-  const [selectedMobileJob, setSelectedMobileJob] = useState<any | null>(null);
+  const [selectedJob, setSelectedJob] = useState<any | null>(null);
 
   const renderActivityGrid = (ach: any, isModal: boolean) => (
     <div className="pt-2 first:pt-0">
@@ -71,7 +91,7 @@ export default function LeadershipSection() {
         </div>
       )}
       
-      <div className={`grid ${isModal ? "grid-cols-4" : "grid-cols-4 sm:group-hover:grid-cols-4"} gap-2 transition-all duration-500`}>
+      <div className={`grid ${isModal ? "grid-cols-2 md:grid-cols-4" : "grid-cols-4 sm:group-hover:grid-cols-4"} gap-2 transition-all duration-500`}>
         {ach.items.map((item: any, k: number) => {
           const IconComp = IconMap[item.icon] || Rocket;
           const tagColor = TagColors[item.tag] || "text-zinc-500 bg-zinc-500/10 border-zinc-500/20";
@@ -122,7 +142,7 @@ export default function LeadershipSection() {
         </MotionWrapper>
 
         {/* =======================
-            VERSÃO MOBILE (Com a seta no canto superior direito)
+            VERSÃO MOBILE 
            ======================= */}
         <div className="lg:hidden flex flex-col gap-3">
             {LeadershipExperience.map((job: any, idx: number) => {
@@ -137,28 +157,22 @@ export default function LeadershipSection() {
                   viewport={{ once: true }}
                 >
                   <div 
-                    onClick={() => setSelectedMobileJob(job)}
+                    onClick={() => setSelectedJob(job)}
                     className="relative rounded-xl border bg-zinc-50 dark:bg-white/5 border-zinc-200 dark:border-white/10 hover:border-emerald-500/30 transition-all duration-300 overflow-hidden cursor-pointer p-4 active:scale-[0.98]"
                   >
-                    {/* Seta no canto superior direito */}
                     <div className="absolute top-3 right-3">
                       <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
                     </div>
 
                     <div className="flex items-start gap-3 pr-6">
-                       <div className={`
-                         rounded-lg border border-zinc-200 dark:border-white/10 shrink-0 flex items-center justify-center bg-white dark:bg-white/5 shadow-sm
-                         ${job.logos ? 'px-1.5 py-1 w-auto' : 'p-2 w-10 h-10'} 
-                       `}>
-                          <CompanyLogo job={job} />
-                       </div>
+                       {/* CompanyLogo agora trata das caixas sozinho! */}
+                       <CompanyLogo job={job} />
                        
                        <div className="flex-1 min-w-0">
                           <h3 className="text-[15px] font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</h3>
                           <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 mb-0">{job.company}</p>
                           
-                          
-                          <div className="flex flex-wrap items-center gap-y-0 gap-x-3 text-[8px] text-zinc-500 dark:text-zinc-400">
+                          <div className="flex flex-wrap items-center gap-y-0 gap-x-3 text-[8px] text-zinc-500 dark:text-zinc-400 mt-1">
                              <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-emerald-500/70" /> {job.period}</span>
                              <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-emerald-500/70" /> {locationDisplay}</span>
                           </div>
@@ -170,84 +184,11 @@ export default function LeadershipSection() {
             })}
         </div>
 
-        {/* =======================
-            MODAL MOBILE (Popup Flutuante com os detalhes completos)
-           ======================= */}
-        <AnimatePresence>
-          {selectedMobileJob && (
-            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 lg:hidden">
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                exit={{ opacity: 0 }} 
-                onClick={() => setSelectedMobileJob(null)} 
-                className="absolute inset-0 bg-black/80 backdrop-blur-md" 
-              />
-              <motion.div 
-                initial={{ scale: 0.9, y: 20, opacity: 0 }} 
-                animate={{ scale: 1, y: 0, opacity: 1 }} 
-                exit={{ scale: 0.9, y: 20, opacity: 0 }} 
-                className="relative w-full max-w-sm z-10 max-h-[85vh] flex flex-col"
-              >
-                <GlassCard className="flex flex-col w-full rounded-2xl overflow-hidden border border-emerald-500/30 bg-zinc-50 dark:bg-[#0c0c0e] relative p-5 shadow-2xl text-left">
-                  
-                  <button 
-                    onClick={() => setSelectedMobileJob(null)} 
-                    className="absolute top-3 right-3 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors shadow-sm"
-                    aria-label="Close modal"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-
-                  <div className="flex items-center gap-1 mb-2 pr-8">
-                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 flex items-center justify-center shrink-0">
-                      <CompanyLogo job={selectedMobileJob} />
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-widest">
-                        {selectedMobileJob.period}
-                      </span>
-                      <h3 className="text-xs font-bold text-zinc-900 dark:text-white leading-tight">
-                        {selectedMobileJob.position}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mb-3 pb-2.5 border-b border-zinc-200 dark:border-white/10">
-                    {selectedMobileJob.company} • {typeof selectedMobileJob.location === 'string' ? selectedMobileJob.location : selectedMobileJob.location.city}
-                  </p>
-
-                  <div className="space-y-2.5 overflow-y-auto max-h-[50vh] no-scrollbar pr-1">
-                    {selectedMobileJob.achievements.map((ach: any, i: number) => {
-                      if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                        return renderActivityGrid(ach, true);
-                      }
-                      if (ach === "__chart__") {
-                        return (
-                          <div key={i} className="w-full pt-0">
-                              <PeerReviewChart company={selectedMobileJob.company} forceAnimation={true} />
-                          </div>
-                        );
-                      }
-                      return (
-                        <div key={i} className="flex items-start gap-2 text-[11px] text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">
-                          <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
-                          <p>{ach}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                </GlassCard>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
 
         {/* =======================
-            VERSÃO DESKTOP (Inalterada)
+            VERSÃO DESKTOP
            ======================= */}
-        <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4">
+        <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4 -ml-4 pr-12 pb-24">
           <div className="flex items-start min-w-max gap-8">
             {LeadershipExperience.map((job: any, idx: number) => {
               const zIndex = LeadershipExperience.length - idx;
@@ -261,87 +202,171 @@ export default function LeadershipSection() {
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   viewport={{ once: true }}
                   style={{ zIndex }} 
+                  onClick={() => setSelectedJob(job)}
                   className={`
-                    relative flex-shrink-0 
-                    w-[400px] hover:w-[550px]
-                    ${idx > 0 ? "-ml-32" : ""}
-                    transition-all duration-500 ease-out group
-                    hover:!ml-4 hover:z-50 hover:-translate-y-2
+                    relative flex-shrink-0 cursor-pointer
+                    w-[360px] 
+                    ${idx > 0 ? "-ml-20" : ""} 
+                    transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group
+                    hover:!ml-4 hover:mr-4 hover:z-50 hover:-translate-y-4 hover:scale-[1.02]
                   `}
                 >
+                  {/* Badge de Data */}
                   <div className="absolute -top-3 right-6 z-30 px-3 py-1.5 rounded-full flex items-center gap-1.5 bg-zinc-50 border border-zinc-200 shadow-sm dark:bg-zinc-900 dark:border-emerald-500/30 dark:shadow-[0_0_10px_rgba(16,185,129,0.2)] transition-transform duration-500 group-hover:-translate-y-1">
                     <Calendar className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                     <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">{job.period}</span>
                   </div>
 
-                  <GlassCard className="p-6 relative overflow-visible rounded-2xl min-h-[320px] flex flex-col justify-between bg-zinc-100/0 border border-zinc-200 shadow-xl dark:bg-[#09090b]/0 dark:backdrop-blur-xl dark:border-emerald-500/10 dark:shadow-2xl dark:shadow-black/50 transition-all duration-500 hover:border-emerald-500/30 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/40">
-                    <div className="mb-6 mt-2">
+                  {/* Cartão Estático */}
+                  <div className="p-6 relative overflow-visible rounded-2xl h-[260px] flex flex-col justify-between 
+                    bg-zinc-200/20 dark:bg-black/30 backdrop-blur-[2px]
+                    border border-zinc-200/50 dark:border-emerald-500/30 
+                    transition-all duration-500 
+                    group-hover:bg-zinc-100/70 group-hover:dark:bg-black/70 
+                    group-hover:backdrop-blur-md 
+                    group-hover:border-emerald-500/50 
+                    group-hover:shadow-[0_24px_50px_rgba(16,185,129,0.25)]"
+                  >
+                    <div className="mb-4 mt-2">
                       <div className="flex items-center gap-4 mb-4">
-                        <div className={`
-                           rounded-xl border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-inner shrink-0 bg-white dark:bg-white/5
-                           ${job.logos ? 'px-2 py-1.5 w-auto' : 'p-2.5 w-12 h-12 flex items-center justify-center'}
-                        `}>
-                           <CompanyLogo job={job} />
-                        </div>
-
+                        {/* CompanyLogo agora trata das caixas sozinho! */}
+                        <CompanyLogo job={job} />
+                        
                         <div>
-                            <h3 className="text-lg font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[300px] group-hover:max-w-none transition-all duration-500">{job.company}</p>
+                            <h3 className="text-[17px] font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
+                            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[200px]">{job.company}</p>
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        <div className="flex items-center gap-1.5 bg-white dark:bg-white/5 px-2.5 py-1.5 rounded-md border border-zinc-200 dark:border-white/5">
+                      
+                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400 mt-5">
+                        <div className="flex items-center gap-1.5 bg-white/50 dark:bg-white/5 px-2.5 py-1.5 rounded-md border border-zinc-200/50 dark:border-white/5">
                           <MapPin className="h-3.5 w-3.5" /> <span>{locationDisplay}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Desktop Content */}
-                    {job.achievements.length > 0 && (
-                      <div className="relative p-4 bg-white/50 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5 group/achieve hover:border-emerald-500/20 transition-colors duration-300 flex-grow">
-                        <div className="flex items-center mb-3">
-                          <div className="h-6 w-6 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/10 mr-2.5">
-                            <Briefcase className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                          </div>
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 group-hover/achieve:text-emerald-600 dark:group-hover/achieve:text-emerald-400 transition-colors">Key Initiatives</h4>
+                    {/* Botão de Ação "Expandir" */}
+                    <div className="mt-auto pt-4 border-t border-zinc-200/50 dark:border-white/10 flex items-center justify-between text-zinc-500 dark:text-zinc-400 group-hover:text-emerald-500 transition-colors">
+                        <span className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                            <Briefcase className="w-3.5 h-3.5" /> View Details
+                        </span>
+                        <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                            <Plus className="w-3.5 h-3.5" />
                         </div>
-
-                        <div className="max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:max-h-[3000px] group-hover:opacity-100">
-                          <div className="space-y-3 mt-2 pl-1">
-                            {job.achievements.map((ach: any, i: number) => {
-                              if (typeof ach === 'object' && ach.type === 'activity_grid') {
-                                return renderActivityGrid(ach, false);
-                              }
-                              if (ach === "__chart__") {
-                                return (
-                                  <div key={i} className="w-full pt-2">
-                                      <PeerReviewChart company={job.company} />
-                                  </div>
-                                );
-                              }
-                              return (
-                                <div key={i} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300 font-light">
-                                  <span className="block mt-1.5 w-1 h-1 rounded-full bg-emerald-500 dark:bg-emerald-500/50 shrink-0" />
-                                  <p className="leading-relaxed">{ach}</p>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                        <div className="absolute bottom-3 right-4 flex items-center gap-2 transition-opacity duration-300 group-hover:opacity-0">
-                            <span className="text-[10px] uppercase tracking-widest font-medium text-emerald-600/60 dark:text-emerald-500/60">Hover to expand</span>
-                            <div className="w-1 h-1 rounded-full bg-emerald-500/40 animate-pulse" />
-                        </div>
-                      </div>
-                    )}
-                  </GlassCard>
+                    </div>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
         </div>
 
-        {/* TIMELINE */}
+        {/* =======================
+            MODAL UNIFICADO
+           ======================= */}
+        <AnimatePresence>
+          {selectedJob && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }} 
+                onClick={() => setSelectedJob(null)} 
+                className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer" 
+              />
+              
+              <motion.div 
+                initial={{ scale: 0.95, y: 20, opacity: 0 }} 
+                animate={{ scale: 1, y: 0, opacity: 1 }} 
+                exit={{ scale: 0.95, y: 20, opacity: 0 }} 
+                className="relative w-full max-w-sm md:max-w-3xl z-10 max-h-[95vh] flex flex-col"
+              >
+                <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-emerald-500 opacity-0 md:opacity-40 blur-sm animate-pulse pointer-events-none" />
+                
+                <GlassCard className="flex flex-col w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-emerald-500/40 bg-zinc-50 dark:bg-[#0c0c0e] relative p-5 md:p-6 shadow-2xl text-left">
+                  
+                  <button 
+                    onClick={() => setSelectedJob(null)} 
+                    className="absolute top-3 right-3 md:top-4 md:right-4 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors shadow-sm"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4 md:w-5 md:h-5" />
+                  </button>
+
+                  <div className="flex items-center gap-3 mb-3 pr-8">
+                    {/* CompanyLogo agora trata das caixas sozinho! */}
+                    <CompanyLogo job={selectedJob} isModal={true} />
+                    
+                    <div>
+                      <span className="text-[9px] md:text-[10px] font-mono text-emerald-600 dark:text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                        <Calendar className="w-3 h-3" /> {selectedJob.period}
+                      </span>
+                      <h3 className="text-sm md:text-xl font-bold text-zinc-900 dark:text-white leading-tight mt-0.5">
+                        {selectedJob.position}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-xs md:text-sm text-emerald-600 dark:text-emerald-400 font-medium mb-3 pb-2 border-b border-zinc-200 dark:border-white/10 flex items-center gap-1.5">
+                    <Briefcase className="w-3.5 h-3.5" />
+                    {selectedJob.company} • {typeof selectedJob.location === 'string' ? selectedJob.location : selectedJob.location.city}
+                  </p>
+
+                  <div className="space-y-2 md:space-y-3 overflow-y-auto max-h-[75vh] no-scrollbar pr-2 pb-4">
+                    
+                    {/* 1. TEXTOS E GRÁFICO */}
+                    {selectedJob.achievements.map((ach: any, i: number) => {
+                      if (typeof ach === 'object' && ach.type === 'activity_grid') {
+                        return renderActivityGrid(ach, true);
+                      }
+                      if (ach === "__chart__") {
+                        return (
+                          <div key={i} className="w-full pt-1">
+                              <PeerReviewChart company={selectedJob.company} forceAnimation={true} />
+                          </div>
+                        );
+                      }
+                      return (
+                        <div key={i} className="flex items-start gap-2.5 text-xs md:text-sm text-zinc-600 dark:text-zinc-300 font-light leading-tight">
+                          <span className="block relative top-[0.35rem] w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] shrink-0" />
+                          <p>{ach}</p>
+                        </div>
+                      );
+                    })}
+
+                    {/* 2. TIMELINE COM NOVO NOME E DESIGN */}
+                    {selectedJob.publishersTimeline && (
+                      <div className="mt-4 pt-4 border-t border-zinc-200/50 dark:border-white/5">
+                        <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-800 dark:text-zinc-300 mb-3 flex items-center gap-2">
+                          <Calendar className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> Timeline by Publisher
+                        </h4>
+                        
+                        <div className="flex flex-wrap gap-2.5">
+                          {selectedJob.publishersTimeline.map((pub: any, idx: number) => (
+                            <div key={idx} className="flex items-center gap-2.5 bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 px-3 py-2 rounded-lg shadow-sm hover:bg-zinc-50 hover:dark:bg-white/10 transition-colors">
+                              <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center shrink-0 p-0.5">
+                                <img src={pub.logo} alt={pub.name} className="w-full h-full object-contain rounded-full" />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[11px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">{pub.name}</span>
+                                <span className="text-[9px] font-mono text-emerald-600 dark:text-emerald-500 mt-1 leading-none">{pub.period}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+                </GlassCard>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* =======================
+            TIMELINE GANTT
+           ======================= */}
         <MotionWrapper>
           <div id="timeline" className="mt-16 md:mt-20 scroll-mt-24">
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">

@@ -277,21 +277,8 @@ export const workExperience = [
 ];
 
 export const LeadershipExperience = [
+
   
-  {
-    company: "IEEE, Elsevier & Optica", 
-    location: "Remote",
-    position: "Scientific Peer Reviewer", 
-    period: "Oct 2024 - Present", 
-    logo: "/IEEE.png", 
-    logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
-    achievements: [
-      //"Ensuring scientific integrity by serving as a subject matter expert reviewer for high-impact journals across multiple publishers.",
-      //"Active contribution to the scientific community through critical evaluation of over 65+ manuscripts in Optics and Photonics.",
-      "Ensuring scientific integrity and actively contributing to Optics and Photonics through the critical evaluation of over 65+ manuscripts across multiple top-tier publishers.",
-      "__chart__", 
-    ],
-  },
 
  
   {
@@ -348,6 +335,25 @@ export const LeadershipExperience = [
       }
     ],
   },
+
+  {
+    company: "IEEE, Elsevier & Optica", 
+    location: "Remote",
+    position: "Scientific Peer Reviewer", 
+    period: "Oct 2024 - Aug 2026", 
+    logo: "/IEEE.png", 
+    logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
+    // ADICIONA ISTO AQUI:
+    publishersTimeline: [
+      { name: "IEEE", period: "Dec 2024 - Aug 2026", logo: "/IEEE.png" },
+      { name: "Optica", period: "Oct 2024 - Jun 2026", logo: "/Optica.png" } ,     // Ajusta as datas reais
+      { name: "Elsevier", period: "Nov 2024 - Nov 2025", logo: "/Elsevier.png" }, // Ajusta as datas reais
+    ],
+    achievements: [
+      "Ensuring scientific integrity and actively contributing to Optics and Photonics through the critical evaluation of over 65+ manuscripts across multiple top-tier publishers.",
+      "__chart__", 
+    ],
+},
 
   
   
