@@ -339,7 +339,7 @@ export const LeadershipExperience = [
   {
     company: "IEEE, Elsevier & Optica", 
     location: "Remote",
-    position: "Scientific Peer Reviewer", 
+    position: "Invited Peer Reviewer", 
     period: "Oct 2024 - Aug 2026", 
     logo: "/IEEE.png", 
     logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
