@@ -292,7 +292,7 @@ export const LeadershipExperience = [
       { name: "IEEE", period: "Dec 2024 - Present", logo: "/IEEE.png" },
     ],
     achievements: [
-      "Ensuring scientific integrity and actively contributing to Optics and Photonics through the critical evaluation of over 65+ manuscripts across multiple top-tier publishers.",
+      "Invited peer reviewer for high-impact journals, ensuring scientific integrity through the critical evaluation of 65+ manuscripts in IoT, optics, and photonics.",
       "__chart__", 
     ],
 },
@@ -323,7 +323,7 @@ export const LeadershipExperience = [
       }
     ],
     achievements: [
-      "As a CAD member, I actively advocate for 250 doctoral candidates by leading high-impact initiatives and serving on institutional evaluation panels to foster academia-industry integration:",
+      "Advocating for 250 PhD candidates by leading high-impact initiatives that foster academic excellence, community engagement, and academia-industry integration:",
       {
         type: "activity_grid",
         year: "2026", 
