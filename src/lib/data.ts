@@ -323,7 +323,7 @@ export const LeadershipExperience = [
       }
     ],
     achievements: [
-      "Advocating for 250 PhD candidates by leading high-impact initiatives that foster academic excellence, community engagement, and academia-industry integration:",
+      "Advocating for 250+ PhD candidates by leading high-impact initiatives that foster academic excellence, community engagement, and academia-industry integration:",
       {
         type: "activity_grid",
         year: "2026", 
