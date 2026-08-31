@@ -29,7 +29,7 @@ export type SciEvent = {
 
 export const personalInfo = {
   name: "Gonçalo",
-  location: "Lisbon, Portugal",
+  location: "Aveiro, Portugal",
   email: "goncalovdfigueiredo@gmail.com",
   github: "https://github.com/goncalo-vfigueiredo",
   linkedin: "https://www.linkedin.com/in/goncalovdfigueiredo/",

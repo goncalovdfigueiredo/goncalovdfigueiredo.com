@@ -366,7 +366,7 @@ export default function EducationSection() {
   return ( 
     <section id="education" className="py-16 md:py-20 relative overflow-hidden"> 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" /> 
-      <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10"> 
+      <div className="container max-w-7xl mx-auto px-5 md:px-8 relative z-10"> 
         <MotionWrapper> 
           <div className="mb-8 lg:mb-16 flex flex-col md:flex-row items-center justify-between gap-6"> 
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white"> 

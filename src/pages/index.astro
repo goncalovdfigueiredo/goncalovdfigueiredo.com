@@ -17,54 +17,58 @@ import FloatingProfilePopup from "../components/FloatingProfilePopup";
 import SectionSeparator from "../components/SectionSeparator";
 import InterestsSection from "../components/InterestsSection";
 
+// Import da Barra Lateral Premium
+import StickySidebar from "../components/StickySidebar";
 ---
 
 <Layout title="Gonçalo Figueiredo's Site">
 
-<Preloader client:only="react" />
+  <Preloader client:only="react" />
   
   <GlassHeader client:only="react" />
 
   <main class="flex flex-col gap-0 min-h-screen">
     
     <HeroSection client:only="react" />
-    
     <SectionSeparator client:only="react" />
     
-    <MyExperience client:only="react" />
+    <div class="w-full pl-4 md:pl-8 lg:pl-10 pr-2 lg:pr-4 relative pb-12">
+      <!-- MUDANÇA AQUI: lg:gap-12 cria um espaço exato de 48px -->
+      <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        
+        <StickySidebar client:only="react" />
 
-    <SectionSeparator client:only="react" />
-    
-    <SkillsSection client:only="react" />
+        <div class="flex-1 min-w-0 flex flex-col gap-0">
+          
+          <MyExperience client:only="react" />
+          <SectionSeparator client:only="react" />
+          
+          <SkillsSection client:only="react" />
+          <SectionSeparator client:only="react" />
+          
+          <ProjectsSection client:only="react" />
+          <SectionSeparator client:only="react" />
+          
+          <MyEducation client:only="react" />
+          <SectionSeparator client:only="react" />
+          
+          <LeadershipSection client:only="react" />
+          <SectionSeparator client:only="react" />
+          
+          <CertificatesSection client:only="react" />
+          <SectionSeparator client:only="react" />
+          
+          <PublicationsSection client:only="react" />
+          <SectionSeparator client:only="react" />
 
-    <SectionSeparator client:only="react" />
-    
-    <ProjectsSection client:only="react" />
+          <GlobalMapSection client:only="react" />
+          <SectionSeparator client:only="react" />
 
-    <SectionSeparator client:only="react" />
-    
-    <MyEducation client:only="react" />
+          <AwardsSection client:only="react" />
 
-    <SectionSeparator client:only="react" />
-    
-    <LeadershipSection client:only="react" />
-
-    <SectionSeparator client:only="react" />
-    
-    <CertificatesSection client:only="react" />
-
-    <SectionSeparator client:only="react" />
-    
-    <PublicationsSection client:only="react" />
-
-    <SectionSeparator client:only="react" />
-
-    <GlobalMapSection client:only="react" />
-
-    <SectionSeparator client:only="react" />
-
-    <AwardsSection client:only="react" />
-
+        </div>
+      </div>
+    </div>
     
   </main>
 

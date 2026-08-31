@@ -1,15 +1,16 @@
 ---
 import "../styles/global.css";
+import { personalInfo } from "../lib/data"; 
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
-  type?: "website" | "article"; // Útil se tiveres blog posts no futuro
+  type?: "website" | "article"; 
 }
 
 const { 
-  title = "Gonçalo Figueiredo's Site'", 
+  title = "Gonçalo Figueiredo's Site", 
   description = "Portfolio of Gonçalo Figueiredo, PhD Candidate in Electrical and Computer Engineering. Specialist in FPGA, Visible Light Communication (VLC), and Optical Sensors.",
   image = "/og-image.jpg",
   type = "website"
@@ -19,7 +20,6 @@ const siteUrl = "https://www.goncalovdfigueiredo.com";
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const socialImageURL = new URL(image, siteUrl);
 
-// --- SCHEMA.ORG (JSON-LD) ---
 const schema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -43,10 +43,12 @@ const schema = {
   },
   "description": description,
   "sameAs": [
-    "https://www.linkedin.com/in/goncalovdfigueiredo/",
-    "https://github.com/SeuUsername",
-    "https://scholar.google.com/citations?user=SEU_ID"
-  ]
+    personalInfo.linkedin,
+    personalInfo.github,
+    personalInfo.scholar,
+    personalInfo.orcid,
+    personalInfo.cienciavitae
+  ].filter(Boolean) 
 };
 ---
 
@@ -59,7 +61,6 @@ const schema = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
 
-    {/* --- 1. SEO PRINCIPAL --- */}
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content="Gonçalo Figueiredo, PhD Candidate, FPGA, VLC, Optical Sensors, Embedded Systems, Verilog, Intel FPGA, IST, Aveiro, Researcher" />
@@ -67,7 +68,6 @@ const schema = {
     <link rel="canonical" href={canonicalURL} />
     <meta name="robots" content="index, follow" />
 
-    {/* --- 2. OPEN GRAPH --- */}
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
@@ -76,38 +76,24 @@ const schema = {
     <meta property="og:site_name" content="Gonçalo Figueiredo Portfolio" />
     <meta property="og:locale" content="en_US" />
 
-    {/* --- 3. TWITTER CARD --- */}
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />
 
-    {/* --- 4. STRUCTURED DATA (JSON-LD) --- */}
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
-    {/* FONTS */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body
-    class="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500 relative"
-  >
+  <body class="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-emerald-500/20 selection:text-emerald-500 relative">
     <div class="noise-overlay" aria-hidden="true"></div>
 
     <div class="fixed inset-0 -z-10 h-full w-full pointer-events-none">
-      <div
-        class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.05),rgba(255,255,255,0))]"
-      >
-      </div>
-      <div
-        class="absolute top-0 z-[-2] h-screen w-screen hidden dark:block bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(0,0,0,0))]"
-      >
-      </div>
+      <div class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.05),rgba(255,255,255,0))]"></div>
+      <div class="absolute top-0 z-[-2] h-screen w-screen hidden dark:block bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(0,0,0,0))]"></div>
     </div>
 
     <slot />
@@ -119,9 +105,7 @@ const schema = {
     if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
     }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   };
   const isDark = getThemePreference() === "dark";
   document.documentElement.classList[isDark ? "add" : "remove"]("dark");

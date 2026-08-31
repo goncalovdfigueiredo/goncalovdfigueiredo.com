@@ -112,7 +112,7 @@ export default function LeadershipSection() {
     <section id="leadership" className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" />
 
-      <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10">
+      <div className="container max-w-7xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
         <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white">
@@ -206,7 +206,7 @@ export default function LeadershipSection() {
                   className={`
                     relative flex-shrink-0 cursor-pointer
                     w-[360px] 
-                    ${idx > 0 ? "-ml-20" : ""} 
+                    ${idx > 0 ? "-ml-28" : ""} 
                     transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group
                     hover:!ml-4 hover:mr-4 hover:z-50 hover:-translate-y-4 hover:scale-[1.02]
                   `}

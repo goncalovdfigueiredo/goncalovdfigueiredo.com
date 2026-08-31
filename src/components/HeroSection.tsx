@@ -42,7 +42,7 @@ const containerVariants: Variants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.15,
-      delayChildren: 0.1,
+      delayChildren: 1.1,
     },
   },
 };
@@ -176,12 +176,12 @@ function DisintegratingProfile() {
         transition: { duration: 0.3 },
       });
       await particleControls.start("exploded");
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       particleControls.start("assembled");
       await imageControls.start({
         opacity: 1,
         scale: 1,
-        transition: { delay: 0.3, duration: 0.4 },
+        transition: { delay: 0.3, duration: 0.6 },
       });
     };
 
@@ -205,7 +205,7 @@ function DisintegratingProfile() {
       y: 0,
       scale: 1,
       opacity: 0,
-      transition: { duration: 0.5, ease: "easeInOut" },
+      transition: { duration: 0.8, ease: "easeInOut" },
     },
     exploded: (i) => {
       const randomX = (Math.random() - 0.5) * 60;
@@ -465,7 +465,7 @@ export default function HeroSection() {
   const [isProfileExpanded, setIsProfileExpanded] = useState(false);
 
   const contacts = [
-    { icon: MapPin, text: "Lisbon, Portugal", href: null },
+    { icon: MapPin, text: "Aveiro, Portugal", href: null },
     { icon: Mail, text: "Email", href: `mailto:${personalInfo.email}` },
     { icon: Linkedin, text: "LinkedIn", href: personalInfo.linkedin },
     { icon: Github, text: "GitHub", href: personalInfo.github },
@@ -503,7 +503,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="container max-w-8xl mx-auto px-4 md:px-6 relative z-10">
+        <div className="container max-w-7xl mx-auto px-4 md:px-6 relative z-10">
           
           {/* BLOCO DE TOPO (Perfil, Título, Info, Botões) */}
           <motion.div
@@ -528,7 +528,7 @@ export default function HeroSection() {
               </span>
             </motion.h1>
 
-            <motion.p variants={itemFadeUp} className="text-xs sm:text-sm md:text-lg text-zinc-600 dark:text-zinc-300 font-medium max-w-lg leading-relaxed mb-4 md:mb-4 relative z-10 pointer-events-auto px-2">
+            <motion.p variants={itemFadeUp} className="text-xs sm:text-sm md:text-lg text-zinc-600 dark:text-zinc-300 font-medium max-w-Lg leading-relaxed mb-4 md:mb-4 relative z-10 pointer-events-auto px-2">
               Bridging the gap between{" "}
               <strong className="text-zinc-900 dark:text-white font-bold ml-0.5">
                 Theoretical Science
@@ -594,7 +594,7 @@ export default function HeroSection() {
                           : "max-h-[60px] md:max-h-[800px]"
                       }`}
                     >
-                      <div className="space-y-3 md:space-y-2 text-xs sm:text-sm md:text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
+                      <div className="text-justify space-y-3 md:space-y-2 text-xs sm:text-sm md:text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
                         <p>
                           Gonçalo Figueiredo is a Ph.D. Candidate in{" "}
                           <strong className="text-zinc-900 dark:text-white">

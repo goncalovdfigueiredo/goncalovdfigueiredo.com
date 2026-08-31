@@ -243,7 +243,7 @@ export default function AwardsSection() {
   return (
     <section id="awards" className="py-16 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/5 to-transparent pointer-events-none" />
-      <div className="container max-w-8xl mx-auto px-5 md:px-8 relative z-10">
+      <div className="container max-w-7xl mx-auto px-5 md:px-8 relative z-10">
         
         {/* CABEÇALHO */}
         <MotionWrapper>

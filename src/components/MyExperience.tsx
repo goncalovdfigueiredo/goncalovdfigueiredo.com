@@ -249,7 +249,7 @@ export default function ExperienceSection() {
     <section id="experience" className="py-12 md:py-24 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.05)_0%,transparent_70%)] pointer-events-none" />
       
-      <div className="container max-w-8xl mx-auto px-4 md:px-8 relative z-10">
+      <div className="container max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <MotionWrapper>
           <div className="mb-4 md:mb-5 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 min-w-0">
             <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-2 md:gap-3">
