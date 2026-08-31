@@ -278,7 +278,24 @@ export const workExperience = [
 
 export const LeadershipExperience = [
 
-  
+  {
+    company: "IEEE, Elsevier & Optica", 
+    location: "Remote",
+    position: "Invited Peer Reviewer", 
+    period: "Oct 2024 - Present", 
+    logo: "/IEEE.png", 
+    logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
+    // ADICIONA ISTO AQUI:
+    publishersTimeline: [
+      { name: "Optica", period: "Oct 2024 - Jun 2026", logo: "/Optica.png" } ,     
+      { name: "Elsevier", period: "Nov 2024 - Nov 2025", logo: "/Elsevier.png" }, 
+      { name: "IEEE", period: "Dec 2024 - Present", logo: "/IEEE.png" },
+    ],
+    achievements: [
+      "Ensuring scientific integrity and actively contributing to Optics and Photonics through the critical evaluation of over 65+ manuscripts across multiple top-tier publishers.",
+      "__chart__", 
+    ],
+},
 
  
   {
@@ -335,26 +352,6 @@ export const LeadershipExperience = [
       }
     ],
   },
-
-  {
-    company: "IEEE, Elsevier & Optica", 
-    location: "Remote",
-    position: "Invited Peer Reviewer", 
-    period: "Oct 2024 - Aug 2026", 
-    logo: "/IEEE.png", 
-    logos: ["/IEEE.png", "/Elsevier.png", "/Optica.png"],
-    // ADICIONA ISTO AQUI:
-    publishersTimeline: [
-      { name: "Optica", period: "Oct 2024 - Jun 2026", logo: "/Optica.png" } ,     // Ajusta as datas reais
-      { name: "Elsevier", period: "Nov 2024 - Nov 2025", logo: "/Elsevier.png" }, // Ajusta as datas reais
-      { name: "IEEE", period: "Dec 2024 - Aug 2026", logo: "/IEEE.png" },
-    ],
-    achievements: [
-      "Ensuring scientific integrity and actively contributing to Optics and Photonics through the critical evaluation of over 65+ manuscripts across multiple top-tier publishers.",
-      "__chart__", 
-    ],
-},
-
   
   
   {
