@@ -12,14 +12,14 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div className="relative flex-1 md:flex-none min-w-0">
-      <a href={href} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`group w-full flex items-center justify-center gap-1.5 md:gap-2 px-2 py-1.5 md:px-3 md:py-2 rounded-lg border transition-all duration-300 ${colorClass}`} >
-        <Icon className="w-3.5 h-3.5 shrink-0" />
+      <a href={href} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`group w-full flex items-center justify-center gap-1.5 md:gap-2 px-3 py-2 rounded-xl border transition-all duration-300 shadow-sm backdrop-blur-md ${colorClass}`} >
+        <Icon className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
         <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider truncate">{text}</span>
       </a>
       <AnimatePresence>
         {isHovered && (
           <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 5, scale: 0.95 }} className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none hidden md:block" >
-            <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] py-1.5 px-3 rounded-md shadow-2xl whitespace-nowrap">
+            <div className="bg-zinc-900/90 border border-zinc-800 text-zinc-300 text-[10px] py-1.5 px-3 rounded-lg shadow-2xl whitespace-nowrap backdrop-blur-xl">
               {tooltip}
               <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-900 border-t border-l border-zinc-800 rotate-45" />
             </div>
@@ -32,7 +32,7 @@ const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: {
 
 /* ========================= MICRO-COMPONENTE: BADGE DE TIPO DE AMBIENTE (SÓ DESKTOP) ========================= */
 const EnvironmentBadge = ({ type }: { type: 'Academic' | 'Industry' }) => (
-  <span className={`hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black tracking-tighter border shrink-0 ${type === 'Academic' ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'} `}>
+  <span className={`hidden md:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border shrink-0 ${type === 'Academic' ? 'bg-blue-500/5 border-blue-500/20 text-blue-600 dark:text-blue-400' : 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400'} `}>
     {type === 'Academic' ? <GraduationCap className="w-3 h-3" /> : <Building2 className="w-3 h-3" />}
     {type}
   </span>
@@ -74,15 +74,13 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
 
   const renderCompanyBlock = (name: string, url: string, location: string, logo: string | null, isAcademic: boolean, courses?: any[]) => (
     <div className="flex items-start gap-2 md:gap-3.5 group min-w-0 w-full">
-      {/* LOGO REFINADO NO DESKTOP */}
       {logo && (
-        <div className="relative z-10 w-7 h-7 md:w-10 md:h-10 rounded-md md:rounded-lg bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm shrink-0 mt-0.5">
+        <div className="relative z-10 w-7 h-7 md:w-10 md:h-10 rounded-lg bg-white dark:bg-[#111113] border border-zinc-200 dark:border-white/10 flex items-center justify-center p-1 shadow-sm shrink-0 mt-0.5 group-hover:border-emerald-500/50 transition-colors">
           <img src={logo} alt={name} className="w-full h-full object-contain" />
         </div>
       )}
       
       <div className="flex flex-col flex-1 min-w-0 w-full">
-        {/* NOME DA EMPRESA */}
         <div className="min-w-0">
           <a href={url || "#"} target="_blank" rel="noopener noreferrer" className={`inline text-xs md:text-base font-bold hover:underline leading-tight ${isAcademic ? 'text-blue-500 md:text-blue-600 dark:text-blue-400' : 'text-amber-500 md:text-amber-600 dark:text-amber-400'}`}>
             {renderCompanyName(name)}
@@ -90,7 +88,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           </a>
         </div>
         
-        {/* INFO CONTEXTUAL: DESKTOP */}
         <div className="hidden md:flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 min-w-0">
           <EnvironmentBadge type={isAcademic ? "Academic" : "Industry"} />
           <span className="flex items-center gap-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-0">
@@ -99,7 +96,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           </span>
         </div>
 
-        {/* INFO CONTEXTUAL: MOBILE */}
         <div className="flex md:hidden items-center gap-1.5 mt-1 text-[9px] text-zinc-500 dark:text-zinc-400 font-medium min-w-0">
           <span className="flex items-center gap-1 shrink-0">
             {isAcademic ? <GraduationCap className="w-2.5 h-2.5" /> : <Building2 className="w-2.5 h-2.5" />}
@@ -112,7 +108,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           </span>
         </div>
         
-        {/* UNIDADES CURRICULARES */}
         {courses && courses.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mt-1.5 w-full">
             {courses.map((course: any, idx: number) => (
@@ -138,7 +133,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
     <TimelineItem index={index} isLast={isLast} period={job.period} isCurrent={isCurrent} title={
       <div className="flex flex-col gap-1 md:gap-1.5 min-w-0">
         <div className="flex items-center">
-          <div className={` flex items-center gap-1.5 px-1.5 py-0.5 md:px-2 md:py-0.5 rounded-md text-[9px] md:text-xs font-bold uppercase tracking-wider border transition-colors duration-300 ${isCurrent ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400'} `}>
+          <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[9px] md:text-xs font-bold uppercase tracking-wider border transition-colors duration-300 ${isCurrent ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-500 dark:text-zinc-400'} `}>
             <Calendar className={`w-2.5 h-2.5 md:w-3 md:h-3 ${isCurrent ? 'text-emerald-500' : 'text-zinc-400'}`} />
             <span>{job.period}</span>
             {isCurrent && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse ml-0.5" />}
@@ -181,7 +176,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           {/* BOTÕES */}
           <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 shrink-0 mt-2 lg:-mt-10 relative z-10 w-full lg:w-36 lg:ml-auto">
             {hasProjects && (
-              <button onClick={() => toggleTab('projects')} className={`flex items-center justify-center lg:justify-between gap-1.5 py-1.5 px-2 md:py-2 md:px-3.5 rounded-md md:rounded-lg border text-[8px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 w-full min-w-0 ${activeTab === 'projects' ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_15px_rgba(37,99,235,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500'} `} >
+              <button onClick={() => toggleTab('projects')} className={`flex items-center justify-center lg:justify-between gap-1.5 py-1.5 px-2 md:py-2 md:px-3.5 rounded-xl border text-[8px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 w-full min-w-0 shadow-sm ${activeTab === 'projects' ? 'bg-blue-600 text-white border-blue-700 shadow-[0_0_15px_rgba(37,99,235,0.4)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-blue-500/50 hover:bg-blue-500/5 hover:text-blue-500'} `} >
                 <div className="flex items-center gap-1.5 min-w-0">
                   <FileText className="w-3 h-3 md:w-3.5 md:h-3.5 shrink-0" />
                   <span className="truncate">Projects</span>
@@ -190,7 +185,7 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
               </button>
             )}
             {hasImpact && (
-              <button onClick={() => toggleTab('key impact')} className={`flex items-center justify-center lg:justify-between gap-1.5 py-1.5 px-2 md:py-2 md:px-3.5 rounded-md md:rounded-lg border text-[8px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 w-full min-w-0 ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_15px_rgba(5,150,105,0.3)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'} `} >
+              <button onClick={() => toggleTab('key impact')} className={`flex items-center justify-center lg:justify-between gap-1.5 py-1.5 px-2 md:py-2 md:px-3.5 rounded-xl border text-[8px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 w-full min-w-0 shadow-sm ${activeTab === 'key impact' ? 'bg-emerald-600 text-white border-emerald-700 shadow-[0_0_15px_rgba(5,150,105,0.4)]' : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-500'} `} >
                 <div className="flex items-center gap-1.5 min-w-0">
                   <BarChart3 className="w-3 h-3 md:w-3.5 md:h-3.5 shrink-0" />
                   <span className="truncate">Key Impact</span>
@@ -204,14 +199,14 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
         <AnimatePresence mode="wait">
           {activeTab && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-2 md:mt-3 overflow-hidden min-w-0">
-              <div className={`p-3 md:p-5 rounded-lg md:rounded-xl border backdrop-blur-sm ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20' : 'bg-emerald-500/5 border-emerald-500/20'}`}>
+              <div className={`p-3 md:p-5 rounded-xl border backdrop-blur-md ${activeTab === 'projects' ? 'bg-blue-500/5 border-blue-500/20 shadow-[0_0_20px_rgba(37,99,235,0.05)]' : 'bg-emerald-500/5 border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.05)]'}`}>
                 <ul className="space-y-2 md:space-y-2.5">
                   {(activeTab === 'projects' ? job.projecttitle : job.achievements).map((item: string, i: number) => {
                     const parts = item.split(':');
                     const isProjectStyle = parts.length > 1 && (item.includes('Project') || item.includes('Area'));
                     return (
                       <li key={i} className="text-[10px] md:text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed w-full flex gap-2 md:gap-3 items-start text-justify">
-                        <span className={`mt-1.5 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.4)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.4)]'}`} />
+                        <span className={`mt-1.5 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full shrink-0 ${activeTab === 'projects' ? 'bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.6)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.6)]'}`} />
                         <span className="flex-1">
                           {isProjectStyle ? (
                             <>
@@ -233,9 +228,6 @@ const JobEntry = ({ job, index, isLast }: { job: any, index: number, isLast: boo
           )}
         </AnimatePresence>
 
-        {/* ============================================================== */}
-        {/* AQUI ESTÁ A ALTERAÇÃO: LINHA ESTÁTICA SUBTIL EM VEZ DA ANIMADA */}
-        {/* ============================================================== */}
         {!isLast && (
           <div className="absolute bottom-1 md:bottom-2 left-0 w-full h-[1px] bg-gradient-to-r from-zinc-200 via-zinc-300 to-transparent dark:from-white/5 dark:via-white/10 dark:to-transparent rounded-full" />
         )}
@@ -251,15 +243,37 @@ export default function ExperienceSection() {
       
       <div className="container max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         <MotionWrapper>
-          <div className="mb-4 md:mb-5 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 min-w-0">
-            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white gap-2 md:gap-3">
-              <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-emerald-500/10 border border-emerald-500/20 shadow-sm">
-                <Briefcase className="h-5 w-5 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              Experience
-            </h2>
+          <div className="mb-6 md:mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6 min-w-0">
             
-            <div className="flex w-full md:w-auto gap-2 md:gap-3 shrink-0">
+            {/* TÍTULO COM ESTÉTICA DE TERMINAL / SECURITY DASHBOARD */}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
+                  MODULE // 01_EXEC
+                </span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
+                
+                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
+                <motion.div 
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
+                >
+                  <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Briefcase className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
+                </motion.div>
+                
+                {/* Título limpo com o traço parcial corrigido (w-16) */}
+                <div className="relative inline-block">
+                  <span>Experience</span>
+                  <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+                </div>
+              </h2>
+            </div>
+            
+            <div className="flex w-full md:w-auto gap-2.5 md:gap-3 shrink-0">
               <NavButtonWithTooltip href="#map" icon={MapPin} text="Global Footprint" tooltip="Interactive map of my research, conferences and academic reach" colorClass="border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" />
               <NavButtonWithTooltip href="#timeline" icon={ChartGantt} text="Timeline" tooltip="Visual roadmap of my academic career" colorClass="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400" />
             </div>

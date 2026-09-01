@@ -1,4 +1,7 @@
-"use client"; import React, { useState, useEffect } from "react"; 
+// src/components/AwardsSection.tsx
+"use client";
+
+import React, { useState, useEffect } from "react"; 
 import { awards, featuredIn } from "@/lib/data"; 
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion"; 
 import { Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight, Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car, Clock, ChevronDown, ChevronRight, Plus, X, Speech } from "lucide-react"; 
@@ -248,12 +251,35 @@ export default function AwardsSection() {
         {/* CABEÇALHO */}
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4">
-            <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
-              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
-                <Trophy className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+            
+            {/* TÍTULO COM ESTÉTICA DE TERMINAL / SECURITY DASHBOARD */}
+            <div className="flex flex-col gap-1 items-start md:items-start">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
+                  MODULE // 09_AWARDS
+                </span>
               </div>
-              <span>Awards & Recognition</span>
-            </h2>
+              <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
+                
+                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
+                <motion.div 
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
+                >
+                  <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Trophy className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
+                </motion.div>
+                
+                {/* Título limpo com o traço parcial elegante */}
+                <div className="relative inline-block">
+                  <span>Awards & Recognition</span>
+                  <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+                </div>
+              </h2>
+            </div>
+
             <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
               Recognition of academic achievements, media coverage, and personal pursuits beyond the lab.
             </p>

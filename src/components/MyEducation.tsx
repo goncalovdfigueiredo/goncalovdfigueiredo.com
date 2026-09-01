@@ -368,13 +368,36 @@ export default function EducationSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" /> 
       <div className="container max-w-7xl mx-auto px-5 md:px-8 relative z-10"> 
         <MotionWrapper> 
-          <div className="mb-8 lg:mb-16 flex flex-col md:flex-row items-center justify-between gap-6"> 
-            <h2 className="text-2xl md:text-4xl font-bold flex items-center tracking-tight text-zinc-900 dark:text-white"> 
-              <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm shadow-sm text-emerald-600 dark:text-emerald-400"> 
-                <GraduationCap className="h-6 w-6 md:h-8 md:w-8" /> 
-              </div> 
-              Education 
-            </h2> 
+          <div className="mb-8 lg:mb-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"> 
+            
+            {/* TÍTULO COM ESTÉTICA DE TERMINAL / SECURITY DASHBOARD */}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
+                  MODULE // 04_ACADEMIC_ROOT
+                </span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
+                
+                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
+                <motion.div 
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
+                >
+                  <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <GraduationCap className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
+                </motion.div>
+                
+                {/* Título limpo com o traço parcial elegante */}
+                <div className="relative inline-block">
+                  <span>Education</span>
+                  <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+                </div>
+              </h2>
+            </div>
+
             <div className="flex gap-2 w-full md:w-auto"> 
               <NavButtonWithTooltip href="#map" icon={MapPin} text="Global Footprint" tooltip="Interactive map of my research, conferences and academic reach" colorClass="border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" /> 
               <NavButtonWithTooltip href="#timeline" icon={ChartGantt} text="Timeline" tooltip="Visual roadmap of my academic and leadership career since 2008" colorClass="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400" /> 

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { scientificEvents } from "@/lib/data";
 import { 
   ChevronRight, Cpu, CircuitBoard, BrainCircuit, Speech, Layers, Globe,
-  Calendar, Star, Mic, MapPin, Quote, ExternalLink, BadgeCheck, ArrowLeft,ShieldCheck
+  Calendar, Star, Mic, MapPin, Quote, ExternalLink, BadgeCheck, ArrowLeft, ShieldCheck
 } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 
@@ -16,17 +16,17 @@ import MotionWrapper from "./MotionWrapper";
 
 const certs = [
   {
-      id: "security",
-      title: "Cybersecurity & Networking",
-      icon: ShieldCheck, 
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/20",
-      border: "hover:border-emerald-500/30",
-      items: [
-        { title: "Network Security Expert (NSE) 3 - Network Security Associate", org: "Fortinet", year: "2026" },
-        { title: "Network Security Expert (NSE) 2 - Network Security Fundamentals", org: "Fortinet", year: "2026" },
+      id: "security",
+      title: "Cybersecurity & Networking",
+      icon: ShieldCheck, 
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/20",
+      border: "hover:border-emerald-500/30",
+      items: [
+    { title: "Network Security Expert (NSE) 3 - Network Security Associate", org: "Fortinet", year: "2026" },
+    { title: "Network Security Expert (NSE) 2 - Network Security Fundamentals", org: "Fortinet", year: "2026" },
         { title: "Network Security Expert (NSE) 1  - Network Security Fundamentals", org: "Fortinet", year: "2026" },
-      ]
+    ]
     },
     {
       id: "ai",
@@ -133,7 +133,6 @@ export default function ScientificOutreachSection() {
   };
 
   return (
-    // 👇 Secção imaculada como me enviaste
     <section id="scientific Outreach and Certifications" className="py-20 md:py-24 relative overflow-hidden">
       
       {/* Background Consistente (Idêntico ao das Publicações) */}
@@ -144,14 +143,32 @@ export default function ScientificOutreachSection() {
         <MotionWrapper>
           {/* CABEÇALHO DA SECÇÃO */}
           <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-start justify-between gap-6">
-            <div className="flex flex-col gap-4">
-              <h2 className="text-2xl md:text-4xl font-bold flex items-center justify-center md:justify-start tracking-tight text-zinc-900 dark:text-white">
-                <div className="p-2 md:p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mr-3 md:mr-4 backdrop-blur-sm">
-                  <Globe className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
+                  MODULE // 06_OUTREACH
+                </span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
+                
+                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
+                <motion.div 
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
+                >
+                  <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Globe className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
+                </motion.div>
+                
+                {/* Título limpo com o traço parcial elegante */}
+                <div className="relative inline-block">
+                  <span>Scientific Outreach</span>
+                  <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
                 </div>
-                Scientific Outreach
               </h2>
-              <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
+              <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left mt-2">
                 A curated list of professional certifications, scientific events, and public engagement activities.
               </p>
             </div>
