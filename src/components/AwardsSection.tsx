@@ -13,8 +13,6 @@ const F1StartingLights = () => {
   const [phase, setPhase] = useState(1);
   const [speed, setSpeed] = useState(0);
 
-
-
   useEffect(() => {
     let isMounted = true;
     const sequence = async () => {
@@ -104,7 +102,6 @@ const F1StartingLights = () => {
       {/* HALF PROGRESS GAUGE (VELOCÍMETRO) */}
       <div className="relative flex flex-col items-center justify-center -mt-1">
         <svg className="w-28 h-16 overflow-visible" viewBox="0 0 100 55">
-          {/* Fundo do arco (cinzento meio transparente) */}
           <path
             d="M 8 50 A 42 42 0 0 1 92 50"
             fill="none"
@@ -113,7 +110,6 @@ const F1StartingLights = () => {
             className="text-zinc-800/60"
             strokeLinecap="round"
           />
-          {/* Arco de progresso ativo (avermelhado) */}
           <motion.path
             d="M 8 50 A 42 42 0 0 1 92 50"
             fill="none"
@@ -211,12 +207,62 @@ const MediaIcon = ({ type }: { type: string }) => {
 };
 
 const getMediaColor = (type: string) => {
-  if (type === "Podcast") return { bg: "bg-emerald-500/10 dark:bg-emerald-500/20", text: "text-emerald-600 dark:text-emerald-400", glow: "group-hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]", iconColor: "text-emerald-500", border: "border-emerald-200 dark:border-emerald-500/20", pulse: "rgba(16,185,129,0.25)" };
-  if (type === "TV News") return { bg: "bg-rose-500/10 dark:bg-rose-500/20", text: "text-rose-600 dark:text-rose-400", glow: "group-hover:shadow-[0_0_25px_rgba(244,63,94,0.5)]", iconColor: "text-rose-500", border: "border-rose-200 dark:border-rose-500/20", pulse: "rgba(244,63,94,0.25)" };
-  if (type === "Institutional") return { bg: "bg-indigo-500/10 dark:bg-indigo-500/20", text: "text-indigo-600 dark:text-indigo-400", glow: "group-hover:shadow-[0_0_25px_rgba(99,102,241,0.5)]", iconColor: "text-indigo-500", border: "border-indigo-200 dark:border-indigo-500/20", pulse: "rgba(99,102,241,0.25)" };
-  if (type === "Print Newspaper") return { bg: "bg-amber-500/10 dark:bg-amber-500/20", text: "text-amber-700 dark:text-amber-400", glow: "group-hover:shadow-[0_0_25px_rgba(245,158,11,0.5)]", iconColor: "text-amber-600", border: "border-amber-200 dark:border-amber-500/20", pulse: "rgba(245,158,11,0.25)" };
-  if (type === "Online News") return { bg: "bg-blue-500/10 dark:bg-blue-500/20", text: "text-blue-600 dark:text-blue-400", glow: "group-hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]", iconColor: "text-blue-500", border: "border-blue-200 dark:border-blue-500/20", pulse: "rgba(59,130,246,0.25)" };
-  return { bg: "bg-blue-500/10 dark:bg-blue-500/20", text: "text-blue-600 dark:text-blue-400", glow: "group-hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]", iconColor: "text-blue-500", border: "border-blue-200 dark:border-blue-500/20", pulse: "rgba(59,130,246,0.25)" };
+  if (type === "Podcast") return { 
+    bg: "bg-emerald-500/10 dark:bg-emerald-500/20", 
+    text: "text-emerald-600 dark:text-emerald-400", 
+    glow: "group-hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]", 
+    iconColor: "text-emerald-500", 
+    border: "border-emerald-200 dark:border-emerald-500/20", 
+    pulse: "rgba(16,185,129,0.25)" 
+  };
+  
+  if (type === "TV News") return { 
+    bg: "bg-rose-500/10 dark:bg-rose-500/20", 
+    text: "text-rose-600 dark:text-rose-400", 
+    glow: "group-hover:shadow-[0_0_25px_rgba(244,63,94,0.5)]", 
+    iconColor: "text-rose-500", 
+    border: "border-rose-200 dark:border-rose-500/20", 
+    pulse: "rgba(244,63,94,0.25)" 
+  };
+  
+  // Alterado para PURPLE para afastar do azul
+  if (type === "Institutional") return { 
+    bg: "bg-purple-500/10 dark:bg-purple-500/20", 
+    text: "text-purple-600 dark:text-purple-400", 
+    glow: "group-hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]", 
+    iconColor: "text-purple-500", 
+    border: "border-purple-200 dark:border-purple-500/20", 
+    pulse: "rgba(168,85,247,0.25)" 
+  };
+  
+  if (type === "Print Newspaper") return { 
+    bg: "bg-amber-500/10 dark:bg-amber-500/20", 
+    text: "text-amber-700 dark:text-amber-400", 
+    glow: "group-hover:shadow-[0_0_25px_rgba(245,158,11,0.5)]", 
+    iconColor: "text-amber-600", 
+    border: "border-amber-200 dark:border-amber-500/20", 
+    pulse: "rgba(245,158,11,0.25)" 
+  };
+  
+  // Alterado para SKY (Azul Celeste) para máximo contraste com o roxo
+  if (type === "Online News") return { 
+    bg: "bg-sky-500/10 dark:bg-sky-500/20", 
+    text: "text-sky-600 dark:text-sky-400", 
+    glow: "group-hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]", 
+    iconColor: "text-sky-500", 
+    border: "border-sky-200 dark:border-sky-500/20", 
+    pulse: "rgba(14,165,233,0.25)" 
+  };
+  
+  // Fallback (Sky)
+  return { 
+    bg: "bg-sky-500/10 dark:bg-sky-500/20", 
+    text: "text-sky-600 dark:text-sky-400", 
+    glow: "group-hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]", 
+    iconColor: "text-sky-500", 
+    border: "border-sky-200 dark:border-sky-500/20", 
+    pulse: "rgba(14,165,233,0.25)" 
+  };
 };
 
 const parseBoldText = (text: string, highlightColor = "bg-emerald-500/10") => {
@@ -429,7 +475,9 @@ export default function AwardsSection() {
           <div className="relative mb-16">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
               <span className="w-6 h-1 bg-zinc-900 dark:bg-white rounded-full"></span>
-              <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Featured In</h3>
+              <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
+                Featured In <span className="text-[9px] font-mono font-medium text-zinc-400 border border-zinc-200 dark:border-white/10 px-1.5 py-0.5 rounded uppercase bg-zinc-100 dark:bg-white/5">Selected Highlights</span>
+              </h3>
             </div>
             <div className="grid grid-cols-3 md:grid-cols-3 xl:grid-cols-5 gap-2 md:gap-4">
               {featuredIn.map((item: any, idx: number) => {

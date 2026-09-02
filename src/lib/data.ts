@@ -812,12 +812,20 @@ export const awards = [
 // src/lib/data.ts
 
 export const featuredIn = [
+  
   {
     source: "CNN Portugal",
     description: "CNN Innovation segment showcasing cutting-edge research and scientific excellence at the University of Aveiro's Physics Department.",
     date: "Jul 2025",
     type: "TV News", // Mantém
     link: "https://cnnportugal.iol.pt/videos/cnn-inovacao-universidade-de-aveiro-departamento-de-fisica/688a045b0cf2ba9f720f0963"
+  },
+  {
+    source: "Instituto de Telecomunicações",
+    description: "Featured speaker announcement for the CI-FÓTON Lecture Series on enhancing Visible Light Communications.",
+    date: "Nov 2024",
+    type: "Institutional",
+    link: "https://www.it.pt/Events/Event/5657#"
   },
   {
     source: "SIC Notícias",

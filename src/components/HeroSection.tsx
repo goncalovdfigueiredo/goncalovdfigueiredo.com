@@ -34,23 +34,22 @@ import {
 import MagicRings from "./MagicRings";
 import GhostCursor from "./GhostCursor";
 
-// Textura de Ruído (Fractal Noise) para dar efeito físico ao vidro no Desktop
 const noiseOverlay = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E")`;
 
 /* ========================================================================
-   0. VARIANTES DE ANIMAÇÃO (Ajustadas para serem mais lentas e suaves)
+   0. VARIANTES DE ANIMAÇÃO
    ======================================================================== */
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.25, delayChildren: 1.5 }, // Mais atraso inicial e mais tempo entre cada
+    transition: { staggerChildren: 0.25, delayChildren: 1.5 }, 
   },
 };
 
 const itemFadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, damping: 20 } }, // Mola mais lenta
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, damping: 20 } }, 
 };
 
 const itemZoomIn: Variants = {
@@ -62,12 +61,12 @@ const cardContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 4.2 }, // Aparecem mais tarde
+    transition: { staggerChildren: 0.2, delayChildren: 4.2 }, 
   },
 };
 
 /* ========================================================================
-   1. CYBER TYPEWRITER
+   1. CYBER TYPEWRITER (notranslate ativo para evitar bugs)
    ======================================================================== */
 function TypewriterExpertise() {
   const words = [
@@ -99,7 +98,7 @@ function TypewriterExpertise() {
   }, [currentText, isDeleting, currentWordIndex, words]);
 
   return (
-    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600 md:from-emerald-500 md:to-cyan-400 font-bold drop-shadow-[0_0_10px_rgba(16,185,129,0.2)] md:drop-shadow-[0_0_10px_rgba(16,185,129,0.4)]">
+    <span className="notranslate relative text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600 md:from-emerald-500 md:to-cyan-400 font-bold drop-shadow-[0_0_10px_rgba(16,185,129,0.2)] md:drop-shadow-[0_0_10px_rgba(16,185,129,0.4)]">
       {currentText}
       <motion.span
         animate={{ opacity: [1, 0] }}
@@ -111,13 +110,12 @@ function TypewriterExpertise() {
 }
 
 /* ========================================================================
-   2. MAGNETIC BUTTONS (Híbrido)
+   2. MAGNETIC BUTTONS 
    ======================================================================== */
 function MagneticButton({ children, href }: { children: React.ReactNode; href: string | null; }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   
-  // Spotlight effect (Só corre no Desktop)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -148,7 +146,6 @@ function MagneticButton({ children, href }: { children: React.ReactNode; href: s
                  md:hover:text-zinc-900 md:dark:hover:text-white md:bg-white/5 md:dark:bg-white/[0.02] md:backdrop-blur-sm
                  hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white dark:hover:text-zinc-950 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] md:hover:bg-transparent md:dark:hover:bg-transparent md:hover:border-zinc-200/50 md:dark:hover:border-white/10 md:hover:shadow-sm md:dark:hover:shadow-sm"
     >
-      {/* Luz Spotlight (Hidden on Mobile) */}
       <motion.div className="absolute inset-0 z-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hidden md:block" style={{ background }} />
       <div className="relative z-10 flex items-center gap-1.5 pointer-events-none">
         {children}
@@ -174,7 +171,7 @@ function DisintegratingProfile() {
     };
 
     const timer = setTimeout(triggerDisintegration, 2000);
-    const loopTimer = setInterval(triggerDisintegration, 6000); // Abrandado um pouco o ciclo
+    const loopTimer = setInterval(triggerDisintegration, 6000); 
 
     return () => { clearTimeout(timer); clearInterval(loopTimer); particleControls.stop(); imageControls.stop(); };
   }, [particleControls, imageControls]);
@@ -213,15 +210,16 @@ function DisintegratingProfile() {
         </div>
       </motion.div>
 
+      {/* TEXTO PROTEGIDO (span à volta de CV) */}
       <a href="/CV_Goncalo_Figueiredo.pdf" download className="absolute -bottom-1 -right-4 md:-bottom-2 md:-right-4 flex items-center gap-1.5 bg-zinc-900 dark:bg-white md:bg-zinc-900/90 md:dark:bg-white/90 md:backdrop-blur-md text-white dark:text-black px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-xs shadow-lg md:shadow-xl hover:scale-110 md:hover:scale-105 md:hover:bg-emerald-500 md:hover:text-white transition-transform md:transition-all z-50 pointer-events-auto md:border md:border-zinc-700/50 md:dark:border-zinc-200/50">
-        <Download className="w-3.5 h-3.5" /> CV
+        <Download className="w-3.5 h-3.5" /> <span>CV</span>
       </a>
     </div>
   );
 }
 
 /* ========================================================================
-   4.A MOBILE HARDWARE SKILL CARD (O TEU CÓDIGO ORIGINAL INTOCADO)
+   4.A MOBILE HARDWARE SKILL CARD 
    ======================================================================== */
 const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -266,11 +264,12 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
             <div className={`p-1.5 rounded-lg bg-zinc-100 dark:bg-white/5 ${textColorClass} mb-1.5`}>
               <group.icon className="w-4 h-4" />
             </div>
+            {/* TEXTO PROTEGIDO */}
             <h3 className="text-[10px] font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-tight leading-tight line-clamp-1">
-              {group.title}
+              <span>{group.title}</span>
             </h3>
             <span className={`text-[8px] font-bold uppercase tracking-widest ${textColorClass} mt-0.5 opacity-80`}>
-              Tap
+              <span>Tap</span>
             </span>
           </motion.div>
         )}
@@ -281,8 +280,9 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }} className="relative z-30 p-3 flex flex-col justify-center bg-transparent h-full">
             <div className="flex justify-between items-start mb-2">
               <div>
-                <span className={`text-[8px] font-black uppercase tracking-widest ${textColorClass} mb-0.5 block`}>{group.subtitle}</span>
-                <h4 className="text-xs font-bold text-zinc-900 dark:text-white leading-tight">{group.title}</h4>
+                {/* TEXTO PROTEGIDO */}
+                <span className={`text-[8px] font-black uppercase tracking-widest ${textColorClass} mb-0.5 block`}><span>{group.subtitle}</span></span>
+                <h4 className="text-xs font-bold text-zinc-900 dark:text-white leading-tight"><span>{group.title}</span></h4>
               </div>
               <div className={`p-1.5 rounded-lg bg-zinc-100 dark:bg-white/5 ${textColorClass}`}>
                 <group.icon className="w-4 h-4" />
@@ -291,7 +291,7 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
             <div className="flex flex-wrap gap-1">
               {group.skills.map((skill: string) => (
                 <span key={skill} className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-white text-[7px] font-medium border border-zinc-300 dark:border-white/5 shadow-sm">
-                  {skill}
+                  <span>{skill}</span>
                 </span>
               ))}
             </div>
@@ -303,10 +303,10 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
 };
 
 /* ========================================================================
-   4.B DESKTOP HARDWARE SKILL CARD (S-TIER PREMIUM CORRIGIDO)
+   4.B DESKTOP HARDWARE SKILL CARD 
    ======================================================================== */
    const DesktopHardwareSkillCard = ({ group }: { group: any }) => {
-    const [isHovered, setIsHovered] = useState(false); // Estado adicionado para 100% fiabilidade
+    const [isHovered, setIsHovered] = useState(false); 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
   
@@ -339,14 +339,12 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
           isHovered ? '-translate-y-1 border-zinc-300 dark:border-white/20' : 'border-zinc-200/50 dark:border-white/5'
         }`}
       >
-        {/* Textura Física e Luz Dinâmica */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-30 mix-blend-overlay" style={{ backgroundImage: noiseOverlay }} />
         <motion.div 
           className="absolute inset-0 z-0 transition-opacity duration-500 pointer-events-none" 
           style={{ background: spotlight, opacity: isHovered ? 1 : 0 }} 
         />
   
-        {/* Roda de Cor no Fundo */}
         <motion.div
           className="absolute top-1/2 left-1/2 w-[600px] h-[600px] z-0 pointer-events-none transition-opacity duration-700"
           style={{ background: `conic-gradient(from 0deg, transparent 0%, transparent 80%, ${themeColor}1) 100%)`, opacity: isHovered ? 0.3 : 0.1 }}
@@ -358,14 +356,14 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
   
         <div className="relative z-20 flex flex-col p-5 h-full justify-between">
           
-          {/* Cabeçalho do Cartão */}
           <div className="flex items-start justify-between mb-4">
             <div>
+              {/* TEXTO PROTEGIDO */}
               <span className={`text-[9px] font-mono uppercase tracking-widest ${textColorClass} mb-1 block transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-60'}`}>
-                // {group.subtitle}
+                <span>// {group.subtitle}</span>
               </span>
               <h4 className={`text-base font-bold text-zinc-900 dark:text-white leading-tight transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`}>
-                {group.title}
+                <span>{group.title}</span>
               </h4>
             </div>
             <div className={`p-2 rounded-xl bg-white/80 dark:bg-white/5 border border-zinc-200/50 dark:border-white/5 ${textColorClass} shadow-sm transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
@@ -373,7 +371,6 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
             </div>
           </div>
   
-          {/* Lista de Skills (Pills visíveis, Texto enublado com Hover para ler) */}
           <div className="flex flex-wrap gap-1.5 mt-auto">
             {group.skills.map((skill: string) => (
               <div 
@@ -384,12 +381,13 @@ const MobileHardwareSkillCard = ({ group, index }: { group: any; index?: number 
                     : 'bg-zinc-200/40 dark:bg-white/[0.03] border-zinc-300/30 dark:border-white/5'
                 }`}
               >
+                {/* TEXTO PROTEGIDO */}
                 <span className={`block text-[10px] font-semibold transition-all duration-500 ${
                   isHovered 
                     ? 'blur-none opacity-100 text-zinc-900 dark:text-zinc-100' 
                     : 'blur-[2.5px] opacity-60 text-zinc-700 dark:text-zinc-300'
                 }`}>
-                  {skill}
+                  <span>{skill}</span>
                 </span>
               </div>
             ))}
@@ -415,7 +413,6 @@ export default function HeroSection() {
   const yElement = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const [isProfileExpanded, setIsProfileExpanded] = useState(false);
 
-  // Mouse Spotlight para o Profile Card (Desktop)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   function handleProfileMouse({ currentTarget, clientX, clientY }: React.MouseEvent) {
@@ -439,7 +436,6 @@ export default function HeroSection() {
     <>
       <GhostCursor color="#10b981" trailLength={15} brightness={1.5} inertia={0.5} fadeDelayMs={200} fadeDurationMs={800} style={{ zIndex: 0 }} className="fixed inset-0 w-screen h-screen pointer-events-none" />
 
-      {/* Ajustado pt e pb conforme discutido na reposta anterior para elevar o layout */}
       <section id="hero" ref={sectionRef} className="relative pt-20 pb-12 md:pt-24 md:pb-24 perspective-1000">
         
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -450,43 +446,44 @@ export default function HeroSection() {
 
         <div className="container max-w-7xl mx-auto px-4 md:px-6 relative z-10">
           
-          {/* BLOCO DE TOPO */}
           <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ y: yElement }} className="flex flex-col items-center text-center mb-6 md:mb-8 group">
                         
             <motion.div variants={itemZoomIn} className="relative mb-4 md:mb-4 group pointer-events-auto">
               <DisintegratingProfile />
             </motion.div>
 
+            {/* TEXTO PROTEGIDO */}
             <motion.div variants={itemFadeUp} className="inline-flex items-center gap-1.5 px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-emerald-50/80 dark:bg-emerald-500/10 md:border md:border-emerald-500/20 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[9px] md:text-xs font-black uppercase tracking-[0.25em] mb-3 md:mb-6 shadow-sm md:shadow-[0_0_15px_rgba(16,185,129,0.1)] backdrop-blur-md pointer-events-auto relative overflow-hidden">
                <motion.div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent -translate-x-full" animate={{ translateX: ["-100%", "200%"] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
-              <Terminal className="w-3 h-3 md:w-3.5 md:h-3.5" /> Ph.D. Candidate
+              <Terminal className="w-3 h-3 md:w-3.5 md:h-3.5" /> <span>Ph.D. Candidate</span>
             </motion.div>
 
+            {/* TEXTO PROTEGIDO */}
             <motion.h1 variants={itemFadeUp} className="text-4xl md:text-[5.5rem] font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-2 uppercase leading-[0.85] md:leading-[0.9] pointer-events-auto">
-              GONÇALO <br className="md:hidden" />{" "}
-              {/* Efeito Shimmer Premium no Desktop, Gradiente Simples no Mobile */}
+              <span>GONÇALO</span> <br className="md:hidden" />{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 md:bg-[linear-gradient(110deg,#71717a,45%,#e4e4e7,55%,#71717a)] md:dark:bg-[linear-gradient(110deg,#a1a1aa,45%,#ffffff,55%,#a1a1aa)] md:bg-[length:250%_100%] md:animate-[shimmer_4s_linear_infinite] drop-shadow-sm">
-                FIGUEIREDO
+                <span>FIGUEIREDO</span>
               </span>
             </motion.h1>
 
+            {/* TEXTO PROTEGIDO */}
             <motion.p variants={itemFadeUp} className="text-xs sm:text-sm md:text-xl text-zinc-600 dark:text-zinc-300 md:dark:text-zinc-400 font-medium max-w-Lg md:max-w-3xl leading-relaxed mb-4 md:mb-4 relative z-10 pointer-events-auto px-2 md:px-4">             
-              Bridging the gap between <strong className="text-zinc-900 dark:text-white md:dark:text-zinc-100 font-bold ml-0.5 md:ml-0">Theoretical Science</strong> and <strong className="text-zinc-900 dark:text-white md:dark:text-zinc-100 font-bold ml-0.5 md:ml-0">Industrial Application</strong> <br className="hidden md:block"/> <span className="mt-1 md:mt-0 inline-block md:inline">through <TypewriterExpertise /></span>
+              <span>Bridging the gap between</span> <strong className="text-zinc-900 dark:text-white md:dark:text-zinc-100 font-bold ml-0.5 md:ml-0">Theoretical Science</strong> <span>and</span> <strong className="text-zinc-900 dark:text-white md:dark:text-zinc-100 font-bold ml-0.5 md:ml-0">Industrial Application</strong> <br className="hidden md:block"/> <span className="mt-1 md:mt-0 inline-block md:inline"><span>through</span> <TypewriterExpertise /></span>
             </motion.p>
 
-            {/* BOTÕES DE CONTACTO (Estilo Antigo no Mobile, Magnetic no Desktop) */}
+            {/* TEXTO PROTEGIDO */}
             <motion.div variants={itemFadeUp} className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3 max-w-4xl relative z-10 pointer-events-auto px-2">
               {contacts.map((c, i) => {
                 if (!c.href) {
                   return (
                     <div key={i} className="flex items-center gap-1 text-zinc-700 dark:text-zinc-300 px-2.5 py-1.5 md:px-4 md:py-2 rounded-full bg-white/50 dark:bg-black/20 md:bg-white/5 md:dark:bg-white/[0.02] border border-zinc-200/50 dark:border-white/10 backdrop-blur-md text-[10px] md:text-xs md:font-medium shadow-sm">
-                      <c.icon className="w-3 h-3 md:w-3.5 md:h-3.5" /> <span className="font-semibold md:font-medium">{c.text}</span>
+                      <c.icon className="w-3 h-3 md:w-3.5 md:h-3.5" /> <span className="font-semibold md:font-medium"><span>{c.text}</span></span>
                     </div>
                   );
                 }
                 return (
                   <MagneticButton key={i} href={c.href}>
-                    <c.icon className="w-3 h-3 md:w-3.5 md:h-3.5" /> <span className="text-[10px] md:text-xs">{c.text}</span>
+                    <c.icon className="w-3 h-3 md:w-3.5 md:h-3.5" /> <span className="text-[10px] md:text-xs"><span>{c.text}</span></span>
                   </MagneticButton>
                 );
               })}
@@ -494,7 +491,7 @@ export default function HeroSection() {
 
           </motion.div>
 
-          {/* BLOCO INFERIOR (Perfil Detalhado + Cartões) */}
+          {/* BLOCO INFERIOR */}
           <motion.div variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} style={{ y: yElement }} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 relative z-20">
             
             {/* Cartão Central (Professional Profile) */}
@@ -503,7 +500,6 @@ export default function HeroSection() {
                 onMouseMove={handleProfileMouse}
                 className="flex-1 w-full relative rounded-xl md:rounded-3xl bg-white/95 dark:bg-[#0a0a0c]/95 md:bg-zinc-50/60 md:dark:bg-[#0a0a0c]/60 backdrop-blur-xl md:backdrop-blur-2xl border border-zinc-200/50 md:border-zinc-200/80 dark:border-white/10 p-4 md:p-10 overflow-hidden shadow-sm md:shadow-2xl flex flex-col transition-all duration-500"
               >
-                {/* Textura e Luz Interna (Desktop Only) */}
                 <div className="hidden md:block absolute inset-0 z-0 pointer-events-none opacity-20 mix-blend-overlay" style={{ backgroundImage: noiseOverlay }} />
                 <motion.div className="hidden md:block absolute inset-0 z-0 opacity-0 group-hover/profile:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: profileSpotlight }} />
                 
@@ -515,21 +511,23 @@ export default function HeroSection() {
                       <div className="p-2 md:p-3 rounded-xl md:rounded-2xl bg-emerald-500 md:bg-gradient-to-br md:from-emerald-400 md:to-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)] md:shadow-[0_0_20px_rgba(16,185,129,0.4)]">
                         <User className="w-4 h-4 md:w-6 md:h-6" />
                       </div>
+                      {/* TEXTO PROTEGIDO */}
                       <h2 className="text-base md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                        Professional Profile
+                        <span>Professional Profile</span>
                       </h2>
                     </div>
 
                     <div className={`relative overflow-hidden transition-all duration-500 ease-in-out ${isProfileExpanded ? "max-h-[800px]" : "max-h-[60px] md:max-h-[800px]"}`}>
+                      {/* TEXTO PROTEGIDO */}
                       <div className="text-justify space-y-3 md:space-y-4 text-xs sm:text-sm md:text-base text-zinc-700 md:text-zinc-600 dark:text-zinc-300 font-medium leading-relaxed">
                         <p>
-                          Gonçalo Figueiredo is a Ph.D. Candidate in <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> at <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50 md:border-emerald-500/30 md:pb-0.5">Instituto Superior Técnico</strong>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro.
+                          <span>Gonçalo Figueiredo is a Ph.D. Candidate in</span> <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> <span>at</span> <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50 md:border-emerald-500/30 md:pb-0.5">Instituto Superior Técnico</strong><span>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro.</span>
                         </p>
                         <p>
-                          With a unique <span className="text-emerald-600 dark:text-emerald-400 font-bold">dual-background</span> in <strong>Physics Engineering</strong> and <strong>Electrical Engineering</strong>, he bridges the gap between theoretical science and industrial application.
+                          <span>With a unique</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">dual-background</span> <span>in</span> <strong>Physics Engineering</strong> <span>and</span> <strong>Electrical Engineering</strong><span>, he bridges the gap between theoretical science and industrial application.</span>
                         </p>
                         <p>
-                          His focus is on developing robust <span className="text-zinc-900 dark:text-white font-bold bg-white/50 md:bg-white/80 dark:bg-white/10 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5 md:border-white/10 md:shadow-sm md:backdrop-blur-sm">hardware prototypes</span>, from <span className="text-emerald-600 dark:text-emerald-400 font-bold">Smart Cities</span> to <span className="text-blue-600 dark:text-blue-400 font-bold">Industrial IoT</span>.
+                          <span>His focus is on developing robust</span> <span className="text-zinc-900 dark:text-white font-bold bg-white/50 md:bg-white/80 dark:bg-white/10 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5 md:border-white/10 md:shadow-sm md:backdrop-blur-sm">hardware prototypes</span><span>, from</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">Smart Cities</span> <span>to</span> <span className="text-blue-600 dark:text-blue-400 font-bold">Industrial IoT</span><span>.</span>
                         </p>
                       </div>
                       <div className={`absolute bottom-0 left-0 right-0 h-12 md:h-16 bg-gradient-to-t from-white/90 md:from-zinc-50 dark:from-[#0a0a0c]/90 md:dark:from-[#0a0a0c] to-transparent md:hidden pointer-events-none transition-opacity duration-300 ${isProfileExpanded ? "opacity-0" : "opacity-100"}`} />
@@ -537,26 +535,30 @@ export default function HeroSection() {
 
                     <div className="md:hidden mt-1 flex justify-center">
                       <button onClick={() => setIsProfileExpanded(!isProfileExpanded)} className="flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest py-1 transition-colors">
-                        {isProfileExpanded ? "Read Less" : "Read More"} <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isProfileExpanded ? "rotate-180" : ""}`} />
+                        {/* TEXTO PROTEGIDO */}
+                        <span>{isProfileExpanded ? "Read Less" : "Read More"}</span> <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isProfileExpanded ? "rotate-180" : ""}`} />
                       </button>
                     </div>
                   </div>
 
                   <div className="mt-3 md:mt-auto flex items-center justify-between border-t border-zinc-200 md:border-zinc-200/80 dark:border-white/10 pt-3 md:pt-6">
                     <div>
-                      <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold md:font-mono mb-0.5 md:mb-1.5">Status</p>
+                      {/* TEXTO PROTEGIDO */}
+                      <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold md:font-mono mb-0.5 md:mb-1.5"><span>Status</span></p>
                       <div className="flex items-center gap-1.5 md:gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] md:text-sm md:bg-emerald-500/10 md:px-3 md:py-1.5 md:rounded-lg md:border md:border-emerald-500/20 md:w-max">
                         <span className="relative flex h-2 w-2 md:h-2.5 md:w-2.5">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2 w-2 md:h-2.5 md:w-2.5 bg-emerald-500"></span>
                         </span>
-                        Ph.D. Candidate
+                        {/* TEXTO PROTEGIDO */}
+                        <span>Ph.D. Candidate</span>
                       </div>
                     </div>
                     <div className="text-right md:flex md:flex-col md:items-end">
-                      <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold md:font-mono mb-0.5 md:mb-1.5">CORE EXPERTISE</p>
+                      {/* TEXTO PROTEGIDO */}
+                      <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold md:font-mono mb-0.5 md:mb-1.5"><span>CORE EXPERTISE</span></p>
                       <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1 md:gap-1.5 justify-end text-[11px] md:text-sm md:bg-white/60 md:dark:bg-white/5 md:px-3 md:py-1.5 md:rounded-lg md:border md:border-zinc-200 md:dark:border-white/10 md:shadow-sm md:w-max">
-                        <EarthLock className="w-3 h-3 md:w-3.5 md:h-3.5 text-emerald-600 md:text-emerald-500 dark:text-emerald-500" /> Secure IoT & Systems
+                        <EarthLock className="w-3 h-3 md:w-3.5 md:h-3.5 text-emerald-600 md:text-emerald-500 dark:text-emerald-500" /> <span>Secure IoT & Systems</span>
                       </p>
                     </div>
                   </div>
@@ -564,17 +566,15 @@ export default function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Cartões da Direita (Divisão Mobile vs Desktop) */}
+            {/* Cartões da Direita */}
             <div className="col-span-1 md:col-span-4 flex flex-col md:gap-2 h-full">
               
-              {/* VERSÃO MOBILE: Grid Original de 3 colunas que expande com o click */}
               <div className="grid grid-cols-3 gap-2 md:hidden">
                 {skillGroups.map((group, idx) => (
                   <MobileHardwareSkillCard key={idx} group={group} index={idx} />
                 ))}
               </div>
 
-              {/* VERSÃO DESKTOP: S-Tier Premium Stack */}
               <div className="hidden md:flex flex-col gap-2 h-full">
                 {skillGroups.map((group, idx) => (
                   <div key={idx} className="flex-1">
@@ -589,7 +589,6 @@ export default function HeroSection() {
         </div>
       </section>
       
-      {/* Classe global de Shimmer embutida se necessário para o Desktop */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes shimmer {
           0% { background-position: 200% 0; }
