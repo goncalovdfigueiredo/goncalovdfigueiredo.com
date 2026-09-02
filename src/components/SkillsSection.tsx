@@ -127,7 +127,7 @@ const ConsoleWindow = ({ activeSkill, usageData, subCategory, onMobileClose }: {
                 )}
               </div>
 
-              <div className="space-y-3 overflow-y-auto pr-1 flex-1 max-h-[350px] lg:max-h-[380px]">
+              <div className="space-y-3 overflow-y-auto pr-1 flex-1 max-h-[350px] lg:max-h-[380px] custom-scrollbar">
                 {usageData.length > 0 ? usageData.map((item: any, i: number) => (
                   <div key={i} className="flex items-start gap-3.5 p-3.5 rounded-xl bg-white/60 dark:bg-white/5 border border-zinc-200 dark:border-white/5">
                     <div className={`p-2.5 rounded-xl shrink-0 ${item.type === 'experience' ? 'bg-blue-500/10 text-blue-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
@@ -206,7 +206,6 @@ export default function SkillsSection() {
               </div>
               <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
                 
-                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
                 <motion.div 
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -216,7 +215,6 @@ export default function SkillsSection() {
                   <CircuitBoard className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
                 
-                {/* Título limpo com o traço parcial elegante */}
                 <div className="relative inline-block">
                   <span>Skills</span>
                   <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
@@ -230,7 +228,7 @@ export default function SkillsSection() {
         {/* =================================================== */}
         {/* VERSÃO MOBILE: COM BOTÕES DE LARGURA INDEPENDENTE (FLEX) */}
         {/* =================================================== */}
-        <div className="block md:hidden">
+        <div className="block lg:hidden">
           <GlassCard className="p-5 rounded-3xl border border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-[#0c0c0e]/60 backdrop-blur-xl shadow-xl">
             
             <div className="flex items-start gap-2.5 mb-5 pb-4 border-b border-zinc-200 dark:border-white/5">
@@ -240,7 +238,6 @@ export default function SkillsSection() {
               </p>
             </div>
 
-            {/* Grelha Flexível com largura independente por botão */}
             <div className="flex flex-wrap gap-2 mb-6">
               {skillCategories.map((cat) => {
                 const isSelected = activeCategory === cat.id;
@@ -248,7 +245,10 @@ export default function SkillsSection() {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setActiveCategory(cat.id)}
+                    onClick={() => {
+                      setActiveCategory(cat.id);
+                      setActiveSkill(null);
+                    }}
                     className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all border ${
                       isSelected 
                         ? `${style.activeBg} text-white shadow-lg border-transparent` 
@@ -303,11 +303,12 @@ export default function SkillsSection() {
         </div>
 
         {/* =================================================== */}
-        {/* VERSÃO DESKTOP */}
+        {/* VERSÃO DESKTOP (NOVA ARQUITETURA DE 3 COLUNAS IDE-STYLE) */}
         {/* =================================================== */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <GlassCard className="p-8 lg:p-10 rounded-3xl border border-zinc-200 dark:border-white/10 bg-zinc-50/40 dark:bg-[#0c0c0e]/50 backdrop-blur-2xl shadow-2xl">
             
+            {/* CABEÇALHO */}
             <div className="flex items-center justify-between pb-6 mb-8 border-b border-zinc-200 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500">
@@ -315,7 +316,7 @@ export default function SkillsSection() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wider">Interactive Skill Matrix</h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">Hover or select any technical capability to inspect execution context and real-world application logs.</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">Navigate categories and select any technical capability to inspect execution context.</p>
                 </div>
               </div>
               <div className="hidden xl:flex items-center gap-2 text-[10px] font-mono text-zinc-400 bg-white/50 dark:bg-white/5 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/5">
@@ -324,50 +325,77 @@ export default function SkillsSection() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* SPLIT-PANE 3 COLUNAS */}
+            <div className="grid grid-cols-12 gap-6 xl:gap-8 items-start">
               
-              <div className="lg:col-span-7 flex flex-col gap-6">
-                {skillCategories.map((cat, idx) => {
+              {/* COLUNA 1: DIRETÓRIO (Categorias) */}
+              <div className="col-span-3 flex flex-col gap-2 pr-6 border-r border-zinc-200 dark:border-white/5">
+                <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-2 pl-2">
+                  // Modules
+                </div>
+                {skillCategories.map((cat) => {
+                  const isSelected = activeCategory === cat.id;
                   const style = getColorStyles(cat.color);
                   return (
-                    <div key={cat.id}>
-                      <MotionWrapper delay={idx * 0.1}>
-                        <div className="relative group">
-                          <div className="flex items-center gap-3 mb-3 opacity-80">
-                            <cat.icon className={`w-4 h-4 ${style.text}`} />
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{cat.label}</h4>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {cat.items.map((skill) => {
-                              const isActive = activeSkill === skill;
-                              return (
-                                <button
-                                  key={skill}
-                                  onMouseEnter={() => {
-                                    if(typeof window !== "undefined" && window.innerWidth >= 1024) setActiveSkill(skill);
-                                  }}
-                                  onClick={() => {
-                                    setActiveSkill(skill);
-                                  }}
-                                  className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 border ${
-                                    isActive 
-                                      ? `${style.activeBg} text-white border-transparent shadow-md` 
-                                      : `bg-white dark:bg-white/5 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-white/10 ${style.hover}`
-                                  }`}
-                                >
-                                  {skill}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </MotionWrapper>
-                    </div>
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setActiveCategory(cat.id);
+                        setActiveSkill(null); // Reseta a skill quando muda a categoria
+                      }}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 border ${
+                        isSelected 
+                          ? `bg-white dark:bg-white/10 border-zinc-200 dark:border-white/10 shadow-sm` 
+                          : `border-transparent hover:bg-zinc-100 dark:hover:bg-white/5 opacity-70 hover:opacity-100`
+                      }`}
+                    >
+                      <cat.icon className={`w-4 h-4 ${style.text} ${isSelected ? 'animate-pulse' : ''}`} />
+                      <span className={`text-xs font-bold ${isSelected ? 'text-zinc-900 dark:text-white' : 'text-zinc-600 dark:text-zinc-400'}`}>
+                        {cat.label}
+                      </span>
+                    </button>
                   );
                 })}
               </div>
 
-              <div className="hidden lg:block lg:col-span-5 relative">
+              {/* COLUNA 2: CAPABILITIES (Skills da categoria ativa) */}
+              <div className="col-span-4 flex flex-col min-h-[450px]">
+                <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 pl-1">
+                  // Capabilities
+                </div>
+                <AnimatePresence mode="wait">
+                  <motion.div 
+                    key={activeCategory} 
+                    initial={{ opacity: 0, x: -10 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    exit={{ opacity: 0, x: 10 }} 
+                    transition={{ duration: 0.2 }}
+                    className="flex flex-col gap-2.5"
+                  >
+                    {currentCategoryData?.items.map((skill) => {
+                      const isActive = activeSkill === skill;
+                      const style = getColorStyles(currentCategoryData.color);
+                      return (
+                        <button
+                          key={skill}
+                          onMouseEnter={() => setActiveSkill(skill)}
+                          onClick={() => setActiveSkill(skill)}
+                          className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold transition-all duration-300 border ${
+                            isActive 
+                              ? `${style.activeBg} text-white border-transparent shadow-md translate-x-1` 
+                              : `bg-white/60 dark:bg-white/5 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-white/5 hover:border-zinc-300 dark:hover:border-white/10 hover:bg-white dark:hover:bg-white/10`
+                          }`}
+                        >
+                          {skill}
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* COLUNA 3: CONSOLA DE CONTEXTO */}
+              <div className="col-span-5 relative">
                 <div className="sticky top-24">
                   <ConsoleWindow activeSkill={activeSkill} usageData={usageData} subCategory={subCategory} />
                 </div>
