@@ -358,11 +358,9 @@ const AcademicOrbit = ({ activeIndex }: { activeIndex: number | null }) => {
 
 export default function EducationSection() { 
   const [activeIndex, setActiveIndex] = useState<number | null>(null); 
-  
   const handleHover = useCallback((idx: number | null) => { 
     setActiveIndex(idx); 
-  }, []); 
-
+  }, []);
   return ( 
     <section id="education" className="py-16 md:py-20 relative overflow-hidden"> 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent pointer-events-none" /> 
