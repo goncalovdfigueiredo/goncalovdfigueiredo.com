@@ -491,6 +491,7 @@ export default function HeroSection() {
       />
 
 <section
+        id="hero"
         ref={sectionRef}
         /* 1. Removi o overflow-hidden daqui para o fumo poder espalhar-se livremente */
         className="relative pt-28 pb-12 md:pt-25 md:pb-32 perspective-1000"
