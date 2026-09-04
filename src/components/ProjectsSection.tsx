@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ArrowUpRight, Cpu, Smartphone, Zap, Bluetooth, Microchip, BrainCircuit, Construction, Sparkles, ChevronDown, X } from "lucide-react";
+import { Github, ArrowUpRight, Cpu, Smartphone, Zap, Bluetooth, Microchip, BrainCircuit, Construction, Sparkles, ChevronDown, X, Lock } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
 
@@ -15,8 +15,16 @@ interface Project {
   year: string;
   icon: any;
   tags: string[];
+  isRestricted?: boolean; 
+  content?: {
+    image?: string;
+    layout?: "stacked" | "side-by-side"; // NOVO: Controlo de layout
+    summary: string;
+    specs: string[];
+  };
 }
 
+// Dados dos projetos atualizados
 const myProjects: Project[] = [
   {
     id: "power-mgmt-charger",
@@ -25,7 +33,7 @@ const myProjects: Project[] = [
     category: "Power Electronics",
     year: "2026",
     icon: Zap,
-    tags: ["KiCad", "Buck Converter", "Energy Harvesting", "Battery Charging"]
+    tags: ["KiCad", "Buck Converter", "Energy Harvesting", "Battery Charging"],
   },
   {
     id: "vlc-pcb-kicad",
@@ -34,7 +42,18 @@ const myProjects: Project[] = [
     category: "Hardware Engineering",
     year: "2025",
     icon: Microchip,
-    tags: ["KiCad", "Simultaneous Rx/Tx", "Hardware"]
+    tags: ["KiCad", "Simultaneous Rx/Tx", "Hardware"],
+    isRestricted: true,
+    content: {
+      image: "/FigProj3.png",
+      layout: "side-by-side", // Ativa o layout de duas colunas no Desktop
+      summary: "Hardware design of a Full-Duplex VLC Transceiver featuring independent transmitter and receiver modules.",
+      specs: [
+        "Transmitter built with a TLV9101IDBVR Op-Amp and AO3400A N-Channel MOSFET.",
+        "Receiver incorporates a Photodiode amplified by a TLV9101IDBVR Op-Amp.",
+        "PCB layout, schematic capture, and routing executed in KiCad."
+      ]
+    }
   },
   {
     id: "capacitance-wireless",
@@ -43,7 +62,7 @@ const myProjects: Project[] = [
     category: "Embedded Systems",
     year: "2024",
     icon: Bluetooth,
-    tags: ["ATmega328P", "Bluetooth", "Java/Kotlin"]
+    tags: ["ATmega328P", "Bluetooth", "Java/Kotlin"],
   },
   {
     id: "planeta-iot",
@@ -52,7 +71,7 @@ const myProjects: Project[] = [
     category: "Embedded Systems",
     year: "2023",
     icon: Zap,
-    tags: ["ESP32", "Power Management", "Data Acquisition", "Cloud Integration"]
+    tags: ["ESP32", "Power Management", "Data Acquisition", "Cloud Integration"],
   },
   {
     id: "smart-tags-crypto",
@@ -61,7 +80,19 @@ const myProjects: Project[] = [
     category: "Security & Applied R&D",
     year: "2023",
     icon: BrainCircuit,
-    tags: ["SHA-256", "Reed-Solomon", "Cryptography", "Eco-Materials"]
+    tags: ["SHA-256", "Reed-Solomon", "Cryptography", "Eco-Materials"],
+    isRestricted: true,
+    content: {
+      image: "/FigProj2.png", 
+      layout: "stacked",
+      summary: "Anti-counterfeiting labels based on serigraphic varnish mixed with cork and sand to generate unique physical random patterns. Authentication is achieved through a pipeline combining Perceptual Hashing (Phash), Reed-Solomon error correction, and SHA-256.",
+      specs: [
+        "Evaluated Type-II DCT, DHA, and Phash processing methodologies.",
+        "Achieved 100% Precision, Recall, Accuracy, and F1 Score.",
+        "Zero probability of false positives or false negatives (Reliability: 1.000).",
+        "Maintains a low computational requirement while ensuring high security."
+      ]
+    }
   },
   {
     id: "vlc-app",
@@ -70,7 +101,18 @@ const myProjects: Project[] = [
     category: "Mobile Software Stack",
     year: "2022",
     icon: Smartphone,
-    tags: ["Java/Kotlin", "Signal Processing", "Cryptography"]
+    tags: ["Java/Kotlin", "Signal Processing", "Cryptography"],
+    isRestricted: true, 
+    content: {
+      image: "/FigProj1.png", 
+      layout: "stacked",
+      summary: "Android application capable of detecting and decoding optical signals via smartphone camera, utilizing a 3D hyperchaotic map (sine ICMIC).",
+      specs: [
+        "Tested at 1m distance with 2 baud transmission rate.",
+        "Symbol error rate (SER) of 0.02 at 22 µW optical power.",
+        "Decryption parameter accuracy required within 10^-15."
+      ]
+    }
   }
 ];
 
@@ -84,12 +126,11 @@ export default function ProjectsSection() {
         
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4">
-            
             <div className="flex flex-col gap-1 items-start md:items-start">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
-                  MODULE // 03_DEPLOY
+                  <span>MODULE // 03_DEPLOY</span>
                 </span>
               </div>
               <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
@@ -101,16 +142,14 @@ export default function ProjectsSection() {
                   <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                   <BrainCircuit className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
-                
                 <div className="relative inline-block">
                   <span>Projects</span>
                   <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
                 </div>
               </h2>
             </div>
-
             <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
-              Developing integrated solutions across hardware design, embedded systems, and mobile software architecture.
+              <span>Developing integrated solutions across hardware design, embedded systems, and mobile software architecture.</span>
             </p>
           </div>
         </MotionWrapper>
@@ -123,17 +162,16 @@ export default function ProjectsSection() {
           <div className="lg:col-span-5 flex flex-col gap-1.5 relative">
             <div className="flex justify-between items-end mb-3 px-2">
               <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                Project_Log: {myProjects.length.toString().padStart(2, '0')}
+                <span>Project_Log: {myProjects.length.toString().padStart(2, '0')}</span>
               </span>
               <div className="flex items-center gap-1.5 opacity-70">
                 <Sparkles className="w-3 h-3 text-emerald-500" />
                 <span className="text-[10px] font-mono text-emerald-500/80 uppercase tracking-widest">
-                  Technical Selection
+                  <span>Technical Selection</span>
                 </span>
               </div>
             </div>
 
-            {/* Container para conter a animação de fundo */}
             <div className="relative flex flex-col gap-1.5" onMouseLeave={() => setHoveredIndex(hoveredIndex)}> 
               {myProjects.map((project, idx) => {
                 const isActive = hoveredIndex === idx;
@@ -147,7 +185,6 @@ export default function ProjectsSection() {
                     }}
                     className="relative rounded-xl transition-colors duration-300 cursor-pointer outline-none"
                   >
-                    {/* O SEGREDO DO S-TIER: Sliding Background Animation */}
                     {isActive && (
                       <motion.div
                         layoutId="project-hover-bg"
@@ -157,10 +194,8 @@ export default function ProjectsSection() {
                       />
                     )}
                     
-                    {/* Background fallback para mobile (já que não usa o hover sliding) */}
                     <div className={`absolute inset-0 bg-zinc-50/50 dark:bg-white/5 rounded-xl border border-zinc-200/50 dark:border-white/5 lg:hidden ${isActive ? 'opacity-100' : 'opacity-0'}`} />
 
-                    {/* Barra lateral indicadora de ativo */}
                     <motion.div 
                       initial={false}
                       animate={{ height: isActive ? '50%' : '0%', opacity: isActive ? 1 : 0 }}
@@ -172,18 +207,17 @@ export default function ProjectsSection() {
                         <div className={`p-2.5 rounded-lg shrink-0 transition-colors duration-300 ${isActive ? "bg-emerald-500/10 text-emerald-500 shadow-inner shadow-emerald-500/20" : "bg-zinc-100/50 dark:bg-black/20 text-zinc-400"}`}>
                           <IconComp className="w-4 h-4" />
                         </div>
-                        <div className="flex flex-col gap-1 min-w-0">
+                        <div className="flex flex-col gap-1.5 min-w-0">
                           <h3 className={`text-xs sm:text-sm font-bold transition-colors duration-300 truncate ${isActive ? "text-zinc-900 dark:text-white" : "text-zinc-600 dark:text-zinc-400"}`}>
-                            {project.title}
+                            <span>{project.title}</span>
                           </h3>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[8px] sm:text-[9px] font-mono text-zinc-400 uppercase tracking-widest">{project.category}</span>
-                            <span className={`text-[7px] sm:text-[8px] font-mono px-1.5 py-[1px] rounded border transition-colors duration-300 ${
+                          <div className="flex items-center">
+                            <span className={`text-[8px] font-mono px-1.5 py-[2px] rounded border transition-colors duration-300 ${
                               project.highlight.includes('PCB') 
                                 ? (isActive ? 'border-blue-500/40 text-blue-600 dark:text-blue-400 bg-blue-500/10' : 'border-blue-500/20 text-blue-500/70 bg-transparent') 
                                 : (isActive ? 'border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' : 'border-emerald-500/20 text-emerald-500/70 bg-transparent')
                             }`}>
-                              {project.highlight}
+                              <span>{project.highlight}</span>
                             </span>
                           </div>
                         </div>
@@ -191,8 +225,9 @@ export default function ProjectsSection() {
 
                       <div className="flex items-center gap-2 shrink-0">
                         <span className={`text-xs font-mono font-semibold transition-colors duration-300 ${isActive ? "text-emerald-500" : "text-zinc-400 dark:text-zinc-600"}`}>
-                          {project.year}
+                          <span>{project.year}</span>
                         </span>
+                        {project.isRestricted && <Lock className={`w-3 h-3 ${isActive ? 'text-emerald-500' : 'text-zinc-400'}`} />}
                         <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400 lg:hidden" />
                       </div>
                     </div>
@@ -208,7 +243,6 @@ export default function ProjectsSection() {
           <div className="hidden lg:block lg:col-span-7 relative h-full">
             <GlassCard className="w-full h-full border border-zinc-200 dark:border-white/10 rounded-3xl p-8 flex flex-col min-h-[500px] shadow-2xl relative overflow-hidden bg-zinc-50/80 dark:bg-[#0c0c0e]/80">
               
-              {/* Efeito de Scanner a Laser (Linha que desce e sobe) */}
               <motion.div
                 animate={{ top: ["-10%", "110%", "-10%"] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
@@ -221,7 +255,6 @@ export default function ProjectsSection() {
                 {hoveredIndex !== null && (
                   <motion.div
                     key={hoveredIndex}
-                    // Efeito Blur-Reveal em vez do salto genérico
                     initial={{ opacity: 0, filter: "blur(8px)", scale: 0.98 }}
                     animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
                     exit={{ opacity: 0, filter: "blur(4px)", scale: 1.02 }}
@@ -229,68 +262,95 @@ export default function ProjectsSection() {
                     className="relative z-30 flex flex-col h-full"
                   >
                     
-                    {/* Cabeçalho do Projeto */}
-                    <div className="flex justify-between items-start mb-10 pb-6 border-b border-zinc-200 dark:border-white/5">
+                    <div className="flex justify-between items-start mb-6 pb-6 border-b border-zinc-200 dark:border-white/5 shrink-0">
                       <div className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          {myProjects[hoveredIndex].year} • Active Blueprint
+                          <span>{myProjects[hoveredIndex].year} • {myProjects[hoveredIndex].category}</span>
                         </span>
-                        <h4 className="text-2xl font-bold text-zinc-900 dark:text-white leading-tight">
-                          {myProjects[hoveredIndex].title}
+                        <h4 className="text-xl xl:text-2xl font-bold text-zinc-900 dark:text-white leading-tight pr-4">
+                          <span>{myProjects[hoveredIndex].title}</span>
                         </h4>
                       </div>
                       <div className="flex gap-2 flex-wrap justify-end max-w-[40%]">
                         {myProjects[hoveredIndex].tags.map(tag => (
                           <span key={tag} className="text-[9px] font-mono border border-zinc-200 dark:border-white/10 px-2.5 py-1 rounded-md text-zinc-600 dark:text-zinc-400 bg-white/50 dark:bg-white/5 backdrop-blur-sm">
-                            {tag}
+                            <span>{tag}</span>
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    {/* Conteúdo "Under Construction" Tech-Style */}
-                    <div className="relative flex-1 flex flex-col overflow-hidden items-center justify-center">
-                      <div className="relative z-50 p-8 rounded-3xl border border-emerald-500/20 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-xl shadow-2xl text-center max-w-sm">
-                        <div className="relative w-16 h-16 mx-auto mb-5">
-                          <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-ping opacity-50" />
-                          <div className="relative w-full h-full bg-zinc-100 dark:bg-white/5 border border-emerald-500/30 rounded-full flex items-center justify-center">
-                            <Construction className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
+                    <div className="relative flex-1 flex flex-col overflow-y-auto custom-scrollbar pr-2 pb-2">
+                      
+                      {myProjects[hoveredIndex].content ? (
+                        <div className="relative flex-1 rounded-2xl overflow-hidden p-6 bg-white border border-zinc-200/60 shadow-sm">
+                          
+                          {/* CADEADO NÍTIDO FLUTUANTE COM ENCANTO ESMERALDA */}
+                          {myProjects[hoveredIndex].isRestricted && (
+                            <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+                              <div className="relative flex items-center justify-center p-4 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                                <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping opacity-50" />
+                                <Lock className="relative z-10 w-8 h-8 text-emerald-400" />
+                              </div>
+                            </div>
+                          )}
+
+                          {/* CONTEÚDO (Imagem + Texto) COM CONTROLO DE LAYOUT */}
+                          {(() => {
+                            const contentLayout = myProjects[hoveredIndex].content!.layout || "stacked";
+                            const isRestrictedClass = myProjects[hoveredIndex].isRestricted ? 'blur-[4px] opacity-50 select-none pointer-events-none' : '';
+                            
+                            return (
+                              <div className={`flex ${contentLayout === 'side-by-side' ? 'flex-col xl:flex-row items-stretch' : 'flex-col'} gap-6 h-full ${isRestrictedClass}`}>
+                                
+                                {myProjects[hoveredIndex].content!.image && (
+                                  <div className={`${contentLayout === 'side-by-side' ? 'w-full xl:w-1/2 min-h-[160px]' : 'w-full h-40 xl:h-48 shrink-0'} flex items-center justify-center mb-2`}>
+                                    <img 
+                                      src={myProjects[hoveredIndex].content!.image} 
+                                      alt="Project Preview" 
+                                      className="max-w-full max-h-full object-contain rounded-md" 
+                                    />
+                                  </div>
+                                )}
+
+                                <div className={`flex flex-col flex-1 ${contentLayout === 'side-by-side' ? 'justify-center' : ''}`}>
+                                  <p className="text-sm text-zinc-700 leading-relaxed font-medium mb-4">
+                                    <span>{myProjects[hoveredIndex].content!.summary}</span>
+                                  </p>
+
+                                  <div className={`space-y-3 ${contentLayout === 'side-by-side' ? '' : 'mt-auto'}`}>
+                                    <h5 className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Technical Specs:</h5>
+                                    <ul className={`grid grid-cols-1 ${contentLayout === 'side-by-side' ? 'xl:grid-cols-1' : 'xl:grid-cols-2'} gap-3`}>
+                                      {myProjects[hoveredIndex].content!.specs.map((spec, i) => (
+                                        <li key={i} className="flex items-start gap-2.5 text-[11px] xl:text-xs text-zinc-600 leading-snug">
+                                          <span className="w-1.5 h-1.5 mt-1.5 rounded-full bg-emerald-500/60 shrink-0" />
+                                          <span>{spec}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+
+                        </div>
+                      ) : (
+                        <div className="absolute inset-x-0 -inset-y-4 z-40 flex items-center justify-center p-6">
+                          <div className="absolute inset-0 bg-white/50 dark:bg-[#0c0c0e]/50 backdrop-blur-[10px] rounded-2xl border border-zinc-100 dark:border-white/5" />
+                          <div className="relative z-50 p-6 rounded-2xl border border-emerald-500/20 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl shadow-2xl text-center max-w-sm">
+                            <div className="w-12 h-12 mx-auto bg-emerald-500/10 rounded-full flex items-center justify-center mb-4">
+                              <Construction className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                            </div>
+                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">Under Construction</h3>
+                            <p className="text-zinc-600 dark:text-zinc-400 text-xs leading-relaxed">
+                              I am currently documenting my latest research and engineering projects. This section will be updated very soon with detailed technical documentation.
+                            </p>
                           </div>
                         </div>
-                        <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2 tracking-tight">Compiling Documentation</h3>
-                        <p className="text-zinc-600 dark:text-zinc-400 text-xs leading-relaxed">
-                          Technical specifications, schematics, and project details are currently being structured for deployment.
-                        </p>
-                        <div className="mt-5 flex items-center justify-center gap-1.5">
-                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                        </div>
-                      </div>
+                      )}
                       
-                      {/* Falso código estrutural em background */}
-                      <div className="absolute inset-0 pt-6 opacity-[0.03] dark:opacity-[0.05] font-mono text-[8px] leading-relaxed text-left pointer-events-none select-none overflow-hidden text-zinc-900 dark:text-white">
-                        {`function initPowerMgmt() {
-  const vIn = readADC(PIN_VIN);
-  const iOut = measureCurrent();
-  if (vIn < THRESHOLD_UVLO) {
-    system.fault("Undervoltage Lockout");
-    return false;
-  }
-  buckConverter.enable(PWM_FREQ_500K);
-  setTargetVoltage(3.3);
-  startTelemetryLoop();
-}
-
-async function startTelemetryLoop() {
-  while(system.isRunning) {
-    let telemetry = await sensors.readAll();
-    cloud.publish("device/telemetry", telemetry);
-    await sleep(1000);
-  }
-}`}
-                      </div>
                     </div>
 
                   </motion.div>
@@ -301,7 +361,7 @@ async function startTelemetryLoop() {
 
         </div>
 
-        {/* ====== MODAL MOBILE (MANTIDO INTACTO) ====== */}
+        {/* ====== MODAL MOBILE ====== */}
         <AnimatePresence>
           {selectedMobileProject && (
             <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 lg:hidden">
@@ -334,35 +394,79 @@ async function startTelemetryLoop() {
                       <selectedMobileProject.icon className="w-5 h-5" />
                     </div>
                     <div>
-                      <span className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-widest">
-                        {selectedMobileProject.year} • {selectedMobileProject.category}
+                      <span className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                        <span>{selectedMobileProject.year} • {selectedMobileProject.category}</span>
+                        {selectedMobileProject.isRestricted && <Lock className="w-2.5 h-2.5 text-emerald-500" />}
                       </span>
-                      <h3 className="text-base font-bold text-zinc-900 dark:text-white leading-tight">
-                        {selectedMobileProject.title}
+                      <h3 className="text-base font-bold text-zinc-900 dark:text-white leading-tight mt-0.5">
+                        <span>{selectedMobileProject.title}</span>
                       </h3>
                     </div>
                   </div>
 
-                  <div className="mb-5">
+                  <div className="mb-5 flex items-center">
                     <span className="text-[10px] font-mono px-2 py-1 rounded border border-emerald-500/30 text-emerald-500 bg-emerald-500/5 inline-block font-semibold">
-                      {selectedMobileProject.highlight}
+                      <span>{selectedMobileProject.highlight}</span>
                     </span>
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 mb-6">
                     {selectedMobileProject.tags.map(tag => (
                       <span key={tag} className="text-[9px] font-mono border border-zinc-200 dark:border-white/10 px-2 py-1 rounded-md text-zinc-600 dark:text-zinc-400 bg-white dark:bg-white/5">
-                        {tag}
+                        <span>{tag}</span>
                       </span>
                     ))}
                   </div>
 
-                  <div className="bg-white/60 dark:bg-black/30 rounded-xl p-5 border border-emerald-500/20 text-center">
-                    <Construction className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mx-auto mb-2" />
-                    <h4 className="text-xs font-bold text-zinc-900 dark:text-white mb-1">Under Construction</h4>
-                    <p className="text-[10px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                      Detailed documentation for this module is currently being compiled.
-                    </p>
+                  <div className="relative overflow-y-auto custom-scrollbar max-h-[40vh] pr-2">
+                    
+                    {selectedMobileProject.content ? (
+                      <div className="relative p-5 rounded-xl bg-white border border-zinc-200/50 shadow-sm">
+                        
+                        {/* CADEADO MOBILE COM ENCANTO ESMERALDA */}
+                        {selectedMobileProject.isRestricted && (
+                          <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+                            <div className="relative flex items-center justify-center p-3 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                              <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping opacity-50" />
+                              <Lock className="relative z-10 w-6 h-6 text-emerald-400" />
+                            </div>
+                          </div>
+                        )}
+
+                        <div className={`flex flex-col gap-4 pb-2 ${selectedMobileProject.isRestricted ? 'blur-[3.5px] opacity-50 select-none pointer-events-none' : ''}`}>
+                          
+                          {selectedMobileProject.content.image && (
+                            <div className="w-full h-32 shrink-0 flex items-center justify-center mb-2">
+                              <img 
+                                src={selectedMobileProject.content.image} 
+                                alt="Project Preview" 
+                                className="max-w-full max-h-full object-contain rounded-md" 
+                              />
+                            </div>
+                          )}
+
+                          <p className="text-xs text-zinc-700 leading-relaxed font-medium">
+                            <span>{selectedMobileProject.content.summary}</span>
+                          </p>
+                          <ul className="space-y-2">
+                            {selectedMobileProject.content.specs.map((spec, i) => (
+                              <li key={i} className="flex items-start gap-2 text-[11px] text-zinc-600 leading-snug">
+                                <span className="w-1 h-1 mt-1.5 rounded-full bg-emerald-500/50 shrink-0" />
+                                <span>{spec}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-white/60 dark:bg-black/30 rounded-xl p-5 border border-emerald-500/20 text-center">
+                        <Construction className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mx-auto mb-2" />
+                        <h4 className="text-xs font-bold text-zinc-900 dark:text-white mb-1"><span>Under Construction</span></h4>
+                        <p className="text-[10px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                          <span>Detailed documentation for this module is currently being compiled.</span>
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                 </GlassCard>
