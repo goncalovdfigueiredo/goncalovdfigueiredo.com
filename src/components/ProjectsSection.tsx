@@ -18,7 +18,8 @@ interface Project {
   isRestricted?: boolean; 
   content?: {
     image?: string;
-    layout?: "stacked" | "side-by-side"; // NOVO: Controlo de layout
+    image2?: string;
+    layout?: "stacked" | "side-by-side"; 
     summary: string;
     specs: string[];
   };
@@ -46,7 +47,7 @@ const myProjects: Project[] = [
     isRestricted: true,
     content: {
       image: "/FigProj3.png",
-      layout: "side-by-side", // Ativa o layout de duas colunas no Desktop
+      layout: "side-by-side", 
       summary: "Hardware design of a Full-Duplex VLC Transceiver featuring independent transmitter and receiver modules.",
       specs: [
         "Transmitter built with a TLV9101IDBVR Op-Amp and AO3400A N-Channel MOSFET.",
@@ -57,12 +58,25 @@ const myProjects: Project[] = [
   },
   {
     id: "capacitance-wireless",
-    title: "Wireless Capacitive Sensor Node",
-    highlight: "Hardware & Firmware",
+    title: "Wireless Capacitive Sensor & Android App",
+    highlight: "Hardware, Firmware & Android App",
     category: "Embedded Systems",
     year: "2024",
     icon: Bluetooth,
-    tags: ["ATmega328P", "Bluetooth", "Java/Kotlin"],
+    tags: ["ATmega328P", "Bluetooth", "Android (Java/Kotlin)"],
+    isRestricted: true,
+    content: {
+      image: "/FigProj5.png",
+      image2: "/FigProj4.png",
+      layout: "stacked",
+      summary: "Wireless data acquisition node and Android application ('CapacitApp') developed to interface with flexible poly(glycerol sebacate) (PGS) capacitive pressure sensors for continuous respiratory monitoring.",
+      specs: [
+        "Hardware node designed with an ATmega328P microcontroller and an HC-05 Bluetooth module.",
+        "Android app processes real-time capacitance data to estimate thoracic volume changes.",
+        "Clinical validation in 38 subjects showed high correlation (R² > 0.91) against airflow transducers.",
+        "System enables continuous assessment with Mean Absolute Errors (MAE) as low as 0.100 L."
+      ]
+    }
   },
   {
     id: "planeta-iot",
@@ -262,7 +276,8 @@ export default function ProjectsSection() {
                     className="relative z-30 flex flex-col h-full"
                   >
                     
-                    <div className="flex justify-between items-start mb-6 pb-6 border-b border-zinc-200 dark:border-white/5 shrink-0">
+                    {/* NOVO CABEÇALHO: Layout flex-col com as Tags por baixo do Título */}
+                    <div className="flex flex-col gap-3 mb-4 pb-4 border-b border-zinc-200 dark:border-white/5 shrink-0">
                       <div className="flex flex-col gap-1.5">
                         <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -272,70 +287,103 @@ export default function ProjectsSection() {
                           <span>{myProjects[hoveredIndex].title}</span>
                         </h4>
                       </div>
-                      <div className="flex gap-2 flex-wrap justify-end max-w-[40%]">
+                      
+                      {/* TAGS EM AZUL POR BAIXO DO TÍTULO */}
+                      <div className="flex gap-2 flex-wrap justify-start">
                         {myProjects[hoveredIndex].tags.map(tag => (
-                          <span key={tag} className="text-[9px] font-mono border border-zinc-200 dark:border-white/10 px-2.5 py-1 rounded-md text-zinc-600 dark:text-zinc-400 bg-white/50 dark:bg-white/5 backdrop-blur-sm">
+                          <span key={tag} className="text-[9px] font-mono border border-blue-500/30 dark:border-blue-400/30 px-2.5 py-1 rounded-md text-blue-600 dark:text-blue-400 bg-blue-500/5 dark:bg-blue-400/5 backdrop-blur-sm">
                             <span>{tag}</span>
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    <div className="relative flex-1 flex flex-col overflow-y-auto custom-scrollbar pr-2 pb-2">
+                    <div className="relative flex-1 flex flex-col overflow-y-auto custom-scrollbar pr-2 pb-2 mt-1">
                       
                       {myProjects[hoveredIndex].content ? (
-                        <div className="relative flex-1 rounded-2xl overflow-hidden p-6 bg-white border border-zinc-200/60 shadow-sm">
+                        
+                        /* ============================================================== */
+                        /* BORDA "BOLINHA + RASTO"                                        */
+                        /* ============================================================== */
+                        <div className="relative flex-1 rounded-[20px] overflow-hidden p-[4px] shrink-0 bg-zinc-200/50 dark:bg-white/5">
                           
-                          {/* CADEADO NÍTIDO FLUTUANTE COM ENCANTO ESMERALDA */}
-                          {myProjects[hoveredIndex].isRestricted && (
-                            <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
-                              <div className="relative flex items-center justify-center p-4 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
-                                <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping opacity-50" />
-                                <Lock className="relative z-10 w-8 h-8 text-emerald-400" />
-                              </div>
-                            </div>
-                          )}
+                          {/* 1. Glow da Bolinha */}
+                          <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_70%,rgba(16,185,129,0.8)_95%,#6ee7b7_100%)] blur-[8px]" />
 
-                          {/* CONTEÚDO (Imagem + Texto) COM CONTROLO DE LAYOUT */}
-                          {(() => {
-                            const contentLayout = myProjects[hoveredIndex].content!.layout || "stacked";
-                            const isRestrictedClass = myProjects[hoveredIndex].isRestricted ? 'blur-[4px] opacity-50 select-none pointer-events-none' : '';
+                          {/* 2. O Rasto e o Core físico da luz */}
+                          <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_80%,rgba(16,185,129,1)_98%,#a7f3d0_99%,#ffffff_100%)]" />
+
+                          {/* 3. O Cartão Branco Real do Conteúdo */}
+                          <div className="relative z-10 h-full w-full rounded-2xl bg-white p-5 lg:p-6 overflow-hidden">
                             
-                            return (
-                              <div className={`flex ${contentLayout === 'side-by-side' ? 'flex-col xl:flex-row items-stretch' : 'flex-col'} gap-6 h-full ${isRestrictedClass}`}>
-                                
-                                {myProjects[hoveredIndex].content!.image && (
-                                  <div className={`${contentLayout === 'side-by-side' ? 'w-full xl:w-1/2 min-h-[160px]' : 'w-full h-40 xl:h-48 shrink-0'} flex items-center justify-center mb-2`}>
-                                    <img 
-                                      src={myProjects[hoveredIndex].content!.image} 
-                                      alt="Project Preview" 
-                                      className="max-w-full max-h-full object-contain rounded-md" 
-                                    />
-                                  </div>
-                                )}
-
-                                <div className={`flex flex-col flex-1 ${contentLayout === 'side-by-side' ? 'justify-center' : ''}`}>
-                                  <p className="text-sm text-zinc-700 leading-relaxed font-medium mb-4">
-                                    <span>{myProjects[hoveredIndex].content!.summary}</span>
-                                  </p>
-
-                                  <div className={`space-y-3 ${contentLayout === 'side-by-side' ? '' : 'mt-auto'}`}>
-                                    <h5 className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Technical Specs:</h5>
-                                    <ul className={`grid grid-cols-1 ${contentLayout === 'side-by-side' ? 'xl:grid-cols-1' : 'xl:grid-cols-2'} gap-3`}>
-                                      {myProjects[hoveredIndex].content!.specs.map((spec, i) => (
-                                        <li key={i} className="flex items-start gap-2.5 text-[11px] xl:text-xs text-zinc-600 leading-snug">
-                                          <span className="w-1.5 h-1.5 mt-1.5 rounded-full bg-emerald-500/60 shrink-0" />
-                                          <span>{spec}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
+                            {/* CADEADO NÍTIDO FLUTUANTE */}
+                            {myProjects[hoveredIndex].isRestricted && (
+                              <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+                                <div className="relative flex items-center justify-center p-4 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                                  <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping opacity-50" />
+                                  <Lock className="relative z-10 w-8 h-8 text-emerald-400" />
                                 </div>
                               </div>
-                            );
-                          })()}
+                            )}
 
+                            {/* CONTEÚDO (Imagem + Texto) */}
+                            {(() => {
+                              const contentLayout = myProjects[hoveredIndex].content!.layout || "stacked";
+                              const isRestrictedClass = myProjects[hoveredIndex].isRestricted ? 'blur-[4px] opacity-50 select-none pointer-events-none' : '';
+                              const hasImages = !!myProjects[hoveredIndex].content!.image || !!myProjects[hoveredIndex].content!.image2;
+                              
+                              return (
+                                <div className={`flex ${contentLayout === 'side-by-side' ? 'flex-col xl:flex-row items-stretch' : 'flex-col'} gap-6 h-full ${isRestrictedClass}`}>
+                                  
+                                  {hasImages && (
+                                    <div className={`${contentLayout === 'side-by-side' ? 'w-full xl:w-1/2 flex flex-col gap-3 min-h-[160px]' : 'w-full h-40 xl:h-48 shrink-0 flex flex-row gap-3'} mb-2`}>
+                                      
+                                      {myProjects[hoveredIndex].content!.image && (
+                                        <div className="flex-1 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
+                                          <img 
+                                            src={myProjects[hoveredIndex].content!.image} 
+                                            alt="Project Preview 1" 
+                                            className="max-w-full max-h-full object-contain p-2" 
+                                          />
+                                        </div>
+                                      )}
+
+                                      {myProjects[hoveredIndex].content!.image2 && (
+                                        <div className="flex-1 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
+                                          <img 
+                                            src={myProjects[hoveredIndex].content!.image2} 
+                                            alt="Project Preview 2" 
+                                            className="max-w-full max-h-full object-contain p-2" 
+                                          />
+                                        </div>
+                                      )}
+
+                                    </div>
+                                  )}
+
+                                  <div className={`flex flex-col flex-1 ${contentLayout === 'side-by-side' ? 'justify-center' : ''}`}>
+                                    <p className="text-sm text-zinc-700 leading-relaxed font-medium mb-4">
+                                      <span>{myProjects[hoveredIndex].content!.summary}</span>
+                                    </p>
+
+                                    <div className={`space-y-3 ${contentLayout === 'side-by-side' ? '' : 'mt-auto'}`}>
+                                      <h5 className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Technical Specs:</h5>
+                                      <ul className={`grid grid-cols-1 ${contentLayout === 'side-by-side' ? 'xl:grid-cols-1' : 'xl:grid-cols-2'} gap-3`}>
+                                        {myProjects[hoveredIndex].content!.specs.map((spec, i) => (
+                                          <li key={i} className="flex items-start gap-2.5 text-[11px] xl:text-xs text-zinc-600 leading-snug">
+                                            <span className="w-1.5 h-1.5 mt-1.5 rounded-full bg-emerald-500/60 shrink-0" />
+                                            <span>{spec}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </div>
                         </div>
+
                       ) : (
                         <div className="absolute inset-x-0 -inset-y-4 z-40 flex items-center justify-center p-6">
                           <div className="absolute inset-0 bg-white/50 dark:bg-[#0c0c0e]/50 backdrop-blur-[10px] rounded-2xl border border-zinc-100 dark:border-white/5" />
@@ -404,58 +452,79 @@ export default function ProjectsSection() {
                     </div>
                   </div>
 
-                  <div className="mb-5 flex items-center">
+                  <div className="mb-3 flex items-center">
                     <span className="text-[10px] font-mono px-2 py-1 rounded border border-emerald-500/30 text-emerald-500 bg-emerald-500/5 inline-block font-semibold">
                       <span>{selectedMobileProject.highlight}</span>
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap gap-1.5 mb-6">
+                  {/* TAGS EM AZUL NO MOBILE */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
                     {selectedMobileProject.tags.map(tag => (
-                      <span key={tag} className="text-[9px] font-mono border border-zinc-200 dark:border-white/10 px-2 py-1 rounded-md text-zinc-600 dark:text-zinc-400 bg-white dark:bg-white/5">
+                      <span key={tag} className="text-[9px] font-mono border border-blue-500/30 dark:border-blue-400/30 px-2 py-1 rounded-md text-blue-600 dark:text-blue-400 bg-blue-500/5 dark:bg-blue-400/5">
                         <span>{tag}</span>
                       </span>
                     ))}
                   </div>
 
-                  <div className="relative overflow-y-auto custom-scrollbar max-h-[40vh] pr-2">
+                  <div className="relative overflow-y-auto custom-scrollbar max-h-[40vh] pr-2 pt-1">
                     
                     {selectedMobileProject.content ? (
-                      <div className="relative p-5 rounded-xl bg-white border border-zinc-200/50 shadow-sm">
+                      
+                      <div className="relative rounded-[20px] overflow-hidden p-[4px] mb-2 shrink-0 bg-zinc-200/50 dark:bg-white/5">
                         
-                        {/* CADEADO MOBILE COM ENCANTO ESMERALDA */}
-                        {selectedMobileProject.isRestricted && (
-                          <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
-                            <div className="relative flex items-center justify-center p-3 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
-                              <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping opacity-50" />
-                              <Lock className="relative z-10 w-6 h-6 text-emerald-400" />
-                            </div>
-                          </div>
-                        )}
+                        <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_70%,rgba(16,185,129,0.8)_95%,#6ee7b7_100%)] blur-[8px]" />
+                        
+                        <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_80%,rgba(16,185,129,1)_98%,#a7f3d0_99%,#ffffff_100%)]" />
 
-                        <div className={`flex flex-col gap-4 pb-2 ${selectedMobileProject.isRestricted ? 'blur-[3.5px] opacity-50 select-none pointer-events-none' : ''}`}>
+                        <div className="relative z-10 h-full w-full bg-white rounded-2xl p-5 overflow-hidden">
                           
-                          {selectedMobileProject.content.image && (
-                            <div className="w-full h-32 shrink-0 flex items-center justify-center mb-2">
-                              <img 
-                                src={selectedMobileProject.content.image} 
-                                alt="Project Preview" 
-                                className="max-w-full max-h-full object-contain rounded-md" 
-                              />
+                          {selectedMobileProject.isRestricted && (
+                            <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+                              <div className="relative flex items-center justify-center p-3 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                                <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping opacity-50" />
+                                <Lock className="relative z-10 w-6 h-6 text-emerald-400" />
+                              </div>
                             </div>
                           )}
 
-                          <p className="text-xs text-zinc-700 leading-relaxed font-medium">
-                            <span>{selectedMobileProject.content.summary}</span>
-                          </p>
-                          <ul className="space-y-2">
-                            {selectedMobileProject.content.specs.map((spec, i) => (
-                              <li key={i} className="flex items-start gap-2 text-[11px] text-zinc-600 leading-snug">
-                                <span className="w-1 h-1 mt-1.5 rounded-full bg-emerald-500/50 shrink-0" />
-                                <span>{spec}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <div className={`flex flex-col gap-4 pb-2 ${selectedMobileProject.isRestricted ? 'blur-[3.5px] opacity-50 select-none pointer-events-none' : ''}`}>
+                            
+                            {(selectedMobileProject.content.image || selectedMobileProject.content.image2) && (
+                              <div className="w-full shrink-0 flex flex-col gap-3 mb-2">
+                                {selectedMobileProject.content.image && (
+                                  <div className="w-full h-32 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
+                                    <img 
+                                      src={selectedMobileProject.content.image} 
+                                      alt="Project Preview 1" 
+                                      className="max-w-full max-h-full object-contain p-2" 
+                                    />
+                                  </div>
+                                )}
+                                {selectedMobileProject.content.image2 && (
+                                  <div className="w-full h-32 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
+                                    <img 
+                                      src={selectedMobileProject.content.image2} 
+                                      alt="Project Preview 2" 
+                                      className="max-w-full max-h-full object-contain p-2" 
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            <p className="text-xs text-zinc-700 leading-relaxed font-medium">
+                              <span>{selectedMobileProject.content.summary}</span>
+                            </p>
+                            <ul className="space-y-2">
+                              {selectedMobileProject.content.specs.map((spec, i) => (
+                                <li key={i} className="flex items-start gap-2 text-[11px] text-zinc-600 leading-snug">
+                                  <span className="w-1 h-1 mt-1.5 rounded-full bg-emerald-500/50 shrink-0" />
+                                  <span>{spec}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     ) : (
