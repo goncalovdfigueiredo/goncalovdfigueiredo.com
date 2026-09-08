@@ -292,7 +292,7 @@ export const LeadershipExperience = [
       { name: "IEEE", period: "Dec 2024 - Present", logo: "/IEEE.png" },
     ],
     achievements: [
-      "Invited peer reviewer for high-impact journals, ensuring scientific integrity through the critical evaluation of 65+ manuscripts in IoT, optics, and photonics.",
+      "Invited peer reviewer for high-impact journals, ensuring scientific integrity through the critical evaluation of 70+ manuscripts in IoT, optics, and photonics.",
       "__chart__", 
     ],
 },
