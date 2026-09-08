@@ -29,17 +29,11 @@ type GanttProps = {
 const SHOW_ORG_INLINE = false;
 
 const MONTHS: Record<string, number> = {
-  jan: 0, january: 0,
-  fev: 1, feb: 1, february: 1,
-  mar: 2, march: 2,
-  abr: 3, apr: 3, april: 3,
-  mai: 4, may: 4,
-  jun: 5, june: 5,
-  jul: 6, july: 6,
-  ago: 7, aug: 7, august: 7,
-  set: 8, sep: 8, sept: 8, september: 8,
-  out: 9, oct: 9, october: 9,
-  nov: 10, november: 10,
+  jan: 0, january: 0, fev: 1, feb: 1, february: 1,
+  mar: 2, march: 2, abr: 3, apr: 3, april: 3,
+  mai: 4, may: 4, jun: 5, june: 5, jul: 6, july: 6,
+  ago: 7, aug: 7, august: 7, set: 8, sep: 8, sept: 8, september: 8,
+  out: 9, oct: 9, october: 9, nov: 10, november: 10,
   dez: 11, dec: 11, december: 11,
 };
 
@@ -90,7 +84,6 @@ const ICON_BY_TYPE: Record<RowType, any> = {
  * ========================= */
 function buildRows(): Row[] {
   const rows: Row[] = [];
-
   for (const e of education as any[]) {
     const { start, end } = parsePeriod(e.period);
     const logosList = e.logos && e.logos.length > 0 ? e.logos : (e.logo ? [e.logo] : []);
@@ -105,7 +98,6 @@ function buildRows(): Row[] {
       color: COLOR_BY_TYPE.Education,
     });
   }
-
   for (const w of workExperience as any[]) {
     const { start, end } = parsePeriod(w.period);
     const logosList = w.logos && w.logos.length > 0 ? w.logos : (w.logo ? [w.logo] : []);
@@ -120,7 +112,6 @@ function buildRows(): Row[] {
       color: COLOR_BY_TYPE.Experience,
     });
   }
-
   for (const l of LeadershipExperience as any[]) {
     const { start, end } = parsePeriod(l.period);
     const logosList = l.logos && l.logos.length > 0 ? l.logos : (l.logo ? [l.logo] : []);
@@ -149,7 +140,6 @@ function buildRows(): Row[] {
     if (byType !== 0) return byType;
     return b.end.getTime() - a.end.getTime();
   });
-
   return rows;
 }
 
@@ -158,25 +148,26 @@ function buildRows(): Row[] {
  * ========================= */
 function MobileTimeline({ rows }: { rows: Row[] }) {
   if (rows.length === 0) return null;
+
   const currentYear = new Date().getFullYear();
   const rawMinYear = Math.min(...rows.map(r => r.start.getFullYear()));
   const rawMaxYear = Math.max(...rows.map(r => r.end.getFullYear()));
   const minYear = rawMinYear;
   const maxYear = Math.max(currentYear, rawMaxYear);
   const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
-  
-  // MUDANÇAS AQUI: Começa a null para não abrir nenhum ano por defeito
+
   const [selectedYear, setSelectedYear] = React.useState<number | null>(null);
 
-  const activeRows = selectedYear !== null ? rows.filter(r => {
-    const start = r.start.getFullYear();
-    const end = r.end.getFullYear();
-    return start <= selectedYear && end >= selectedYear;
-  }) : [];
+  const activeRows = selectedYear !== null
+    ? rows.filter(r => {
+        const start = r.start.getFullYear();
+        const end = r.end.getFullYear();
+        return start <= selectedYear && end >= selectedYear;
+      })
+    : [];
 
   return (
     <div className="flex flex-col py-2 px-1">
-      {/* MENSAGEM SUCINTA DE INSTRUÇÃO */}
       <div className="mb-3 px-1 flex items-center justify-between">
         <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
           Tap a year to explore milestones
@@ -191,25 +182,23 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
           const itemsInYear = rows.filter(r => r.start.getFullYear() <= year && r.end.getFullYear() >= year);
           const isActive = selectedYear === year;
           const hasItems = itemsInYear.length > 0;
+
           return (
             <React.Fragment key={year}>
               <button
                 onClick={() => setSelectedYear(isActive ? null : year)}
                 disabled={!hasItems}
-                className={`
-                  relative flex flex-col items-center justify-center py-2.5 rounded-xl border transition-all duration-300
-                  ${isActive 
-                    ? "bg-zinc-800 border-zinc-700 text-white shadow-lg dark:bg-white/10 dark:border-white/20 z-10 ring-2 ring-zinc-500/20" 
-                    : hasItems 
-                      ? "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:bg-white/10 cursor-pointer" 
-                      : "bg-transparent border-transparent text-zinc-300 dark:text-zinc-700 cursor-not-allowed opacity-40"
-                  }
-                `}
+                className={` relative flex flex-col items-center justify-center py-2.5 rounded-xl border transition-all duration-300 ${
+                  isActive
+                    ? "bg-zinc-800 border-zinc-700 text-white shadow-lg dark:bg-white/10 dark:border-white/20 z-10 ring-2 ring-zinc-500/20"
+                    : hasItems
+                    ? "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:bg-white/10 cursor-pointer"
+                    : "bg-transparent border-transparent text-zinc-300 dark:text-zinc-700 cursor-not-allowed opacity-40"
+                } `}
               >
                 <span className={`text-[11px] font-black tracking-widest ${isActive ? 'opacity-100' : 'opacity-80'}`}>
                   {year}
                 </span>
-                {/* 5 Bolas de atividade no Mobile */}
                 <div className="flex gap-[3px] mt-1.5 h-1.5 items-center">
                   {itemsInYear.slice(0, 5).map((item, i) => (
                     <span
@@ -256,22 +245,20 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
                                 <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-100 dark:bg-white/10 text-zinc-600 dark:text-zinc-300">
                                   {fmtMY(row.start)} — <strong className="font-bold">{isPresent ? "Present" : fmtMY(row.end)}</strong>
                                 </span>
-                                <span 
+                                <span
                                   className="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider border shrink-0 ml-2"
-                                  style={{ 
-                                    color: row.color, 
-                                    backgroundColor: row.color.replace('0.9', '0.05'), 
-                                    borderColor: row.color.replace('0.9', '0.2') 
+                                  style={{
+                                    color: row.color,
+                                    backgroundColor: row.color.replace('0.9', '0.05'),
+                                    borderColor: row.color.replace('0.9', '0.2')
                                   }}
                                 >
                                   {row.type}
                                 </span>
                               </div>
-
                               <h3 className="font-bold text-[15px] text-zinc-900 dark:text-white leading-tight mb-2.5">
                                 {row.label}
                               </h3>
-
                               <div className="flex items-center gap-2.5">
                                 {row.logos && row.logos.length > 0 ? (
                                   <div className="flex items-center -space-x-1.5 shrink-0">
@@ -282,13 +269,9 @@ function MobileTimeline({ rows }: { rows: Row[] }) {
                                     ))}
                                   </div>
                                 ) : (
-                                  <div 
+                                  <div
                                     className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 border"
-                                    style={{ 
-                                      backgroundColor: row.color.replace('0.9', '0.05'), 
-                                      color: row.color, 
-                                      borderColor: row.color.replace('0.9', '0.2') 
-                                    }}
+                                    style={{ backgroundColor: row.color.replace('0.9', '0.05'), color: row.color, borderColor: row.color.replace('0.9', '0.2') }}
                                   >
                                     <Icon className="w-3 h-3" />
                                   </div>
@@ -335,22 +318,27 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
     minStart = new Date(rawMinStart.getFullYear() - 1, 0, 1);
   }
 
-  const labelW = 400; 
+  const labelW = 370;
   const padLeft = 16;
   const padRight = 40;
-  const padTop = 36;
+  
+  // MUDANÇA: APROXIMAR OS BOTÕES (De 36 para 12)
+  const padTop = 12;     
   const padBottom = 28;
-  const headerH = 28;
+  const headerH = 24;
   const laneGap = 8;
-  
+
   const totalDays = Math.max(1, (maxEnd.getTime() - minStart.getTime()) / 86400000);
-  
-  let currentPxPerDay = pxPerDay || 0.45;
+
+  // MUDANÇA: MOSTRAR MAIS ANOS NO ECRÃ
+  // Ao diminuir para 0.32, a linha do tempo "encolhe" horizontalmente, permitindo ver os anos 2021/2020 sem ter de fazer scroll
+  let currentPxPerDay = pxPerDay || 0.32; 
+
   if (selectedDesktopYear !== null) {
-    currentPxPerDay = Math.max(1000 / totalDays, currentPxPerDay); 
+    currentPxPerDay = Math.max(1000 / totalDays, currentPxPerDay);
   }
-  
-  const timeW = Math.max(1000, totalDays * currentPxPerDay);
+
+  const timeW = Math.max(900, totalDays * currentPxPerDay);
   const totalRows = displayRows.length;
   const height = padTop + headerH + padBottom + Math.max(1, totalRows) * ((rowHeight || 56) + laneGap);
 
@@ -373,10 +361,11 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
   for (let y = y1; y >= y0; y--) years.push(y);
 
   const today = new Date();
+
   const laneTopAt = (i: number) => padTop + headerH + i * ((rowHeight || 56) + laneGap);
   const barYAt = (i: number) => laneTopAt(i) + ((rowHeight || 56) - (barHeight || 22)) / 2;
-  const orgFont = Math.max(10, ((fontSize || 12) - 1));
 
+  const orgFont = Math.max(10, ((fontSize || 12) - 1));
   const colColorX = 16;
   const colLogosX = 38;
   const colLabelX = 100;
@@ -393,29 +382,30 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
         <div className="shrink-0" style={{ width: labelW + padLeft, transition: "height 0.4s ease" }}>
           <svg width={labelW + padLeft} height={height} role="img" aria-label="Gantt Labels">
             <rect x={0} y={0} width={labelW + padLeft} height={height} fill="transparent" />
+            
             <g transform={`translate(0, ${padTop})`}>
               <text x={colColorX} y={headerH - 10} fontSize={fontSize} fill="currentColor" opacity={0.5}>
                 Item ({rows.length} records)
               </text>
             </g>
+
             {displayRows.map((r, i) => {
               const laneTop = laneTopAt(i);
               const sqSize = 10;
               const sqY = laneTop + (rowHeight || 56) / 2 - sqSize / 2;
               const rowCenterY = laneTop + (rowHeight || 56) / 2;
-              const logoSize = 22; 
+              const logoSize = 22;
               const logoY = rowCenterY - logoSize / 2;
 
               return (
                 <g key={r.id} style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }}>
                   <rect x={0} y={laneTop} width={labelW + padLeft} height={rowHeight} fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"} />
                   <rect x={colColorX} y={sqY} width={sqSize} height={sqSize} rx={2} fill={r.color} />
-
+                  
                   {(() => {
                     const logoElements = r.logos.map((logoUrl, lIdx) => {
-                      const currentLogoX = colLogosX + (lIdx * 14); 
-                      const safeId = `clip-desktop-row${i}-logo${lIdx}`; 
-
+                      const currentLogoX = colLogosX + (lIdx * 14);
+                      const safeId = `clip-desktop-row${i}-logo${lIdx}`;
                       return (
                         <g key={lIdx}>
                           <circle cx={currentLogoX + logoSize / 2} cy={logoY + logoSize / 2} r={logoSize / 2} fill="#18181b" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1.5" />
@@ -461,7 +451,7 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
                   </g>
                 );
               })}
-
+              
               {years.map((y) => {
                 const x = mapX(new Date(y, 0, 1));
                 return (
@@ -477,14 +467,23 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
               })}
 
               {maxEnd >= today && (
-                <line x1={mapX(today)} x2={mapX(today)} y1={0} y2={height} stroke="#ef4444" strokeDasharray="4 4" opacity={0.6} style={{ transition: "all 0.4s ease" }} />
+                <line
+                  x1={mapX(today)} x2={mapX(today)} y1={0} y2={height}
+                  stroke="#ef4444" strokeDasharray="4 4" opacity={0.6}
+                  style={{ transition: "all 0.4s ease" }}
+                />
               )}
             </g>
 
             {displayRows.map((_, i) => {
               const laneTop = laneTopAt(i);
               return (
-                <rect key={`lane-${i}`} x={0} y={laneTop} width={timeW + padRight} height={rowHeight} fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"} style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                <rect
+                  key={`lane-${i}`}
+                  x={0} y={laneTop} width={timeW + padRight} height={rowHeight}
+                  fill={i % 2 ? "rgba(128,128,128,0.03)" : "transparent"}
+                  style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }}
+                />
               );
             })}
 
@@ -514,7 +513,7 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
         </div>
       </div>
 
-      {/* ================= ACTIVITY HEATMAP (BAIXADO E COM 5 BOLAS DE LIMITE) ================= */}
+      {/* ================= ACTIVITY HEATMAP ================= */}
       {rows.length > 0 && (
         <div className="mt-6 pt-6 border-t border-zinc-200/50 dark:border-white/10 px-4 flex flex-col gap-1">
           <div className="flex items-center gap-3 mb-3.5">
@@ -523,11 +522,11 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
               {selectedDesktopYear !== null ? `Viewing Details for ${selectedDesktopYear}` : "Activity Heatmap"}
             </span>
           </div>
-
-          <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
-          Tap a year to explore milestones
-        </span>
           
+          <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
+            Tap a year to explore milestones
+          </span>
+
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 pt-1">
             {desktopYears.map(year => {
               const itemsInYear = rows.filter(r => r.start.getFullYear() <= year && r.end.getFullYear() >= year);
@@ -539,27 +538,23 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
                   key={year}
                   onClick={() => setSelectedDesktopYear(isActive ? null : year)}
                   disabled={!hasItems}
-                  className={`
-                    shrink-0 relative flex flex-col items-center justify-center py-2 px-3.5 rounded-xl border transition-all duration-300
-                    ${isActive
+                  className={` shrink-0 relative flex flex-col items-center justify-center py-2 px-3.5 rounded-xl border transition-all duration-300 ${
+                    isActive
                       ? "bg-zinc-800 border-zinc-700 text-white shadow-lg dark:bg-white/10 dark:border-white/20 scale-105 z-10 ring-2 ring-zinc-500/20"
                       : hasItems
-                        ? "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:bg-white/10 cursor-pointer"
-                        : "bg-transparent border-transparent text-zinc-300 dark:text-zinc-700 cursor-not-allowed opacity-40"
-                    }
-                  `}
+                      ? "bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:bg-white/10 cursor-pointer"
+                      : "bg-transparent border-transparent text-zinc-300 dark:text-zinc-700 cursor-not-allowed opacity-40"
+                  } `}
                 >
                   <span className={`text-[11px] font-black tracking-widest ${isActive ? 'opacity-100' : 'opacity-80'}`}>
                     {year}
                   </span>
-
-                  {/* Mostra até 5 bolas de cor antes do símbolo + */}
                   <div className="flex gap-[3px] mt-1.5 h-1.5 items-center">
                     {itemsInYear.slice(0, 5).map((item, i) => (
-                      <span 
-                        key={i} 
-                        className={`w-1.5 h-1.5 rounded-full ${isActive ? 'animate-pulse' : ''}`} 
-                        style={{ backgroundColor: item.color, animationDelay: `${i * 150}ms` }} 
+                      <span
+                        key={i}
+                        className={`w-1.5 h-1.5 rounded-full ${isActive ? 'animate-pulse' : ''}`}
+                        style={{ backgroundColor: item.color, animationDelay: `${i * 150}ms` }}
                       />
                     ))}
                     {itemsInYear.length > 5 && (
@@ -581,9 +576,9 @@ function DesktopGantt({ rows, rowHeight, barHeight, fontSize, pxPerDay }: GanttP
  * ========================= */
 export default function GanttTimeline(props: GanttProps) {
   const [selectedFilter, setSelectedFilter] = React.useState<"All" | RowType>("All");
-  
+
   const allRows = React.useMemo(buildRows, []);
-  
+
   const filteredRows = React.useMemo(() => {
     if (selectedFilter === "All") return allRows;
     return allRows.filter((r) => r.type === selectedFilter);
@@ -601,11 +596,14 @@ export default function GanttTimeline(props: GanttProps) {
   const filters: ("Education" | "Experience" | "Leadership" | "All")[] = ["Education", "Experience", "Leadership", "All"];
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    // MUDANÇA: APROXIMAR OS BOTÕES (gap-4 para gap-1.5)
+    <div className="w-full flex flex-col gap-1.5">
+      
       <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 px-1">
         {filters.map((filter) => {
           const isActive = selectedFilter === filter;
           const count = counts[filter];
+          
           let colorDot = "";
           if (filter === "Education") colorDot = COLOR_BY_TYPE.Education;
           if (filter === "Experience") colorDot = COLOR_BY_TYPE.Experience;

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useMemo, type CSSProperties } from "react";
 import * as THREE from "three";
 import "./GhostCursor.css";
@@ -19,10 +18,10 @@ type Props = {
 const GhostCursor = ({
   className,
   style,
-  trailLength = 30,
+  trailLength = 20, 
   inertia = 0.5,
-  brightness = 1.2,
-  color = "#10b981", // O nosso Verde Esmeralda por defeito!
+  brightness = 0.8, 
+  color = "#10b981", // Verde Esmeralda
   fadeDelayMs = 1000,
   fadeDurationMs = 1500,
   zIndex = 10,
@@ -37,54 +36,89 @@ const GhostCursor = ({
     uniform float iOpacity;
     uniform vec3  iBaseColor;
     uniform float iBrightness;
+
     varying vec2  vUv;
 
-    float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7))) * 43758.5453123); }
+    float hash(vec2 p){
+      return fract(sin(dot(p,vec2(127.1,311.7))) * 43758.5453123);
+    }
+
     float noise(vec2 p){
       vec2 i = floor(p), f = fract(p);
       f *= f * (3. - 2. * f);
-      return mix(mix(hash(i+vec2(0,0)), hash(i+vec2(1,0)), f.x),
-                 mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y);
+      return mix(
+        mix(hash(i+vec2(0,0)), hash(i+vec2(1,0)), f.x),
+        mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x),
+        f.y
+      );
     }
+
     float fbm(vec2 p){
-      float v = 0.0; float a = 0.5;
-      for(int i=0;i<5;i++){ v += a * noise(p); p *= 2.0; a *= 0.5; }
+      float v = 0.0;
+      float a = 0.5;
+      for(int i=0;i<5;i++){
+        v += a * noise(p);
+        p *= 2.0;
+        a *= 0.5;
+      }
       return v;
     }
 
     vec4 blob(vec2 p, vec2 mousePos, float intensity, float activity) {
+      // Cria a distorção (fumo/aura)
       vec2 q = vec2(fbm(p + iTime * 0.1), fbm(p + vec2(5.2,1.3) + iTime * 0.1));
       float smoke = fbm(p + q * 0.8);
-      float radius = 0.5;
-      float distFactor = 1.0 - smoothstep(0.0, radius * activity, length(p - mousePos));
-      float alpha = pow(smoke, 2.5) * distFactor;
+      
+      // NOVA MATEMÁTICA: Decaimento Gaussiano Exponencial
+      // Isto elimina qualquer borda circular dura. A luz esfuma-se organicamente.
+      float dist = length(p - mousePos);
+      float spread = 0.45 * activity;
+      float distFactor = exp(-(dist * dist) / (spread * spread));
+      
+      // Combinamos o fumo com a distância Gaussiana
+      float alpha = pow(smoke, 2.0) * distFactor;
+      
       return vec4(iBaseColor * alpha * intensity, alpha * intensity);
     }
 
     void main() {
       vec2 uv = (gl_FragCoord.xy / iResolution.xy * 2.0 - 1.0) * vec2(iResolution.x / iResolution.y, 1.0);
       vec2 mouse = (iMouse * 2.0 - 1.0) * vec2(iResolution.x / iResolution.y, 1.0);
+
       vec3 colorAcc = vec3(0.0);
       float alphaAcc = 0.0;
+
+      // Ponto principal do rato
       vec4 b = blob(uv, mouse, 1.0, iOpacity);
-      colorAcc += b.rgb; alphaAcc += b.a;
+      colorAcc += b.rgb;
+      alphaAcc += b.a;
+
+      // O rasto do rato
       for (int i = 0; i < MAX_TRAIL_LENGTH; i++) {
         vec2 pm = (iPrevMouse[i] * 2.0 - 1.0) * vec2(iResolution.x / iResolution.y, 1.0);
         float t = 1.0 - float(i) / float(MAX_TRAIL_LENGTH);
-        t = pow(t, 2.0);
+        t = pow(t, 2.5); // Concentra a intensidade do rasto junto ao rato
         if (t > 0.01) {
-          vec4 bt = blob(uv, pm, t * 0.8, iOpacity);
-          colorAcc += bt.rgb; alphaAcc += bt.a;
+          // O t * 0.4 dilui as "bolinhas", fundindo o rasto numa névoa contínua
+          vec4 bt = blob(uv, pm, t * 0.4, iOpacity); 
+          colorAcc += bt.rgb;
+          alphaAcc += bt.a;
         }
       }
+
       colorAcc *= iBrightness;
-      gl_FragColor = vec4(colorAcc, clamp(alphaAcc * iOpacity, 0.0, 1.0));
+      
+      // O limite de 45% (0.45) garante que o texto por baixo se lê sempre
+      gl_FragColor = vec4(colorAcc, clamp(alphaAcc * iOpacity, 0.0, 0.45));
     }
   `;
 
   const vertexShader = `
     varying vec2 vUv;
-    void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
+    void main() {
+      vUv = uv;
+      gl_Position = vec4(position, 1.0);
+    }
   `;
 
   const maxTrail = useMemo(() => Math.max(1, Math.floor(trailLength)), [trailLength]);
@@ -103,8 +137,8 @@ const GhostCursor = ({
 
     const trail = Array.from({ length: maxTrail }, () => new THREE.Vector2(0.5, 0.5));
     let head = 0;
-    const baseColor = new THREE.Color(color);
 
+    const baseColor = new THREE.Color(color);
     const material = new THREE.ShaderMaterial({
       defines: { MAX_TRAIL_LENGTH: maxTrail },
       uniforms: {
@@ -129,6 +163,7 @@ const GhostCursor = ({
     let raf = 0;
     let lastMove = performance.now();
     let pointerActive = false;
+
     const cur = new THREE.Vector2(0.5, 0.5);
     const tgt = new THREE.Vector2(0.5, 0.5);
     const vel = new THREE.Vector2();
@@ -140,11 +175,13 @@ const GhostCursor = ({
       renderer.setSize(w, h, false);
       material.uniforms.iResolution.value.set(w, h, 1);
     };
+
     resize();
     const ro = new ResizeObserver(resize);
-    ro.observe(host); // Alterado para observar o host em vez do parent
+    ro.observe(host);
 
     const start = performance.now();
+
     const animate = () => {
       if (!active) return;
       const now = performance.now();
@@ -165,21 +202,20 @@ const GhostCursor = ({
       }
 
       material.uniforms.iMouse.value.copy(cur);
-
       head = (head + 1) % trail.length;
       trail[head].copy(cur);
+
       const arr = material.uniforms.iPrevMouse.value as THREE.Vector2[];
       for (let i = 0; i < trail.length; i++) {
         const srcIdx = (head - i + trail.length) % trail.length;
         arr[i].copy(trail[srcIdx]);
       }
-      material.uniforms.iTime.value = t;
 
+      material.uniforms.iTime.value = t;
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
     };
 
-    // Alterado para detetar rato na Window global (mais preciso e sem bugs de z-index)
     const onMove = (e: PointerEvent) => {
       const x = e.clientX / window.innerWidth;
       const y = 1 - (e.clientY / window.innerHeight);
@@ -187,7 +223,7 @@ const GhostCursor = ({
       pointerActive = true;
       lastMove = performance.now();
     };
-    
+
     const onLeave = () => {
       pointerActive = false;
       lastMove = performance.now();
@@ -195,6 +231,7 @@ const GhostCursor = ({
 
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerout", onLeave);
+
     raf = requestAnimationFrame(animate);
 
     return () => {
@@ -206,8 +243,7 @@ const GhostCursor = ({
       geom.dispose();
       material.dispose();
       renderer.dispose();
-      if (renderer.domElement.parentElement)
-        renderer.domElement.parentElement.removeChild(renderer.domElement);
+      if (renderer.domElement.parentElement) renderer.domElement.parentElement.removeChild(renderer.domElement);
     };
   }, [color, brightness, inertia, fadeDelayMs, fadeDurationMs, maxTrail]);
 
