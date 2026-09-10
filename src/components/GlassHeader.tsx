@@ -4,20 +4,40 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ui/theme-toggle";
 import {
-  GraduationCap, Briefcase, Handshake, Globe, BookOpen, Trophy, 
-  CircuitBoard, BrainCircuit, MapPinned, Menu, X, Check, Info
+  Briefcase,
+  Cpu,
+  Layers,
+  GraduationCap,
+  Handshake,
+  BrainCircuit,
+  Library,
+  MapPinned,
+  Trophy,
+  Mail,
+  Linkedin,
+  Github,
+  BookOpenText,
+  Fingerprint,
+  FileBadge,
+  Languages,
+  ArrowUpRight,
+  Menu,
+  X,
+  Check,
+  Info, 
+  Globe
 } from "lucide-react";
 
 // === DADOS DE NAVEGAÇÃO ===
 const navItems = [
   { id: "experience",   Icon: Briefcase,     label: "Experience" },
-  { id: "skills",       Icon: CircuitBoard,  label: "Skills" },
-  { id: "projects",     Icon: BrainCircuit,  label: "Projects" },
+  { id: "skills",       Icon: Cpu,  label: "Skills" },
+  { id: "projects",     Icon: Layers,  label: "Projects" },
   { id: "education",    Icon: GraduationCap, label: "Education" },
   { id: "leadership",   Icon: Handshake,     label: "Leadership" },
-  { id: "scientific Outreach and Certifications", Icon: Globe, label: "Scientific Outreach" }, 
-  { id: "publications", Icon: BookOpen,      label: "Publications" },
-  { id: "map",          Icon: MapPinned,     label: "Global Impact" },
+  { id: "scientific Outreach and Certifications", Icon: BrainCircuit, label: "Scientific Outreach" }, 
+  { id: "publications", Icon: Library,      label: "Publications" },
+  { id: "map",          Icon: MapPinned,     label: "Timeline & Global Impact" },
   { id: "awards",       Icon: Trophy,        label: "Awards & Recognition" },
 ];
 
@@ -28,27 +48,44 @@ const languages = [
   { code: "de", label: "Deutsch", short: "DE", flag: "🇩🇪" },
 ];
 
-// === SCROLL SPY HOOK ===
-function useScrollSpy(ids: string[], offset: number = 100) {
+// === SCROLL SPY HOOK (S-TIER PRECISION) ===
+function useScrollSpy(ids: string[]) {
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + offset;
+      // 1. ZONA NEUTRA: Se estivermos no topo absoluto (Hero Section), desativa todos os ícones.
+      if (window.scrollY < 250) {
+        setActiveId("");
+        return;
+      }
+
+      // 2. LINHA DE GATILHO (Trigger Line): 35% do topo do ecrã
+      // Isto garante que o ícone só muda quando a secção já entrou bem na tua zona de leitura.
+      const triggerLine = window.innerHeight * 0.35;
+      
+      let currentId = "";
+      
       for (const id of ids) {
         const element = document.getElementById(id);
         if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveId(id);
-            return;
+          // getBoundingClientRect ignora o CSS relative/absolute e dá a posição real no ecrã!
+          const rect = element.getBoundingClientRect();
+          
+          if (rect.top <= triggerLine && rect.bottom > triggerLine) {
+            currentId = id;
           }
         }
       }
+      
+      setActiveId(currentId);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Força a leitura assim que o site carrega
+    
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [ids, offset]);
+  }, [ids]);
 
   return activeId;
 }
@@ -57,14 +94,13 @@ export default function GlassHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("en");
-  const [showWarning, setShowWarning] = useState(false); // Estado do aviso de tradução
+  const [showWarning, setShowWarning] = useState(false); 
   
   const activeSection = useScrollSpy(navItems.map((n) => n.id));
   const langMenuRef = useRef<HTMLDivElement>(null);
 
   // === LÓGICA DO TRADUTOR AUTOMÁTICO E AVISO ===
   useEffect(() => {
-    // 1. Ler o cookie para saber qual a linguagem atual ao carregar a página
     const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
     let detectedLang = "en";
     
@@ -73,7 +109,6 @@ export default function GlassHeader() {
       setCurrentLang(detectedLang);
     }
 
-    // Se não for inglês e o aviso ainda não tiver sido fechado nesta sessão, mostra-o
     if (detectedLang !== "en") {
       const warningDismissed = sessionStorage.getItem("lang_warning_dismissed");
       if (!warningDismissed) {
@@ -81,7 +116,6 @@ export default function GlassHeader() {
       }
     }
 
-    // 2. Injetar o script do Google Translate se ainda não existir
     if (!window.googleTranslateElementInit) {
       const script = document.createElement("script");
       script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
@@ -96,7 +130,6 @@ export default function GlassHeader() {
       };
     }
 
-    // 3. Fechar menu de linguagens ao clicar fora
     const handleClickOutside = (event: MouseEvent) => {
       if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
         setIsLangMenuOpen(false);
@@ -113,7 +146,6 @@ export default function GlassHeader() {
     } else {
       document.cookie = `googtrans=/en/${langCode}; path=/;`;
       document.cookie = `googtrans=/en/${langCode}; domain=${window.location.hostname}; path=/;`;
-      // Reseta o estado do aviso sempre que se muda ativamente de língua
       sessionStorage.removeItem("lang_warning_dismissed"); 
     }
     window.location.reload(); 
@@ -137,17 +169,15 @@ export default function GlassHeader() {
 
   return (
     <>
-      {/* CSS PARA ESCONDER O WIDGET FEIO DO GOOGLE E A BARRA NO TOPO */}
       <style dangerouslySetInnerHTML={{__html: `
         .skiptranslate { display: none !important; }
         body { top: 0 !important; }
         #goog-gt-tt { display: none !important; }
       `}} />
 
-      {/* DIV INVISÍVEL OBRIGATÓRIA PARA O SCRIPT DO GOOGLE FUNCIONAR */}
       <div id="google_translate_element" className="hidden"></div>
 
-      {/* === AVISO FLUTUANTE DE TRADUÇÃO (TOAST) === */}
+      {/* === AVISO FLUTUANTE === */}
       <AnimatePresence>
         {showWarning && (
           <motion.div
@@ -238,13 +268,11 @@ export default function GlassHeader() {
           {/* === DIREITA: Ações (Theme + Language + Mobile Menu) === */}
           <div className="flex items-center gap-2 md:gap-3 pl-2 border-l border-zinc-200 dark:border-white/10 ml-2">
             
-            {/* LINGUAGEM MENU DROPDOWN */}
             <div className="relative" ref={langMenuRef}>
               <button 
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className="flex items-center gap-1.5 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-zinc-600 dark:text-zinc-300"
               >
-                {/* Mostra a bandeira atual selecionada em ecrãs maiores, ou só o Globo em telemóvel para poupar espaço */}
                 <span className="hidden md:block text-sm">{languages.find(l => l.code === currentLang)?.flag}</span>
                 <Globe className="w-4 h-4 md:hidden" />
                 <span className="text-[10px] md:text-xs font-bold uppercase">{languages.find(l => l.code === currentLang)?.short || "EN"}</span>
@@ -291,12 +319,10 @@ export default function GlassHeader() {
 
             <div className="w-px h-4 bg-zinc-200 dark:bg-white/10 mx-0.5 hidden md:block" />
 
-            {/* THEME TOGGLE */}
             <div className="scale-95 hover:scale-105 transition-transform">
                 <ThemeToggle />
             </div>
 
-            {/* Mobile Toggle */}
             <button
               className="md:hidden p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-zinc-600 dark:text-zinc-300 pointer-events-auto"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -307,7 +333,6 @@ export default function GlassHeader() {
         </div>
       </motion.header>
 
-      {/* === MENU MOBILE (RESTO DO CÓDIGO) === */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>

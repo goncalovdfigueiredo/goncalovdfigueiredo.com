@@ -15,6 +15,7 @@ import {
   Filter,
   X,
   Plus,
+  Library
 } from "lucide-react";
 
 /* =========================================================
@@ -99,7 +100,7 @@ export default function PublicationsSection() {
                   className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
                 >
                   <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <BookOpen className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
+                  <Library className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
                 
                 {/* Título limpo com o traço parcial elegante */}
@@ -143,7 +144,7 @@ export default function PublicationsSection() {
         </MotionWrapper>
 
         {/* GRID PRINCIPAL */}
-        <motion.div layout className="grid grid-cols-2 gap-2 md:grid md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-2 md:gap-6">
+        <motion.div layout className="grid grid-cols-3 gap-2 md:grid md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-3 md:gap-2">
           <AnimatePresence mode="popLayout">
             {filteredPubs.map((pub) => {
               const typeKey = pub.manuscript.toLowerCase();
@@ -187,10 +188,12 @@ export default function PublicationsSection() {
                     </GlassCard>
                   </div>
 
-                  {/* ====== VERSÃO DESKTOP (INALTERADA) ====== */}
+                  {/* ====== VERSÃO DESKTOP (AJUSTADA PARA 3 COLUNAS) ====== */}
                   <div className="hidden md:flex h-full w-full">
-                    <GlassCard className={`group relative flex flex-col md:flex-row w-full h-full rounded-2xl backdrop-blur-md shadow-lg dark:shadow-xl overflow-hidden border ${style.border} ${style.bg} dark:hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.3)]`}>
-                      <div className="relative w-full h-40 md:w-[180px] lg:w-[200px] md:h-auto shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-zinc-200 dark:border-white/5 bg-white dark:bg-zinc-800 shadow-inner group/image">
+                    <GlassCard className={`group relative flex flex-col md:flex-row w-full h-full rounded-2xl backdrop-blur-md shadow-lg dark:shadow-xl overflow-hidden border ${style.border} ${style.bg} dark:hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300`}>
+                      
+                      {/* IMAGEM MAIS ESTREITA (w-[110px]) PARA DAR ESPAÇO AO TEXTO */}
+                      <div className="relative w-full h-40 md:w-[100px] lg:w-[120px] md:h-auto shrink-0 overflow-hidden border-b md:border-b-0 md:border-r border-zinc-200 dark:border-white/5 bg-white dark:bg-zinc-800 shadow-inner group/image">
                         {(pub as any).image && (
                           pub.github ? (
                             <a href={pub.github} target="_blank" rel="noopener noreferrer" className="block w-full h-full cursor-pointer relative">
@@ -199,7 +202,7 @@ export default function PublicationsSection() {
                               <div className="absolute inset-0 border-[3px] border-black/5 dark:border-white/5 pointer-events-none z-10" />
                               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 bg-black/20 backdrop-blur-[2px] z-20">
                                 <div className="p-2 bg-white/90 rounded-full shadow-lg transform group-hover/image:scale-110 transition-transform">
-                                  <Eye className="w-5 h-5 text-zinc-900" />
+                                  <Eye className="w-4 h-4 text-zinc-900" />
                                 </div>
                               </div>
                             </a>
@@ -212,17 +215,22 @@ export default function PublicationsSection() {
                         )}
                       </div>
 
-                      <div className="flex flex-col flex-grow p-5 md:p-6 text-left">
-                        <div className="flex justify-between items-start mb-3 gap-2">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-white/50 dark:border-white/5 ${style.badgeBg} ${style.badgeText}`}>{pub.manuscript}</span>
+                      {/* CONTEÚDO COM PADDING OTIMIZADO E TIPOGRAFIA COMPACTA */}
+                      <div className="flex flex-col flex-grow p-4 md:p-4 text-left">
+                        <div className="flex justify-between items-start mb-2.5 gap-2">
+                          <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-white/50 dark:border-white/5 ${style.badgeBg} ${style.badgeText}`}>{pub.manuscript}</span>
                           {pub.citations && pub.citations > 0 && (
-                            <div className="flex items-center gap-1 text-[10px] text-zinc-500 bg-white/50 dark:bg-white/5 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5"><Quote className="h-2.5 w-2.5" /><span className="font-semibold">{pub.citations}</span></div>
+                            <div className="flex items-center gap-1 text-[9px] text-zinc-500 bg-white/50 dark:bg-white/5 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5"><Quote className="h-2.5 w-2.5" /><span className="font-semibold">{pub.citations}</span></div>
                           )}
                         </div>
-                        <h3 className="text-lg font-bold leading-tight mb-2 text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{pub.title}</h3>
-                        <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-4 font-mono">{pub.venue}, {pub.year}</div>
-                        <div className="mt-auto pt-4 border-t border-zinc-200/50 dark:border-white/5 flex items-center justify-between">
-                          <div className="text-[10px] md:text-xs text-zinc-500 dark:text-zinc-400 truncate pr-2 flex-1">{pub.authors.join(", ")}</div>
+                        
+                        {/* Título mais contido */}
+                        <h3 className="text-[13px] md:text-[14px] font-bold leading-snug mb-1.5 text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-3">{pub.title}</h3>
+                        
+                        <div className="text-[10px] md:text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-3 font-mono leading-tight">{pub.venue}, {pub.year}</div>
+                        
+                        <div className="mt-auto pt-3 border-t border-zinc-200/50 dark:border-white/5 flex items-center justify-between">
+                          <div className="text-[9px] md:text-[10px] text-zinc-500 dark:text-zinc-400 truncate pr-2 flex-1 font-semibold">{pub.authors.join(", ")}</div>
                           <div className="flex gap-3 shrink-0">
                             {pub.abstract && (
                               <button onClick={(e) => { e.stopPropagation(); toggleAbstract(originalIndex); }} className="text-zinc-400 hover:text-emerald-500 transition-colors">
@@ -233,8 +241,8 @@ export default function PublicationsSection() {
                         </div>
                         <AnimatePresence>
                           {isOpen && pub.abstract && (
-                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1, marginTop: 16 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                              <p className="text-[11px] md:text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-black/20 p-3 rounded-lg border border-zinc-200 dark:border-white/5 text-justify">{pub.abstract}</p>
+                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1, marginTop: 12 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                              <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-black/20 p-3 rounded-lg border border-zinc-200 dark:border-white/5 text-justify">{pub.abstract}</p>
                             </motion.div>
                           )}
                         </AnimatePresence>

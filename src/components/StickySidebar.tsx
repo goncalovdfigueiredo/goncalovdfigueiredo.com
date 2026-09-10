@@ -15,6 +15,7 @@ import {
   PanelLeftOpen,
   Search,
   Command,
+  BookOpenText,
   ArrowRight
 } from "lucide-react";
 
@@ -210,7 +211,7 @@ export default function StickySidebar() {
     { label: "Email", icon: Mail, href: `mailto:${personalInfo?.email || "email@example.com"}` },
     { label: "LinkedIn", icon: Linkedin, href: personalInfo?.linkedin || "#" },
     { label: "GitHub", icon: Github, href: personalInfo?.github || "#" },
-    { label: "Scholar", icon: BookOpen, href: personalInfo?.scholar || "#" },
+    { label: "Scholar", icon: BookOpenText, href: personalInfo?.scholar || "#" },
     { label: "CiênciaVitae", icon: FileBadge, href: personalInfo?.cienciavitae || "#" },
     { label: "ORCID", icon: Fingerprint, href: personalInfo?.orcid || "#" },
   ];

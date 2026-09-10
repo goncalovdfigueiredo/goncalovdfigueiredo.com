@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, X, Mic, Medal, Plus } from "lucide-react";
+import { Handshake, Calendar, MapPin, Briefcase, ChartGantt, Rocket, BrainCircuit, Gamepad2, BookOpen, MessageCircleHeart, Globe, HeartHandshake, ChevronDown, X, Mic, Medal, Plus, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
@@ -157,7 +157,7 @@ export default function LeadershipSection() {
                  icon={ChartGantt} 
                  text="Timeline" 
                  tooltip="Visual roadmap of my academic and leadership career since 2008"
-                 colorClass="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400"
+                 colorClass="border-blue-500/5 bg-blue-500/5 hover:bg-blue-500/10 text-blue-700 dark:text-blue-400"
                />
             </div>
           </div>
@@ -192,7 +192,9 @@ export default function LeadershipSection() {
                        
                        <div className="flex-1 min-w-0">
                           <h3 className="text-[15px] font-bold text-zinc-900 dark:text-white leading-tight">{job.position}</h3>
-                          <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 mb-0">{job.company}</p>
+                          <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5 mb-0 flex items-center gap-1">
+                            <Building2 className="w-3 h-3 shrink-0" /> {job.company}
+                          </p>
                           
                           <div className="flex flex-wrap items-center gap-y-0 gap-x-3 text-[8px] text-zinc-500 dark:text-zinc-400 mt-1">
                              <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-emerald-500/70" /> {job.period}</span>
@@ -211,7 +213,7 @@ export default function LeadershipSection() {
             VERSÃO DESKTOP
            ======================= */}
         <div className="hidden lg:block overflow-x-auto overflow-y-visible py-12 pl-4 -ml-4 pr-12 pb-24">
-          <div className="flex items-start min-w-max gap-8">
+          <div className="flex items-start min-w-max gap-6">
             {LeadershipExperience.map((job: any, idx: number) => {
               const zIndex = LeadershipExperience.length - idx;
               const locationDisplay = typeof job.location === 'string' ? job.location : job.location.city;
@@ -227,10 +229,10 @@ export default function LeadershipSection() {
                   onClick={() => setSelectedJob(job)}
                   className={`
                     relative flex-shrink-0 cursor-pointer
-                    w-[360px] 
-                    ${idx > 0 ? "-ml-28" : ""} 
+                    w-[330px] 
+                    ${idx > 0 ? "-ml-24" : ""} 
                     transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group
-                    hover:!ml-4 hover:mr-4 hover:z-50 hover:-translate-y-4 hover:scale-[1.02]
+                    hover:z-50 hover:translate-x-23 hover:-translate-y-5 hover:scale-[1.02]
                   `}
                 >
                   {/* Badge de Data */}
@@ -239,42 +241,52 @@ export default function LeadershipSection() {
                     <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">{job.period}</span>
                   </div>
 
-                  {/* Cartão Estático */}
-                  <div className="p-6 relative overflow-visible rounded-2xl h-[260px] flex flex-col justify-between 
-                    bg-zinc-200/20 dark:bg-black/30 backdrop-blur-[2px]
-                    border border-zinc-200/50 dark:border-emerald-500/30 
+                  {/* Cartão Estático HUD (Fundo ajustado para mais transparência: dark:bg-black/15) */}
+                  <div className="p-5 relative overflow-hidden rounded-2xl h-[210px] flex flex-col justify-between 
+                    bg-zinc-200/10 dark:bg-black/1 backdrop-blur-md
+                    border border-zinc-200/40 dark:border-emerald-500/30 
                     transition-all duration-500 
-                    group-hover:bg-zinc-100/70 group-hover:dark:bg-black/70 
-                    group-hover:backdrop-blur-md 
-                    group-hover:border-emerald-500/50 
-                    group-hover:shadow-[0_24px_50px_rgba(16,185,129,0.25)]"
+                    group-hover:bg-zinc-100/60 group-hover:dark:bg-black/40 
+                    group-hover:backdrop-blur-xl 
+                    group-hover:border-emerald-500/70 
+                    group-hover:shadow-[0_20px_40px_rgba(16,185,129,0.15)]"
                   >
                     <div className="mb-4 mt-2">
-                      <div className="flex items-center gap-4 mb-4">
-                        {/* CompanyLogo agora trata das caixas sozinho! */}
+                      {/* TOPO: Logótipo à esquerda | Cargo e Empresa ao lado */}
+                      <div className="flex items-start gap-4 mb-4">
                         <CompanyLogo job={job} />
                         
-                        <div>
-                            <h3 className="text-[17px] font-bold leading-tight text-zinc-900 dark:text-white mb-1">{job.position}</h3>
-                            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate max-w-[200px]">{job.company}</p>
+                        <div className="min-w-0 flex-1">
+                            <h3 className="text-[17px] font-bold leading-tight text-zinc-900 dark:text-white mb-1 line-clamp-2">
+                              {job.position}
+                            </h3>
+                            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate flex items-center gap-1">
+                              <Building2 className="w-3.5 h-3.5 shrink-0" /> {job.company}
+                            </p>
                         </div>
                       </div>
                       
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500 dark:text-zinc-400 mt-5">
+                      {/* LOCALIZAÇÃO ENCOSTADA À DIREITA (com ml-auto) */}
+                      <div className="flex justify-end text-xs text-zinc-500 dark:text-zinc-400 mt-5">
                         <div className="flex items-center gap-1.5 bg-white/50 dark:bg-white/5 px-2.5 py-1.5 rounded-md border border-zinc-200/50 dark:border-white/5">
                           <MapPin className="h-3.5 w-3.5" /> <span>{locationDisplay}</span>
                         </div>
                       </div>
                     </div>
+                    
 
-                    {/* Botão de Ação "Expandir" */}
-                    <div className="mt-auto pt-4 border-t border-zinc-200/50 dark:border-white/10 flex items-center justify-between text-zinc-500 dark:text-zinc-400 group-hover:text-emerald-500 transition-colors">
-                        <span className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                            <Briefcase className="w-3.5 h-3.5" /> View Details
-                        </span>
-                        <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                            <Plus className="w-3.5 h-3.5" />
-                        </div>
+                    {/* RODAPÉ: Ação Minimalista com o ícone + a bombear em azul */}
+                    <div className="pt-3 border-t border-zinc-200/40 dark:border-white/10 flex items-center justify-between text-zinc-400 dark:text-zinc-500 group-hover:text-emerald-400 transition-colors">
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest flex items-center gap-1.5">
+                        <Briefcase className="w-3 h-3" /> Explore Record
+                      </span>
+                      <motion.div 
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-5 h-5 rounded-full bg-white/50 dark:bg-white/5 flex items-center justify-center text-blue-400 border border-blue-500/30 group-hover:bg-blue-500/30 transition-colors"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </motion.div>
                     </div>
                   </div>
                 </motion.div>
@@ -330,7 +342,7 @@ export default function LeadershipSection() {
                   </div>
 
                   <p className="text-xs md:text-sm text-emerald-600 dark:text-emerald-400 font-medium mb-3 pb-2 border-b border-zinc-200 dark:border-white/10 flex items-center gap-1.5">
-                    <Briefcase className="w-3.5 h-3.5" />
+                    <Building2 className="w-3.5 h-3.5 shrink-0" />
                     {selectedJob.company} • {typeof selectedJob.location === 'string' ? selectedJob.location : selectedJob.location.city}
                   </p>
 
@@ -386,30 +398,7 @@ export default function LeadershipSection() {
           )}
         </AnimatePresence>
 
-        {/* =======================
-            TIMELINE GANTT
-           ======================= */}
-        <MotionWrapper>
-          <div id="timeline" className="mt-16 md:mt-20 scroll-mt-24">
-             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
-                <div className="flex items-center gap-3 md:gap-4">
-                    <div className="p-2 md:p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 shadow-sm dark:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
-                        <ChartGantt className="h-5 w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Timeline Overview</h3>
-                      <p className="text-xs md:text-sm text-blue-600/80 dark:text-blue-400/60 font-medium">Chronological view of my career path</p>
-                    </div>
-                </div>
-            </div>
-             <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-white/5 backdrop-blur-md shadow-lg dark:shadow-2xl dark:shadow-black/40">
-                <div className="absolute inset-0 dark:bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.05),transparent_70%)] pointer-events-none" />
-                <div className="p-4 md:p-8 overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-blue-500/20 hover:scrollbar-thumb-blue-500/40">
-                    <GanttTimeline rowHeight={28} barHeight={20} fontSize={13} />
-                </div>
-            </div>
-          </div>
-        </MotionWrapper> 
+        
       </div>
     </section>
   );

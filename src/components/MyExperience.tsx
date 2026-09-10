@@ -4,6 +4,28 @@ import React, { useState } from "react";
 import { workExperience } from "@/lib/data";
 import TimelineItem from "./TimelineItem";
 import { Briefcase, MapPin, BarChart3, ChartGantt, FileText, ExternalLink, BookOpen, ChevronDown, Calendar, GraduationCap, Building2 } from "lucide-react";
+import {
+  Cpu,
+  Layers,
+  Handshake,
+  BrainCircuit,
+  Library,
+  MapPinned,
+  Trophy,
+  Mail,
+  Linkedin,
+  Github,
+  BookOpenText,
+  Fingerprint,
+  FileBadge,
+  Languages,
+  ArrowUpRight,
+  Menu,
+  X,
+  Check,
+  Info, 
+  Globe
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MotionWrapper from "./MotionWrapper";
 

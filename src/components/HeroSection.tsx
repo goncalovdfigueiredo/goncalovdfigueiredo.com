@@ -21,6 +21,24 @@ import {
   EarthLock,
 } from "lucide-react";
 import {
+  Briefcase,
+  Layers,
+  GraduationCap,
+  Handshake,
+  BrainCircuit,
+  Library,
+  MapPinned,
+  Trophy,
+  BookOpenText,
+  Languages,
+  ArrowUpRight,
+  Menu,
+  X,
+  Check,
+  Info, 
+  Globe
+} from "lucide-react";
+import {
   motion,
   AnimatePresence,
   useAnimation,
@@ -427,7 +445,7 @@ export default function HeroSection() {
     { icon: Mail, text: "Email", href: `mailto:${personalInfo.email}` },
     { icon: Linkedin, text: "LinkedIn", href: personalInfo.linkedin },
     { icon: Github, text: "GitHub", href: personalInfo.github },
-    { icon: BookOpen, text: "Scholar", href: personalInfo.scholar },
+    { icon: BookOpenText, text: "Scholar", href: personalInfo.scholar },
     { icon: FileBadge, text: "CiênciaVitae", href: personalInfo.cienciavitae },
     { icon: Fingerprint, text: "ORCID", href: personalInfo.orcid },
   ];

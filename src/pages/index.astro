@@ -19,9 +19,15 @@ import InterestsSection from "../components/InterestsSection";
 
 // Import da Barra Lateral Premium
 import StickySidebar from "../components/StickySidebar";
+
+// NOVO: Import da Barra de Progresso
+import ScrollProgress from "../components/ui/ScrollProgress";
 ---
 
 <Layout title="Gonçalo Figueiredo's Site">
+
+  <!-- A Mágica Barra de Scroll colada ao topo -->
+  <ScrollProgress client:only="react" />
 
   <Preloader client:only="react" />
   
