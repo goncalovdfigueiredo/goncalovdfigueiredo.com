@@ -14,7 +14,7 @@ export default function ScrollProgress() {
       // 2. Prevenir divisões por zero e calcular a percentagem (0 a 100)
       if (maxScroll > 0) {
         const percentage = (currentScroll / maxScroll) * 100;
-        // Limitamos entre 0 e 100 para evitar que passe dos limites se houver "bounce" no Mac
+        // Limitamos entre 0 e 100 para evitar que passe dos limites se houver "bounce" no Mac 
         setProgress(Math.min(100, Math.max(0, percentage)));
       }
     };
