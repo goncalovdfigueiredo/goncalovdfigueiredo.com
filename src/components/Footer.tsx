@@ -50,7 +50,7 @@ export default function Footer() {
                 <Handshake className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" /> Leadership 
               </a> 
               <a href="#publications" className="group flex items-center gap-2 text-[13px] text-zinc-500 dark:text-zinc-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors w-fit"> 
-                <Library className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity" /> Publications 
+                <Library className="w-3.5 h-3.5 opacity-70  group-hover:opacity-100 transition-opacity" /> Publications 
               </a> 
             </div> 
 
