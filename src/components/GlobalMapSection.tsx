@@ -174,7 +174,7 @@ export default function GlobalMapSection() {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
-                  MODULE // 08_GLOBAL_FOOTPRINT
+                  MODULE // 08_NAVIGATION_NODES
                 </span>
               </div>
               <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">

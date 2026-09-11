@@ -1,11 +1,11 @@
 // src/components/AwardsSection.tsx
 "use client";
 
-import React, { useState, useEffect } from "react"; 
-import { awards, featuredIn } from "@/lib/data"; 
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion"; 
-import { Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight, Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car, Clock, ChevronDown, ChevronRight, Plus, X, Speech } from "lucide-react"; 
-import MotionWrapper from "./MotionWrapper"; 
+import React, { useState, useEffect } from "react";
+import { awards, featuredIn } from "@/lib/data";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
+import { Trophy, Calendar, Building2, Globe, Layers, FileText, Newspaper, Mic, Tv, ArrowUpRight, Dumbbell, Activity, Languages, Brain, Flag, Gauge, Timer, Footprints, Zap, Terminal, Car, Clock, ChevronDown, ChevronRight, Plus, X, Speech } from "lucide-react";
+import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
 
 const F1StartingLights = () => {
@@ -17,20 +17,15 @@ const F1StartingLights = () => {
     let isMounted = true;
     const sequence = async () => {
       while (isMounted) {
-        setPhase(1);
-        setLights(0);
-        setSpeed(0);
+        setPhase(1); setLights(0); setSpeed(0);
         await new Promise(res => setTimeout(res, 1500));
         if (!isMounted) break;
-        
         setPhase(2);
         await new Promise(res => setTimeout(res, 2500));
         if (!isMounted) break;
-        
         setPhase(3);
         await new Promise(res => setTimeout(res, 1000));
         if (!isMounted) break;
-        
         setPhase(4);
         for (let i = 1; i <= 5; i++) {
           setLights(i);
@@ -38,29 +33,22 @@ const F1StartingLights = () => {
           if (!isMounted) break;
         }
         if (!isMounted) break;
-        
         setPhase(5);
         await new Promise(res => setTimeout(res, 800 + Math.random() * 1000));
         if (!isMounted) break;
-        
         setPhase(6);
         setSpeed(285);
         await new Promise(res => setTimeout(res, 3000));
         if (!isMounted) break;
-        
         setPhase(7);
-        setLights(0);
-        setSpeed(0);
+        setLights(0); setSpeed(0);
         await new Promise(res => setTimeout(res, 2000));
       }
     };
     sequence();
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, []);
 
-  // Simulação de pequenas variações no velocímetro quando o carro arranca (Phase 6)
   useEffect(() => {
     if (phase !== 6) return;
     const interval = setInterval(() => {
@@ -69,7 +57,6 @@ const F1StartingLights = () => {
     return () => clearInterval(interval);
   }, [phase]);
 
-  // Cálculo SVG para o half progress gauge (arco de 180 graus)
   const radius = 42;
   const circumference = Math.PI * radius;
   const progressRatio = speed / 320;
@@ -77,7 +64,6 @@ const F1StartingLights = () => {
 
   return (
     <div className="flex flex-col items-center gap-3 shrink-0">
-      {/* SEÇÃO DO SEMÁFORO */}
       <div className={`flex gap-1 bg-black/40 p-1.5 rounded border border-white/5 backdrop-blur-sm transition-all duration-500 ${phase === 7 ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}>
         {[1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="flex flex-col gap-1">
@@ -86,8 +72,6 @@ const F1StartingLights = () => {
           </div>
         ))}
       </div>
-      
-      {/* MENSAGEM / ESTADO */}
       <div className="h-7 flex flex-col items-center justify-start">
         <AnimatePresence mode="wait">
           {phase === 6 && (
@@ -98,29 +82,10 @@ const F1StartingLights = () => {
           )}
         </AnimatePresence>
       </div>
-
-      {/* HALF PROGRESS GAUGE (VELOCÍMETRO) */}
       <div className="relative flex flex-col items-center justify-center -mt-1">
         <svg className="w-28 h-16 overflow-visible" viewBox="0 0 100 55">
-          <path
-            d="M 8 50 A 42 42 0 0 1 92 50"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="6"
-            className="text-zinc-800/60"
-            strokeLinecap="round"
-          />
-          <motion.path
-            d="M 8 50 A 42 42 0 0 1 92 50"
-            fill="none"
-            stroke="#ef4444"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            animate={{ strokeDashoffset }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            style={{ filter: "drop-shadow(0 0 6px rgba(239,68,68,0.6))" }}
-          />
+          <path d="M 8 50 A 42 42 0 0 1 92 50" fill="none" stroke="currentColor" strokeWidth="6" className="text-zinc-800/60" strokeLinecap="round" />
+          <motion.path d="M 8 50 A 42 42 0 0 1 92 50" fill="none" stroke="#ef4444" strokeWidth="6" strokeLinecap="round" strokeDasharray={circumference} animate={{ strokeDashoffset }} transition={{ duration: 0.4, ease: "easeOut" }} style={{ filter: "drop-shadow(0 0 6px rgba(239,68,68,0.6))" }} />
         </svg>
         <div className="absolute bottom-0 flex flex-col items-center">
           <span className="text-sm font-mono font-black text-zinc-100 tracking-tight">
@@ -151,14 +116,7 @@ const GermanTypewriterSpeech = () => {
       </div>
       <div className="h-6 overflow-hidden flex items-center relative w-28 justify-end">
         <AnimatePresence mode="wait">
-          <motion.span
-            key={currentWordIndex}
-            initial={{ opacity: 0, x: 15, filter: "blur(4px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: -15, filter: "blur(4px)" }}
-            transition={{ duration: 0.35 }}
-            className="text-xs font-mono font-bold text-purple-400 tracking-wider bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20"
-          >
+          <motion.span key={currentWordIndex} initial={{ opacity: 0, x: 15, filter: "blur(4px)" }} animate={{ opacity: 1, x: 0, filter: "blur(0px)" }} exit={{ opacity: 0, x: -15, filter: "blur(4px)" }} transition={{ duration: 0.35 }} className="text-xs font-mono font-bold text-purple-400 tracking-wider bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20" >
             {germanWords[currentWordIndex]}
           </motion.span>
         </AnimatePresence>
@@ -176,6 +134,7 @@ function HobbyCard({ children, className = "" }: any) {
   const mouseYSpring = useSpring(y);
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left) / rect.width - 0.5);
@@ -183,7 +142,9 @@ function HobbyCard({ children, className = "" }: any) {
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
   };
+
   const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.06), transparent 80%)`;
+
   return (
     <motion.div onMouseMove={handleMouseMove} onMouseLeave={() => { x.set(0); y.set(0); }} whileTap={{ scale: 0.98 }} style={{ rotateY, rotateX, transformStyle: "preserve-3d" }} className={`relative overflow-hidden rounded-2xl bg-zinc-50 dark:bg-[#0c0c0e] border border-zinc-200 dark:border-white/10 transition-colors duration-500 cursor-pointer group ${className}`}>
       <motion.div className="pointer-events-none absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: spotlight }} />
@@ -195,7 +156,6 @@ function HobbyCard({ children, className = "" }: any) {
   );
 }
 
-// --- HELPERS ---
 const MediaIcon = ({ type }: { type: string }) => {
   const c = "h-6 w-6";
   if (type === "Podcast") return <Mic className={c} />;
@@ -207,62 +167,12 @@ const MediaIcon = ({ type }: { type: string }) => {
 };
 
 const getMediaColor = (type: string) => {
-  if (type === "Podcast") return { 
-    bg: "bg-emerald-500/10 dark:bg-emerald-500/20", 
-    text: "text-emerald-600 dark:text-emerald-400", 
-    glow: "group-hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]", 
-    iconColor: "text-emerald-500", 
-    border: "border-emerald-200 dark:border-emerald-500/20", 
-    pulse: "rgba(16,185,129,0.25)" 
-  };
-  
-  if (type === "TV News") return { 
-    bg: "bg-rose-500/10 dark:bg-rose-500/20", 
-    text: "text-rose-600 dark:text-rose-400", 
-    glow: "group-hover:shadow-[0_0_25px_rgba(244,63,94,0.5)]", 
-    iconColor: "text-rose-500", 
-    border: "border-rose-200 dark:border-rose-500/20", 
-    pulse: "rgba(244,63,94,0.25)" 
-  };
-  
-  // Alterado para PURPLE para afastar do azul
-  if (type === "Institutional") return { 
-    bg: "bg-purple-500/10 dark:bg-purple-500/20", 
-    text: "text-purple-600 dark:text-purple-400", 
-    glow: "group-hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]", 
-    iconColor: "text-purple-500", 
-    border: "border-purple-200 dark:border-purple-500/20", 
-    pulse: "rgba(168,85,247,0.25)" 
-  };
-  
-  if (type === "Print Newspaper") return { 
-    bg: "bg-amber-500/10 dark:bg-amber-500/20", 
-    text: "text-amber-700 dark:text-amber-400", 
-    glow: "group-hover:shadow-[0_0_25px_rgba(245,158,11,0.5)]", 
-    iconColor: "text-amber-600", 
-    border: "border-amber-200 dark:border-amber-500/20", 
-    pulse: "rgba(245,158,11,0.25)" 
-  };
-  
-  // Alterado para SKY (Azul Celeste) para máximo contraste com o roxo
-  if (type === "Online News") return { 
-    bg: "bg-sky-500/10 dark:bg-sky-500/20", 
-    text: "text-sky-600 dark:text-sky-400", 
-    glow: "group-hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]", 
-    iconColor: "text-sky-500", 
-    border: "border-sky-200 dark:border-sky-500/20", 
-    pulse: "rgba(14,165,233,0.25)" 
-  };
-  
-  // Fallback (Sky)
-  return { 
-    bg: "bg-sky-500/10 dark:bg-sky-500/20", 
-    text: "text-sky-600 dark:text-sky-400", 
-    glow: "group-hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]", 
-    iconColor: "text-sky-500", 
-    border: "border-sky-200 dark:border-sky-500/20", 
-    pulse: "rgba(14,165,233,0.25)" 
-  };
+  if (type === "Podcast") return { bg: "bg-emerald-500/10 dark:bg-emerald-500/20", text: "text-emerald-600 dark:text-emerald-400", glow: "group-hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]", iconColor: "text-emerald-500", border: "border-emerald-200 dark:border-emerald-500/20", pulse: "rgba(16,185,129,0.25)" };
+  if (type === "TV News") return { bg: "bg-rose-500/10 dark:bg-rose-500/20", text: "text-rose-600 dark:text-rose-400", glow: "group-hover:shadow-[0_0_25px_rgba(244,63,94,0.5)]", iconColor: "text-rose-500", border: "border-rose-200 dark:border-rose-500/20", pulse: "rgba(244,63,94,0.25)" };
+  if (type === "Institutional") return { bg: "bg-purple-500/10 dark:bg-purple-500/20", text: "text-purple-600 dark:text-purple-400", glow: "group-hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]", iconColor: "text-purple-500", border: "border-purple-200 dark:border-purple-500/20", pulse: "rgba(168,85,247,0.25)" };
+  if (type === "Print Newspaper") return { bg: "bg-amber-500/10 dark:bg-amber-500/20", text: "text-amber-700 dark:text-amber-400", glow: "group-hover:shadow-[0_0_25px_rgba(245,158,11,0.5)]", iconColor: "text-amber-600", border: "border-amber-200 dark:border-amber-500/20", pulse: "rgba(245,158,11,0.25)" };
+  if (type === "Online News") return { bg: "bg-sky-500/10 dark:bg-sky-500/20", text: "text-sky-600 dark:text-sky-400", glow: "group-hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]", iconColor: "text-sky-500", border: "border-sky-200 dark:border-sky-500/20", pulse: "rgba(14,165,233,0.25)" };
+  return { bg: "bg-sky-500/10 dark:bg-sky-500/20", text: "text-sky-600 dark:text-sky-400", glow: "group-hover:shadow-[0_0_25px_rgba(14,165,233,0.5)]", iconColor: "text-sky-500", border: "border-sky-200 dark:border-sky-500/20", pulse: "rgba(14,165,233,0.25)" };
 };
 
 const parseBoldText = (text: string, highlightColor = "bg-emerald-500/10") => {
@@ -290,42 +200,31 @@ export default function AwardsSection() {
   }, []);
 
   return (
-    <section id="awards" className="py-16 md:py-20 relative overflow-hidden">
+    <section id="awards" className="py-0 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/5 to-transparent pointer-events-none" />
       <div className="container max-w-7xl mx-auto px-5 md:px-8 relative z-10">
         
         {/* CABEÇALHO */}
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4">
-            
-            {/* TÍTULO COM ESTÉTICA DE TERMINAL / SECURITY DASHBOARD */}
             <div className="flex flex-col gap-1 items-start md:items-start">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
-                  MODULE // 09_AWARDS
+                  MODULE // 09_RECOGNITION_HUB
                 </span>
               </div>
               <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
-                
-                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
-                <motion.div 
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
-                >
+                <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group" >
                   <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Trophy className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
-                
-                {/* Título limpo com o traço parcial elegante */}
                 <div className="relative inline-block">
                   <span>Awards & Recognition</span>
                   <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
                 </div>
               </h2>
             </div>
-
             <p className="text-zinc-600 dark:text-zinc-400 max-w-5xl text-sm md:text-lg leading-relaxed text-center md:text-left ml-1">
               Recognition of academic achievements, media coverage, and personal pursuits beyond the lab.
             </p>
@@ -333,10 +232,11 @@ export default function AwardsSection() {
         </MotionWrapper>
 
         {/* 1. ACHIEVEMENT GALLERY */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-20 gap-4 md:gap-3 mb-16">
           {awards.map((award: any, index: number) => {
-            const colSpanClass = index === 0 ? "md:col-span-7" : "md:col-span-5";
+            const colSpanClass = index === 0 ? "md:col-span-12" : "md:col-span-8";
             const [isExpanded, setIsExpanded] = useState(false);
+
             const ExtraDetails = () => (
               <div className="pt-2 pb-2 space-y-4">
                 {award.hosts && (
@@ -384,6 +284,7 @@ export default function AwardsSection() {
                 )}
               </div>
             );
+
             return (
               <MotionWrapper key={index} delay={index * 0.1} className={colSpanClass}>
                 <div className="group relative h-full">
@@ -392,7 +293,6 @@ export default function AwardsSection() {
                     <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity pointer-events-none">
                       <Trophy className="w-32 h-32 rotate-12 text-amber-600" />
                     </div>
-                    
                     <div className="flex flex-col gap-3 relative z-10">
                       {award.position && (
                         <div className="flex items-start">
@@ -411,7 +311,6 @@ export default function AwardsSection() {
                         </div>
                       </div>
                     </div>
-
                     <div className="mt-4 flex flex-col relative z-10 text-justify">
                       {isDesktop && (
                         <div className="flex flex-col space-y-4">
@@ -443,9 +342,7 @@ export default function AwardsSection() {
                         </AnimatePresence>
                       )}
                     </div>
-
                     <div className="flex-grow" />
-
                     <div className={`mt-auto border-t border-amber-200/60 dark:border-white/5 flex items-center justify-between relative z-10 ${isDesktop ? 'pt-6 mt-6' : 'pt-5 mt-6'}`}>
                       <div className="flex items-center gap-6 md:gap-8 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
                         <div className="flex items-center gap-2.5">
@@ -573,52 +470,48 @@ export default function AwardsSection() {
               </h3>
             </div>
 
-            {/* VISÃO DESKTOP: Grelha de 5 Colunas (Completamente restaurada e polida) */}
+            {/* VISÃO DESKTOP: Grelha de 5 Colunas */}
             {isDesktop && (
-              <div className="hidden md:grid md:grid-cols-5 gap-5 pb-6 items-stretch" style={{ perspective: "1000px" }}>
-                
-                {/* Cartão 1: The Quantified Self (3 colunas) */}
-<div className="w-full md:col-span-3 flex">
-  <HobbyCard className="w-full h-full flex flex-col justify-between hover:border-emerald-500/40 transition-all duration-500 relative shadow-xl">
-    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-      <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
-      <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
-    </div>
-    <div className="relative z-20 flex flex-col h-full p-8 justify-between">
-      <div>
-        <div className="flex justify-between items-start mb-5">
-          <div className="max-w-[72%]">
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2.5 group-hover:text-emerald-500 transition-colors">
-              <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" /> The Quantified Self
-            </h3>
-            {/* Texto alinhado à esquerda, idêntico aos blocos vizinhos */}
-            <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-3 leading-relaxed text-left font-medium">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-left">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30 shrink-0 ml-4">
-            <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-            <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider">ACTIVE</span>
-          </div>
-        </div>
-      </div>
-      <div className="mt-8 pt-6 border-t border-zinc-200/60 dark:border-white/5">
-        <div className="flex items-center gap-2 mb-3"><Timer className="w-3.5 h-3.5 text-emerald-500" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
-        <div className="grid grid-cols-3 gap-6">
-          {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
-            <div key={i} className="flex flex-col relative group/stat bg-white/40 dark:bg-black/20 p-3 rounded-xl border border-zinc-200/50 dark:border-white/5">
-              <span className="text-[10px] font-bold text-zinc-400 mb-1">{stat.dist}</span>
-              <span className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
-              <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-2"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </HobbyCard>
-</div>
+              <div className="hidden md:grid md:grid-cols-20 gap-3 pb-6 items-stretch" style={{ perspective: "1000px" }}>
+                <div className="w-full md:col-span-12 flex">
+                  <HobbyCard className="w-full h-full flex flex-col justify-between hover:border-emerald-500/40 transition-all duration-500 relative shadow-xl">
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
+                      <div className="absolute -right-4 top-10 transform -rotate-12 opacity-10 text-emerald-500"><Footprints className="w-48 h-48" /></div>
+                      <div className="absolute right-20 -bottom-8 transform rotate-12 opacity-10 text-emerald-500"><Dumbbell className="w-40 h-40" /></div>
+                    </div>
+                    <div className="relative z-20 flex flex-col h-full p-8 justify-between">
+                      <div>
+                        <div className="flex justify-between items-start mb-5">
+                          <div className="max-w-[72%]">
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2.5 group-hover:text-emerald-500 transition-colors">
+                              <Zap className="w-5 h-5 text-emerald-500 fill-emerald-500" /> The Quantified Self
+                            </h3>
+                            <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-3 leading-relaxed text-left font-medium">{parseBoldText("Balancing mental rigor with physical conditioning.", "bg-emerald-500/10")}</p>
+                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed text-left">{parseBoldText("I approach fitness (**running & gym**) with the same discipline as engineering: consistency, metrics, and progressive overload.", "bg-emerald-500/10")}</p>
+                          </div>
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-sm z-30 shrink-0 ml-4">
+                            <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+                            <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider">ACTIVE</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-8 pt-6 border-t border-zinc-200/60 dark:border-white/5">
+                        <div className="flex items-center gap-2 mb-3"><Timer className="w-3.5 h-3.5 text-emerald-500" /><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Personal Bests</span></div>
+                        <div className="grid grid-cols-3 gap-6">
+                          {[{ dist: "3KM", time: "00:00", width: "15%" }, { dist: "5KM", time: "00:00", width: "25%" }, { dist: "10KM", time: "00:00", width: "70%" }].map((stat, i) => (
+                            <div key={i} className="flex flex-col relative group/stat bg-white/40 dark:bg-black/20 p-3 rounded-xl border border-zinc-200/50 dark:border-white/5">
+                              <span className="text-[10px] font-bold text-zinc-400 mb-1">{stat.dist}</span>
+                              <span className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">{stat.time}</span>
+                              <div className="h-1.5 w-full bg-emerald-500/10 rounded-full overflow-hidden mt-2"><div className="h-full bg-emerald-500/80 rounded-full" style={{ width: stat.width }}></div></div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </HobbyCard>
+                </div>
 
-                {/* Cartão 2: Precision & Strategy (1 coluna) */}
-                <div className="w-full md:col-span-1 flex">
+                <div className="w-full md:col-span-4 flex">
                   <HobbyCard className="w-full h-full flex flex-col justify-between hover:border-blue-500/40 transition-all duration-500 relative shadow-xl p-6">
                     <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -bottom-0 transform -rotate-12 opacity-[0.08] text-blue-500"><Gauge className="w-16 h-16" /></div></div>
                     <div className="relative z-10 flex flex-col h-full justify-between">
@@ -638,8 +531,7 @@ export default function AwardsSection() {
                   </HobbyCard>
                 </div>
 
-                {/* Cartão 3: Expanding Horizons (1 coluna) - Atualizado commáquina de escrever de palavras alemãs */}
-                <div className="w-full md:col-span-1 flex">
+                <div className="w-full md:col-span-4 flex">
                   <HobbyCard className="w-full h-full flex flex-col justify-between hover:border-purple-500/40 transition-all duration-500 relative shadow-xl p-6">
                     <div className="absolute inset-0 pointer-events-none select-none z-0"><div className="absolute -right-0 -top-0 transform rotate-12 opacity-[0.08] text-purple-500"><Languages className="w-16 h-16" /></div></div>
                     <div className="relative z-10 flex flex-col h-full justify-between">
@@ -655,22 +547,21 @@ export default function AwardsSection() {
                     </div>
                   </HobbyCard>
                 </div>
-
               </div>
             )}
 
-            {/* VISÃO MOBILE: Acordeão de Botões */}
+            {/* VISÃO MOBILE: Acordeão de Botões Compactos */}
             {!isDesktop && (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
                 
                 {/* Botão 1: Quantified Self */}
                 <div className="flex flex-col bg-zinc-50 dark:bg-[#0c0c0e] rounded-xl border border-zinc-200 dark:border-white/10 overflow-hidden shadow-sm">
-                  <button onClick={() => setActiveHobby(activeHobby === 1 ? null : 1)} className="flex items-center justify-between p-4 w-full text-left active:bg-zinc-100 dark:active:bg-white/5 transition-colors relative z-20">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-full bg-emerald-500/10 text-emerald-500"><Zap className="w-4 h-4"/></div>
-                      <span className="font-bold text-sm text-zinc-900 dark:text-white">The Quantified Self</span>
+                  <button onClick={() => setActiveHobby(activeHobby === 1 ? null : 1)} className="flex items-center justify-between py-2.5 px-3.5 w-full text-left active:bg-zinc-100 dark:active:bg-white/5 transition-colors relative z-20">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-full bg-emerald-500/10 text-emerald-500"><Zap className="w-3.5 h-3.5"/></div>
+                      <span className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-white">The Quantified Self</span>
                     </div>
-                    <ChevronRight className={`w-4 h-4 text-zinc-500 transition-transform duration-300 ${activeHobby === 1 ? 'rotate-90' : ''}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 text-zinc-500 transition-transform duration-300 ${activeHobby === 1 ? 'rotate-90' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {activeHobby === 1 && (
@@ -708,12 +599,12 @@ export default function AwardsSection() {
 
                 {/* Botão 2: Precision & Strategy */}
                 <div className="flex flex-col bg-zinc-50 dark:bg-[#0c0c0e] rounded-xl border border-zinc-200 dark:border-white/10 overflow-hidden shadow-sm">
-                  <button onClick={() => setActiveHobby(activeHobby === 2 ? null : 2)} className="flex items-center justify-between p-4 w-full text-left active:bg-zinc-100 dark:active:bg-white/5 transition-colors relative z-20">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-full bg-blue-500/10 text-blue-500"><Flag className="w-4 h-4"/></div>
-                      <span className="font-bold text-sm text-zinc-900 dark:text-white">Precision & Strategy</span>
+                  <button onClick={() => setActiveHobby(activeHobby === 2 ? null : 2)} className="flex items-center justify-between py-2.5 px-3.5 w-full text-left active:bg-zinc-100 dark:active:bg-white/5 transition-colors relative z-20">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-full bg-blue-500/10 text-blue-500"><Flag className="w-3.5 h-3.5"/></div>
+                      <span className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-white">Precision & Strategy</span>
                     </div>
-                    <ChevronRight className={`w-4 h-4 text-zinc-500 transition-transform duration-300 ${activeHobby === 2 ? 'rotate-90' : ''}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 text-zinc-500 transition-transform duration-300 ${activeHobby === 2 ? 'rotate-90' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {activeHobby === 2 && (
@@ -738,12 +629,12 @@ export default function AwardsSection() {
 
                 {/* Botão 3: Expanding Horizons */}
                 <div className="flex flex-col bg-zinc-50 dark:bg-[#0c0c0e] rounded-xl border border-zinc-200 dark:border-white/10 overflow-hidden shadow-sm">
-                  <button onClick={() => setActiveHobby(activeHobby === 3 ? null : 3)} className="flex items-center justify-between p-4 w-full text-left active:bg-zinc-100 dark:active:bg-white/5 transition-colors relative z-20">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-full bg-purple-500/10 text-purple-500"><Brain className="w-4 h-4"/></div>
-                      <span className="font-bold text-sm text-zinc-900 dark:text-white">Expanding Horizons</span>
+                  <button onClick={() => setActiveHobby(activeHobby === 3 ? null : 3)} className="flex items-center justify-between py-2.5 px-3.5 w-full text-left active:bg-zinc-100 dark:active:bg-white/5 transition-colors relative z-20">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-full bg-purple-500/10 text-purple-500"><Brain className="w-3.5 h-3.5"/></div>
+                      <span className="font-bold text-xs sm:text-sm text-zinc-900 dark:text-white">Expanding Horizons</span>
                     </div>
-                    <ChevronRight className={`w-4 h-4 text-zinc-500 transition-transform duration-300 ${activeHobby === 3 ? 'rotate-90' : ''}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 text-zinc-500 transition-transform duration-300 ${activeHobby === 3 ? 'rotate-90' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {activeHobby === 3 && (
@@ -763,7 +654,6 @@ export default function AwardsSection() {
 
               </div>
             )}
-
           </div>
         </MotionWrapper>
 

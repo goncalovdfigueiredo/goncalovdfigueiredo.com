@@ -14,10 +14,19 @@ import { LeadershipExperience } from "@/lib/data";
 const NavButtonWithTooltip = ({ href, icon: Icon, text, tooltip, colorClass }: { href: string, icon: any, text: string, tooltip: string, colorClass: string }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
-    <div className="relative flex-1 md:flex-none">
-      <a href={href} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`group w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-all duration-300 ${colorClass}`} >
-        <Icon className="w-3.5 h-3.5" />
-        <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider">{text}</span>
+    <div className="relative shrink-0">
+      <a 
+        href={href} 
+        onMouseEnter={() => setIsHovered(true)} 
+        onMouseLeave={() => setIsHovered(false)} 
+        className={`group flex items-center justify-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-2 rounded-xl border transition-all duration-300 shadow-sm backdrop-blur-md ${colorClass}`}
+      >
+        <Icon className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+        {/* Texto adaptativo: "Map" em mobile para poupar espaço, nome completo em desktop */}
+        <span className="text-[9px] md:text-xs font-bold uppercase tracking-wider">
+          <span className="inline md:hidden">{text === "Global Footprint" ? "Map" : text}</span>
+          <span className="hidden md:inline">{text}</span>
+        </span>
       </a>
       <AnimatePresence>
         {isHovered && (
@@ -114,37 +123,33 @@ export default function LeadershipSection() {
 
       <div className="container max-w-7xl mx-auto px-5 md:px-8 relative z-10">
         <MotionWrapper>
-        <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          {/* Cabeçalho atualizado com botões compactos alinhados ao lado em mobile */}
+          <div className="mb-8 md:mb-12 flex items-center justify-between gap-2 min-w-0">
             
-            {/* TÍTULO COM ESTÉTICA DE TERMINAL / SECURITY DASHBOARD */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-0.5 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
-                  MODULE // 05_LEADERSHIP
+                <span className="text-[9px] md:text-xs font-mono font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 uppercase">
+                  MODULE // 05_COMMUNITY_IMPACT
                 </span>
               </div>
-              <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
-                
-                {/* ÍCONE A "BOMBEAR" (PULSAR SUAVEMENTE) */}
+              <h2 className="text-xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-2 md:gap-3 min-w-0">
                 <motion.div 
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
+                  className="relative p-2 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group shrink-0"
                 >
                   <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <Handshake className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
+                  <Handshake className="relative z-10 h-4 w-4 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
-                
-                {/* Título limpo com o traço parcial elegante */}
-                <div className="relative inline-block">
-                  <span>Leadership</span>
-                  <div className="absolute left-0 -bottom-1 w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+                <div className="print:hidden relative inline-block truncate">
+                  <span className="truncate">Leadership</span>
+                  <div className="absolute left-0 -bottom-1 w-12 md:w-16 h-[3px] bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
                 </div>
               </h2>
             </div>
 
-            <div className="flex gap-2 w-full md:w-auto">
+            <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
                <NavButtonWithTooltip 
                  href="#map" 
                  icon={MapPin} 
@@ -241,7 +246,7 @@ export default function LeadershipSection() {
                     <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">{job.period}</span>
                   </div>
 
-                  {/* Cartão Estático HUD (Fundo ajustado para mais transparência: dark:bg-black/15) */}
+                  {/* Cartão Estático HUD */}
                   <div className="p-5 relative overflow-hidden rounded-2xl h-[210px] flex flex-col justify-between 
                     bg-zinc-200/10 dark:bg-black/1 backdrop-blur-md
                     border border-zinc-200/40 dark:border-emerald-500/30 
@@ -275,7 +280,7 @@ export default function LeadershipSection() {
                     </div>
                     
 
-                    {/* RODAPÉ: Ação Minimalista com o ícone + a bombear em azul */}
+                    {/* RODAPÉ */}
                     <div className="pt-3 border-t border-zinc-200/40 dark:border-white/10 flex items-center justify-between text-zinc-400 dark:text-zinc-500 group-hover:text-emerald-400 transition-colors">
                       <span className="text-[9px] font-mono font-bold uppercase tracking-widest flex items-center gap-1.5">
                         <Briefcase className="w-3 h-3" /> Explore Record
@@ -368,7 +373,7 @@ export default function LeadershipSection() {
                       );
                     })}
 
-                    {/* 2. TIMELINE COM NOVO NOME E DESIGN */}
+                    {/* 2. TIMELINE */}
                     {selectedJob.publishersTimeline && (
                       <div className="mt-4 pt-4 border-t border-zinc-200/50 dark:border-white/5">
                         <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-800 dark:text-zinc-300 mb-3 flex items-center gap-2">
@@ -397,8 +402,6 @@ export default function LeadershipSection() {
             </div>
           )}
         </AnimatePresence>
-
-        
       </div>
     </section>
   );
