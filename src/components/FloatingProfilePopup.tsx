@@ -1,17 +1,18 @@
+// src/components/FloatingProfilePopup.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation, type Variants } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Info } from "lucide-react";
 
 export default function FloatingProfilePopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasUnread, setHasUnread] = useState(true);
   const popupRef = useRef<HTMLDivElement>(null);
-
   const particleControls = useAnimation();
   const buttonControls = useAnimation();
 
+  // Fecha o popup ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
@@ -19,24 +20,23 @@ export default function FloatingProfilePopup() {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Efeito de desintegração intermitente
   useEffect(() => {
-    if (!hasUnread || isOpen) return;
+    if (isOpen) return;
 
     const triggerDisintegration = async () => {
-      buttonControls.start({ opacity: 0, scale: 0.8, transition: { duration: 0.3 } });
+      buttonControls.start({ opacity: 0, scale: 0.5, transition: { duration: 0.3 } });
       await particleControls.start("exploded");
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 600));
       particleControls.start("assembled");
-      await buttonControls.start({ opacity: 1, scale: 1, transition: { delay: 0.3, duration: 0.4 } });
+      await buttonControls.start({ opacity: 1, scale: 1, transition: { delay: 0.2, duration: 0.5, type: "spring" } });
     };
 
-    const timer = setTimeout(triggerDisintegration, 5000);
-    const loopTimer = setInterval(triggerDisintegration, 15000);
+    const timer = setTimeout(triggerDisintegration, 3000);
+    const loopTimer = setInterval(triggerDisintegration, 8000);
 
     return () => {
       clearTimeout(timer);
@@ -44,45 +44,32 @@ export default function FloatingProfilePopup() {
       particleControls.stop();
       buttonControls.stop();
     };
-  }, [hasUnread, isOpen, particleControls, buttonControls]);
-
+  }, [isOpen, particleControls, buttonControls]);
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
-    if (hasUnread) setHasUnread(false);
+    if (hasUnread) {
+      setHasUnread(false);
+    }
     buttonControls.set({ opacity: 1, scale: 1 });
     particleControls.set("assembled");
   };
 
-  const gridSize = 8; 
+  // Configuração das Partículas
+  const gridSize = 8;
   const totalParticles = gridSize * gridSize;
-
   const particleVariants: Variants = {
-    assembled: {
-      x: 0,
-      y: 0,
-      scale: 1,
-      opacity: 0, 
-      transition: { duration: 0.5, ease: "easeInOut" }
+    assembled: { 
+      x: 0, y: 0, scale: 1, opacity: 0, 
+      transition: { duration: 0.4, ease: "easeInOut" } 
     },
     exploded: (i) => {
-      // 👇 ALTERADO AQUI: Reduzi de 150 para 60
-      // Isto faz com que as partículas não voem para tão longe
-      const randomX = (Math.random() - 0.5) * 60; 
-      const randomY = (Math.random() - 0.5) * 60; 
+      const randomX = (Math.random() - 0.5) * 80;
+      const randomY = (Math.random() - 0.5) * 80;
       const randomRotation = (Math.random() - 0.5) * 360;
-      
-      return {
-        x: randomX,
-        y: randomY,
-        scale: 0, 
-        rotate: randomRotation,
-        opacity: 1, 
-        transition: {
-          duration: 0.8,
-          ease: "easeOut",
-          delay: (i % gridSize) * 0.02 + Math.random() * 0.1
-        }
+      return { 
+        x: randomX, y: randomY, scale: 0, rotate: randomRotation, opacity: 1, 
+        transition: { duration: 0.8, ease: "easeOut", delay: (i % gridSize) * 0.015 + Math.random() * 0.1 } 
       };
     }
   };
@@ -90,86 +77,114 @@ export default function FloatingProfilePopup() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
       
-      {/* Botão Flutuante */}
-      <div className="relative w-14 h-14 pointer-events-auto overflow-visible mb-2">
+      {/* WRAPPER FLUTUANTE - Ajustado para ser mais pequeno no mobile (w-12 h-12) e normal no PC (md:w-14 md:h-14) */}
+      <motion.div 
+        className="relative w-12 h-12 md:w-14 md:h-14 pointer-events-auto overflow-visible mb-2"
+        animate={hasUnread ? { y: [0, -8, 0] } : { y: 0 }}
+        transition={hasUnread ? { repeat: Infinity, duration: 3, ease: "easeInOut" } : { duration: 0.5 }}
+      >
         
         {/* Grelha de Partículas */}
         <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 z-20 pointer-events-none rounded-full overflow-hidden">
           {[...Array(totalParticles)].map((_, i) => (
-            <motion.div
-              key={i}
-              custom={i}
-              variants={particleVariants}
-              initial="assembled"
-              animate={particleControls}
-              className="w-full h-full bg-zinc-600 dark:bg-zinc-300"
+            <motion.div 
+              key={i} custom={i} variants={particleVariants} 
+              initial="assembled" animate={particleControls} 
+              className={`w-full h-full ${
+                hasUnread ? "bg-emerald-400 dark:bg-emerald-500" : "bg-zinc-500 dark:bg-zinc-600"
+              }`} 
             />
           ))}
         </div>
 
-        {/* Botão Real */}
+        {/* BOTÃO REAL - Classes responsivas aplicadas ao tamanho e borda */}
         <motion.button
           onClick={handleButtonClick}
-          animate={buttonControls} 
-          className="w-14 h-14 rounded-full shadow-lg border-2 border-white/20 overflow-hidden relative outline-none z-10 bg-zinc-900"
-          title="Click to view message"
+          animate={buttonControls}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          className={`w-12 h-12 md:w-14 md:h-14 rounded-full shadow-2xl overflow-hidden relative outline-none z-10 transition-all duration-700 ease-out border-[1.5px] md:border-[2px] ${
+            hasUnread 
+              ? "border-emerald-500/50 shadow-emerald-500/20" 
+              : "border-zinc-300 dark:border-zinc-700 opacity-80" 
+          }`}
+          title="Click to view message"
         >
-          <img
-            src="/profile.jpeg"
-            alt="Profile"
-            className="w-full h-full object-cover"
+          <img 
+            src="/profile.jpeg" 
+            alt="Profile" 
+            className={`w-full h-full object-cover transition-all duration-1000 ${
+              hasUnread ? "grayscale-0" : "grayscale sepia-[0.2]"
+            }`} 
           />
+          <div className={`absolute inset-0 bg-black transition-opacity duration-1000 ${hasUnread ? "opacity-0" : "opacity-30"}`} />
         </motion.button>
 
-        {/* Badge */}
+        {/* BADGE - Mais pequeno no mobile (w-[20px]) e normal no PC (md:w-[22px]) */}
         <AnimatePresence>
           {hasUnread && (
             <motion.span
               initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold shadow-md z-30 pointer-events-none"
+              animate={{ scale: [1, 1.25, 1], boxShadow: ["0px 0px 0px rgba(239,68,68,0)", "0px 0px 12px rgba(239,68,68,0.8)", "0px 0px 0px rgba(239,68,68,0)"] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
+              className="absolute -top-1 -right-1 flex items-center justify-center w-[20px] h-[20px] md:w-[22px] md:h-[22px] rounded-full bg-red-500 border-2 border-zinc-900 text-white text-[9px] md:text-[10px] font-extrabold shadow-md z-30 pointer-events-none"
             >
               1
             </motion.span>
           )}
         </AnimatePresence>
-      </div>
+        
+      </motion.div>
 
-      {/* Popup */}
+      {/* POPUP - Mais estreito (max-w-[280px]) e com fonte ligeiramente menor (text-xs) no mobile */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             ref={popupRef}
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="
-              mr-1 max-w-sm bg-background text-foreground shadow-xl border border-border 
-              rounded-lg p-4 pr-8 text-sm backdrop-blur-md backdrop-filter 
-              origin-bottom-right pointer-events-auto relative
-            "
+            initial={{ opacity: 0, y: 15, scale: 0.9, rotateX: 20 }}
+            animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95, transition: { duration: 0.2 } }}
+            transition={{ type: "spring", damping: 20, stiffness: 200 }}
+            style={{ transformOrigin: "bottom right" }}
+            className="mt-2 mr-0 md:mr-2 max-w-[280px] md:max-w-[320px] bg-white dark:bg-[#18181b] text-zinc-800 dark:text-zinc-200 shadow-2xl border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 pr-8 md:p-5 md:pr-10 text-xs md:text-sm backdrop-blur-xl relative pointer-events-auto"
           >
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-2 right-2 p-1 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors"
+              className="absolute top-2 right-2 md:top-3 md:right-3 p-1 md:p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               aria-label="Close message"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-3.5 h-3.5 md:w-4 md:h-4" />
             </button>
+            
+            <div className="flex items-center gap-2 mb-2 md:mb-3">
+  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+    <Info className="w-3.5 h-3.5 md:w-4 md:h-4" />
+  </div>
+  <h3 className="font-bold text-sm md:text-base text-zinc-900 dark:text-white">Welcome! 👋</h3>
+</div>
 
-            <p className="leading-relaxed">
-              👋 <strong>Welcome!</strong><br />
-              Looking for my <strong>Full CV</strong>? Just <strong>hover over</strong> (or tap) my profile picture at the top of the page to reveal the download button.
-              <br /><br />
-              Feel free to connect via LinkedIn or email!
-            </p>
+<p className="leading-relaxed text-zinc-600 dark:text-zinc-400">
+  I'm Gonçalo. Interested in <strong>Secure IoT</strong> and <strong>Hardware-Software Integration</strong>?
+</p>
+
+{/* Botão de Download Integrado */}
+<a 
+  href="/caminho-para-o-teu-cv.pdf" 
+  download
+  className="mt-4 mb-2 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-xs font-bold hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white transition-colors shadow-md"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+  Download Full CV
+</a>
+
+<p className="mt-2 text-[11px] text-center text-zinc-500">
+  Feel free to connect via LinkedIn or Email!
+</p>
           </motion.div>
         )}
       </AnimatePresence>
+      
     </div>
   );
 }
