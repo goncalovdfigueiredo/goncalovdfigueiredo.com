@@ -11,28 +11,29 @@ import { GlassCard } from "./ui/glass-card";
 
 const noiseOverlay = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E")`;
 
-/* ======================================================================== 0. VARIANTES DE ANIMAÇÃO ======================================================================== */
+/* ========================================================================
+   0. VARIANTES DE ANIMAÇÃO
+   ======================================================================== */
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.25, delayChildren: 1.5 }, },
 };
-
 const itemFadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, damping: 20 } },
 };
-
 const itemZoomIn: Variants = {
   hidden: { opacity: 0, scale: 0.8, filter: "blur(10px)" },
   visible: { opacity: 1, scale: 1, filter: "blur(0px)", transition: { type: "spring", stiffness: 60, damping: 20 } },
 };
-
 const cardContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 4.2 }, },
 };
 
-/* ======================================================================== 1. CYBER TYPEWRITER ======================================================================== */
+/* ========================================================================
+   1. CYBER TYPEWRITER
+   ======================================================================== */
 function TypewriterExpertise() {
   const words = [
     "Hardware-Software Integration.",
@@ -70,7 +71,9 @@ function TypewriterExpertise() {
   );
 }
 
-/* ======================================================================== 2. MAGNETIC BUTTONS ======================================================================== */
+/* ========================================================================
+   2. MAGNETIC BUTTONS
+   ======================================================================== */
 function MagneticButton({ children, href }: { children: React.ReactNode; href: string | null; }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -86,21 +89,20 @@ function MagneticButton({ children, href }: { children: React.ReactNode; href: s
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   };
-
   const reset = () => setPosition({ x: 0, y: 0 });
   const background = useMotionTemplate`radial-gradient(50px circle at ${mouseX}px ${mouseY}px, rgba(16,185,129,0.15), transparent 80%)`;
 
   return (
-    <motion.a href={href || "#"} target={href ? "_blank" : undefined} ref={ref} onMouseMove={handleMouse} onMouseLeave={reset} animate={{ x: position.x, y: position.y }} transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }} className="relative flex items-center justify-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-full font-medium transition-all duration-300 group overflow-hidden z-10 shadow-sm bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 md:hover:text-zinc-900 md:dark:hover:text-white md:bg-white/5 md:dark:bg-white/[0.02] md:backdrop-blur-sm hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white dark:hover:text-zinc-950 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] md:hover:bg-transparent md:dark:hover:bg-transparent md:hover:border-zinc-200/50 md:dark:hover:border-white/10 md:hover:shadow-sm md:dark:hover:shadow-sm" >
+    <motion.a href={href || "#"} target={href ? "_blank" : undefined} ref={ref} onMouseMove={handleMouse} onMouseLeave={reset} animate={{ x: position.x, y: position.y }} transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }} className="relative flex items-center justify-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-full font-medium transition-all duration-300 group overflow-hidden z-10 shadow-sm bg-zinc-200/50 dark:bg-white/5 border border-zinc-300 dark:border-white/10 text-zinc-700 dark:text-zinc-300 md:hover:text-zinc-900 md:dark:hover:text-white md:bg-white/5 md:dark:bg-white/[0.02] md:backdrop-blur-sm hover:bg-emerald-500 dark:hover:bg-emerald-500 hover:text-white dark:hover:text-zinc-950 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md dark:hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] md:hover:bg-transparent md:dark:hover:bg-transparent md:hover:border-zinc-200/50 md:dark:hover:border-white/10 md:hover:shadow-sm md:dark:hover:shadow-sm">
       <motion.div className="absolute inset-0 z-0 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hidden md:block" style={{ background }} />
-      <div className="relative z-10 flex items-center gap-1.5 pointer-events-none">
-        {children}
-      </div>
+      <div className="relative z-10 flex items-center gap-1.5 pointer-events-none">{children}</div>
     </motion.a>
   );
 }
 
-/* ======================================================================== 3. DISINTEGRATING PROFILE ======================================================================== */
+/* ========================================================================
+   3. DISINTEGRATING PROFILE
+   ======================================================================== */
 function DisintegratingProfile() {
   const particleControls = useAnimation();
   const imageControls = useAnimation();
@@ -115,17 +117,11 @@ function DisintegratingProfile() {
     };
     const timer = setTimeout(triggerDisintegration, 2000);
     const loopTimer = setInterval(triggerDisintegration, 6000);
-    return () => {
-      clearTimeout(timer);
-      clearInterval(loopTimer);
-      particleControls.stop();
-      imageControls.stop();
-    };
+    return () => { clearTimeout(timer); clearInterval(loopTimer); particleControls.stop(); imageControls.stop(); };
   }, [particleControls, imageControls]);
 
   const gridSize = 8;
   const totalParticles = gridSize * gridSize;
-
   const particleVariants: Variants = {
     assembled: { x: 0, y: 0, scale: 1, opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } },
     exploded: (i) => {
@@ -159,7 +155,9 @@ function DisintegratingProfile() {
   );
 }
 
-/* ======================================================================== 4. DESKTOP HARDWARE SKILL CARD (Original) ======================================================================== */
+/* ========================================================================
+   4. DESKTOP HARDWARE SKILL CARD (COM DESFOQUE E BARRA LATERAL)
+   ======================================================================== */
 const DesktopHardwareSkillCard = ({ group }: { group: any }) => {
   const [isHovered, setIsHovered] = useState(false);
   const mouseX = useMotionValue(0);
@@ -174,26 +172,41 @@ const DesktopHardwareSkillCard = ({ group }: { group: any }) => {
   let themeColor = "rgba(16,185,129,";
   let textColorClass = "text-emerald-600 dark:text-emerald-400";
   let spotlightColor = "rgba(16,185,129,0.15)";
+  
+  let barHoverColor = "bg-emerald-500";
+  let barGlow = "shadow-[0_0_15px_rgba(16,185,129,0.8)]";
+
   if (group.color.includes("blue")) {
-    themeColor = "rgba(59,130,246,";
-    textColorClass = "text-blue-600 dark:text-blue-400";
-    spotlightColor = "rgba(59,130,246,0.15)";
+    themeColor = "rgba(59,130,246,"; textColorClass = "text-blue-600 dark:text-blue-400"; spotlightColor = "rgba(59,130,246,0.15)";
+    barHoverColor = "bg-blue-500"; barGlow = "shadow-[0_0_15px_rgba(59,130,246,0.8)]";
   }
   if (group.color.includes("purple")) {
-    themeColor = "rgba(168,85,247,";
-    textColorClass = "text-purple-600 dark:text-purple-400";
-    spotlightColor = "rgba(168,85,247,0.15)";
+    themeColor = "rgba(168,85,247,"; textColorClass = "text-purple-600 dark:text-purple-400"; spotlightColor = "rgba(168,85,247,0.15)";
+    barHoverColor = "bg-purple-500"; barGlow = "shadow-[0_0_15px_rgba(168,85,247,0.8)]";
   }
 
   const spotlight = useMotionTemplate`radial-gradient(350px circle at ${mouseX}px ${mouseY}px, ${spotlightColor}, transparent 80%)`;
 
   return (
-    <motion.div variants={itemFadeUp} onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className={`relative w-full rounded-2xl overflow-hidden flex flex-col h-full bg-zinc-50/40 dark:bg-[#0a0a0c]/40 border backdrop-blur-md shadow-lg transition-all duration-500 ${ isHovered ? '-translate-y-1 border-zinc-300 dark:border-white/20' : 'border-zinc-200/50 dark:border-white/5' }`} >
+    <motion.div 
+      variants={itemFadeUp} 
+      onMouseMove={handleMouseMove} 
+      onMouseEnter={() => setIsHovered(true)} 
+      onMouseLeave={() => setIsHovered(false)} 
+      className={`relative w-full rounded-2xl overflow-hidden flex flex-col h-full bg-zinc-50/40 dark:bg-[#0a0a0c]/40 border backdrop-blur-md shadow-lg transition-all duration-500 ${ isHovered ? '-translate-y-1 border-zinc-300 dark:border-white/20' : 'border-zinc-200/50 dark:border-white/5' }`}
+    >
+      <div 
+        className={`absolute left-0 top-1/2 -translate-y-1/2 w-[4px] rounded-r-md transition-all duration-500 ease-out hidden md:block z-30 ${
+          isHovered ? `h-[80%] ${barHoverColor} ${barGlow}` : 'h-[35%] bg-zinc-700/50'
+        }`} 
+      />
+
       <div className="absolute inset-0 z-0 pointer-events-none opacity-30 mix-blend-overlay" style={{ backgroundImage: noiseOverlay }} />
       <motion.div className="absolute inset-0 z-0 transition-opacity duration-500 pointer-events-none" style={{ background: spotlight, opacity: isHovered ? 1 : 0 }} />
       <motion.div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] z-0 pointer-events-none transition-opacity duration-700" style={{ background: `conic-gradient(from 0deg, transparent 0%, transparent 80%, ${themeColor}1) 100%)`, opacity: isHovered ? 0.3 : 0.1 }} animate={{ x: "-50%", y: "-50%", rotate: [0, 360] }} transition={{ rotate: { duration: 6, repeat: Infinity, ease: "linear" } }} />
       <group.icon className={`absolute -bottom-4 -right-4 w-32 h-32 ${textColorClass} pointer-events-none z-10 transition-all duration-500 ${isHovered ? 'scale-110 -rotate-6 opacity-[0.05]' : 'opacity-[0.02]'}`} />
-      <div className="relative z-20 flex flex-col p-5 h-full justify-between">
+      
+      <div className="relative z-20 flex flex-col p-5 pl-6 md:pl-7 h-full justify-between">
         <div className="flex items-start justify-between mb-4">
           <div>
             <span className={`text-[9px] font-mono uppercase tracking-widest ${textColorClass} mb-1 block transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-60'}`}>
@@ -209,7 +222,7 @@ const DesktopHardwareSkillCard = ({ group }: { group: any }) => {
         </div>
         <div className="flex flex-wrap gap-1.5 mt-auto">
           {group.skills.map((skill: string) => (
-            <div key={skill} className={`px-2 py-1 rounded-md border shadow-sm transition-all duration-500 overflow-hidden cursor-default ${ isHovered ? 'bg-zinc-200/80 dark:bg-white/10 border-zinc-300 dark:border-white/10' : 'bg-zinc-200/40 dark:bg-white/[0.03] border-zinc-300/30 dark:border-white/5' }`} >
+            <div key={skill} className={`px-2 py-1 rounded-md border shadow-sm transition-all duration-500 overflow-hidden cursor-default ${ isHovered ? 'bg-zinc-200/80 dark:bg-white/10 border-zinc-300 dark:border-white/10' : 'bg-zinc-200/40 dark:bg-white/[0.03] border-zinc-300/30 dark:border-white/5' }`}>
               <span className={`block text-[10px] font-semibold transition-all duration-500 ${ isHovered ? 'blur-none opacity-100 text-zinc-900 dark:text-zinc-100' : 'blur-[2.5px] opacity-60 text-zinc-700 dark:text-zinc-300' }`}>
                 <span>{skill}</span>
               </span>
@@ -221,7 +234,9 @@ const DesktopHardwareSkillCard = ({ group }: { group: any }) => {
   );
 };
 
-/* ======================================================================== 5. DADOS PRINCIPAIS ======================================================================== */
+/* ========================================================================
+   5. DADOS PRINCIPAIS E HERO SECTION
+   ======================================================================== */
 const skillGroups = [
   { id: "core", title: "Core Engineering", subtitle: "Hardware", icon: Cpu, color: "text-emerald-500", skills: ["FPGA & Verilog", "PCB Design", "Embedded Systems", "Hardware Prototyping", "Python & MATLAB"] },
   { id: "research", title: "Research Domains", subtitle: "Scientific Focus", icon: Microscope, color: "text-blue-500", skills: ["Optical Communications", "Data Encryption", "Photonic Devices", "Smart Cities", "Energy Harvesting"] },
@@ -232,7 +247,7 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const yElement = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  
+
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isDesktopProfileExpanded, setIsDesktopProfileExpanded] = useState(false);
   const [activeMobileTab, setActiveMobileTab] = useState<number>(0);
@@ -263,7 +278,7 @@ export default function HeroSection() {
   return (
     <>
       <GhostCursor color="#10b981" trailLength={15} brightness={1.5} inertia={0.5} fadeDelayMs={200} fadeDurationMs={800} style={{ zIndex: 0 }} className="fixed inset-0 w-screen h-screen pointer-events-none" />
-
+      
       <section id="hero" ref={sectionRef} className="relative pt-20 pb-12 md:pt-24 md:pb-24 perspective-1000">
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] md:[mask-image:linear-gradient(to_bottom,black_40%,transparent_100%)] opacity-80 md:opacity-50 mix-blend-overlay">
@@ -272,6 +287,7 @@ export default function HeroSection() {
         </div>
 
         <div className="container max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+          
           <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ y: yElement }} className="flex flex-col items-center text-center mb-6 md:mb-8 group">
             
             <motion.div variants={itemZoomIn} className="relative mb-4 md:mb-4 group pointer-events-auto">
@@ -282,16 +298,19 @@ export default function HeroSection() {
               <Terminal className="w-3 h-3 md:w-3.5 md:h-3.5" />
               <span>Ph.D. Candidate</span>
             </motion.div>
-
+            
+            {/* NOME COM O FILTRO DE BRILHO (SHIMMER) ORIGINAL */}
             <motion.h1 variants={itemFadeUp} className="text-4xl md:text-[5.5rem] font-black tracking-tighter text-zinc-900 dark:text-white mb-4 md:mb-2 uppercase leading-[0.85] md:leading-[0.9] pointer-events-auto">
-              <span>GONÇALO</span> <br className="md:hidden" />{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 md:bg-[linear-gradient(110deg,#71717a,45%,#e4e4e7,55%,#71717a)] md:dark:bg-[linear-gradient(110deg,#a1a1aa,45%,#ffffff,55%,#a1a1aa)] md:bg-[length:250%_100%]">
+              <span>GONÇALO</span>
+              <br className="md:hidden" />{" "}
+              <span className="text-transparent bg-clip-text bg-[linear-gradient(110deg,#71717a,45%,#e4e4e7,55%,#71717a)] dark:bg-[linear-gradient(110deg,#a1a1aa,45%,#ffffff,55%,#a1a1aa)] bg-[length:250%_100%] animate-[shimmer_3s_linear_infinite]">
                 <span>FIGUEIREDO</span>
               </span>
             </motion.h1>
-
+            
             <motion.p variants={itemFadeUp} className="text-xs sm:text-sm md:text-xl text-zinc-600 dark:text-zinc-300 md:dark:text-zinc-400 font-medium max-w-Lg md:max-w-3xl leading-relaxed mb-4 md:mb-4 relative z-10 pointer-events-auto px-2 md:px-4">
-              <span>Bridging the gap between</span> <strong className="text-zinc-900 dark:text-white font-bold ml-0.5 md:ml-0">Theoretical Science</strong> <span>and</span> <strong className="text-zinc-900 dark:text-white font-bold ml-0.5 md:ml-0">Industrial Application</strong> <br className="hidden md:block"/>
+              <span>Bridging the gap between</span> <strong className="text-zinc-900 dark:text-white font-bold ml-0.5 md:ml-0">Theoretical Science</strong> <span>and</span> <strong className="text-zinc-900 dark:text-white font-bold ml-0.5 md:ml-0">Industrial Application</strong>
+              <br className="hidden md:block"/>
               <span className="mt-1 md:mt-0 inline-block md:inline"><span>through</span> <TypewriterExpertise /></span>
             </motion.p>
 
@@ -316,18 +335,19 @@ export default function HeroSection() {
           </motion.div>
 
           {/* ========================================================================
-              BLOCO INFERIOR (DESKTOP: Mantido 100% original / MOBILE: Novo design limpo)
+             BLOCO INFERIOR
              ======================================================================== */}
           <motion.div variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} style={{ y: yElement }} className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 relative z-20">
             
             {/* 1. PROFESSIONAL PROFILE */}
             <motion.div variants={itemFadeUp} className="col-span-1 md:col-span-8 flex flex-col group/profile">
-              <div onMouseMove={handleProfileMouse} className="flex-1 w-full relative rounded-xl md:rounded-3xl bg-white/95 dark:bg-[#0a0a0c]/95 md:bg-zinc-50/60 md:dark:bg-[#0a0a0c]/60 backdrop-blur-xl md:backdrop-blur-2xl border border-zinc-200/50 md:border-zinc-200/80 dark:border-white/10 p-4 md:p-10 overflow-hidden shadow-sm md:shadow-2xl flex flex-col transition-all duration-500 text-left" >
+              <div onMouseMove={handleProfileMouse} className="flex-1 w-full relative rounded-xl md:rounded-3xl bg-white/95 dark:bg-[#0a0a0c]/95 md:bg-zinc-50/60 md:dark:bg-[#0a0a0c]/60 backdrop-blur-xl md:backdrop-blur-2xl border border-zinc-200/50 md:border-zinc-200/80 dark:border-white/10 p-4 md:p-10 overflow-hidden shadow-sm md:shadow-2xl flex flex-col transition-all duration-500 text-left">
                 
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[4px] h-[30%] bg-emerald-500/20 group-hover:h-[80%] group-hover:bg-emerald-500 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.8)] transition-all duration-500 ease-out rounded-l-md hidden md:block z-30 pointer-events-none" />
+
                 <div className="hidden md:block absolute inset-0 z-0 pointer-events-none opacity-20 mix-blend-overlay" style={{ backgroundImage: noiseOverlay }} />
                 <motion.div className="hidden md:block absolute inset-0 z-0 opacity-0 group-hover/profile:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: profileSpotlight }} />
                 <div className="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-emerald-500/10 rounded-full blur-[60px] md:blur-[100px] pointer-events-none" />
-                
                 <div className="relative z-10 flex flex-col flex-1 h-full">
                   <div>
                     <div className="flex items-center justify-between mb-3 md:mb-8">
@@ -339,20 +359,11 @@ export default function HeroSection() {
                           <span>Professional Profile</span>
                         </h2>
                       </div>
-
-                      {/* Botão "+" a pulsar EXCLUSIVO para mobile */}
-                      <motion.button 
-                        onClick={() => setIsProfileModalOpen(true)}
-                        animate={{ scale: [1, 1.15, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)] active:scale-95 transition-transform"
-                        aria-label="Expand Profile"
-                      >
+                      <motion.button onClick={() => setIsProfileModalOpen(true)} animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }} className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)] active:scale-95 transition-transform" aria-label="Expand Profile">
                         <Plus className="w-4 h-4" />
                       </motion.button>
                     </div>
-
-                    {/* VERSÃO DESKTOP: Texto original completo com o seu próprio "Read More" */}
+                    
                     <div className="hidden md:block">
                       <div className={`relative overflow-hidden transition-all duration-500 ease-in-out ${isDesktopProfileExpanded ? "max-h-[800px]" : "max-h-[800px]"}`}>
                         <div className="text-justify space-y-3 md:space-y-4 text-xs sm:text-sm md:text-base text-zinc-700 md:text-zinc-600 dark:text-zinc-300 font-medium leading-relaxed">
@@ -369,7 +380,7 @@ export default function HeroSection() {
                       </div>
                     </div>
                   </div>
-
+                  
                   <div className="mt-3 md:mt-auto flex items-center justify-between border-t border-zinc-200 md:border-zinc-200/80 dark:border-white/10 pt-3 md:pt-6">
                     <div>
                       <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold md:font-mono mb-0.5 md:mb-1.5"><span>Status</span></p>
@@ -381,7 +392,6 @@ export default function HeroSection() {
                         <span>Ph.D. Candidate</span>
                       </div>
                     </div>
-
                     <div className="text-right md:flex md:flex-col md:items-end">
                       <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-bold md:font-mono mb-0.5 md:mb-1.5"><span>CORE EXPERTISE</span></p>
                       <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1 md:gap-1.5 justify-end text-[11px] md:text-sm md:bg-white/60 md:dark:bg-white/5 md:px-3 md:py-1.5 md:rounded-lg md:border md:border-zinc-200 md:dark:border-white/10 md:shadow-sm md:w-max">
@@ -394,27 +404,17 @@ export default function HeroSection() {
               </div>
             </motion.div>
 
-            {/* 2. SKILLS (MOBILE: Abas unificadas limpas / DESKTOP: 3 cartões originais intactos) */}
+            {/* 2. SKILLS */}
             <motion.div variants={itemFadeUp} className="col-span-1 md:col-span-4 flex flex-col justify-between">
               
-              {/* VERSÃO MOBILE: Abas unificadas fluidas */}
               <div className="md:hidden flex flex-col rounded-2xl bg-white/95 dark:bg-[#0a0a0c]/95 border border-zinc-200/50 dark:border-white/10 p-3 shadow-sm text-left">
                 <div className="flex items-center justify-between gap-1 mb-2.5 border-b border-zinc-200 dark:border-white/10 pb-2">
                   {skillGroups.map((group, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveMobileTab(idx)}
-                      className={`flex-1 py-1.5 px-0.5 rounded-lg text-[8px] sm:text-[9px] font-bold uppercase tracking-wider transition-all text-center truncate ${
-                        activeMobileTab === idx 
-                          ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 shadow-sm' 
-                          : 'text-zinc-400 hover:text-zinc-200'
-                      }`}
-                    >
+                    <button key={idx} onClick={() => setActiveMobileTab(idx)} className={`flex-1 py-1.5 px-0.5 rounded-lg text-[8px] sm:text-[9px] font-bold uppercase tracking-wider transition-all text-center truncate ${ activeMobileTab === idx ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 shadow-sm' : 'text-zinc-400 hover:text-zinc-200' }`}>
                       {group.subtitle}
                     </button>
                   ))}
                 </div>
-
                 <div className="min-h-[70px] flex flex-col justify-between">
                   <div className="flex items-center gap-2 mb-1.5">
                     <div className={`p-1 rounded-md bg-zinc-100 dark:bg-white/5 ${skillGroups[activeMobileTab].color}`}>
@@ -422,7 +422,6 @@ export default function HeroSection() {
                     </div>
                     <span className="text-xs font-bold text-zinc-900 dark:text-white">{skillGroups[activeMobileTab].title}</span>
                   </div>
-
                   <div className="flex flex-wrap gap-1 mt-1">
                     {skillGroups[activeMobileTab].skills.map((skill) => (
                       <span key={skill} className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-300 text-[9px] font-medium border border-zinc-200/50 dark:border-white/5">
@@ -433,7 +432,6 @@ export default function HeroSection() {
                 </div>
               </div>
 
-              {/* VERSÃO DESKTOP: Os 3 cartões originais intactos */}
               <div className="hidden md:flex flex-col gap-2 h-full">
                 {skillGroups.map((group, idx) => (
                   <div key={idx} className="flex-1">
@@ -443,51 +441,33 @@ export default function HeroSection() {
               </div>
 
             </motion.div>
-
           </motion.div>
-
         </div>
       </section>
 
-      {/* =======================
-          POP-UP / MODAL DO PERFIL (EXCLUSIVO MOBILE)
-         ======================= */}
+      {/* ESTILO CSS GLOBAL PARA A ANIMAÇÃO DE SHIMMER DO NOME */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      `}} />
+
       <AnimatePresence>
         {isProfileModalOpen && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:hidden">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setIsProfileModalOpen(false)} 
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer" 
-            />
-            
-            <motion.div 
-              initial={{ scale: 0.95, y: 20, opacity: 0 }} 
-              animate={{ scale: 1, y: 0, opacity: 1 }} 
-              exit={{ scale: 0.95, y: 20, opacity: 0 }} 
-              className="relative w-full max-w-sm z-10 max-h-[85vh] flex flex-col"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsProfileModalOpen(false)} className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer" />
+            <motion.div initial={{ scale: 0.95, y: 20, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.95, y: 20, opacity: 0 }} className="relative w-full max-w-sm z-10 max-h-[85vh] flex flex-col">
               <GlassCard className="flex flex-col w-full rounded-2xl overflow-hidden border border-emerald-500/40 bg-zinc-50 dark:bg-[#0c0c0e] relative p-5 shadow-2xl text-left">
-                
-                <button 
-                  onClick={() => setIsProfileModalOpen(false)} 
-                  className="absolute top-3 right-3 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 transition-colors shadow-sm"
-                  aria-label="Close modal"
-                >
+                <button onClick={() => setIsProfileModalOpen(false)} className="absolute top-3 right-3 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 transition-colors shadow-sm" aria-label="Close modal">
                   <X className="w-4 h-4" />
                 </button>
-
                 <div className="flex items-center gap-3 mb-4 pr-8">
                   <div className="p-2.5 rounded-xl bg-emerald-500 text-white shadow-md">
                     <User className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-bold text-zinc-900 dark:text-white leading-tight">
-                    Professional Profile
-                  </h3>
+                  <h3 className="text-lg font-bold text-zinc-900 dark:text-white leading-tight">Professional Profile</h3>
                 </div>
-
                 <div className="space-y-3 overflow-y-auto max-h-[60vh] pr-1 text-xs text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed text-justify">
                   <p>
                     <span>Gonçalo Figueiredo is a Ph.D. Candidate in</span> <strong className="text-zinc-900 dark:text-white">Electrical and Computer Engineering</strong> <span>at</span> <strong className="text-zinc-900 dark:text-white border-b border-emerald-500/50">Instituto Superior Técnico</strong><span>, researching photonics for future sustainable smart cities. He holds an M.Sc. in Physics Engineering from the University of Aveiro.</span>
@@ -499,19 +479,11 @@ export default function HeroSection() {
                     <span>His focus is on developing robust</span> <span className="text-zinc-900 dark:text-white font-bold bg-white/50 dark:bg-white/10 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-white/5">hardware prototypes</span><span>, from</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">Smart Cities</span> <span>to</span> <span className="text-blue-600 dark:text-blue-400 font-bold">Industrial IoT</span><span>.</span>
                   </p>
                 </div>
-
               </GlassCard>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes shimmer {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-      `}} />
     </>
   );
 }
