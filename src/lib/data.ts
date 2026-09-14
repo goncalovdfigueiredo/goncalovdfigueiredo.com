@@ -364,9 +364,11 @@ export const LeadershipExperience = [
     position: "Co-supervisor of M.Sc. thesis",
     period: "Sep 2023 - Dec 2024",
     logo: "/IST.png",
+    thesisImage: "/thesis-preview.png", // Manténs o caminho da imagem com o blur
+    thesisTitle: "Developing a Cost-Efficient Secure Visible Light Communication System with Chaotic-Based Key Generation",
     achievements: [
       "Co-supervised a 2nd Cycle Integrator Project and a Master's thesis in Electrical and Computer Engineering.",
-      "The thesis, authored by a M.Sc. student, was entitled “Developing a Cost-efficient Secure Visible Light Communication System with Chaotic Scrambling.”",
+      "The supervised thesis was officially recognized and featured among the Outstanding Master's Theses at the Masters@DEEC ceremony.",
     ],
   },
   {
@@ -378,11 +380,12 @@ export const LeadershipExperience = [
     },
     position: "Scout",
     period: "Oct 2008 - Oct 2021",
-    logo: "/scout.png",
+    logo: "/scout.png", // Mantém o do CNE principal ou define a propriedade 'logos' em baixo
+    logos: ["/scout.png", "/scout2.png"], // Podes colocar aqui o caminho do CNE e do Agrupamento 124 Oliveirinha se tiveres ambos
     achievements: [
-"Developed adaptability and practical problem-solving, learning to find effective solutions even with limited tools or under pressure.",
-"Honed leadership and project management skills by organizing complex logistics for field activities, fostering teamwork and resilience in dynamic environments.",
-
+      "Led and mentored youth groups of varying ages, fostering responsibility, peer-to-peer collaboration, and inclusive team dynamics in challenging environments.",
+      "Coordinated large-scale logistics, resource allocation, and safety protocols for multi-day outdoor expeditions and community service projects under tight constraints.",
+      "Cultivated rapid decision-making, crisis management, and improvisational engineering skills by executing complex field activities with limited tools.",
     ],
   },
 ];
