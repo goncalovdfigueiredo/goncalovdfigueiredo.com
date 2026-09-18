@@ -499,7 +499,7 @@ export default function HeroSection() {
           </motion.div>
 
           {/* ================================================================
-             INDICADOR INTERATIVO (EXCLUSIVO PARA VERSÃO DESKTOP)
+             INDICADOR INTERATIVO (EXCLUSIVO DESKTOP - FORMATO CLÁSSICO DE RATO)
           ================================================================= */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -513,18 +513,18 @@ export default function HeroSection() {
             <motion.div
               whileHover="hovered"
               initial="initial"
-              className="relative flex items-center bg-zinc-950/70 dark:bg-zinc-900/50 border border-emerald-500/10 backdrop-blur-xl rounded-full p-2 shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:border-emerald-500/60 transition-all duration-300"
+              className="relative flex items-center bg-white/80 dark:bg-zinc-950/70 border border-zinc-300 dark:border-emerald-500/20 backdrop-blur-xl rounded-2xl px-3.5 py-2 shadow-lg hover:border-emerald-500/50 transition-all duration-300"
             >
-              {/* Ícone do Rato */}
-              <div className="w-5 h-9 rounded-full border-2 border-emerald-500/50 flex items-start justify-center p-1 relative shadow-[inset_0_0_6px_rgba(16,185,129,0.3)] shrink-0">
+              {/* Ícone de Rato Retangular com Cantos Suaves */}
+              <div className="w-5 h-8 rounded-md border-2 border-emerald-600 dark:border-emerald-500/70 flex items-start justify-center p-1 relative shadow-[inset_0_0_4px_rgba(16,185,129,0.2)] shrink-0 bg-zinc-100/50 dark:bg-transparent">
                 <motion.div
-                  animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
-                  transition={{ repeat: Infinity, duration: 2.6, ease: "easeInOut" }}
-                  className="w-1.5 h-2 bg-emerald-400 rounded-full shadow-[0_0_8px_#34d399]"
+                  animate={{ y: [0, 6, 0], opacity: [1, 0.4, 1] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  className="w-1 h-2 bg-emerald-600 dark:bg-emerald-400 rounded-sm shadow-[0_0_6px_#10b981]"
                 />
               </div>
 
-              {/* Mensagem "Scroll to..." que se expande ao fazer hover */}
+              {/* Mensagem Expandida ao Fazer Hover (Com suporte perfeito a modo claro/escuro) */}
               <motion.div
                 variants={{
                   initial: { width: 0, opacity: 0, marginLeft: 0 },
@@ -533,8 +533,8 @@ export default function HeroSection() {
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="overflow-hidden whitespace-nowrap"
               >
-                <span className="text-[10px] md:text-[11px] font-mono font-bold tracking-[0.2em] text-emerald-400 uppercase pr-3 inline-block drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
-                  Scroll to explore!
+                <span className="text-[10px] md:text-[11px] font-mono font-bold tracking-[0.2em] text-zinc-800 dark:text-emerald-400 uppercase pr-2 inline-block">
+                  Scroll to explore
                 </span>
               </motion.div>
             </motion.div>
