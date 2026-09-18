@@ -1,8 +1,9 @@
+// src/components/ProjectsSection.tsx
 "use client";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ArrowUpRight, Cpu, Smartphone, Zap, Bluetooth, Microchip, BrainCircuit, Construction, Sparkles, ChevronDown, X, Lock, Layers} from "lucide-react";
+import { Github, ArrowUpRight, Cpu, Smartphone, Zap, Bluetooth, Microchip, BrainCircuit, Construction, Sparkles, ChevronDown, X, Lock, Layers } from "lucide-react";
 import MotionWrapper from "./MotionWrapper";
 import { GlassCard } from "./ui/glass-card";
 
@@ -15,11 +16,11 @@ interface Project {
   year: string;
   icon: any;
   tags: string[];
-  isRestricted?: boolean; 
+  isRestricted?: boolean;
   content?: {
     image?: string;
     image2?: string;
-    layout?: "stacked" | "side-by-side"; 
+    layout?: "stacked" | "side-by-side";
     summary: string;
     specs: string[];
   };
@@ -34,7 +35,7 @@ const myProjects: Project[] = [
     category: "Power Electronics",
     year: "2026",
     icon: Zap,
-    tags: ["KiCad", "Buck Converter", "Energy Harvesting", "Battery Charging"],
+    tags: ["KiCad", "Buck Converter", "Energy Harvesting", "Battery Harvesting"],
   },
   {
     id: "vlc-pcb-kicad",
@@ -47,7 +48,7 @@ const myProjects: Project[] = [
     isRestricted: true,
     content: {
       image: "/FigProj3.png",
-      layout: "side-by-side", 
+      layout: "side-by-side",
       summary: "Hardware design of a Full-Duplex VLC Transceiver featuring independent transmitter and receiver modules.",
       specs: [
         "Transmitter built with a TLV9101IDBVR Op-Amp and AO3400A N-Channel MOSFET.",
@@ -97,7 +98,7 @@ const myProjects: Project[] = [
     tags: ["SHA-256", "Reed-Solomon", "Cryptography", "Eco-Materials"],
     isRestricted: true,
     content: {
-      image: "/FigProj2.png", 
+      image: "/FigProj2.png",
       layout: "stacked",
       summary: "Anti-counterfeiting labels based on serigraphic varnish mixed with cork and sand to generate unique physical random patterns. Authentication is achieved through a pipeline combining Perceptual Hashing (Phash), Reed-Solomon error correction, and SHA-256.",
       specs: [
@@ -116,9 +117,9 @@ const myProjects: Project[] = [
     year: "2022",
     icon: Smartphone,
     tags: ["Java/Kotlin", "Signal Processing", "Cryptography"],
-    isRestricted: true, 
+    isRestricted: true,
     content: {
-      image: "/FigProj1.png", 
+      image: "/FigProj1.png",
       layout: "stacked",
       summary: "Android application capable of detecting and decoding optical signals via smartphone camera, utilizing a 3D hyperchaotic map (sine ICMIC).",
       specs: [
@@ -137,7 +138,6 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="py-20 md:py-24 relative overflow-hidden">
       <div className="container max-w-7xl mx-auto px-6 relative z-10">
-        
         <MotionWrapper>
           <div className="mb-8 md:mb-12 flex flex-col gap-4">
             <div className="flex flex-col gap-1 items-start md:items-start">
@@ -148,11 +148,7 @@ export default function ProjectsSection() {
                 </span>
               </div>
               <h2 className="text-2xl md:text-4xl font-extrabold flex items-center tracking-tight text-zinc-900 dark:text-white gap-3">
-                <motion.div 
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group"
-                >
+                <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} className="relative p-2.5 md:p-3 rounded-2xl bg-white/80 dark:bg-white/5 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-md group" >
                   <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Layers className="relative z-10 h-5 w-5 md:h-7 md:w-7 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
@@ -169,7 +165,6 @@ export default function ProjectsSection() {
         </MotionWrapper>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:items-start">
-          
           {/* ================================================================== */}
           {/* COLUNA DA ESQUERDA (Project Log) */}
           {/* ================================================================== */}
@@ -185,8 +180,7 @@ export default function ProjectsSection() {
                 </span>
               </div>
             </div>
-
-            <div className="relative flex flex-col gap-1.5" onMouseLeave={() => setHoveredIndex(hoveredIndex)}> 
+            <div className="relative flex flex-col gap-1.5" onMouseLeave={() => setHoveredIndex(hoveredIndex)}>
               {myProjects.map((project, idx) => {
                 const isActive = hoveredIndex === idx;
                 const IconComp = project.icon;
@@ -195,7 +189,9 @@ export default function ProjectsSection() {
                     key={project.id}
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onClick={() => {
-                      if (window.innerWidth < 1024) setSelectedMobileProject(project);
+                      if (window.innerWidth < 1024) {
+                        setSelectedMobileProject(project);
+                      }
                     }}
                     className="relative rounded-xl transition-colors duration-300 cursor-pointer outline-none"
                   >
@@ -207,15 +203,12 @@ export default function ProjectsSection() {
                         transition={{ type: "spring", stiffness: 400, damping: 35 }}
                       />
                     )}
-                    
                     <div className={`absolute inset-0 bg-zinc-50/50 dark:bg-white/5 rounded-xl border border-zinc-200/50 dark:border-white/5 lg:hidden ${isActive ? 'opacity-100' : 'opacity-0'}`} />
-
-                    <motion.div 
+                    <motion.div
                       initial={false}
                       animate={{ height: isActive ? '50%' : '0%', opacity: isActive ? 1 : 0 }}
-                      className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-[3px] bg-emerald-500 rounded-r-full z-20" 
+                      className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-[3px] bg-emerald-500 rounded-r-full z-20"
                     />
-                    
                     <div className="p-3.5 sm:p-4 relative z-20 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3 min-w-0">
                         <div className={`p-2.5 rounded-lg shrink-0 transition-colors duration-300 ${isActive ? "bg-emerald-500/10 text-emerald-500 shadow-inner shadow-emerald-500/20" : "bg-zinc-100/50 dark:bg-black/20 text-zinc-400"}`}>
@@ -228,7 +221,7 @@ export default function ProjectsSection() {
                           <div className="flex items-center">
                             <span className={`text-[8px] font-mono px-1.5 py-[2px] rounded border transition-colors duration-300 ${
                               project.highlight.includes('PCB') 
-                                ? (isActive ? 'border-blue-500/40 text-blue-600 dark:text-blue-400 bg-blue-500/10' : 'border-blue-500/20 text-blue-500/70 bg-transparent') 
+                                ? (isActive ? 'border-blue-500/40 text-blue-600 dark:text-blue-400 bg-blue-500/10' : 'border-blue-500/20 text-blue-500/70 bg-transparent')
                                 : (isActive ? 'border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' : 'border-emerald-500/20 text-emerald-500/70 bg-transparent')
                             }`}>
                               <span>{project.highlight}</span>
@@ -236,7 +229,6 @@ export default function ProjectsSection() {
                           </div>
                         </div>
                       </div>
-
                       <div className="flex items-center gap-2 shrink-0">
                         <span className={`text-xs font-mono font-semibold transition-colors duration-300 ${isActive ? "text-emerald-500" : "text-zinc-400 dark:text-zinc-600"}`}>
                           <span>{project.year}</span>
@@ -256,15 +248,13 @@ export default function ProjectsSection() {
           {/* ================================================================== */}
           <div className="hidden lg:block lg:col-span-7 relative h-full">
             <GlassCard className="w-full h-full border border-zinc-200 dark:border-white/10 rounded-3xl p-8 flex flex-col min-h-[500px] shadow-2xl relative overflow-hidden bg-zinc-50/80 dark:bg-[#0c0c0e]/80">
-              
               <motion.div
                 animate={{ top: ["-10%", "110%", "-10%"] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
                 className="absolute left-0 right-0 h-[2px] bg-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.8)] z-10 pointer-events-none opacity-50"
               />
-
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
-              
+
               <AnimatePresence mode="wait">
                 {hoveredIndex !== null && (
                   <motion.div
@@ -275,7 +265,6 @@ export default function ProjectsSection() {
                     transition={{ duration: 0.25, ease: "easeOut" }}
                     className="relative z-30 flex flex-col h-full"
                   >
-                    
                     {/* NOVO CABEÇALHO: Layout flex-col com as Tags por baixo do Título */}
                     <div className="flex flex-col gap-3 mb-4 pb-4 border-b border-zinc-200 dark:border-white/5 shrink-0">
                       <div className="flex flex-col gap-1.5">
@@ -299,23 +288,18 @@ export default function ProjectsSection() {
                     </div>
 
                     <div className="relative flex-1 flex flex-col overflow-y-auto custom-scrollbar pr-2 pb-2 mt-1">
-                      
                       {myProjects[hoveredIndex].content ? (
-                        
                         /* ============================================================== */
-                        /* BORDA "BOLINHA + RASTO"                                        */
+                        /* BORDA "BOLINHA + RASTO"                                         */
                         /* ============================================================== */
                         <div className="relative flex-1 rounded-[20px] overflow-hidden p-[4px] shrink-0 bg-zinc-200/50 dark:bg-white/5">
-                          
                           {/* 1. Glow da Bolinha */}
                           <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_70%,rgba(16,185,129,0.8)_95%,#6ee7b7_100%)] blur-[8px]" />
-
                           {/* 2. O Rasto e o Core físico da luz */}
                           <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_80%,rgba(16,185,129,1)_98%,#a7f3d0_99%,#ffffff_100%)]" />
-
+                          
                           {/* 3. O Cartão Branco Real do Conteúdo */}
                           <div className="relative z-10 h-full w-full rounded-2xl bg-white p-5 lg:p-6 overflow-hidden">
-                            
                             {/* CADEADO NÍTIDO FLUTUANTE */}
                             {myProjects[hoveredIndex].isRestricted && (
                               <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
@@ -331,41 +315,27 @@ export default function ProjectsSection() {
                               const contentLayout = myProjects[hoveredIndex].content!.layout || "stacked";
                               const isRestrictedClass = myProjects[hoveredIndex].isRestricted ? 'blur-[4px] opacity-50 select-none pointer-events-none' : '';
                               const hasImages = !!myProjects[hoveredIndex].content!.image || !!myProjects[hoveredIndex].content!.image2;
-                              
+
                               return (
                                 <div className={`flex ${contentLayout === 'side-by-side' ? 'flex-col xl:flex-row items-stretch' : 'flex-col'} gap-6 h-full ${isRestrictedClass}`}>
-                                  
                                   {hasImages && (
                                     <div className={`${contentLayout === 'side-by-side' ? 'w-full xl:w-1/2 flex flex-col gap-3 min-h-[160px]' : 'w-full h-40 xl:h-48 shrink-0 flex flex-row gap-3'} mb-2`}>
-                                      
                                       {myProjects[hoveredIndex].content!.image && (
                                         <div className="flex-1 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
-                                          <img 
-                                            src={myProjects[hoveredIndex].content!.image} 
-                                            alt="Project Preview 1" 
-                                            className="max-w-full max-h-full object-contain p-2" 
-                                          />
+                                          <img src={myProjects[hoveredIndex].content!.image} alt="Project Preview 1" className="max-w-full max-h-full object-contain p-2" />
                                         </div>
                                       )}
-
                                       {myProjects[hoveredIndex].content!.image2 && (
                                         <div className="flex-1 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
-                                          <img 
-                                            src={myProjects[hoveredIndex].content!.image2} 
-                                            alt="Project Preview 2" 
-                                            className="max-w-full max-h-full object-contain p-2" 
-                                          />
+                                          <img src={myProjects[hoveredIndex].content!.image2} alt="Project Preview 2" className="max-w-full max-h-full object-contain p-2" />
                                         </div>
                                       )}
-
                                     </div>
                                   )}
-
                                   <div className={`flex flex-col flex-1 ${contentLayout === 'side-by-side' ? 'justify-center' : ''}`}>
                                     <p className="text-sm text-zinc-700 leading-relaxed font-medium mb-4">
                                       <span>{myProjects[hoveredIndex].content!.summary}</span>
                                     </p>
-
                                     <div className={`space-y-3 ${contentLayout === 'side-by-side' ? '' : 'mt-auto'}`}>
                                       <h5 className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Technical Specs:</h5>
                                       <ul className={`grid grid-cols-1 ${contentLayout === 'side-by-side' ? 'xl:grid-cols-1' : 'xl:grid-cols-2'} gap-3`}>
@@ -383,7 +353,6 @@ export default function ProjectsSection() {
                             })()}
                           </div>
                         </div>
-
                       ) : (
                         <div className="absolute inset-x-0 -inset-y-4 z-40 flex items-center justify-center p-6">
                           <div className="absolute inset-0 bg-white/50 dark:bg-[#0c0c0e]/50 backdrop-blur-[10px] rounded-2xl border border-zinc-100 dark:border-white/5" />
@@ -398,45 +367,24 @@ export default function ProjectsSection() {
                           </div>
                         </div>
                       )}
-                      
                     </div>
-
                   </motion.div>
                 )}
               </AnimatePresence>
             </GlassCard>
           </div>
-
         </div>
 
         {/* ====== MODAL MOBILE ====== */}
         <AnimatePresence>
           {selectedMobileProject && (
             <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 lg:hidden">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedMobileProject(null)}
-                className="absolute inset-0 bg-black/80 backdrop-blur-md"
-              />
-
-              <motion.div
-                initial={{ scale: 0.9, y: 20, opacity: 0 }}
-                animate={{ scale: 1, y: 0, opacity: 1 }}
-                exit={{ scale: 0.9, y: 20, opacity: 0 }}
-                className="relative w-full max-w-sm z-10 max-h-[85vh] flex flex-col"
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedMobileProject(null)} className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+              <motion.div initial={{ scale: 0.9, y: 20, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, y: 20, opacity: 0 }} className="relative w-full max-w-sm z-10 max-h-[85vh] flex flex-col" >
                 <GlassCard className="flex flex-col w-full rounded-2xl overflow-hidden border border-emerald-500/30 bg-zinc-50 dark:bg-[#0c0c0e] relative p-6 shadow-2xl text-left">
-                  
-                  <button
-                    onClick={() => setSelectedMobileProject(null)}
-                    className="absolute top-3 right-3 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors shadow-sm"
-                    aria-label="Close modal"
-                  >
+                  <button onClick={() => setSelectedMobileProject(null)} className="absolute top-3 right-3 z-30 p-2 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors shadow-sm" aria-label="Close modal" >
                     <X className="w-4 h-4" />
                   </button>
-
                   <div className="flex items-center gap-3 mb-4 pr-8">
                     <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 shrink-0">
                       <selectedMobileProject.icon className="w-5 h-5" />
@@ -451,13 +399,11 @@ export default function ProjectsSection() {
                       </h3>
                     </div>
                   </div>
-
                   <div className="mb-3 flex items-center">
                     <span className="text-[10px] font-mono px-2 py-1 rounded border border-emerald-500/30 text-emerald-500 bg-emerald-500/5 inline-block font-semibold">
                       <span>{selectedMobileProject.highlight}</span>
                     </span>
                   </div>
-
                   {/* TAGS EM AZUL NO MOBILE */}
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {selectedMobileProject.tags.map(tag => (
@@ -466,19 +412,12 @@ export default function ProjectsSection() {
                       </span>
                     ))}
                   </div>
-
                   <div className="relative overflow-y-auto custom-scrollbar max-h-[40vh] pr-2 pt-1">
-                    
                     {selectedMobileProject.content ? (
-                      
                       <div className="relative rounded-[20px] overflow-hidden p-[4px] mb-2 shrink-0 bg-zinc-200/50 dark:bg-white/5">
-                        
                         <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_70%,rgba(16,185,129,0.8)_95%,#6ee7b7_100%)] blur-[8px]" />
-                        
                         <div className="absolute top-1/2 left-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_80%,rgba(16,185,129,1)_98%,#a7f3d0_99%,#ffffff_100%)]" />
-
                         <div className="relative z-10 h-full w-full bg-white rounded-2xl p-5 overflow-hidden">
-                          
                           {selectedMobileProject.isRestricted && (
                             <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
                               <div className="relative flex items-center justify-center p-3 rounded-full bg-zinc-900 dark:bg-[#0a0a0c] border border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.4)]">
@@ -487,32 +426,21 @@ export default function ProjectsSection() {
                               </div>
                             </div>
                           )}
-
                           <div className={`flex flex-col gap-4 pb-2 ${selectedMobileProject.isRestricted ? 'blur-[3.5px] opacity-50 select-none pointer-events-none' : ''}`}>
-                            
                             {(selectedMobileProject.content.image || selectedMobileProject.content.image2) && (
                               <div className="w-full shrink-0 flex flex-col gap-3 mb-2">
                                 {selectedMobileProject.content.image && (
                                   <div className="w-full h-32 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
-                                    <img 
-                                      src={selectedMobileProject.content.image} 
-                                      alt="Project Preview 1" 
-                                      className="max-w-full max-h-full object-contain p-2" 
-                                    />
+                                    <img src={selectedMobileProject.content.image} alt="Project Preview 1" className="max-w-full max-h-full object-contain p-2" />
                                   </div>
                                 )}
                                 {selectedMobileProject.content.image2 && (
                                   <div className="w-full h-32 flex items-center justify-center rounded-xl overflow-hidden border border-zinc-200/50 dark:border-white/5 bg-white">
-                                    <img 
-                                      src={selectedMobileProject.content.image2} 
-                                      alt="Project Preview 2" 
-                                      className="max-w-full max-h-full object-contain p-2" 
-                                    />
+                                    <img src={selectedMobileProject.content.image2} alt="Project Preview 2" className="max-w-full max-h-full object-contain p-2" />
                                   </div>
                                 )}
                               </div>
                             )}
-
                             <p className="text-xs text-zinc-700 leading-relaxed font-medium">
                               <span>{selectedMobileProject.content.summary}</span>
                             </p>
@@ -537,7 +465,6 @@ export default function ProjectsSection() {
                       </div>
                     )}
                   </div>
-
                 </GlassCard>
               </motion.div>
             </div>

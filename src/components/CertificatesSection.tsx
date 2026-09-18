@@ -23,9 +23,9 @@ const certs = [
       bg: "bg-emerald-500/20",
       border: "hover:border-emerald-500/30",
       items: [
-    { title: "Network Security Expert (NSE) 3 - Network Security Associate", org: "Fortinet", year: "2026" },
-    { title: "Network Security Expert (NSE) 2 - Network Security Fundamentals", org: "Fortinet", year: "2026" },
-        { title: "Network Security Expert (NSE) 1  - Network Security Fundamentals", org: "Fortinet", year: "2026" },
+    { title: "Fortinet Network Security Expert (NSE) 3: Certified in Cybersecurity", org: "Fortinet", year: "2026" },
+    { title: "Fortinet NSE 2: Certified in Cybersecurity", org: "Fortinet", year: "2026" },
+    { title: "Fortinet NSE 1: Certified in Cybersecurity", org: "Fortinet", year: "2026" },
     ]
     },
     {

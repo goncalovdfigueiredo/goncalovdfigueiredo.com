@@ -591,6 +591,34 @@ export const publications = [
     description: [],
     image: "/GVDF_1.jpg",
   },
+  //{
+  //  title: "Advanced Transparent Photonic Receiver for Visible Light Communication based on Large-Scale Luminescent Solar Concentrators",
+  //  authors: ["Gonçalo Figueiredo et al."],
+  //  venue: "(under preparation)",
+  //  year: 2026,
+  //  abstract: "",
+  //  github: "",
+  //  manuscript: "journal article",
+  //  links: {
+  //    bibtex: ""
+  //  },
+  //  description: [],
+  //  image: "",
+  //},
+  //{
+  //  title: "Developing a Cost-effective Secure Visible Light Communication System with Chaotic-Based Key Generation",
+  //  authors: ["Ricardo Sampaio et al."],
+  //  venue: "Photonics (under preparation)",
+  //  year: 2026,
+  //  abstract: "",
+  //  github: "",
+  //  manuscript: "journal article",
+  //  links: {
+  //    bibtex: ""
+  //  },
+  //  description: [],
+  //  image: "",
+  //},
   {
     title: "Transparent nature-based luminescent solar concentrator with NIR emission and integrated thermal sensing",
     authors: ["Sandra Correia et al."],
@@ -760,6 +788,17 @@ export const publications = [
     },
     description: [],
   },
+  //{
+  //  title: "The role of photonics in future sustainable smart cities",
+  //  authors: ["Gonçalo Figueiredo"],
+  //  venue: "Instituto Superior Técnico (Dissertation)",
+  //  year: "Oct 2026",
+  //  image: "",
+  //  abstract: "",
+  //  manuscript: "monograph",
+  //  links: {},
+  //  description: [],
+  //},
   {
     title: "Secure Visible Light Communication Systems based on Color-Shift Keying",
     authors: ["Gonçalo Figueiredo"],
