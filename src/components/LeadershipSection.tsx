@@ -162,8 +162,7 @@ export default function LeadershipSection() {
                     <Calendar className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                     <span className="text-[10px] font-bold uppercase tracking-wide text-zinc-700 dark:text-emerald-100">{job.period}</span>
                   </div>
-                  <div className="p-5 relative overflow-hidden rounded-2xl h-[210px] flex flex-col justify-between bg-zinc-200/10 dark:bg-black/1 backdrop-blur-md border border-zinc-200/40 dark:border-emerald-500/30 transition-all duration-500 group-hover:bg-zinc-100/60 group-hover:dark:bg-black/40 group-hover:backdrop-blur-xl group-hover:border-emerald-500/70 group-hover:shadow-[0_20px_40px_rgba(16,185,129,0.15)]">
-                    <div className="mb-4 mt-2">
+                  <div className="p-5 relative overflow-hidden rounded-2xl h-[210px] flex flex-col justify-between bg-white/80 dark:bg-black/10 backdrop-blur-md border border-zinc-300 dark:border-emerald-500/30 transition-all duration-500 group-hover:bg-white group-hover:dark:bg-black/40 group-hover:backdrop-blur-xl group-hover:border-emerald-600 dark:group-hover:border-emerald-500/70 group-hover:shadow-[0_20px_40px_rgba(16,185,129,0.15)]">                    <div className="mb-4 mt-2">
                       <div className="flex items-start gap-4 mb-4">
                         <CompanyLogo job={job} />
                         <div className="min-w-0 flex-1">
