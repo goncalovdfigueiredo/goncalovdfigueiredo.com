@@ -340,7 +340,7 @@ const LeftProfileCard = ({ isExpanded }: { isExpanded: boolean }) => {
               >
                 <div className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-zinc-200/90 dark:bg-zinc-900/60 border border-zinc-300 dark:border-emerald-500/30 shadow-inner backdrop-blur-sm">
                   <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-500 animate-pulse" />
-                  <span className="text-zinc-700 dark:text-zinc-400 font-mono text-[10px] md:text-xs font-semibold tracking-[0.15em] uppercase w-[330px] text-center">
+                  <span className="text-zinc-700 dark:text-zinc-400 font-mono text-[10px] md:text-xs font-semibold tracking-[0.15em] uppercase w-[270px] md:w-[330px] text-center">
                     <ScrambleText text="System Locked" /> <span className="text-emerald-600 dark:text-emerald-500 mx-1.5">//</span> <ScrambleText text="Hover to Decrypt" />
                   </span>
                 </div>
