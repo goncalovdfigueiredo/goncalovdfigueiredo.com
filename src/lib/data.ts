@@ -203,8 +203,8 @@ export const workExperience = [
     ],
     projecttitle: [
       "Research and development initiative in progress. Specific project details are currently in the execution phase.",
-      "**Project: ",
-      "**Area: ",
+      "**Project: SLiCIoT (CENTRO2030-FEDER-02362700) - Smart Human Centric Lighting and Communications through the Internet of Things",
+      "**Area: Optics & Photonics",
     ],
     achievements: [
       "Ongoing execution. Key outcomes and milestones will be updated as the project matures.",
